@@ -67,3 +67,4 @@ The features we aim to have for this project and their corresponding user storie
 ## **Initial Architecture**
 
 ## **Work Division**
+For the project we aim to divide the team into 2 teams of 2 front end developers and 2 backend developers. Both teams handle all of the implementation and testing for their respective layers. To co-ordinate between teams we plan to have at least 1 stand-up at the beginning of every week and from discussions in the group during the week we might decide to have another on Fridays to iron out details or assist eachother pair programming or trying to resolve bugs.Meeting may be earlier depending on severity
