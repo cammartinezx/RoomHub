@@ -66,5 +66,20 @@ The features we aim to have for this project and their corresponding user storie
 
 ## **Initial Architecture**
 
+* For this project, we are going to use n-tier architecture for modern web and mobile application due to it's scalability, flexibility and performance 
+
+        |     Front-end       |    Back-end     |  Database   |
+        | ------------------- | --------------- | ----------- |
+        | React (for Web app) | Node.js         | Amazon RDS  |
+        | Flutter (for Moblie | Express.js      |             |
+        | application)        |                 |             |
+
+* For front-end, we choose to use **React** and **Flutter** since they both offer powerfuls framework for creating rich and interaction user interfaces for both web and mobile platforms.
+* For back-end, **Node.js** and **Express.js** provide a robust and efficient platform for building the back-end. They are both well-suited for handling real-time applications and APIs
+* For data storage, we prefer to use **Amazon RDS** since it provides a managed relational database service that is highly scalable and reliable, making it ideal for storing and managing application data
+* This architecture allows for a clean separation of concerns between the front-end, back-end and storage layers, making it easier to maintain and develop the application.
+* The architecture diagram for our project can be found [here](https://github.com/WilliamOdumah/RoomHub/blob/main/Documentation/Architecture_diagram.png)
+
 ## **Work Division**
+
 For the project we aim to divide the team into 2 teams of 2 front end developers and 2 backend developers. Both teams handle all of the implementation and testing for their respective layers. To co-ordinate between teams we plan to have at least 1 stand-up at the beginning of every week and from discussions in the group during the week we might decide to have another on Fridays to iron out details or assist eachother pair programming or trying to resolve bugs.Meeting may be earlier depending on severity
