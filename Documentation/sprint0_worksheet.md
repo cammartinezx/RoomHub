@@ -96,6 +96,9 @@ The features we aim to have for this project and their corresponding user storie
 * As a User, I should be able to view reviews of potential roommates before connecting.
 * As a User, I should receive a notification when a potential roommate sends me a connection request.
 
+**Non-Functional Feature:The application will implement in-memory caching to reduce database query load by at least 50% for frequently accessed data, ensuring response times stay under 500 milliseconds for 90% of user requests, with a load of 100 concurrent users.**
+
+
 ## **Initial Architecture**
 
 * For this project, we are going to use n-tier architecture for modern web and mobile application due to it's scalability, flexibility and performance 
