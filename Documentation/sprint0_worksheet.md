@@ -22,10 +22,23 @@ The features we aim to have for this project and their corresponding user storie
 **Feature: Virtual Room Management**
 
 * As a User I should be able to create a new room
-* As a User I should be able to name my room
+    **Acceptance Criteria**
+    * Given my role as a user, I should see a plus button to create a new room.
+    After clicking on the button I should see a pop up text box to input the name of my room and a short description.
+    I should see a save button. After clicking save the room should be added to my list of rooms
 * As a user I should be able to invite other users to my room
+    **Acceptance Criteria**
+    * Given my role as a user, after clicking on an existing room, I should see a plus button beside the room name
+      After clicking on the button I should see a text box to input the name of a new person I want to add to the room and a send invite button.
+      After clicking the send invite button, I should see a "invite sent succesfully" toast on my screen
 * As a user I should be able to reject room invites
+   **Acceptance Criteria**
+    * Given my role as a user, If I have received a new room invite it should pop up in my notifications bar as a card.
+    On the card there should be an X or a tick. Onclick of the x the notification card disappears and onclick of the tick, the room is added to my list of rooms  
 * As a user I should be able to accept room invites
+    **Acceptance Criteria**
+    * Given my role as a user, If I have received a new room invite it should pop up in my notifications bar as a card.
+  On the card there should be an X or a tick. onclick of the tick, the room is added to my list of rooms and shows up under "My rooms"
 
 
 **Feature : Task Split**
@@ -39,9 +52,28 @@ The features we aim to have for this project and their corresponding user storie
 **Feature: Shared Expenses**
 
 * As a User I should be able to add a purchased item,price and roommate that purchased the product to the shared expenses tab
-* As a User I should be able to see how much my roommates owe me
+    **Acceptance Criteria**
+    * Given my role as a user after clicking into the shared expenses tab. I should see a plus button to add a new expense. 
+    On click of the plus button, a pop up should show up on the screen requiring me to input name of item, price, date and roommate that made the purchase into different text boxes.
+    After adding all inputs on click of the add button the  expense shows up in the list of shared expenses
+    And each roommates outstanding balance is updated accordingly with the new input.
+* As a User I should be able to see how much my roommates owe me    
+   **Acceptance Criteria**
+    * Given my role as a user after clicking into the shared expenses tab. 
+    I should see all of my roomates names and "owes you" a value representing how much they owe me.
+    "Daniel owes you $500"
 * As a User I should be able to see how much I owe my roomates
+   **Acceptance Criteria**
+    * Given my role as a user after clicking into the shared expenses tab. 
+    I should see all of my roomates names and "You owe" a value representing how you owe that roommate.
+    "You owe daniel $500"
 * As a user if a roommate pays me an outstanding balance, I should be able to mark the roommates outstanding as settled.
+  * **Acceptance Criteria**
+    * Given my role as a user after clicking into the shared expenses tab. I should see a button that says "Settle"
+    On click of the settle button, I should see the name of all my room mates
+    On click of a roomates' name it should bring up a pop up card with the roommates name pre-loaded and the amount they owe me which can be modified based on the repayment they've made which I want to mark as settled.
+    On click of the submit button, the roommates outstanding balance should change to lower value.
+  
 
 
 **Feature: Notification**
@@ -82,4 +114,4 @@ The features we aim to have for this project and their corresponding user storie
 
 ## **Work Division**
 
-For the project we aim to divide the team into 2 teams of 2 front end developers and 2 backend developers. Both teams handle all of the implementation and testing for their respective layers. To co-ordinate between teams we plan to have at least 1 stand-up at the beginning of every week and from discussions in the group during the week we might decide to have another on Fridays to iron out details or assist eachother pair programming or trying to resolve bugs.Meeting may be earlier depending on severity
+For the project we aim to divide our team of 4 developers into 2 teams of 2 front end developers and 2 backend developers. Both teams handle all of the implementation and testing for their respective layers. To co-ordinate between teams we plan to have at least 1 stand-up at the beginning of every week, and from discussions in the group chat during the week we might decide to have another on Fridays to iron out details or assist eachother pair programming or try to resolve bugs.Secondary meetings may be earlier in the week depending on severity of bug or unclear requirements for a feature.
