@@ -1,4 +1,10 @@
-# **Sprint-0 Worksheet**
+# **Sprint-0 Worksheet                  RoomHub**
+
+## **Group 7 Members**
+- Daniel Aderemi Fawoye
+- Hung Lu Dao
+- Camila Martinez Ovando
+- William Odumah
 
 ## **Repository Link**
 [RoomHub Repository Link](https://github.com/WilliamOdumah/RoomHub)
