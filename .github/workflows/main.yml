@@ -1,5 +1,5 @@
 
-name: Deploy DynamoDB CRUD API
+name: Auto Build
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
@@ -31,8 +31,8 @@ jobs:
       with:
         node-version: 20.x
 
-    - name: Install dependencies
-      run: npm install
+    # - name: Install dependencies
+    #   run: npm install
 
     # - name: serverless deploy
     #   uses: serverless/github-action@master
