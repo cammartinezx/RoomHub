@@ -12,6 +12,8 @@ name: ESLint
 on:
   push:
     branches: [ "BackEndCodeStyleConfig" ]
+  pull_request:
+    branches: [ "mnain" ]
 
 jobs:
   eslint:
