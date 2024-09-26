@@ -15,8 +15,8 @@ on:
       - 'Backend/**'
   pull_request:
     branches: [ "main" ]
-      paths:
-        - 'Backend/**' 
+    paths:
+      - 'Backend/**' 
 
 jobs:
   eslint:
