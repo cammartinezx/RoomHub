@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint **/*.js",
-    "lint:fix": "eslint **/*.js --fix",
-    "format": "prettier **/*.js --write --ignore-unknown"
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix",
+    "format": "prettiersrc/**/*.js --write --ignore-unknown"
   },
   "keywords": [],
   "author": "",
