@@ -1,6 +1,6 @@
 const express = require("express");
-const AWS = require('aws-sdk');
-require('dotenv').config();
+const AWS = require("aws-sdk");
+require("dotenv").config();
 
 const app = express();
 const port = 3000;
@@ -14,16 +14,16 @@ AWS.config.update({
 });
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient({
-    region: 'ca-central-1',
-    accessKeyId: 'AKIAVYV5ZYRE7LA2EEOU',
-    secretAccessKey: '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'
+    region: "ca-central-1",
+    accessKeyId: "AKIAVYV5ZYRE7LA2EEOU",
+    secretAccessKey: "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"
 });
 
 
 
 app.get("/user", async (req, res) => {
     const params = {
-        TableName: 'User',
+        TableName: "User",
     };
 
     try {
@@ -31,7 +31,7 @@ app.get("/user", async (req, res) => {
         res.json(data.Items);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Failed to fetch data from DynamoDB' });
+        res.status(500).json({ error: "Failed to fetch data from DynamoDB" });
     }
 });
 
