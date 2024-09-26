@@ -16,16 +16,13 @@ AWS.config.update({
 const dynamoDB = new AWS.DynamoDB.DocumentClient({
     region: "ca-central-1",
     accessKeyId: "AKIAVYV5ZYRE7LA2EEOU",
-    secretAccessKey: "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"
+    secretAccessKey: "+/N3Lsype99+MzukUHONGJc8Mkl6Tg2g38X0HCj8",
 });
-
-
 
 app.get("/user", async (req, res) => {
     const params = {
         TableName: "User",
     };
-
     try {
         const data = await dynamoDB.scan(params).promise();
         res.json(data.Items);
@@ -34,7 +31,6 @@ app.get("/user", async (req, res) => {
         res.status(500).json({ error: "Failed to fetch data from DynamoDB" });
     }
 });
-
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
