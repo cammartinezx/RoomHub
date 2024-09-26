@@ -40,5 +40,3 @@ app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
 
-// AKIAVYV5ZYRE7LA2EEOU
-// +/N3Lsype99+MzukUHONGJc8Mkl6Tg2g38X0HCj8
