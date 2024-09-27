@@ -4,7 +4,7 @@ const UserInfoHandler = require("../Handler/UserInfoHandler");
 
 const user_info_handler = new UserInfoHandler();
 
-router.get("/:id", (req, res) => {
+router.post("/add-user", (req, res) => {
     user_info_handler.create_user(req, res);
 });
 
