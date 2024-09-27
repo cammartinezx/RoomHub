@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, GetCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 class UserPersistence {
@@ -29,36 +29,24 @@ class UserPersistence {
 
     async save_new_user(user_name) {
         try {
-            const get_command = new GetCommand({
+            // add the new user
+            const put_command = new PutCommand({
                 TableName: "User",
-                Key: {
+                Item: {
                     user_id: user_name,
                 },
+                ConditionExpression: "attribute_not_exists(user_id)",
             });
-            const get_command_result = await this.#doc_client.send(get_command);
-            console.log(get_command_result);
-            if ("Item" in get_command_result && get_command_result.Item.user_id === user_name) {
-                // then the user exist
+
+            await this.#doc_client.send(put_command);
+            return { status: 200, message: "User Successfully created" };
+        } catch (error) {
+            if (error.name === "ConditionalCheckFailedException") {
                 return { status: 409, message: "This user name already exist" };
             } else {
-                // add the new user
-                const put_command = new PutCommand({
-                    TableName: "User",
-                    Item: {
-                        user_id: user_name,
-                    },
-                });
-
-                const put_command_response = await this.#doc_client.send(put_command);
-                console.log(put_command_response);
-                return { status: 200, message: "User Successfully created" };
+                throw error;
             }
-        } catch (error) {
-            console.log(error);
-            throw error;
         }
-
-        // return response;
     }
 }
 
