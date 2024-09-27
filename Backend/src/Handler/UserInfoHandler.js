@@ -19,14 +19,14 @@ class UserInfoHandler {
     }
 
     async create_user(request, response) {
-        const user_id = request.params.id;
-
-        if (!this.#is_valid_id(user_id)) {
-            // give a certain type of response
-            response.status(400).json({ message: "Error Creating User- User id is invalid" });
-        }
-
         try {
+            const user_id = request.body.id;
+            console.log("Body of the req", request.body);
+
+            if (!this.#is_valid_id(user_id)) {
+                // give a certain type of response
+                response.status(400).json({ message: "Error Creating User- User id is invalid" });
+            }
             let result = await this.#user_persistence.save_new_user(user_id);
             response.status(result.status).json({ message: result.message });
         } catch (error) {
