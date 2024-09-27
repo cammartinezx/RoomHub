@@ -22,10 +22,12 @@
     "prettier": "^3.3.3"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.658.1",
+    "@aws-sdk/lib-dynamodb": "^3.658.1",
     "aws-sdk": "^2.1691.0",
+    "aws-serverless-express": "^3.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "aws-serverless-express": "^3.4.0",
     "express": "^4.21.0"
   }
 }
