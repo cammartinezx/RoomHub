@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const AWS = require("aws-sdk");
 require("dotenv").config();
 
@@ -13,11 +14,7 @@ AWS.config.update({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
-const dynamoDB = new AWS.DynamoDB.DocumentClient({
-    region: "ca-central-1",
-    accessKeyId: "AKIAVYV5ZYRE7LA2EEOU",
-    secretAccessKey: "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",
-});
+const dynamoDB = new AWS.DynamoDB.DocumentClient({});
 
 app.get("/user", async (req, res) => {
     const params = {
