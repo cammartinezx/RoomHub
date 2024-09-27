@@ -7,6 +7,8 @@ import CreateRoomPage from './pages/CreateRoomPage';
 import JoinRoomPage from './pages/JoinRoomPage';
 import VirtualRoomPage from './pages/VirtualRoomPage';
 import SignUpPage from './pages/SignUpPage';
+import AddRoommatePage from './pages/AddRoommatePage';
+import NotificationsPage from './pages/NotificationsPage';
 
 
 
@@ -22,6 +24,8 @@ function App() {
         <Route path="/create-room" element={<CreateRoomPage />} />
         <Route path="/join-room" element={<JoinRoomPage />} />
         <Route path="/virtual-room" element={<VirtualRoomPage />} />
+        <Route path="/add-roommate-page" element={<AddRoommatePage />} />
+        <Route path="/notifications" element={<NotificationsPage />} />
       </Routes>
     </div>
     </Router>
