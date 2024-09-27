@@ -8,4 +8,4 @@ router.get("/:id", (req, res) => {
     user_info_handler.create_user(req, res);
 });
 
-module.exports = { router };
+module.exports = router;

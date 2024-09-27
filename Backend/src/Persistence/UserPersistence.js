@@ -34,4 +34,4 @@ class UserPersistence {
     }
 }
 
-module.exports = { UserPersistence };
+module.exports = UserPersistence;
