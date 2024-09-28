@@ -2,7 +2,7 @@
 import globals from "globals";
 import pluginJs from "@eslint/js";
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
-
+import pluginJest from 'jest'
 
 
 // export default [
@@ -23,6 +23,7 @@ export default [
     },
     pluginJs.configs.recommended,
     prettierRecommended,
+    pluginJest.configs.recommended,
     {
       rules: {
         'no-console' : 'warn',
