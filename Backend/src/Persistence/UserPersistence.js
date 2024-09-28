@@ -9,7 +9,7 @@ class UserPersistence {
 
     constructor() {
         // check if test is running
-        const isTest = process.env.JEST_WORKER_ID
+        const isTest = process.env.JEST_WORKER_ID;
 
         const remote_client = {
             region: process.env.AWS_REGION,
@@ -17,23 +17,23 @@ class UserPersistence {
                 accessKeyId: process.env.AWS_ACCESS_KEY_ID,
                 secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             },
-        }
+        };
 
         const local_test_client = {
-            region: 'local-env',
-            endpoint: 'http://localhost:8000',
+            region: "local-env",
+            endpoint: "http://localhost:8000",
             sslEnabled: false,
             convertEmptyValues: true,
             credentials: {
-                accessKeyId: 'fakeMyKeyId', // Dummy key
-                secretAccessKey: 'fakeSecretAccessKey', // Dummy secret
-              },
-        }
-        
+                accessKeyId: "fakeMyKeyId", // Dummy key
+                secretAccessKey: "fakeSecretAccessKey", // Dummy secret
+            },
+        };
+
         let working_client;
-        if(isTest){
+        if (isTest) {
             working_client = new DynamoDBClient(local_test_client);
-        }else{
+        } else {
             working_client = new DynamoDBClient(remote_client);
         }
 

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src/**/*.js test/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
     "format": "prettiersrc/**/*.js --write --ignore-unknown",
     "dev": "nodeman ./src/index.js"
