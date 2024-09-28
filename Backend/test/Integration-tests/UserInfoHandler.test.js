@@ -18,14 +18,12 @@ describe("UserInfoHandler Class", () => {
     });
 
     it("Should return a success message that a new user was created", async () => {
-        // const result = await user_persistence.save_new_user("daniel@gmail.com");
         const response = await request(router)
             .post("/user/add-user")
             .send(user_data)
             .set("Content-Type", "application/json")
             .set("Accept", "application/json");
 
-        // console.log(result);
         expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "User Successfully created" });
     });
