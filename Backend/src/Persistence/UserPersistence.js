@@ -8,14 +8,36 @@ class UserPersistence {
     #table_name;
 
     constructor() {
-        const client = new DynamoDBClient({
+        // check if test is running
+        const isTest = process.env.JEST_WORKER_ID
+
+        const remote_client = {
             region: process.env.AWS_REGION,
             credentials: {
                 accessKeyId: process.env.AWS_ACCESS_KEY_ID,
                 secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
             },
-        });
-        this.#doc_client = DynamoDBDocumentClient.from(client);
+        }
+
+        const local_test_client = {
+            region: 'local-env',
+            endpoint: 'http://localhost:8000',
+            sslEnabled: false,
+            convertEmptyValues: true,
+            credentials: {
+                accessKeyId: 'fakeMyKeyId', // Dummy key
+                secretAccessKey: 'fakeSecretAccessKey', // Dummy secret
+              },
+        }
+        
+        let working_client;
+        if(isTest){
+            working_client = new DynamoDBClient(local_test_client);
+        }else{
+            working_client = new DynamoDBClient(remote_client);
+        }
+
+        this.#doc_client = DynamoDBDocumentClient.from(working_client);
         this.#table_name = "users";
     }
 
