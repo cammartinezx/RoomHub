@@ -32,6 +32,7 @@
     "aws-serverless-express": "^3.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "mock-req-res": "^1.2.1"
   }
 }
