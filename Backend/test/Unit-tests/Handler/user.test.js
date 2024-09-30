@@ -1,13 +1,13 @@
-const UserInfoHandler = require("../../src/Handler/UserInfoHandler");
+const UserInfoHandler = require("../../../src/Handler/UserInfoHandler");
 const { mockRequest, mockResponse } = require("mock-req-res");
 
-jest.mock("../../src/Utility/Services", () => ({
+jest.mock("../../../src/Utility/Services", () => ({
     get_user_persistence: () => ({
         save_new_user: jest.fn(),
     }),
 }));
 
-describe("Mock test for creating user", () => {
+describe("Unit test for creating user", () => {
     let user_info_handler;
     let req, res;
 
