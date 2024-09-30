@@ -29,6 +29,7 @@ app.use("/user", User);
 app.get("/", async (req, res) => {
     // console.log(req);
     // console.log("We are cooking rn");
+    console.log(req.body);
     res.status(200).json({ message: "we cooking rn" });
     // const params = {
     //     TableName: "User",
