@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getUserById, addNotification, getRoomByUser } from '../mockApi';  
+import { getUserById, addNotification} from '../mockApi';  
 
 const AddRoommatePage = () => {
     const [roommateEmail, setRoommateEmail] = useState('');

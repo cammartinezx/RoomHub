@@ -3,9 +3,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { users } from '../mockDatabase';
 import { getUserById } from '../mockApi';
 
-const HomePage = () => {
+const HomePage = ({ user }) => {
+  console.log("HomePage received user:", user);
   const location = useLocation();
-  const email = location.state?.email;
+  const email = user?.signInDetails?.loginId; 
+  console.log("User email is:", email);
   const hasRoom = !!getUserById(email).roomId;  // always check if user has room on this page
   const navigate = useNavigate()
 
@@ -14,10 +16,18 @@ const HomePage = () => {
     alert('Feature currently unavailable')
   }
 
-  // Testing new user added
   useEffect(() => {
-    console.log(users)
-  },[]);
+    console.log("HomePage received user:", user);
+    if (!email) {
+      console.error("Email not found in user object:", user);
+    } else {
+      console.log("Logged in user's email:", email);
+    }
+  }, [email, user]);
+
+  if (!email) {
+    return <div>Loading...</div>; // Show loading state until the user object is ready
+  }
 
   
   // Conditionally render depending of whether the user has a room or not

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getNotificationsByUserId, getRoomById, addMemberToRoom, markNotificationAsRead } from '../mockApi';  // Import relevant functions
+import { getNotificationsByUserId, addMemberToRoom, markNotificationAsRead } from '../mockApi';  // Import relevant functions
 
 const NotificationsPage = () => {
     const location = useLocation();

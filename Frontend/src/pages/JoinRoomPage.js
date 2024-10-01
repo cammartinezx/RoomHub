@@ -16,7 +16,7 @@ const JoinRoomPage = () => {
 
     // Function to handle the join request submission
     const handleSubmit = (event) => {
-        event.preventDefault();  // Prevent form submission from refreshing the page
+        event.preventDefault();  
 
         const roomMember = getUserById(ownerEmail);  // Check if the room member exists
 
