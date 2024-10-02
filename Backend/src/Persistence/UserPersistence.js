@@ -64,7 +64,7 @@ class UserPersistence {
             return { status: 200, message: "User Successfully created" };
         } catch (error) {
             if (error.name === "ConditionalCheckFailedException") {
-                return { status: 409, message: "This user name already exist" };
+                return { status: 200, message: "This user name already exist" };
             } else {
                 throw error;
             }

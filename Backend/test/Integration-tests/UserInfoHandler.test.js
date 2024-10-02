@@ -34,7 +34,7 @@ describe("UserInfoHandler Class", () => {
             .send(user_data)
             .set("Content-Type", "application/json")
             .set("Accept", "application/json");
-        expect(response.status).toBe(409);
+        expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "This user name already exist" });
     });
 });
