@@ -1,15 +1,20 @@
 import React, {useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import styles from '../styles/LandingPage.module.css';
 
 
 const LandingPage = () =>{
     const navigate = useNavigate();
 
     return (
-        <div>
-          <h1>Welcome To RoomHub</h1>
-          <button onClick={() => navigate('/login')}>Log In To Get Started</button>
+      <div className={styles.landingContainer}>
+        <div className={styles.overlay}></div>
+        <div className={styles.content}>
+          <h1 className={styles.heading}>Welcome To RoomHub</h1>
+          <p className={styles.subheading}>Connecting people and spaces, seamlessly.</p>
+          <button className={styles.loginButton} onClick={() => navigate('/login')}>Log In To Get Started</button>
         </div>
+      </div>
     );
 }
 

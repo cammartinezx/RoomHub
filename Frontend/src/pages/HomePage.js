@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { users } from '../mockDatabase';
 import { getUserById } from '../mockApi';
+import styles from '../styles/HomePage.module.css'; // Import the CSS module
 
 const HomePage = ({ user }) => {
   console.log("HomePage received user:", user);
@@ -26,28 +27,25 @@ const HomePage = ({ user }) => {
   }, [email, user]);
 
   if (!email) {
-    return <div>Loading...</div>; // Show loading state until the user object is ready
+    return <div className={styles.loading}>Loading...</div>;
   }
 
-  
-  // Conditionally render depending of whether the user has a room or not
   return (
-    <div>
+    <div className={styles.container}>
       <h1>Home Page for {email}</h1>
-
       {hasRoom ? (
         <>
           <button onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Go to Your Room</button>
           <button onClick={() => navigate('/notifications', { state: { email, hasRoom } })}>Notifications</button>
-          <button onClick={handleFindRoomate}>Find Roomate Feature</button>
+          <button onClick={handleFindRoomate}>Find Roommate Feature</button>
           <button onClick={() => navigate('/')}>Log Out</button>
         </>
       ) : (
         <>
           <button onClick={() => navigate('/create-room', { state: { email, hasRoom } })}>Create Room</button>
-          <button onClick={() => navigate('/join-room',{ state: { email, hasRoom } })}>Join Room</button>
+          <button onClick={() => navigate('/join-room', { state: { email, hasRoom } })}>Join Room</button>
           <button onClick={() => navigate('/notifications', { state: { email, hasRoom } })}>Notifications</button>
-          <button onClick={handleFindRoomate}>Find Roomate Feature</button>
+          <button onClick={handleFindRoomate}>Find Roommate Feature</button>
           <button onClick={() => navigate('/')}>Log Out</button>
         </>
       )}

@@ -12,9 +12,14 @@ export const users = [
         notificationIds:[]
     },
     {
+        userId: 'williamodumah@gmail.com',
+        roomId: 'null',
+        notificationIds:['201','202']
+    },
+    {
         userId: 'fake@gmail.com',
         roomId: null,
-        notificationIds:['201','202']
+        notificationIds:[]
     },
 ];
 
@@ -38,7 +43,7 @@ export const notifications = [
         msg: "Hi, come join Room Alpha",
         status: "unread",
         from: "odumahw@myumanitoba.ca",
-        to: "fake@gmail.com",
+        to: "williamodumah@gmail.com",
         type: "invite",
         roomId: "101",
       },
@@ -47,7 +52,7 @@ export const notifications = [
         msg: "Join Room Beta!",
         status: "unread",
         from: "odumahwilliam@gmail.com",
-        to: "fake@gmail.com",
+        to: "williamodumah@gmail.com",
         type: "invite",
         roomId: "102",
       },
