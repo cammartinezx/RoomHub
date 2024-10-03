@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 
 class SignUpForm extends StatelessWidget {
@@ -73,13 +74,19 @@ class SignUpForm extends StatelessWidget {
               color: Colors.white, 
               fontWeight: FontWeight.bold,
               fontSize: 20.0),),
-          onPressed: () {/*
+          /*
               _loginUser(
                   type: LoginType.email,
                   email: _emailController.text,
                   password: _passwordController.text,
                   context: context);*/
-            },
+          onPressed: () {
+            Navigator.of(context).push(
+            MaterialPageRoute(
+            builder: (context) => const OurHomeNewUser()
+                  ),
+                );
+              },
         ),
         const SizedBox(
             height: 25.0,
