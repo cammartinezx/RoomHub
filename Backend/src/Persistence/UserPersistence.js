@@ -73,7 +73,7 @@ class UserPersistence {
 
     /**
      * Uses dynamodb Putcommand to add the new user to the database
-     * @param {String} user_name
+     * @param {String} user_name "New user's name to be added to the database"
      * @returns {JSON} "Returns a json object with 2 keys; status and message. "
      */
     async save_new_user(user_name) {

@@ -1,3 +1,8 @@
+/**
+ * All services to access the different persistence objects
+ * @module Services
+ */
+
 // userpersistence object-- to get access to all the methods
 const UserPersistence = require("../Persistence/UserPersistence");
 

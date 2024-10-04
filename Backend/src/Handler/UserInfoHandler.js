@@ -31,7 +31,7 @@ class UserInfoHandler {
 
     /**
      *Check if the passed in user_id is valid
-     * @param {String} user_id
+     * @param {String} user_id "A string representing the user_id to be validated"
      * @returns {Boolean} "Returns true if valid id, returns false if invalid"
      */
     #is_valid_id(user_id) {
@@ -44,8 +44,8 @@ class UserInfoHandler {
     /**
      * Add a new user to the persistence Layer
      * @async
-     * @param {Express.request} request
-     * @param {Express.response} response
+     * @param {Express.request} request "Reequest received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
      * @returns {Express.response} "A response object which contains the response to the request."
      */
     async create_user(request, response) {
