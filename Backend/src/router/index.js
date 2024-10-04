@@ -1,4 +1,4 @@
-const awsServerlessExpress = require("aws-severless-express");
+const awsServerlessExpress = require("aws-serverless-express");
 const express = require("express");
 const User = require("./User");
 require("dotenv").config(); // Load environment variables
@@ -19,4 +19,5 @@ exports.handler = (event, context) => {
     awsServerlessExpress.proxy(server, event, context);
 };
 
-// module.exports = app;
+// useful for tests to treat backend like a regular express app.
+module.exports = app;
