@@ -1,6 +1,10 @@
 // userpersistence object-- to get access to all the methods
 const UserPersistence = require("../Persistence/UserPersistence");
 
+/**
+ * Services to make sure only one instance of different persistence exist.
+ * @class
+ */
 class Services {
     // only one instance of the all persistence is created
     static #user_persistence = null;

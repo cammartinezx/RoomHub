@@ -1,8 +1,26 @@
 const Services = require("../Utility/Services");
 
+/**
+ * @module Handler
+ */
+
+/**
+ * Represents the user information handler
+ * @class
+ *
+ */
 class UserInfoHandler {
+    /**
+     * The user persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
     #user_persistence;
 
+    /**
+     * Create a new UserInfoHandler object
+     * @constructor
+     */
     constructor() {
         this.#user_persistence = Services.get_user_persistence();
     }
@@ -11,6 +29,11 @@ class UserInfoHandler {
         return this.#user_persistence;
     }
 
+    /**
+     *Check if the passed in user_id is valid
+     * @param {String} user_id
+     * @returns {Boolean} "Returns true if valid id, returns false if invalid"
+     */
     #is_valid_id(user_id) {
         if (user_id === "") {
             return false;
@@ -18,6 +41,13 @@ class UserInfoHandler {
         return true;
     }
 
+    /**
+     * Add a new user to the persistence Layer
+     * @async
+     * @param {Express.request} request
+     * @param {Express.response} response
+     * @returns {Express.response} "A response object which contains the response to the request."
+     */
     async create_user(request, response) {
         try {
             const user_id = request.body.id;
