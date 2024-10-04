@@ -1,0 +1,18 @@
+{
+    "source": {
+      "include": ["src"],
+      "exclude": ["./test", "./testing", "./node_modules"],
+      "includePattern": ".+\\.js?$",
+      "excludePattern": ".*\\.(config|test|spec|example)\\.(js|mjs)$"
+
+    },
+    "opts": {
+      "destination": "./docs/",
+      "recurse": true
+    },
+    "plugins": ["jsdoc-route-plugin"],
+    "templates": {
+      "cleverLinks":true,
+      "monospaceLinks":true
+    }
+  }
