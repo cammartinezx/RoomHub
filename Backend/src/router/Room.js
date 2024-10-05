@@ -3,6 +3,9 @@
  */
 const express = require("express");
 const router = express.Router();
+const RoomHandler = require("../Handler/RoomHandler");
+
+const room_handler = new RoomHandler();
 
 /**
  *
@@ -12,7 +15,7 @@ const router = express.Router();
  *
  */
 router.post("/create-room", (req, res) => {
-    console.log("yamete");
+    room_handler.create_room(req, res);
 });
 
 module.exports = router;

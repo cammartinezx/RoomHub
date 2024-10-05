@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, UpdateCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -96,6 +96,45 @@ class UserPersistence {
                 throw error;
             }
         }
+    }
+
+    async get_user(user_id) {
+        try {
+            // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
+            const get_command = new GetCommand({
+                TableName: "User",
+                Key: {
+                    user_id: user_id,
+                },
+            });
+            const response = await this.#doc_client.send(get_command);
+
+            let user = response.Item;
+            return user;
+        } catch (error) {
+            if (error.message.startsWith("KeyError")) {
+                let user = null;
+            } else {
+                throw error;
+            }
+        }
+    }
+
+    async update_user_room(room_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "set room_id = :room_id",
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
+            },
+            ReturnValues: "NONE",
+        });
+
+        await docClient.send(update_command);
+        console.log(response);
     }
 }
 

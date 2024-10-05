@@ -70,4 +70,29 @@ class RoomPersistence {
     get_table_name() {
         return this.#table_name;
     }
+
+    async generate_new_room(unique_id, room_name, user_id) {
+        try {
+            // add the new user
+            const put_command = new PutCommand({
+                TableName: "Room",
+                Item: {
+                    room_id: unique_id,
+                    name: room_name,
+                    users: new Set([user_id]),
+                },
+                ConditionExpression: "attribute_not_exists(user_id)",
+            });
+            await this.#doc_client.send(put_command);
+            return "SUCCESS";
+        } catch (error) {
+            if (error.name === "ConditionalCheckFailedException") {
+                return "FAILED";
+            } else {
+                throw error;
+            }
+        }
+    }
 }
+
+module.exports = RoomPersistence;
