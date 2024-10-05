@@ -61,6 +61,24 @@ class UserInfoHandler {
             return response.status(500).json({ message: error.message });
         }
     }
+
+    async get_user_room(request, response) {
+        try {
+            user_id = request.body.id;
+            if (!this.#is_valid_id(user_id)) {
+                response.status(400).json({ message: "This username is invalid" });
+            }
+            let user = await this.#user_persistence.get_user(user_id);
+            if (user === null) {
+                response.status(200).json({ room_name: "NA" });
+            } else {
+                room_name = await Services.get_room_persistence().get_room_name(room_id);
+                response.status(200).json({ room_name: room_name });
+            }
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = UserInfoHandler;

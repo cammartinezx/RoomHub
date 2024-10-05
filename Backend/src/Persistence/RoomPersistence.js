@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -69,6 +69,19 @@ class RoomPersistence {
 
     get_table_name() {
         return this.#table_name;
+    }
+
+    async get_room_name(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let room_name = response.Item.name;
+        return room_name;
     }
 
     async generate_new_room(unique_id, room_name, user_id) {

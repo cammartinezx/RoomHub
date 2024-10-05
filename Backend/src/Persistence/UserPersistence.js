@@ -114,6 +114,7 @@ class UserPersistence {
         } catch (error) {
             if (error.message.startsWith("KeyError")) {
                 let user = null;
+                return user;
             } else {
                 throw error;
             }
