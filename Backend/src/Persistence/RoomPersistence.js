@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -59,6 +59,8 @@ class RoomPersistence {
             working_client = new DynamoDBClient(remote_client);
         }
 
+        // working_client = new DynamoDBClient(local_test_client);
+
         this.#doc_client = DynamoDBDocumentClient.from(working_client);
         this.#table_name = "room";
     }
@@ -84,6 +86,13 @@ class RoomPersistence {
         return room_name;
     }
 
+    /**
+     *
+     * @param {String} unique_id "The unique identifier for the room"
+     * @param {String} room_name "The room name as defined by user or function caller"
+     * @param {String} user_id "Id of user belonging to the room."
+     * @returns {String} "SUCCESS OR FAILURE - if the db write succeeded or failed."
+     */
     async generate_new_room(unique_id, room_name, user_id) {
         try {
             // add the new user
@@ -94,7 +103,7 @@ class RoomPersistence {
                     name: room_name,
                     users: new Set([user_id]),
                 },
-                ConditionExpression: "attribute_not_exists(user_id)",
+                ConditionExpression: "attribute_not_exists(room_id)",
             });
             await this.#doc_client.send(put_command);
             return "SUCCESS";
@@ -105,6 +114,24 @@ class RoomPersistence {
                 throw error;
             }
         }
+    }
+
+    async add_new_roommate(room_id, new_roommate_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "ADD #roommates :newRoommate",
+            ExpressionAttributeNames: {
+                "#hobbies": "users", // The attribute (field) you're updating
+            },
+            ExpressionAttributeValues: {
+                ":newRoommate": new Set([new_roommate_id]), // The new values to add to the set
+            },
+            ReturnValues: "NONE",
+        });
+        await this.#doc_client.send(update_command);
     }
 }
 

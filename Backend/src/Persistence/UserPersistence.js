@@ -59,6 +59,7 @@ class UserPersistence {
             working_client = new DynamoDBClient(remote_client);
         }
 
+        // working_client = new DynamoDBClient(local_test_client);
         this.#doc_client = DynamoDBDocumentClient.from(working_client);
         this.#table_name = "users";
     }
@@ -99,28 +100,30 @@ class UserPersistence {
     }
 
     async get_user(user_id) {
-        try {
-            // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
-            const get_command = new GetCommand({
-                TableName: "User",
-                Key: {
-                    user_id: user_id,
-                },
-            });
-            const response = await this.#doc_client.send(get_command);
+        console.log("getting user");
+        // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
 
-            let user = response.Item;
-            return user;
-        } catch (error) {
-            if (error.message.startsWith("KeyError")) {
-                let user = null;
-                return user;
-            } else {
-                throw error;
-            }
+        let user = response.Item;
+
+        if (user === undefined) {
+            return null;
+        } else {
+            return response.Item;
         }
     }
 
+    /**
+     * Updates the users room_id field with the new room id
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {String} user_id "The id for the user who now belongs to this room"
+     */
     async update_user_room(room_id, user_id) {
         const update_command = new UpdateCommand({
             TableName: "User",
@@ -134,8 +137,7 @@ class UserPersistence {
             ReturnValues: "NONE",
         });
 
-        await docClient.send(update_command);
-        console.log(response);
+        await this.#doc_client.send(update_command);
     }
 }
 
