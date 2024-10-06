@@ -94,7 +94,7 @@ class RoomHandler {
                 }
             }
         } catch (error) {
-            response.status(200).json({ msg: error.message });
+            response.status(500).json({ msg: error.message });
         }
     }
 

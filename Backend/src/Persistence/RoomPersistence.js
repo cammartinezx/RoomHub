@@ -73,6 +73,11 @@ class RoomPersistence {
         return this.#table_name;
     }
 
+    /**
+     *
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {String} "The roomname associated with the room_id"
+     */
     async get_room_name(room_id) {
         const get_command = new GetCommand({
             TableName: "Room",
@@ -83,6 +88,9 @@ class RoomPersistence {
         const response = await this.#doc_client.send(get_command);
 
         let room_name = response.Item.name;
+        if (room_name === undefined) {
+            throw new Error("Room doesn't have a name--Service Unavailable");
+        }
         return room_name;
     }
 
