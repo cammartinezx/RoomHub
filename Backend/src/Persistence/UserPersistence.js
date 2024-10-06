@@ -1,4 +1,4 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBClient, DescribeTableCommand } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand, UpdateCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
@@ -99,17 +99,18 @@ class UserPersistence {
         }
     }
 
-    async get_user(user_id) {
-        console.log("getting user");
+    /**
+     * Uses dynamodb GetCommand to get existing user from database
+     * @param {String} user_name "New user's name to be added to the database"
+     * @returns {JSON} "Returns a user object or null if no user exists"
+     */
+    async get_user(user_name) {
         // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
         const get_command = new GetCommand({
             TableName: "User",
-            Key: {
-                user_id: user_id,
-            },
+            Key: { user_id: user_name },
         });
         const response = await this.#doc_client.send(get_command);
-
         let user = response.Item;
 
         if (user === undefined) {
@@ -134,6 +135,7 @@ class UserPersistence {
             ExpressionAttributeValues: {
                 ":room_id": room_id,
             },
+            ConditionExpression: "attribute_exists(user_id)",
             ReturnValues: "NONE",
         });
 

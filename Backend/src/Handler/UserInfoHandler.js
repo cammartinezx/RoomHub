@@ -74,7 +74,7 @@ class UserInfoHandler {
             let user_id = request.params.id.trim().toLowerCase();
             // validate user_id
             if (!this.#is_valid_id(user_id)) {
-                response.status(400).json({ message: "This username is invalid" });
+                response.status(400).json({ room_name: "This username is invalid" });
             } else {
                 // if valid user id
                 let user = await this.#user_persistence.get_user(user_id);
@@ -92,7 +92,7 @@ class UserInfoHandler {
                 }
             }
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            response.status(500).json({ room_name: error.message });
         }
     }
 }

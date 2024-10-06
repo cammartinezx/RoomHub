@@ -98,36 +98,52 @@ class RoomHandler {
         }
     }
 
+    /**
+     * Checks if 2 names are the same
+     * @param {String} persist_room_name "The room name stored in the persistence layer"
+     * @param {String} room_name "The room name passed from the request"
+     * @returns {Boolean} "True if both names are the same and false otherwise"
+     */
     #is_valid_roomname(persist_room_name, room_name) {
-        if (persist_room_name === room_name) {
+        if (persist_room_name.trim.toLowerCase() === room_name.trim.toLowerCase()) {
             return true;
         } else {
             return false;
         }
     }
 
+    /**
+     * Add a new-roommate to an existing roommates room.
+     * @param {Express.request} request "Reequest received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
     async add_roommate(request, response) {
         try {
-            const existing_roommate_id = request.body.existing_roommate.trim();
-            const new_roommate_id = request.body.new_roommate.trim();
-            const room_name = request.body.room_nm.trim();
+            const existing_roommate_id = request.body.existing_roommate.trim().toLowerCase();
+            const new_roommate_id = request.body.new_roommate.trim().toLowerCase();
+            const room_name = request.body.room_nm.trim().toLowerCase();
 
             // validate existing roomates room matches with the room_name
-            const user_persistence = Services.get_user_persistence;
-            const old_roommate = user_persistence.get_user(existing_roommate_id);
-            const new_roommate = user_persistence.get_user(new_roommate_id);
+            const user_persistence = Services.get_user_persistence();
+            const old_roommate = await user_persistence.get_user(existing_roommate_id);
+            const new_roommate = await user_persistence.get_user(new_roommate_id);
 
-            if (old_roommate != null && new_roommate != null) {
-                const room_id = user.room_id;
-                const db_room_name = this.#room_persistence.get_room(room_id);
-                if (this.#is_valid_roomname(old_roommate, room_name)) {
-                    // update the rooms list of users.
-                    // update the new_roommates room.
-                    user_persistence.update_user_room(new_roommate_id, room_id);
-                    this.#room_persistence.add_new_roommate(room_id, new_roommate_id);
+            if (old_roommate !== null && new_roommate !== null) {
+                const room_id = old_roommate.room_id;
+                if (room_id !== undefined) {
+                    const db_room_name = await this.#room_persistence.get_room_name(room_id);
+                    if (this.#is_valid_roomname(db_room_name, room_name)) {
+                        // update the rooms list of users.
+                        // update the new_roommates room.
+                        await user_persistence.update_user_room(room_id, new_roommate_id);
+                        await this.#room_persistence.add_new_roommate(room_id, new_roommate_id);
+                        response.status(200).json({ message: "New Roommate successfully added" });
+                    } else {
+                        // basically denying access to that room resource
+                        response.status(404).json({ message: "Room not found" });
+                    }
                 } else {
-                    // basically denying access to that room resource
-                    response.status(404).json({ message: "Not found" });
+                    response.status(404).json({ message: "Room " + room_name + " not found. Create or Join a room" });
                 }
             } else {
                 if (new_roommate === null && old_roommate === null) {
@@ -141,8 +157,6 @@ class RoomHandler {
         } catch (error) {
             response.status(500).json({ message: error.message });
         }
-
-        // validate existence of the new roommate
     }
 }
 

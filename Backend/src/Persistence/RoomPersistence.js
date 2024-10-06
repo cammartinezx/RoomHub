@@ -124,6 +124,11 @@ class RoomPersistence {
         }
     }
 
+    /**
+     * Use update command to add a new user to the set of users "belonging" to a room.
+     * @param {String} room_id "The unique id of a room"
+     * @param {String} new_roommate_id "The unique id of a user(new roommate)"
+     */
     async add_new_roommate(room_id, new_roommate_id) {
         const update_command = new UpdateCommand({
             TableName: "Room",
@@ -132,7 +137,7 @@ class RoomPersistence {
             },
             UpdateExpression: "ADD #roommates :newRoommate",
             ExpressionAttributeNames: {
-                "#hobbies": "users", // The attribute (field) you're updating
+                "#roommates": "users", // The attribute (field) you're updating
             },
             ExpressionAttributeValues: {
                 ":newRoommate": new Set([new_roommate_id]), // The new values to add to the set
