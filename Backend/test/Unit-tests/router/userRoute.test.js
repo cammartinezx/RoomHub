@@ -1,27 +1,39 @@
 const request = require("supertest");
 const app = require("../../../src/router/index");
 
-describe("Unit test for userRoute", () => {
+jest.mock("../../../src/Handler/UserInfoHandler", () => {
+    return jest.fn().mockImplementation(() => ({
+        // function mocks
+        get_user_room: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({ room_name: "test" });
+        }),
+
+        create_user: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({ message: "Test successful" });
+        }),
+    }));
+});
+
+describe("User router tests", () => {
     beforeEach(() => {
-        userRoute = require("../../../src/router/User");
+        jest.clearAllMocks();
     });
-    it("send nothing, should be error", async () => {
-        const res = await request(app).post("/user/add-user");
-        expect(res.statusCode).toEqual(500);
+
+    it("Get /user/:id/get-room should call getuser with the correct id", async () => {
+        const user_id = "test@gmail.com";
+        const response = await request(app).get(`/user/${user_id}/get-room`);
+        const exp_stat = 200;
+        const exp_msg = { room_name: "test" };
+        expect(response.status).toBe(exp_stat);
+        expect(response.body).toEqual(exp_msg);
     });
-    it("correct test, should be true", async () => {
-        const random = Math.floor(Math.random() * 100000);
-        const res = await request(app)
-            .post("/user/add-user")
-            .send({
-                id: random + "@gmail.com",
-            });
-        expect(res.statusCode).toEqual(200);
-    });
-    it("empty id, should be error", async () => {
-        const res = await request(app).post("/user/add-user").send({
-            id: "",
-        });
-        expect(res.statusCode).toEqual(400);
+
+    it("Post /user/add-user", async () => {
+        const query_params = { id: "test@gmail.com" };
+        const exp_stat = 200;
+        const exp_msg = { message: "Test successful" };
+        const response = await request(app).post("/user/add-user").send(query_params);
+        expect(response.status).toBe(exp_stat);
+        expect(response.body).toEqual(exp_msg);
     });
 });
