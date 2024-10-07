@@ -32,6 +32,7 @@ router.post("/create-room", (req, res) => {
  * @query {String} room_nm The name of the new room the new roommate is getting added to
  * @code {200} New Roommate successfully added
  * @code {404} Room not found
+ * @code {404} Room not found. Create or Join a room
  * @code {404} User not found
  * @code {404} New roommate not found
  * @code {404} Old roommate not found

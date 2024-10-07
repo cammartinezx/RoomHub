@@ -116,7 +116,7 @@ class RoomHandler {
      * @returns {Boolean} "True if both names are the same and false otherwise"
      */
     #is_valid_roomname(persist_room_name, room_name) {
-        if (persist_room_name.trim.toLowerCase() === room_name.trim.toLowerCase()) {
+        if (persist_room_name.trim().toLowerCase() === room_name.trim().toLowerCase()) {
             return true;
         } else {
             return false;
@@ -135,7 +135,7 @@ class RoomHandler {
             const room_name = request.body.room_nm.trim().toLowerCase();
 
             // validate existing roomates room matches with the room_name
-            const user_persistence = Services.get_user_persistence();
+            const user_persistence = this.#user_persistence;
             const old_roommate = await user_persistence.get_user(existing_roommate_id);
             const new_roommate = await user_persistence.get_user(new_roommate_id);
 
@@ -146,7 +146,7 @@ class RoomHandler {
                     if (this.#is_valid_roomname(db_room_name, room_name)) {
                         // update the rooms list of users.
                         // update the new_roommates room.
-                        await user_persistence.update_user_room(room_id, new_roommate_id);
+                        await this.#user_persistence.update_user_room(room_id, new_roommate_id);
                         await this.#room_persistence.add_new_roommate(room_id, new_roommate_id);
                         response.status(200).json({ message: "New Roommate successfully added" });
                     } else {
@@ -154,7 +154,7 @@ class RoomHandler {
                         response.status(404).json({ message: "Room not found" });
                     }
                 } else {
-                    response.status(404).json({ message: "Room " + room_name + " not found. Create or Join a room" });
+                    response.status(404).json({ message: "Room not found. Create or Join a room" });
                 }
             } else {
                 if (new_roommate === null && old_roommate === null) {
@@ -166,6 +166,7 @@ class RoomHandler {
                 }
             }
         } catch (error) {
+            console.log(error.message);
             response.status(500).json({ message: error.message });
         }
     }
