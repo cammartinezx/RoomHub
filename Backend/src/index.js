@@ -1,5 +1,6 @@
 const User = require("./router/User");
 const Room = require("./router/Room");
+const Notification = require("./router/Notification");
 
 const express = require("express");
 const cors = require("cors");
@@ -12,6 +13,7 @@ app.use(cors());
 
 app.use("/user", User);
 app.use("/room", Room);
+app.use("/notification", Notification);
 
 app.get("/", async (req, res) => {
     console.log(req.body);

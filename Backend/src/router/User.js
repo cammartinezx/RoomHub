@@ -41,4 +41,17 @@ router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });
 
+/**
+ * @name Get an user notification
+ * @path {GET} user/:id/get-notification
+ * @params {String} :id is the id of the user whose room we are trying to get.
+ * @code {200} A valid notification
+ * @code {400} Invalid username
+ * @code {500} Backend error from the database
+ * @response {JSON} A list of Notification See description of the different status codes
+ */
+router.get("/:id/get-notification", (req, res) => {
+    user_info_handler.get_user_notification(req, res);
+});
+
 module.exports = router;

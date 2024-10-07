@@ -55,7 +55,7 @@ class UserInfoHandler {
     /**
      * Add a new user to the persistence Layer
      * @async
-     * @param {Express.request} request "Reequest received by the router"
+     * @param {Express.request} request "Request received by the router"
      * @param {Express.response} response "Response to be sent back to the service that sent the original request"
      * @returns {Express.response} "A response object which contains the response to the request."
      */
@@ -104,6 +104,36 @@ class UserInfoHandler {
             }
         } catch (error) {
             response.status(500).json({ room_name: error.message });
+        }
+    }
+
+    /**
+     * Get a list of notification from specific existing user in the database
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
+    async get_user_notification(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            // validate user_id
+            if (!this.#is_valid_id(user_id)) {
+                response.status(400).json({ message: "This username is invalid" });
+            } else {
+                // if valid user id
+                let notification = await this.#user_persistence.get_notification(user_id);
+                // convert set into array
+                let notif_list = [...notification];
+                let result = [];
+                for (let item of notif_list) {
+                    // update the status of notification from unread to read
+                    await Services.get_notification_persistence().update_notification_status(item);
+                    let notif_item = await Services.get_notification_persistence().get_msg_type(item);
+                    result.push(notif_item);
+                }
+                response.status(200).json({ All_Notifications: result });
+            }
+        } catch (error) {
+            response.status(500).json({ message: error.message });
         }
     }
 }
