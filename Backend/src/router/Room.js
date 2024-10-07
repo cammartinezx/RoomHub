@@ -26,7 +26,7 @@ router.post("/create-room", (req, res) => {
 /**
  *
  * @name Add a new room-mate to a room
- * @path {POST} room/add-roomate
+ * @path {POST} room/add-roommate
  * @query {String} existing_roommate The name of the already existing roommate
  * @query {String} new_roommate The name of the roommate to be added newly to the room
  * @query {String} room_nm The name of the new room the new roommate is getting added to
