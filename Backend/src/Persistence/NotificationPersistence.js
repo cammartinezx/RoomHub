@@ -73,7 +73,7 @@ class NotificationPersistence {
 
     /**
      * Uses dynamodb GetCommand to get message and type attribute from notification table from database
-     * @param {String} notif_id "New notification ID to be added to the database" 
+     * @param {String} notif_id "New notification ID to be added to the database"
      * @returns {JSON} "Returns a json object with message and type value or throw a error if a notification does not have message"
      */
     async get_msg_type(notif_id) {
@@ -98,14 +98,14 @@ class NotificationPersistence {
 
     /**
      * Uses dynamodb PutCommand to add the new notification to the database
-     * @param {String} notif_id "New notification ID to be added to the database" 
+     * @param {String} notif_id "New notification ID to be added to the database"
      * @param {String} msg "New message to be added to the database"
-     * @param {String} status "New status to be added to the database" 
+     * @param {String} status "New status to be added to the database"
      * @param {String} from "Notification Sender ID to be added to the database"
-     * @param {Stirng} to "Notification Receiver ID to be added to the database"
-     * @param {String} type "New type to be added to the database" 
-     * @param {String} room_id "Room id from Sender to be added to the database" 
-     * @returns {String} "Returns SUCCESS or FAILED based on each values to be add into notification table" 
+     * @param {String} to "Notification Receiver ID to be added to the database"
+     * @param {String} type "New type to be added to the database"
+     * @param {String} room_id "Room id from Sender to be added to the database"
+     * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
      */
     async generate_new_notification(notif_id, msg, status, from, to, type, room_id) {
         try {
@@ -137,7 +137,7 @@ class NotificationPersistence {
 
     /**
      * Updates the notification status from "unread" to "read" if receiver see the notification
-     * @param {String} notif_id "The unique identifier for the notification" 
+     * @param {String} notif_id "The unique identifier for the notification"
      */
     async update_notification_status(notif_id) {
         const update_command = new UpdateCommand({
@@ -150,19 +150,14 @@ class NotificationPersistence {
                 "#status": "status",
             },
             ExpressionAttributeValues: {
-                ":new_status": "read",  // Update the status to 'read'
+                ":new_status": "read", // Update the status to 'read'
             },
-            ConditionExpression: "attribute_exists(id) AND #status = :old_status",
-            ExpressionAttributeValues: {
-                ":old_status": "unread",  // Only update if the current status is 'unread'
-                ":new_status": "read"
-            },
+            ConditionExpression: "attribute_exists(id)",
             ReturnValues: "NONE",
         });
 
         await this.#doc_client.send(update_command);
     }
-
 }
 
 module.exports = NotificationPersistence;

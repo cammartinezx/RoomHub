@@ -8,7 +8,6 @@ const NotificationHander = require("../Handler/NotificationHandler");
 const notification_handler = new NotificationHander();
 
 /**
- * 
  * @name Add a new notification
  * @route {POST} notification/create-notification
  * @query {String} from The sender user ID

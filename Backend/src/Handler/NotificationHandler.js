@@ -8,7 +8,6 @@ const { v4: uuidv4 } = require("uuid");
 /**
  * Represents the notification handler
  * @class
- * 
  */
 class NotificationHandler {
     /**
@@ -33,7 +32,7 @@ class NotificationHandler {
 
     /**
      * Check if the passed in message is valid
-     * @param {String} msg "A string representing the message to be validated" 
+     * @param {String} msg "A string representing the message to be validated"
      * @returns {Boolean} "Returns true if valid message, return false if invalid"
      */
     #is_valid_msg(msg) {
@@ -70,8 +69,15 @@ class NotificationHandler {
                 // give a certain type of response
                 response.status(400).json({ message: "Error Creating Notification - Message is empty" });
             }
-            let new_notification_status = await this.#notification_persistence.generate_new_notification(notif_id, msg, status, from, to, type, room_id);
-
+            let new_notification_status = await this.#notification_persistence.generate_new_notification(
+                notif_id,
+                msg,
+                status,
+                from,
+                to,
+                type,
+                room_id,
+            );
             // assign new notification to both sender and receiver
             await Services.get_user_persistence().update_user_notifications(notif_id, from);
             await Services.get_user_persistence().update_user_notifications(notif_id, to);
@@ -81,7 +87,6 @@ class NotificationHandler {
             } else {
                 response.status(500).json({ message: "Retry creating the notification" });
             }
-
         } catch (error) {
             response.status(500).json({ message: error.message });
         }

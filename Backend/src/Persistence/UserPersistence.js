@@ -104,7 +104,6 @@ class UserPersistence {
      * @returns {JSON} "Returns a user object or null if no user exists"
      */
     async get_user(user_id) {
-        console.log("getting user");
         // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
         const get_command = new GetCommand({
             TableName: "User",
@@ -166,7 +165,7 @@ class UserPersistence {
     }
 
     /**
-     * Updates the user notifications field with the new notification id 
+     * Updates the user notifications field with the new notification id
      * @param {String} notif_id "The unique identifier for the notification"
      * @param {String} user_id "The id for the user who now belongs to this notification"
      */
