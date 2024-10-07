@@ -1,6 +1,7 @@
 const awsServerlessExpress = require("aws-serverless-express");
 const express = require("express");
 const User = require("./User");
+const Room = require("./Room");
 const cors = require("cors");
 
 require("dotenv").config(); // Load environment variables
@@ -11,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/user", User);
+app.use("/room", Room);
 
 app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });
