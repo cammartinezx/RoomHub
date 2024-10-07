@@ -38,7 +38,7 @@ class OurHome extends StatelessWidget {
       begin: Alignment.bottomLeft,
       end: Alignment.topRight,
     ),
-    borderRadius: BorderRadius.only(
+    borderRadius: const BorderRadius.only(
       topLeft: Radius.circular(20),
       bottomLeft: Radius.circular(20),
       bottomRight: Radius.circular(20),
