@@ -9,7 +9,7 @@ const notification_handler = new NotificationHander();
 
 /**
  * @name Add a new notification
- * @route {POST} notification/create-notification
+ * @path {POST} notification/create-notification
  * @query {String} from The sender user ID
  * @query {String} to The receiver user ID
  * @query {String} type The type of notification
