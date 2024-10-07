@@ -81,7 +81,7 @@ class UserInfoHandler {
                 let result = [];
                 for (let item of notif_list) {
                     // update the status of notification from unread to read
-                    // await Services.get_notification_persistence().update_notification_status(item);
+                    await Services.get_notification_persistence().update_notification_status(item);
                     let notif_item = await Services.get_notification_persistence().get_msg_type(item);
                     result.push(notif_item);
                 }
