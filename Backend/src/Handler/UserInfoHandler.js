@@ -23,6 +23,13 @@ class UserInfoHandler {
      */
     #room_persistence;
 
+        /**
+     * The room persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #notification_persistence;
+
     /**
      * Create a new UserInfoHandler object
      * @constructor
@@ -30,6 +37,7 @@ class UserInfoHandler {
     constructor() {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
+        this.#notification_persistence = Services.get_notification_persistence();
     }
 
     get_user_persistence() {
@@ -40,6 +48,9 @@ class UserInfoHandler {
         return this.#room_persistence;
     }
 
+    get_notification_persistence(){
+        return this.#notification_persistence;
+    }
     /**
      *Check if the passed in user_id is valid
      * @param {String} user_id "A string representing the user_id to be validated"
@@ -126,8 +137,8 @@ class UserInfoHandler {
                 let result = [];
                 for (let item of notif_list) {
                     // update the status of notification from unread to read
-                    await Services.get_notification_persistence().update_notification_status(item);
-                    let notif_item = await Services.get_notification_persistence().get_msg_type(item);
+                    await this.#notification_persistence.update_notification_status(item);
+                    let notif_item = await this.#notification_persistence.get_msg_type(item);
                     result.push(notif_item);
                 }
                 response.status(200).json({ All_Notifications: result });
