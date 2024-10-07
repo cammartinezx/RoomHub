@@ -20,7 +20,6 @@ class NotificationHandler {
     /**
      * Create a new NotificationHandler object
      * @constructor
-     * @private
      */
     constructor() {
         this.#notification_persistence = Services.get_notification_persistence();
