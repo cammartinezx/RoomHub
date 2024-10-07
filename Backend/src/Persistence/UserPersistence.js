@@ -189,6 +189,28 @@ class UserPersistence {
 
         await this.#doc_client.send(update_command);
     }
+
+    /**
+     * Updates the users room_id field with the new room id
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {String} user_id "The id for the user who now belongs to this room"
+     */
+    async update_user_room(room_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "set room_id = :room_id",
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
+            },
+            ConditionExpression: "attribute_exists(user_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
 }
 
 module.exports = UserPersistence;
