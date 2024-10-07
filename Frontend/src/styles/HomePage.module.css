@@ -29,10 +29,6 @@
   padding-top: 0;
 }
 
-.logo img {
-  width: 120px;
-}
-
 .icons {
   display: flex;
   gap: 40px;
@@ -54,13 +50,15 @@
 
 .cardGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust for responsive design */
-  gap: 20px; /* Increase the gap between cards for better spacing */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 20px;
   width: 100%;
-  max-width: 1200px; /* Slightly larger max-width for flexibility */
-  margin: 0 auto; /* Center the grid horizontally */
-  padding: 20px; /* Add padding to the container */
-  justify-content: center; /* Ensure the cards are centered */
+  max-width: 1200px;
+
+  margin: 0 auto;
+  padding: 20px;
+  padding-top:40px; 
+  justify-content: center; 
 }
 
 .card {

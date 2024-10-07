@@ -4,6 +4,7 @@ import { getUserById } from '../mockApi';
 import styles from '../styles/HomePage.module.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
+import Header from '../Header';
 
 const HomePage = ({ user }) => {
   const location = useLocation();
@@ -27,26 +28,8 @@ const HomePage = ({ user }) => {
 
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <img src="/logo.png" alt="RoomHub Logo" />
-        </div>
-        <div className={styles.icons}>
-          <FontAwesomeIcon 
-            icon={faBell} 
-            className={styles.icon} 
-            onClick={() => navigate('/notifications', { state: { email, hasRoom } })}  
-          />
-          <FontAwesomeIcon 
-            icon={faUser}
-            className={styles.icon}
-            onClick={() => navigate('/user-profile', { state: { email, hasRoom } })}
-          />
-        </div>
-      </header>
-
+      <Header email={email} hasRoom={hasRoom} />
         {/* <h1 className={styles.title}>Home Page for {email}</h1> */}
-
         {hasRoom ? (
           <>
           <div className={styles.cardGrid}>
