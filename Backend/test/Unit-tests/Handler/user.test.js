@@ -11,6 +11,8 @@ jest.mock("../../../src/Utility/Services", () => ({
     get_room_persistence: () => ({
         get_room_name: jest.fn(),
     }),
+
+    get_notification_persistence: () => ({}),
 }));
 
 describe("Unit test for creating user", () => {

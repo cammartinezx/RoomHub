@@ -23,7 +23,7 @@ class UserInfoHandler {
      */
     #room_persistence;
 
-        /**
+    /**
      * The room persistence object used by the info handler.
      * @type {string}
      * @private
@@ -48,7 +48,7 @@ class UserInfoHandler {
         return this.#room_persistence;
     }
 
-    get_notification_persistence(){
+    get_notification_persistence() {
         return this.#notification_persistence;
     }
     /**
