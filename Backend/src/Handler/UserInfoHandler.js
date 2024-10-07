@@ -131,17 +131,22 @@ class UserInfoHandler {
                 response.status(400).json({ message: "This username is invalid" });
             } else {
                 // if valid user id
-                let notification = await this.#user_persistence.get_notification(user_id);
-                // convert set into array
-                let notif_list = [...notification];
-                let result = [];
-                for (let item of notif_list) {
-                    // update the status of notification from unread to read
-                    await this.#notification_persistence.update_notification_status(item);
-                    let notif_item = await this.#notification_persistence.get_msg_type(item);
-                    result.push(notif_item);
+                let user = await this.#user_persistence.get_user(user_id);
+                if (user === null) {
+                    response.status(404).json({ room_name: "User not found" });
+                } else {
+                    let notification = await this.#user_persistence.get_notification(user_id);
+                    // convert set into array
+                    let notif_list = [...notification];
+                    let result = [];
+                    for (let item of notif_list) {
+                        // update the status of notification from unread to read
+                        await this.#notification_persistence.update_notification_status(item);
+                        let notif_item = await this.#notification_persistence.get_msg_type(item);
+                        result.push(notif_item);
+                    }
+                    response.status(200).json({ All_Notifications: result });
                 }
-                response.status(200).json({ All_Notifications: result });
             }
         } catch (error) {
             response.status(500).json({ message: error.message });
