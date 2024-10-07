@@ -36,7 +36,7 @@ describe("Room router tests", () => {
             new_roommate: "testnew@gmail.com",
             room_nm: "test_rm",
         };
-        const response = (await request(app).post("/room/add-roommate")).setEncoding(query_params);
+        const response = await request(app).post("/room/add-roommate").send(query_params);
         const exp_stat = 200;
         const exp_msg = { message: "Test Successful" };
         expect(response.status).toBe(exp_stat);
