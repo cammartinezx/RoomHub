@@ -17,17 +17,28 @@ class RoomHandler {
      * @private
      */
     #room_persistence;
+    /**
+     * The user persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #user_persistence;
 
     /**
      * Create a new RoomHandler object
      * @constructor
      */
     constructor() {
+        this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
     }
 
-    get_user_persistence() {
+    get_room_persistence() {
         return this.#room_persistence;
+    }
+
+    get_user_persistence() {
+        return this.#user_persistence;
     }
 
     /**
@@ -50,7 +61,7 @@ class RoomHandler {
      */
     async #is_valid_user(user_id) {
         // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
-        let user_persistence = Services.get_user_persistence();
+        let user_persistence = this.#user_persistence;
         let user = await user_persistence.get_user(user_id);
         if (user != null) {
             return true;
@@ -77,8 +88,8 @@ class RoomHandler {
                 let new_room_status = await this.#room_persistence.generate_new_room(room_id, room_name, user_id);
                 if (new_room_status === "SUCCESS") {
                     // add the generated room_id to the persons room id
-                    let user_persistence = Services.get_user_persistence();
-                    await user_persistence.update_user_room(room_id, user_id);
+                    // let user_persistence = Services.get_user_persistence();
+                    await this.#user_persistence.update_user_room(room_id, user_id);
                     response.status(200).json({ message: "Successfully Created the new room" });
                 } else {
                     // throw an error saying try to recreate the room

@@ -1,7 +1,6 @@
 const UserInfoHandler = require("../../../src/Handler/UserInfoHandler");
 const Services = require("../../../src/Utility/Services");
 const { mockRequest, mockResponse } = require("mock-req-res");
-const { get_user_persistence, get_room_persistence } = require("../../../src/Utility/Services");
 
 jest.mock("../../../src/Utility/Services", () => ({
     get_user_persistence: () => ({
