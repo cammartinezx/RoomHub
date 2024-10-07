@@ -1,28 +1,23 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { users } from '../mockDatabase';
 import { getUserById } from '../mockApi';
-import styles from '../styles/HomePage.module.css'; // Import the CSS module
+import styles from '../styles/HomePage.module.css'; 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = ({ user }) => {
-  console.log("HomePage received user:", user);
   const location = useLocation();
-  const email = user?.signInDetails?.loginId; 
-  console.log("User email is:", email);
-  const hasRoom = !!getUserById(email).roomId;  // always check if user has room on this page
-  const navigate = useNavigate()
+  const email = user?.signInDetails?.loginId;
+  const hasRoom = !!getUserById(email).roomId;
+  const navigate = useNavigate();
 
-  const handleFindRoomate = () =>{
-    // currently unavailable
-    alert('Feature currently unavailable')
-  }
+  const handleFindRoommate = () => {
+    alert('Feature currently unavailable');
+  };
 
   useEffect(() => {
-    console.log("HomePage received user:", user);
     if (!email) {
       console.error("Email not found in user object:", user);
-    } else {
-      console.log("Logged in user's email:", email);
     }
   }, [email, user]);
 
@@ -32,23 +27,68 @@ const HomePage = ({ user }) => {
 
   return (
     <div className={styles.container}>
-      <h1>Home Page for {email}</h1>
-      {hasRoom ? (
-        <>
-          <button onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Go to Your Room</button>
-          <button onClick={() => navigate('/notifications', { state: { email, hasRoom } })}>Notifications</button>
-          <button onClick={handleFindRoomate}>Find Roommate Feature</button>
-          <button onClick={() => navigate('/')}>Log Out</button>
-        </>
-      ) : (
-        <>
-          <button onClick={() => navigate('/create-room', { state: { email, hasRoom } })}>Create Room</button>
-          <button onClick={() => navigate('/join-room', { state: { email, hasRoom } })}>Join Room</button>
-          <button onClick={() => navigate('/notifications', { state: { email, hasRoom } })}>Notifications</button>
-          <button onClick={handleFindRoomate}>Find Roommate Feature</button>
-          <button onClick={() => navigate('/')}>Log Out</button>
-        </>
-      )}
+      <header className={styles.header}>
+        <div className={styles.logo}>
+          <img src="/logo.png" alt="RoomHub Logo" />
+        </div>
+        <div className={styles.icons}>
+          <FontAwesomeIcon 
+            icon={faBell} 
+            className={styles.icon} 
+            onClick={() => navigate('/notifications', { state: { email, hasRoom } })}  
+          />
+          <FontAwesomeIcon 
+            icon={faUser}
+            className={styles.icon}
+            onClick={() => navigate('/user-profile', { state: { email, hasRoom } })}
+          />
+        </div>
+      </header>
+
+        {/* <h1 className={styles.title}>Home Page for {email}</h1> */}
+
+        {hasRoom ? (
+          <>
+          <div className={styles.cardGrid}>
+            <div className={styles.card} onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>
+              <img src="bed.png" alt="Room" className={styles.cardImage}/>
+              <h2>Go to Your Room</h2>
+              <p>Access your virtual room</p>
+              <button>Continue →</button>
+            </div>
+            <div className={styles.card} onClick={handleFindRoommate}>
+              <img src="find_roommate.png" alt="Find Roommate" className={styles.cardImage}/>
+              <h2>Find Roommate</h2>
+              <p>Looking for the perfect roommate? Let us help you match with someone who fits your lifestyle and preferences.</p>
+              <button style={{ backgroundColor: "gray" }}>Continue →</button>
+            </div>
+          </div>
+          </>
+        ) : (
+          <>
+          <div className={styles.cardGrid}>
+            <div className={styles.card} onClick={() => navigate('/create-room', { state: { email, hasRoom } })}>
+              <img src="bed.png" alt="Create Room" className={styles.cardImage}/>
+              <h2>Create Room</h2>
+              <p>Start your journey by creating a new space just for you and your roommates. Personalize your room and make it your own.</p>
+              <button>Continue →</button>
+            </div>
+            <div className={styles.card} onClick={() => navigate('/join-room', { state: { email, hasRoom } })}>
+              <img src="find_room.png" alt="Join Room" className={styles.cardImage}/>
+              <h2>Join Room</h2>
+              <p>Already have a space? Easily join an existing room created by your roommates and stay connected.</p>
+              <button>Continue →</button>
+            </div>
+            <div className={styles.card} onClick={handleFindRoommate}>
+              <img src="find_roommate.png" alt="Find Roommate" className={styles.cardImage}/>
+              <h2>Find Roommate</h2>
+              <p>Looking for the perfect roommate? Let us help you match with someone who fits your lifestyle and preferences.</p>
+              <button style={{ backgroundColor: "gray" }}>Continue →</button>
+            </div>
+          </div>
+          </>
+        )}
+        <button className={styles.logout} onClick={() => navigate('/')}>Log Out</button>
     </div>
   );
 };

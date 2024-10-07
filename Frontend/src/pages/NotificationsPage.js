@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getNotificationsByUserId, addMemberToRoom, markNotificationAsRead } from '../mockApi';  // Import relevant functions
+import { getNotificationsByUserId, addMemberToRoom, markNotificationAsRead } from '../mockApi'; 
+import styles from '../styles/NotificationsPage.module.css';
 
 const NotificationsPage = () => {
     const location = useLocation();
@@ -36,27 +37,37 @@ const NotificationsPage = () => {
     };
 
     return (
-        <div>
-            <h1>Notifications for {email}</h1>
+        <div className={styles.container}>
+            <div className={styles.notificationsContainer}>
+                <h1>Notifications</h1>
 
-            {notifications.length > 0 ? (
-                <ul>
-                    {notifications.map((notification) => (
-                        <li key={notification.id}>
-                            {notification.msg} - {notification.status}
-                            {notification.type === 'invite' && notification.status !== 'accepted' && (
-                                <button onClick={() => handleAcceptInvite(notification)}>
-                                    Accept
-                                </button>
-                            )}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No notifications available.</p>
-            )}
+                {notifications.length > 0 ? (
+                    <ul>
+                        {notifications.map((notification) => (
+                            <li 
+                                key={notification.id} 
+                                className={notification.status === 'accepted' ? styles.accepted : ''}
+                            >
+                                {notification.msg} - {notification.status}
+                                {notification.type === 'invite' && notification.status !== 'accepted' && (
+                                    <button onClick={() => handleAcceptInvite(notification)}>
+                                        Accept
+                                    </button>
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No notifications available.</p>
+                )}
 
-            <button onClick={() => navigate('/home', { state: { email, hasRoom } })}>Back to Home</button>
+                <button 
+                    className={styles.backButton} 
+                    onClick={() => navigate('/home', { state: { email, hasRoom } })}
+                >
+                    Back to Home
+                </button>
+            </div>
         </div>
     );
 };

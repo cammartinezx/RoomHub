@@ -13,7 +13,7 @@ export const users = [
     },
     {
         userId: 'williamodumah@gmail.com',
-        roomId: 'null',
+        roomId: null,
         notificationIds:['201','202']
     },
     {

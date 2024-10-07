@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getUserById, addNotification } from '../mockApi';  // Import functions from mockApi
+import { getUserById, addNotification } from '../mockApi';
+import styles from '../styles/JoinRoomPage.module.css'; 
 
 const JoinRoomPage = () => {
     const navigate = useNavigate();
@@ -42,11 +43,11 @@ const JoinRoomPage = () => {
     };
 
     return (
-        <div>
-            <h1>Join Room</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Room Member's Email:
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <h1>Join Room</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="ownerEmail">Room Member's Email:</label>
                     <input 
                         type="email" 
                         name="ownerEmail" 
@@ -54,14 +55,14 @@ const JoinRoomPage = () => {
                         onChange={handleEmailChange}
                         required 
                     />
-                </label>
-                <button type="submit">Request to Join</button>
-            </form>
+                    <button type="submit">Request to Join</button>
+                </form>
 
-            {/* Display error message if any */}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+                {/* Display error message if any */}
+                {error && <p className={styles.error}>{error}</p>}
 
-            <button onClick={() => navigate('/home', { state: { email } })}>Back to Home</button>
+                <button className={styles.backButton} onClick={() => navigate('/home', { state: { email } })}>Back to Home</button>
+            </div>
         </div>
     );
 };

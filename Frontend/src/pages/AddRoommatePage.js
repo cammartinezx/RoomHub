@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getUserById, addNotification} from '../mockApi';  
+import { getUserById, addNotification} from '../mockApi';
+import styles from '../styles/JoinRoomPage.module.css';   
 
 const AddRoommatePage = () => {
     const [roommateEmail, setRoommateEmail] = useState('');
@@ -40,26 +41,27 @@ const AddRoommatePage = () => {
     };
 
     return (
-        <div>
-            <h1>Add New Roommate</h1>
+        <div className={styles.container}>
+            <div className={styles.form}>
+                <h1>Add New Roommate</h1>
+                {/* Input field for roommate's email */}
+                <label htmlFor="roommateEmail">Roommate's Email:</label>
+                <input
+                    type="email"
+                    id="roommateEmail"
+                    name="roommateEmail"
+                    value={roommateEmail}
+                    onChange={handleEmailChange}
+                    required
+                />
+                
+                <button onClick={handleSendRequest}>Send Request</button>
 
-            {/* Input field for roommate's email */}
-            <label htmlFor="roommateEmail">Roommate's Email:</label>
-            <input
-                type="email"
-                id="roommateEmail"
-                name="roommateEmail"
-                value={roommateEmail}
-                onChange={handleEmailChange}
-                required
-            />
-            
-            <button onClick={handleSendRequest}>Send Request</button>
+                {/* Display error message if any */}
+                {error && <p className={styles.error}>{error}</p>}
 
-            {/* Display error message if any */}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            <button onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Back to Room</button>
+                <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Back to Room</button>
+            </div>
         </div>
     );
 };

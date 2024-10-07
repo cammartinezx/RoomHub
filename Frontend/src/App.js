@@ -12,19 +12,28 @@ import NotificationsPage from './pages/NotificationsPage';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-// Import your mock API
 import { addUser, getUserById } from './mockApi';
+import axios from 'axios'
+import UserProfile from './pages/UserProfile';
+import ScrollToTop from './ScrollToTop';
 
 function App() {
   // Function to handle adding the user to the mock database
-  const handleUserSignIn = (user) => {
+  const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
 
-    if (email && !getUserById(email)) {
-      console.log(`User with email ${email} not found in mock database. Adding user...`);
-      addUser(email);  // Add user to the mock database
-    }
-  };
+    if (email) {
+      try{
+        // Send a POST request to add the user to the database
+        const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',
+           {id: email,});
+
+           console.log('User added successfully:', response.data);
+      } catch (error) {
+          console.error('Error while adding user:', error);
+        }
+      }
+    };
 
   // Component to handle login and redirection to /home
   const LoginRedirect = () => {
@@ -51,6 +60,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop/>
       <div className="App">
         <Routes>
           {/* Public Route - Landing Page */}
@@ -65,8 +75,19 @@ function App() {
             element={
               <Authenticator>
                 {({ signOut, user }) => {
-                  handleUserSignIn(user);  // Ensure that the user is added to the mock database when they access the home page
+                  handleUserSignIn(user); 
                   return <HomePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+             <Route
+            path="/user-profile"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <UserProfile user={user} />;
                 }}
               </Authenticator>
             }
