@@ -10,7 +10,7 @@
       "destination": "./docs/",
       "recurse": true
     },
-    "plugins": ["jsdoc-route-plugin"],
+    "plugins": ["jsdoc-http-plugin"],
     "templates": {
       "cleverLinks":true,
       "monospaceLinks":true
