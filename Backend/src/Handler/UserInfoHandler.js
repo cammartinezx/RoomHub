@@ -16,6 +16,12 @@ class UserInfoHandler {
      * @private
      */
     #user_persistence;
+    /**
+     * The room persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #room_persistence;
 
     /**
      * Create a new UserInfoHandler object
@@ -23,10 +29,15 @@ class UserInfoHandler {
      */
     constructor() {
         this.#user_persistence = Services.get_user_persistence();
+        this.#room_persistence = Services.get_room_persistence();
     }
 
     get_user_persistence() {
         return this.#user_persistence;
+    }
+
+    get_room_persistence() {
+        return this.#room_persistence;
     }
 
     /**
@@ -79,14 +90,14 @@ class UserInfoHandler {
                 // if valid user id
                 let user = await this.#user_persistence.get_user(user_id);
                 if (user === null) {
-                    response.status(200).json({ room_name: "NA" });
+                    response.status(404).json({ room_name: "User not found" });
                 } else {
                     let room_id = user.room_id;
                     // The user doesn't have a room yet(no sql fields don't exist if they've never been created)
                     if (room_id === undefined) {
                         response.status(200).json({ room_name: "NA" });
                     } else {
-                        const room_name = await Services.get_room_persistence().get_room_name(room_id);
+                        const room_name = await this.#room_persistence.get_room_name(room_id);
                         response.status(200).json({ room_name: room_name });
                     }
                 }

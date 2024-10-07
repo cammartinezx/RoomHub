@@ -28,7 +28,8 @@ router.post("/add-user", (req, res) => {
  * @params {String} :id is the id of the user whose room we are trying to get.
  * @code {200} NA
  * @code {200} A valid room name
- * @code {400} Invalid username
+ * @code {400} This username is invalid
+ * @code {404} User not found
  * @code {500} Backend error from the database
  * @response {String} room_name See description of the different status codes
  */
