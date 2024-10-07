@@ -37,10 +37,6 @@ router.get("/:id/get-room", (req, res) => {
     user_info_handler.get_user_room(req, res);
 });
 
-router.use("/", (req, res) => {
-    res.status(200).json({ Message: "Welcome to the User paths" });
-});
-
 /**
  * @name Get an user notification
  * @path {GET} user/:id/get-notification
@@ -52,6 +48,10 @@ router.use("/", (req, res) => {
  */
 router.get("/:id/get-notification", (req, res) => {
     user_info_handler.get_user_notification(req, res);
+});
+
+router.use("/", (req, res) => {
+    res.status(200).json({ Message: "Welcome to the User paths" });
 });
 
 module.exports = router;
