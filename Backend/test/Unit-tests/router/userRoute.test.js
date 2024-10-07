@@ -28,7 +28,7 @@ describe("User router tests", () => {
         expect(response.body).toEqual(exp_msg);
     });
 
-    it("Post /user/add-user", async () => {
+    it("Post /user/add-user should call the create_user function", async () => {
         const query_params = { id: "test@gmail.com" };
         const exp_stat = 200;
         const exp_msg = { message: "Test successful" };
