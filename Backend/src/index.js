@@ -1,4 +1,5 @@
 const User = require("./router/User");
+const Notification = require("./router/Notification");
 
 const express = require("express");
 const cors = require("cors");
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/user", User);
+app.use("/notification", Notification);
 
 app.get("/", async (req, res) => {
     console.log(req.body);

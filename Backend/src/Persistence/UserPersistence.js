@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, GetCommand, UpdateCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -72,7 +72,7 @@ class UserPersistence {
     }
 
     /**
-     * Uses dynamodb Putcommand to add the new user to the database
+     * Uses dynamodb PutCommand to add the new user to the database
      * @param {String} user_name "New user's name to be added to the database"
      * @returns {JSON} "Returns a json object with 2 keys; status and message. "
      */
@@ -96,6 +96,98 @@ class UserPersistence {
                 throw error;
             }
         }
+    }
+
+    /**
+     * Uses dynamodb GetCommand to get existing user from database
+     * @param {String} user_id "New user's name to be added to the database"
+     * @returns {JSON} "Returns a user object or null if no user exists"
+     */
+    async get_user(user_id) {
+        console.log("getting user");
+        // NB: right now user pk is the user_email, for second iter probably change to using a uuid as pk and user_email as GSI.
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let user = response.Item;
+
+        if (user === undefined) {
+            return null;
+        } else {
+            return response.Item;
+        }
+    }
+
+    /**
+     * Uses dynamodb GetCommand to get room ID from existing user from database
+     * @param {String} user_id "New user's name to be added to the database"
+     * @returns {String} "Return room ID or throw new error if no room for exist user"
+     */
+    async get_room_id(user_id) {
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let room_id = response.Item.room_id;
+        if (room_id === undefined) {
+            throw new Error(`User ${user_id} doesn't have a room yet`);
+        }
+        return room_id;
+    }
+
+    /**
+     * Uses dynamodb GetCommand to get list of notification from existing user from database
+     * @param {String} user_id "New user's name to be added to the database"
+     * @returns {String} "Return list of notification or throw new error if no notification for exist user"
+     */
+    async get_notification(user_id) {
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let notification = response.Item.notification;
+        if (notification === undefined) {
+            throw new Error(`User ${user_id} doesn't have a notification yet`);
+        }
+        return notification;
+    }
+
+    /**
+     * Updates the user notifications field with the new notification id 
+     * @param {String} notif_id "The unique identifier for the notification"
+     * @param {String} user_id "The id for the user who now belongs to this notification"
+     */
+    async update_user_notifications(notif_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "ADD #notif :notif_id",
+            ExpressionAttributeNames: {
+                "#notif": "notification",
+            },
+            ExpressionAttributeValues: {
+                ":notif_id": new Set([notif_id]), // Convert notif_id into a String Set (SS)
+            },
+            ConditionExpression: "attribute_exists(user_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
     }
 }
 
