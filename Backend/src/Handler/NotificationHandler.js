@@ -16,17 +16,28 @@ class NotificationHandler {
      * @private
      */
     #notification_persistence;
+    /**
+     * The user persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #user_persistence;
 
     /**
      * Create a new NotificationHandler object
      * @constructor
      */
     constructor() {
+        this.#user_persistence = Services.get_user_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
     }
 
     get_notification_persistence() {
         return this.#notification_persistence;
+    }
+
+    get_user_persistence() {
+        return this.#user_persistence;
     }
 
     /**
@@ -53,17 +64,16 @@ class NotificationHandler {
             const status = "unread";
             const from = request.body.from;
             const to = request.body.to;
-
-            // need to verify if sender and receiver exist in database
-            let sender = await Services.get_user_persistence().get_user(from);
-            let receiver = await Services.get_user_persistence().get_user(to);
+            
+            // need to verify if sender and receiver exist in database and also sender have a room
+            let sender = await this.#user_persistence.get_user(from);
+            const room_id = await this.#user_persistence.get_room_id(from);
+            let receiver = await this.#user_persistence.get_user(to);
             if (sender === null || receiver === null) {
                 response.status(404).json({ message: "User not found" });
             }
-
             const type = request.body.type;
             const msg = this.generate_message(from, to, type);
-            const room_id = await Services.get_user_persistence().get_room_id(from);
             if (!this.#is_valid_msg(msg)) {
                 // give a certain type of response
                 response.status(400).json({ message: "Error Creating Notification - Message is empty" });
@@ -77,12 +87,12 @@ class NotificationHandler {
                 type,
                 room_id,
             );
-            // assign new notification to both sender and receiver
-            await Services.get_user_persistence().update_user_notifications(notif_id, from);
-            await Services.get_user_persistence().update_user_notifications(notif_id, to);
 
             if (new_notification_status === "SUCCESS") {
-                response.status(200).json({ message: "Successfully created the new notifcation" });
+                // assign new notification to both sender and receiver
+                await this.#user_persistence.update_user_notifications(notif_id, from);
+                await this.#user_persistence.update_user_notifications(notif_id, to);
+                response.status(200).json({ message: "Successfully Created the new notification" });
             } else {
                 response.status(500).json({ message: "Retry creating the notification" });
             }

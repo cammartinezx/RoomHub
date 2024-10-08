@@ -133,7 +133,7 @@ class UserInfoHandler {
                 // if valid user id
                 let user = await this.#user_persistence.get_user(user_id);
                 if (user === null) {
-                    response.status(404).json({ room_name: "User not found" });
+                    response.status(404).json({ message: "User not found" });
                 } else {
                     let notification = await this.#user_persistence.get_notification(user_id);
                     // convert set into array
