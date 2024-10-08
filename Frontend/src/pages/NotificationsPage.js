@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getNotificationsByUserId, addMemberToRoom, markNotificationAsRead } from '../mockApi'; 
+import axios from 'axios';
 import styles from '../styles/NotificationsPage.module.css';
 
 const NotificationsPage = () => {
@@ -8,13 +9,23 @@ const NotificationsPage = () => {
     const email = location.state?.email;  // Get the email of the logged-in user
     const hasRoom = location.state?.hasRoom;
     const [notifications, setNotifications] = useState([]);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     // Fetch the user's notifications when the component loads
     useEffect(() => {
         if (email) {
-            const userNotifications = getNotificationsByUserId(email);
-            setNotifications(userNotifications);
+            const fetchNotifications = async () => {
+                try {
+                    const response = await axios.get(
+                      `https://your-api-url.com/user/${email}/get-notification`
+                    );
+                    setNotifications(response.data);
+                } catch (error) {
+                    setError('Error fetching notifications');
+                }
+            };
+            fetchNotifications();
         }
     }, [email]);
 

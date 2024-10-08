@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { getNotificationsByUserId } from './mockApi';
+
 import styles from './styles/Header.module.css';
 const Header = ({ email, hasRoom }) => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);

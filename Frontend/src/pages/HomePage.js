@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getUserById } from '../mockApi';
+import axios from 'axios';
 import styles from '../styles/HomePage.module.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 
 const HomePage = ({ user }) => {
+  const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
+  const [roomName, setRoomName] = useState('');
+  const [loading, setLoading] = useState(true);
   const location = useLocation();
   const email = user?.signInDetails?.loginId;
-  const hasRoom = !!getUserById(email).roomId;
+  // const hasRoom = !!getUserById(email).roomId;
   const navigate = useNavigate();
 
   const handleFindRoommate = () => {
@@ -17,13 +21,29 @@ const HomePage = ({ user }) => {
   };
 
   useEffect(() => {
-    if (!email) {
-      console.error("Email not found in user object:", user);
+    if (email) {
+      axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-room`)
+        .then((response) => {
+          if (response.status === 200 && response.data.room_name!=='NA') {
+            setHasRoom(true);
+            setRoomName(response.data.room_name);
+          } else {
+            setHasRoom(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking room status:", error);
+          setHasRoom(false);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [email, user]);
+  }, [email]);
 
-  if (!email) {
-    return <div className={styles.loading}>Loading...</div>;
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   return (

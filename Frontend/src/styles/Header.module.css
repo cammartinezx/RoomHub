@@ -20,7 +20,8 @@
   
   .header {
     position: sticky;
-    top: 10px;
+    top: 0px;
+    padding-top: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getUserById, addNotification } from '../mockApi';
+import axios from 'axios'
 import styles from '../styles/JoinRoomPage.module.css'; 
 
 const JoinRoomPage = () => {
@@ -15,8 +16,19 @@ const JoinRoomPage = () => {
         setOwnerEmail(event.target.value);
     };
 
+    // Function to send the GET request to check if the user has a room
+    const checkRoommateRoom = async (roommateEmail) => {
+        try {
+            const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${roommateEmail}/get-room`);
+            return response.data.room_name; // Return the room name if found
+        } catch (error) {
+            console.error('Error fetching room name:', error);
+            return null; // Return null if there's an error or no room
+        }
+    };
+
     // Function to handle the join request submission
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();  
 
         const roomMember = getUserById(ownerEmail);  // Check if the room member exists
@@ -27,19 +39,29 @@ const JoinRoomPage = () => {
             return;
         }
 
-        if (!roomMember.roomId) {
-            // If the room member doesn't belong to any room, show an error
-            setError('This room member is not part of any room.');
-            return;
+        try {
+            const roomName = await checkRoommateRoom(ownerEmail); // Check if the owner actually has a room
+
+            if (!roomName) {
+                // If the user doesnt have a room, show an error
+                setError('This user currently is not part of a room.');
+                return;
+            }
+
+            // If the user doesn't have a room, send a request (create a notification)
+            await axios.post('https://api.example.com/notification/create-notification', {
+                from: email,
+                to: ownerEmail,
+                type: 'request',
+            });
+
+            alert('Request sent to ' + ownerEmail);
+            setError('');
+            setOwnerEmail('');
+        } catch (error) {
+            console.error('Error sending request:', error);
+            setError('Error sending request.');
         }
-
-        // If everything is fine, send a notification to the room member
-        addNotification(ownerEmail, `Join room request from ${email}`, email, 'request');
-        alert(`Your request has been sent to ${ownerEmail}`);
-
-        // Reset the input field and error
-        setOwnerEmail('');
-        setError('');
     };
 
     return (

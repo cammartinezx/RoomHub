@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getUserById, addNotification} from '../mockApi';
+import axios from 'axios'
 import styles from '../styles/JoinRoomPage.module.css';   
 
 const AddRoommatePage = () => {
@@ -16,8 +17,19 @@ const AddRoommatePage = () => {
         setRoommateEmail(event.target.value);  
     };
 
+    // Function to send the GET request to check if the user has a room
+    const checkRoommateRoom = async (roommateEmail) => {
+        try {
+            const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${roommateEmail}/get-room`);
+            return response.data.room_name; // Return the room name if found
+        } catch (error) {
+            console.error('Error fetching room name:', error);
+            return null; // Return null if there's an error or no room
+        }
+    };
+
     // Function to handle the request to add a roommate
-    const handleSendRequest = () => {
+    const handleSendRequest = async () => {
         const roommate = getUserById(roommateEmail);  // Check if the user exists
 
         if (!roommate) {
@@ -26,18 +38,29 @@ const AddRoommatePage = () => {
             return;
         }
 
-        if (roommate.roomId) {
-            // If the user already has a room, show an error
-            setError('This user is already part of another room.');
-            return;
+        try {
+            const roomName = await checkRoommateRoom(roommateEmail); // Check if the roommate has a room
+
+            if (roomName) {
+                // If the user already has a room, show an error
+                setError('This user is already part of another room.');
+                return;
+            }
+
+            // If the user doesn't have a room, send a request (create a notification)
+            await axios.post('https://api.example.com/notification/create-notification', {
+                from: email,
+                to: roommateEmail,
+                type: 'invite',
+            });
+
+            alert('Request sent to ' + roommateEmail);
+            setError('');  // Clear any previous errors
+            setRoommateEmail('');  // Clear the input field
+        } catch (error) {
+            console.error('Error sending request:', error);
+            setError('Error sending request.');
         }
-
-        // If everything is fine, send a request (create a notification)
-        addNotification(roommateEmail, 'You have a new room request from ' + email, email, 'invite',getUserById(email).roomId);
-        alert('Request sent to ' + roommateEmail);
-
-        setError('');  // Clear any previous errors
-        setRoommateEmail('');  // Clear the input field
     };
 
     return (

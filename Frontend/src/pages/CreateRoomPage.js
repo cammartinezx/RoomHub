@@ -1,26 +1,41 @@
 import React,{useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { createRoom } from '../mockApi';
+import axios from 'axios'
 import styles from '../styles/CreateRoomPage.module.css';
 
 const CreateRoomPage = () => {
     const navigate = useNavigate()
     const location = useLocation();
-    const hasRoom = location.state?.hasRoom; // Check if the user has a room
+    const hasRoom = location.state?.hasRoom; 
     const email = location.state?.email;
     const[name, setName] = useState('');
+    const [error, setError] = useState('');
 
     // Function to handle input change
     const handleNameChange = (event) => {
         setName(event.target.value);
       };
 
-    const handleSubmit = () =>{
-        // add room to users database
-        createRoom(email,name);
-        alert('Your room has been created')
-        navigate('/virtual-room', { state: { email, hasRoom: true } }) // user now has a room
-    }
+      const handleSubmit = async () => {
+        try {
+          // Make a POST request to create a room
+          const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/create-room', {
+            rm: name,
+            id: email,
+          });
+    
+          if (response.status === 200) {
+            alert('Your room has been created');
+            navigate('/virtual-room', { state: { email, hasRoom: true } }); // user now has a room
+          } else {
+            setError('Failed to create the room. Please try again.');
+          }
+        } catch (error) {
+          setError('An error occurred while creating the room.');
+          console.error('Room creation error:', error);
+        }
+      };
 
     return (
         <div className={styles.container}>
