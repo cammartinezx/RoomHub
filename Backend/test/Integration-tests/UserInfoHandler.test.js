@@ -2,8 +2,6 @@ require("dotenv").config(); // Load environment variables
 const UserInfoHandler = require("../../src/Handler/UserInfoHandler");
 const UserPersistence = require("../../src/Persistence/UserPersistence");
 const { populate_db } = require("./DbSetup");
-const router = require("../../src/router/index");
-const request = require("supertest");
 
 describe("UserPersistence Class-- Testing Creating a new user", () => {
     let user_info_handler;
@@ -47,7 +45,7 @@ describe("UserPersistence Class-- Getting a user", () => {
     it("Should return the retrieved javascript object", async () => {
         result = await user_persistence.get_user(user_id);
 
-        expect(result).toEqual({ user_id: "test@gmail.com", notifications: new Set(["123", "456"]), room_id: "rm_11" });
+        expect(result).toEqual({ user_id: "test@gmail.com", notification: new Set(["123", "456"]), room_id: "rm_11" });
     });
 
     it("Should return null- since the user doesn't exist", async () => {
