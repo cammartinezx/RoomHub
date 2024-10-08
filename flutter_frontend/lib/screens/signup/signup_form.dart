@@ -41,20 +41,24 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           TextFormField(
             controller: emailController,
             cursorColor: theme.darkblue,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.alternate_email),
-              hintText: "Email",
-            ),
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.alternate_email),
+                label: Text(
+                  "Email",
+                  style: TextStyle(color: theme.darkblue),
+                )),
           ),
           const SizedBox(
             height: 30.0,
           ),
           TextFormField(
             cursorColor: theme.darkblue,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.person_outline),
-              hintText: "Full Name",
-            ),
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person_outline),
+                label: Text(
+                  "Full Name",
+                  style: TextStyle(color: theme.darkblue),
+                )),
           ),
           const SizedBox(
             height: 30.0,
@@ -62,10 +66,12 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           TextFormField(
             controller: passwordController,
             cursorColor: theme.darkblue,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock_outline),
-              hintText: "Password",
-            ),
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock_outline),
+                label: Text(
+                  " Password",
+                  style: TextStyle(color: theme.darkblue),
+                )),
             obscureText: true,
           ),
           const SizedBox(
@@ -74,10 +80,12 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           TextFormField(
             controller: password2Controller,
             cursorColor: theme.darkblue,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock_outline),
-              hintText: "Confirm Password",
-            ),
+            decoration: InputDecoration(
+                prefixIcon: Icon(Icons.lock_outline),
+                label: Text(
+                  "Confirm Password",
+                  style: TextStyle(color: theme.darkblue),
+                )),
             obscureText: true,
           ),
           const SizedBox(
@@ -100,10 +108,11 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                   ref.refresh(authUserProvider);
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                        builder: (context) => Verification(email: emailController.text)),
+                        builder: (context) =>
+                            Verification(email: emailController.text)),
                   );
                 } on AuthException catch (e) {
-                  theme.buildErrorMessage(e.message);
+                  theme.buildToastMessage(e.message);
                 }
               }),
           const SizedBox(
@@ -117,7 +126,8 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
   /// Validate if the confirm password matches the password
   void _validateConfirmPassword() {
     if (password2Controller.text != passwordController.text) {
-      throw const InvalidPasswordException("Password and Confirm Password don't match");
+      throw const InvalidPasswordException(
+          "Password and Confirm Password don't match");
     }
   }
 }

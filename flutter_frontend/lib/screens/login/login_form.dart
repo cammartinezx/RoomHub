@@ -11,7 +11,6 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 // ConsumerStatefulWidget is a widget that maintains state and works with Riverpod's providers
 class OurLoginForm extends ConsumerStatefulWidget {
   const OurLoginForm({super.key});
-
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -44,24 +43,28 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
           TextFormField(
             controller: emailController,
             cursorColor: Theme.of(context).primaryColorDark,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               prefixIcon: Icon(Icons.alternate_email),
-              hintText: "Email",
+              label: Text(
+                  "Email",
+                  style: TextStyle(color: theme.darkblue),)
+              )
             ),
-          ),
+    
           const SizedBox(
             height: 30.0,
           ),
           // Text field for the password input
           TextFormField(
             controller: passwordController,
-            cursorColor: Theme.of(context).primaryColorDark,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.lock_outline),
-              hintText: "Password",
-            ),
             obscureText: true,
-          ),
+            cursorColor: Theme.of(context).primaryColorDark,
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.lock_outline),
+              label: Text(
+                  "Password",
+                  style: TextStyle(color: theme.darkblue),))
+            ),
           const SizedBox(
             height: 30.0,
           ),
@@ -76,12 +79,12 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
                     emailController.text, passwordController.text);
                 // Refresh the auth user provider after signing in
                 ref.refresh(authUserProvider);
-                 Navigator.of(context).push(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => const OurHomeNewUser()),
                 );
               } on AuthException catch (e) {
-                theme.buildErrorMessage(e.message);
+                theme.buildToastMessage(e.message);
               }
             },
             child: const Text(
