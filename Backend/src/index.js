@@ -1,37 +1,31 @@
+const User = require("./router/User");
+const Room = require("./router/Room");
+const Notification = require("./router/Notification");
+
 const express = require("express");
-const AWS = require("aws-sdk");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
-
+const port = 3001;
 app.use(express.json());
+app.use(cors());
 
-AWS.config.update({
-    region: process.env.AWS_REGION,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+app.use("/user", User);
+app.use("/room", Room);
+app.use("/notification", Notification);
 
-const dynamoDB = new AWS.DynamoDB.DocumentClient({
-    region: "ca-central-1",
-    accessKeyId: "AKIAVYV5ZYRE7LA2EEOU",
-    secretAccessKey: "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",
-});
-
-app.get("/user", async (req, res) => {
-    const params = {
-        TableName: "User",
-    };
-    try {
-        const data = await dynamoDB.scan(params).promise();
-        res.json(data.Items);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Failed to fetch data from DynamoDB" });
-    }
+app.get("/", async (req, res) => {
+    console.log(req.body);
+    res.status(200).json({ message: "we cooking rn" });
 });
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
+
+/**
+ * Student Name
+ * @type {string}
+ */
+const studentName = 1;
