@@ -76,7 +76,7 @@ function App() {
               <Authenticator>
                 {({ signOut, user }) => {
                   handleUserSignIn(user); 
-                  return <HomePage user={user} />;
+                  return <HomePage user={user} signOut ={signOut} />;
                 }}
               </Authenticator>
             }
@@ -87,7 +87,7 @@ function App() {
               <Authenticator>
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
-                  return <UserProfile user={user} />;
+                  return <UserProfile user={user} signOut={signOut} />;
                 }}
               </Authenticator>
             }

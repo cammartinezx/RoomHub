@@ -31,13 +31,8 @@ const JoinRoomPage = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();  
 
-        const roomMember = getUserById(ownerEmail);  // Check if the room member exists
+        // const roomMember = getUserById(ownerEmail);  // Check if the room member exists
 
-        if (!roomMember) {
-            // If the room member doesn't exist, show an error
-            setError('This room member does not exist.');
-            return;
-        }
 
         try {
             const roomName = await checkRoommateRoom(ownerEmail); // Check if the owner actually has a room
@@ -49,7 +44,7 @@ const JoinRoomPage = () => {
             }
 
             // If the user doesn't have a room, send a request (create a notification)
-            await axios.post('https://api.example.com/notification/create-notification', {
+            await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/create-notification', {
                 from: email,
                 to: ownerEmail,
                 type: 'request',
@@ -59,8 +54,27 @@ const JoinRoomPage = () => {
             setError('');
             setOwnerEmail('');
         } catch (error) {
-            console.error('Error sending request:', error);
-            setError('Error sending request.');
+            if (error.response) {
+                switch (error.response.status) {
+                    case 404:
+                        setError('Error: User not found.');
+                        break;
+                    case 400:
+                        setError('Error: Invalid request. The message is empty or incorrect.');
+                        break;
+                    case 500:
+                        setError('Error: There was an error from our end. Please try again later.');
+                        break;
+                    default:
+                        setError('An unexpected error occurred.');
+                }
+            } else if (error.request) {
+                // Request was made but no response was received
+                setError('Error: No response from the server.');
+            } else {
+                // Something else caused an error
+                setError('Error: Failed to send the request.');
+            }
         }
     };
 

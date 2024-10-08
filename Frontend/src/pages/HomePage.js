@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 
-const HomePage = ({ user }) => {
+const HomePage = ({ user, signOut }) => {
   const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
   const [roomName, setRoomName] = useState('');
   const [loading, setLoading] = useState(true);
@@ -91,7 +91,10 @@ const HomePage = ({ user }) => {
           </div>
           </>
         )}
-        <button className={styles.logout} onClick={() => navigate('/')}>Log Out</button>
+        <button className={styles.logout} onClick={() => {
+          signOut(); // This will log the user out of Cognito
+          navigate('/'); // Then redirect to the landing page
+        }}>Log Out</button>
     </div>
   );
 };
