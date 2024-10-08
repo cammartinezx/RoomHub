@@ -1,5 +1,10 @@
-/** Routes
- * @module User
+// /** Routes
+//  * @module User
+//  */
+
+/**
+ * @namespace User
+ * @description Routes related to users
  */
 const express = require("express");
 const router = express.Router();
@@ -8,7 +13,7 @@ const UserInfoHandler = require("../Handler/UserInfoHandler");
 const user_info_handler = new UserInfoHandler();
 
 /**
- *
+ * @memberof User
  * @name Add a new user
  * @path {POST} user/add-user
  * @query {String} id The new users e-mail to be added to the database
@@ -23,6 +28,7 @@ router.post("/add-user", (req, res) => {
 });
 
 /**
+ * @memberof User
  * @name Get a users room name
  * @path {GET} user/:id/get-room
  * @params {String} :id is the id of the user whose room we are trying to get.
@@ -38,6 +44,7 @@ router.get("/:id/get-room", (req, res) => {
 });
 
 /**
+ * @memberof User
  * @name Get an user notification
  * @path {GET} user/:id/get-notification
  * @params {String} :id is the id of the user whose room we are trying to get.

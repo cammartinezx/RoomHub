@@ -1,5 +1,6 @@
 /**
- * @module Notification
+ * @namespace Notification
+ * @description Routes related to notifications
  */
 const express = require("express");
 const router = express.Router();
@@ -8,6 +9,7 @@ const NotificationHander = require("../Handler/NotificationHandler");
 const notification_handler = new NotificationHander();
 
 /**
+ * @memberof Notification
  * @name Add a new notification
  * @path {POST} notification/create-notification
  * @query {String} from The sender user ID
@@ -21,6 +23,10 @@ const notification_handler = new NotificationHander();
  */
 router.post("/create-notification", (req, res) => {
     notification_handler.create_notification(req, res);
+});
+
+router.use("/", (req, res) => {
+    res.status(200).json({ message: "Welcome to the Notification paths" });
 });
 
 module.exports = router;

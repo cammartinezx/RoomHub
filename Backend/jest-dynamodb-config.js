@@ -6,5 +6,11 @@ module.exports = {
             AttributeDefinitions: [{ AttributeName: "user_id", AttributeType: "S" }],
             ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
         },
+        {
+            TableName: `Room`,
+            KeySchema: [{ AttributeName: "room_id", KeyType: "HASH" }],
+            AttributeDefinitions: [{ AttributeName: "room_id", AttributeType: "S" }],
+            ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
+        },
     ],
 };
