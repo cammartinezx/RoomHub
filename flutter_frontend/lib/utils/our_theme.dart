@@ -10,43 +10,38 @@ class OurTheme {
 
   ThemeData buildTheme() {
     return ThemeData(
-      canvasColor: lightgrey,
-      primaryColor: mintgreen,
-      primaryColorDark: darkblue,
-      primaryColorLight: yellow,
-      secondaryHeaderColor: darkgrey,
-      hintColor: lightgrey,
-      
-      inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: lightgrey, width: 1.0)),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: darkblue, width: 2.0),
-          )),
-
-
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(darkblue),
-          padding: WidgetStateProperty.all(
-              const EdgeInsets.symmetric(horizontal: 100.0, vertical: 12.0)),
-          shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0))),
+        canvasColor: lightgrey,
+        primaryColor: mintgreen,
+        primaryColorDark: darkblue,
+        primaryColorLight: yellow,
+        secondaryHeaderColor: darkgrey,
+        hintColor: lightgrey,
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide(color: lightgrey, width: 1.0)),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: darkblue, width: 2.0),
+            )),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(darkblue),
+            padding: WidgetStateProperty.all(
+                const EdgeInsets.symmetric(horizontal: 100.0, vertical: 12.0)),
+            shape: WidgetStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0))),
+          ),
         ),
-      ),
-
-      buttonTheme: ButtonThemeData(
-        buttonColor: darkblue,
-        padding: const EdgeInsets.symmetric(horizontal: 100.0, vertical: 12.0),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-      )
-    );
-
-  
+        buttonTheme: ButtonThemeData(
+          buttonColor: darkblue,
+          padding:
+              const EdgeInsets.symmetric(horizontal: 100.0, vertical: 12.0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        ));
   }
 
-  void buildErrorMessage(String text) {
+  void buildToastMessage(String text) {
     Fluttertoast.showToast(
         msg: text,
         timeInSecForIosWeb: 2,
