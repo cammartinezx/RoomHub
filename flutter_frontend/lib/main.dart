@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/createRoom/create_room.dart';
+import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
@@ -27,7 +29,8 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with TickerProviderStateMixin{
+  
   bool _amplifyConfigured = false;
   @override
   void initState() {
@@ -43,21 +46,34 @@ class _MyAppState extends State<MyApp> {
       final auth = AmplifyAuthCognito();
       // Add the Auth plugin to Amplify
       await Amplify.addPlugin(auth);
-      print("Plugins added. Now configuring...");
       // Call Amplify.configure to use the initialized categories in your app
-      await Amplify.configure(amplifyconfig); 
+      await Amplify.configure(amplifyconfig);
       setState(() {
         _amplifyConfigured = true;
       });
-     
-   
     } on Exception catch (e) {
       // Print an error message if Amplify configuration fails
       safePrint('An error occurred configuring Amplify: $e');
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: OurTheme().buildTheme(),
+      home: const JoinRoom(),
+      routes: {
+        '/loginPage': (context) => const OurLogin(),
+        '/homeNewPage': (context) => const OurHomeNewUser(),
+      },
+    );
+  }
+}
+
   // This widget is the root of your application.
+
+  /*
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -96,4 +112,4 @@ class _MyAppState extends State<MyApp> {
       },
     );
   }
-}
+}*/
