@@ -1,17 +1,17 @@
 require("dotenv").config(); // Load environment variables
 const NotificationPersistence = require("../../src/Persistence/NotificationPersistence");
-const { populate_db } = require("./DBSetup");
+const { populate_db } = require("./DbSetup");
 
 describe("NotificationPersistence Class-- Getting message and type", () => {
     let notif_persistence;
     let notif_id;
     let no_msg_notif_id;
-    
+
     beforeAll(async () => {
         // initialize the notifHandlerobject
         notif_persistence = new NotificationPersistence();
         notif_id = "123";
-        no_msg_notif_id = "456"
+        no_msg_notif_id = "456";
         await populate_db();
     });
 
@@ -34,22 +34,36 @@ describe("NotificationPersistence Class -- Creating a new notification", () => {
     let notif_persistence;
     let notif_id;
     let no_msg_notif_id;
-    
+
     beforeAll(async () => {
         // initialize the notifHandlerobject
         notif_persistence = new NotificationPersistence();
         notif_id = "123";
-        no_msg_notif_id = "456"
+        no_msg_notif_id = "456";
         await populate_db();
     });
 
     it("Should return SUCCESS- signifying the notification is successfully created ", async () => {
-        result = await notif_persistence.generate_new_notification("1045", "hello world", "test@gmail.com", "test2@gmail.com", "invite", "rm_11");
+        result = await notif_persistence.generate_new_notification(
+            "1045",
+            "hello world",
+            "test@gmail.com",
+            "test2@gmail.com",
+            "invite",
+            "rm_11",
+        );
         expect(result).toBe("SUCCESS");
     });
 
     it("Should return FAILED- signifying the notification is was not successfully created ", async () => {
-        result = await notif_persistence.generate_new_notification("1045", "hello world", "test@gmail.com", "test2@gmail.com", "invite", "rm_11");
+        result = await notif_persistence.generate_new_notification(
+            "1045",
+            "hello world",
+            "test@gmail.com",
+            "test2@gmail.com",
+            "invite",
+            "rm_11",
+        );
         expect(result).toBe("FAILED");
     });
 });
@@ -58,12 +72,12 @@ describe("NotificationPersistence Class -- Update a notification state", () => {
     let notif_persistence;
     let notif_id;
     let no_msg_notif_id;
-    
+
     beforeAll(async () => {
         // initialize the notifHandlerobject
         notif_persistence = new NotificationPersistence();
         notif_id = "123";
-        no_msg_notif_id = "456"
+        no_msg_notif_id = "456";
         await populate_db();
     });
 
