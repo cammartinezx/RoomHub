@@ -10,7 +10,7 @@ const LandingPage = () =>{
       <div className={styles.landingContainer}>
         <div className={styles.overlay}></div>
         <div className={styles.content}>
-          <img src="/logo.png" alt="RoomHub Logo" className={styles.logo} />
+          <img src="/logo2.png" alt="RoomHub Logo" className={styles.logo} />
           <h1 className={styles.heading}>Welcome To RoomHub</h1>
           <p className={styles.subheading}>Connecting people and spaces, seamlessly.</p>
           <button className={styles.loginButton} onClick={() => navigate('/login')}>Log In To Get Started</button>
