@@ -43,6 +43,7 @@ async function populate_db() {
         await doc_client.send(put_command_user);
         await doc_client.send(put_command_user2);
         await doc_client.send(put_command_user3);
+
         //adding rooms
         const put_command_room = new PutCommand({
             TableName: "Room",
@@ -59,9 +60,37 @@ async function populate_db() {
                 room_id: "rm_bad",
             },
         });
-
         await doc_client.send(put_command_room);
         await doc_client.send(put_command_room2);
+
+        // adding notifications
+        const put_command_notification = new PutCommand({
+            TableName: "Notification",
+            Item: {
+                id: "123",
+                from: "test@gmail.com",
+                to: "test2@gmail.com",
+                message: "abc invite bcd",
+                room_id: "rm_11",
+                status: "unread",
+                type: "invite",
+            },
+        });
+        const put_command_notification2 = new PutCommand({
+            TableName: "Notification",
+            Item: {
+                id: "456",
+                from: "test11@gmail.com",
+                to: "test@gmail.com",
+                message: "",
+                room_id: "rm_bad",
+                status: "unread",
+                type: "invite",
+            },
+        });
+        await doc_client.send(put_command_notification);
+        await doc_client.send(put_command_notification2);
+
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
