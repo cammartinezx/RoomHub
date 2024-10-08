@@ -64,7 +64,7 @@ class NotificationHandler {
             const status = "unread";
             const from = request.body.from;
             const to = request.body.to;
-            
+
             // need to verify if sender and receiver exist in database and also sender have a room
             let sender = await this.#user_persistence.get_user(from);
             const room_id = await this.#user_persistence.get_room_id(from);
