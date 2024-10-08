@@ -90,7 +90,6 @@ async function populate_db() {
         });
         await doc_client.send(put_command_notification);
         await doc_client.send(put_command_notification2);
-
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
