@@ -43,4 +43,8 @@ router.post("/add-roommate", (req, res) => {
     room_handler.add_roommate(req, res);
 });
 
+router.use("/", (req, res) => {
+    res.status(200).json({ message: "Welcome to the Room paths" });
+});
+
 module.exports = router;
