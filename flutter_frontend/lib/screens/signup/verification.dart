@@ -17,7 +17,7 @@ class Verification extends ConsumerStatefulWidget {
 // State class for OurLoginForm, managing state and widget lifecycle
 class _VerificationState extends ConsumerState<Verification> {
   TextEditingController verifyController = TextEditingController();
-    final theme = OurTheme();
+  final theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,8 @@ class _VerificationState extends ConsumerState<Verification> {
                   // Accessing AWS authentication repository using Riverpod provider
                   final authAWSRepo = ref.read(authAWSRepositoryProvider);
                   // Attempting to sign in with email and password
-                  await authAWSRepo.confirmSignUp(widget.email, verifyController.text);
+                  await authAWSRepo.confirmSignUp(
+                      widget.email, verifyController.text);
                   // Refresh the auth user provider after signing in
                   ref.refresh(authUserProvider);
                   Navigator.of(context).push(
@@ -74,7 +75,7 @@ class _VerificationState extends ConsumerState<Verification> {
                         builder: (context) => const OurHomeNewUser()),
                   );
                 } on AuthException catch (e) {
-                  theme.buildErrorMessage(e.message);
+                  theme.buildToastMessage(e.message);
                 }
               },
               child: const Text(
@@ -99,7 +100,7 @@ class _VerificationState extends ConsumerState<Verification> {
                   // Refresh the auth user provider after signing in
                   ref.refresh(authUserProvider);
                 } on AuthException catch (e) {
-                  theme.buildErrorMessage(e.message);
+                  theme.buildToastMessage(e.message);
                 }
               },
               style: const ButtonStyle(
@@ -107,9 +108,9 @@ class _VerificationState extends ConsumerState<Verification> {
                     MaterialTapTargetSize.shrinkWrap, // Correct usage
               ),
               child: Text(
-                'Resend Code', 
+                'Resend Code',
                 style: TextStyle(
-                  color: theme.mintgreen,
+                    color: theme.mintgreen,
                     decoration: TextDecoration.underline,
                     decorationColor: theme.mintgreen),
               ),
