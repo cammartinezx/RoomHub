@@ -87,7 +87,7 @@ class NotificationPersistence {
 
         let message = response.Item.message;
         let type = response.Item.type;
-        if (message === undefined) {
+        if (message === undefined || message === "") {
             throw new Error("Notification doesn't have a message");
         }
         return {
@@ -121,7 +121,7 @@ class NotificationPersistence {
                     to: to,
                     type: type,
                 },
-                // ConditionExpression: "attribute_not_exist(id)",
+                ConditionExpression: "attribute_not_exists(id)",
             });
 
             await this.#doc_client.send(put_command);
