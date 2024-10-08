@@ -20,27 +20,69 @@ class Homenewuser extends StatelessWidget {
 }*/
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/button.dart';
+import 'package:flutter_frontend/utils/our_theme.dart';
+import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 
-class OurHomeNewUser extends StatelessWidget {
+class OurHomeNewUser extends StatefulWidget {
   const OurHomeNewUser({super.key});
 
+  @override
+  State<OurHomeNewUser> createState() => _OurHomeNewUserState();
+}
+
+class _OurHomeNewUserState extends State<OurHomeNewUser> {
+  final theme = OurTheme();
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.grey[300],
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Icon(Icons.menu, color: Theme.of(context).primaryColorDark),
-          title: Text('RoomHub', style: TextStyle(color: Theme.of(context).primaryColorDark, fontSize: 25.0, fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0), // Add padding to the left
+          child: Icon(
+            Icons.menu,
+            color: theme.darkblue,
+            size: 34.0,
           ),
+        ),
+        title: Padding(
+          padding: const EdgeInsets.only(top: 33.0), // Add horizontal padding to the text
+          child: Text(
+            'RoomHub',
+            style: TextStyle(
+              color: theme.darkblue,
+              fontSize: 28.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0), // Add padding to the right
+            child: IconButton(
+              icon: Icon(
+                Icons.notifications,
+                color: theme.darkblue,
+                size: 34.0,
+              ),
+              onPressed: () {
+                // Add functionality here
+              },
+            ),
+          ),
+        ],
+      ),
+
         body:Column(
           children:
           <Widget>[
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.only(top:40.0, right: 20, left:20, bottom:20),
               children: 
               <Widget>[
   //CREATE ROOM CONTAINER
@@ -55,7 +97,7 @@ class OurHomeNewUser extends StatelessWidget {
                             const Text ("Create a Room",style: TextStyle( color: Color.fromARGB(255, 29, 52, 83),fontSize: 23.0,fontWeight: FontWeight.bold)),
                             const Text('If is your first time in the app', softWrap: true),
                             const SizedBox(height: 10),
-                            MyButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
+                            GradientButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
                           ]
                         ),
                       ),
@@ -79,7 +121,7 @@ class OurHomeNewUser extends StatelessWidget {
                             const Text ("Join a Room",style: TextStyle( color: Color.fromARGB(255, 29, 52, 83),fontSize: 23.0,fontWeight: FontWeight.bold)),
                             const Text('If the room has already been created by your roommates', softWrap: true),
                             const SizedBox(height: 10),
-                            MyButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
+                            GradientButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
                           ]
                         ),
                       ),
@@ -103,7 +145,7 @@ class OurHomeNewUser extends StatelessWidget {
                             const Text ("Find Roommates",style: TextStyle( color: Color.fromARGB(255, 29, 52, 83),fontSize: 23.0,fontWeight: FontWeight.bold)),
                             const Text('If you are looking for your perfect match', softWrap: true),
                             const SizedBox(height: 10),
-                            MyButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
+                           GradientButton(text: "Continue", onTap: (){ Navigator.pushNamed(context, '/loginPage');} )
                           ]
                         ),
                       ),
