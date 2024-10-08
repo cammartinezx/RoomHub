@@ -1,5 +1,6 @@
 /** Routes
- * @module Room
+ * @namespace Room
+ * @description Routes related to rooms
  */
 const express = require("express");
 const router = express.Router();
@@ -8,7 +9,7 @@ const RoomHandler = require("../Handler/RoomHandler");
 const room_handler = new RoomHandler();
 
 /**
- *
+ * @memberof Room
  * @name Add a new room
  * @path {POST} room/create-room
  * @query {String} rm The name of the new room to be created
@@ -24,7 +25,7 @@ router.post("/create-room", (req, res) => {
 });
 
 /**
- *
+ * @memberof Room
  * @name Add a new room-mate to a room
  * @path {POST} room/add-roommate
  * @query {String} existing_roommate The name of the already existing roommate
