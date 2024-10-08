@@ -8,12 +8,12 @@ describe("UserPersistence Class-- Testing Creating a new user", () => {
     let user_persistence;
     let user_id;
 
-    beforeAll(() => {
+    beforeAll(async () => {
         // initialize the userHandlerobject
         user_info_handler = new UserInfoHandler();
         user_persistence = new UserPersistence();
         user_id = "test3@gmail.com";
-        populate_db();
+        await populate_db();
     });
 
     it("Should return values that signify that the user is created", async () => {

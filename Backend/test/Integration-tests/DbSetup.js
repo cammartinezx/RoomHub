@@ -18,12 +18,12 @@ let table_name = "room";
 
 async function populate_db() {
     try {
-        // add the new user
+        // adding users
         const put_command_user = new PutCommand({
             TableName: "User",
             Item: {
                 user_id: "test@gmail.com",
-                notifications: new Set(["123", "456"]),
+                notification: new Set(["123", "456"]),
                 room_id: "rm_11",
             },
         });
@@ -34,14 +34,40 @@ async function populate_db() {
                 user_id: "test2@gmail.com",
             },
         });
+        const put_command_user3 = new PutCommand({
+            TableName: "User",
+            Item: {
+                user_id: "test11@gmail.com",
+            },
+        });
         await doc_client.send(put_command_user);
         await doc_client.send(put_command_user2);
+        await doc_client.send(put_command_user3);
+        //adding rooms
+        const put_command_room = new PutCommand({
+            TableName: "Room",
+            Item: {
+                room_id: "rm_11",
+                name: "test_room1",
+                users: new Set(["test@gmail.com"]),
+            },
+        });
+
+        const put_command_room2 = new PutCommand({
+            TableName: "Room",
+            Item: {
+                room_id: "rm_bad",
+            },
+        });
+
+        await doc_client.send(put_command_room);
+        await doc_client.send(put_command_room2);
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
 }
 
-async function teardown_db() {}
+// async function teardown_db() {}
 module.exports = {
     populate_db,
 };
