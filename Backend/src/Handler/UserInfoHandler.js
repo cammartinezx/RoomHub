@@ -143,9 +143,7 @@ class UserInfoHandler {
                         // update the status of notification from unread to read
                         await this.#notification_persistence.update_notification_status(item);
                         let notif_item = await this.#notification_persistence.get_msg_type(item);
-                        if (notif_item != null) {
-                            result.push(notif_item);
-                        }
+                        result.push(notif_item);
                     }
                     response.status(200).json({ All_Notifications: result });
                 }
