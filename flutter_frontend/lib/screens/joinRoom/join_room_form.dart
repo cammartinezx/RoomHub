@@ -1,16 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
+import 'package:flutter_frontend/screens/home/home_new_user.dart';
+import 'package:flutter_frontend/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class JoinRoomForm extends StatefulWidget {
+import 'package:flutter_frontend/utils/custom_exceptions.dart';
+import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/config.dart';
+import 'dart:convert';
+
+class JoinRoomForm extends ConsumerStatefulWidget {
   const JoinRoomForm({super.key});
   @override
   _JoinRoomFormState createState() => _JoinRoomFormState();
 }
 
-class _JoinRoomFormState extends State<JoinRoomForm> {
+class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
   final theme = OurTheme();
-  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+// Variable to store the email
+  late String userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    // Store the email in initState
+    userEmail = ref.read(emailProvider);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +43,6 @@ class _JoinRoomFormState extends State<JoinRoomForm> {
             gradient: LinearGradient(colors: [
               theme.darkblue,
               theme.mintgreen,
-              
             ]),
           ),
           child: const Padding(
@@ -144,7 +162,7 @@ class _JoinRoomFormState extends State<JoinRoomForm> {
                   const SizedBox(height: 30),
 
                   TextField(
-                    controller: nameController,
+                    controller: emailController,
                     cursorColor: theme.darkblue,
                     decoration: InputDecoration(
                         prefixIcon: const Icon(
@@ -161,11 +179,18 @@ class _JoinRoomFormState extends State<JoinRoomForm> {
                   ),
                   GradientButton(
                       text: 'Send Request',
-                      onTap: () {
-                        theme.buildToastMessage("Room succesfully created");
-                        Future.delayed(const Duration(seconds: 1), () {
-                          Navigator.pushNamed(context, '/homeNewPage');
-                        });}),
+                      onTap: () async {
+                        if (await joinRoomBE()) {
+                          theme.buildToastMessage("Request sent");
+                          Future.delayed(const Duration(seconds: 1), () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => OurHomeNewUser(),
+                              ),
+                            );
+                          });
+                        }
+                      }),
                   const SizedBox(
                     height: 50,
                   ),
@@ -176,5 +201,27 @@ class _JoinRoomFormState extends State<JoinRoomForm> {
         ),
       ],
     ));
+  }
+
+  Future<bool> joinRoomBE() async {
+    bool createSuccess = false;
+    try {
+      var regBody = {
+        "from": userEmail,
+        "to": emailController.text,
+        "type": 'join-request',
+      };
+      var response = await http.post(
+        Uri.parse(JoinRoom),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(regBody),
+      );
+      await handlePost(response, responseType: 'joinRoom');
+      print(response.body);
+      createSuccess = true;
+    } on UserException catch (e) {
+      theme.buildToastMessage(e.message);
+    }
+    return createSuccess;
   }
 }
