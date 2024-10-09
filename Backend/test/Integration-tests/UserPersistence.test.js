@@ -141,7 +141,6 @@ describe("UserPersistence Class-- Update a users notification", () => {
         notif_id = "123";
         await populate_db();
     });
-
     it("Should not throw error- meaning successful update of the notification", async () => {
         await expect(user_persistence.update_user_notifications(notif_id, user_id)).resolves.not.toThrow();
     });
