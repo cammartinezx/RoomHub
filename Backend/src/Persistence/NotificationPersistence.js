@@ -91,11 +91,23 @@ class NotificationPersistence {
         if (message === undefined || message === "") {
             throw new Error("Notification doesn't have a message");
         }
-        return {
-            msg: message,
-            type: type,
-            from: from,
-        };
+
+        let action_required = response.Item.action_required;
+        let action_taken = response.Item.action_taken;
+
+        let result;
+        // more update to this when basic notifications are added other than invites.
+        if (action_required === "True" && action_taken === "False") {
+            result = {
+                notification_id: notif_id,
+                msg: message,
+                type: type,
+                from: from,
+            };
+        } else {
+            // this notification shouldn't be added as the notifications that a user
+            result = null;
+        }
     }
 
     /**
@@ -109,7 +121,7 @@ class NotificationPersistence {
      * @param {String} room_id "Room id from Sender to be added to the database"
      * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
      */
-    async generate_new_notification(notif_id, msg, status, from, to, type, room_id) {
+    async generate_new_notification(notif_id, msg, status, from, to, type, room_id, action_required, action_taken) {
         try {
             // add the new notification
             const put_command = new PutCommand({
@@ -122,6 +134,8 @@ class NotificationPersistence {
                     status: status,
                     to: to,
                     type: type,
+                    action_required: action_required,
+                    action_taken: action_taken,
                 },
                 ConditionExpression: "attribute_not_exists(id)",
             });
