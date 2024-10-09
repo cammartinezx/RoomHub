@@ -72,26 +72,71 @@ describe("UserPersistence Class-- Update a users room", () => {
     });
 });
 
-// describe("UserPersistence Class-- Testing geting a users room -- Pesistence test for getting a user", () => {
-//     let user_info_handler;
+describe("UserPresistence Class -- Getting a room id", () => {
+    let user_persistence;
+    let user_id;
+    let no_room_user_id;
 
-//     beforeAll(() => {
-//         // initialize the userHandlerobject
-//         user_info_handler = new UserInfoHandler();
-//         // user_persistence = new UserPersistenceit
+    beforeAll(() => {
+        // initialize the userPersistence
+        user_persistence = new UserPersistence();
 
-//         user_data = {
-//             id: "test@gmail.com",
-//         };
-//     });
+        user_id = "test@gmail.com";
+        no_room_user_id = "test11@gmail.com";
+    });
 
-//     it("Send the users room name successfully", async () => {
-//         const response = await request(router)
-//             .get("/user/test@gmail.com/get-room")
-//             .set("Content-Type", "application/json")
-//             .set("Accept", "application/json");
+    it("Should return room id", async () => {
+        result = await user_persistence.get_room_id(user_id);
+        expect(result).toEqual("rm_11");
+    });
 
-//         expect(response.status).toBe(200);
-//         expect(response.body).toEqual({ room_name: "NA" });
-//     });
-// });
+    it("Should return an error that user doesn't have a room yet", async () => {
+        await expect(user_persistence.get_room_id(no_room_user_id)).rejects.toThrow(
+            `User ${no_room_user_id} doesn't have a room yet`,
+        );
+    });
+});
+
+describe("UserPersistence Class -- Getting notifications", () => {
+    let user_persistence;
+    let user_id;
+    let no_notif_user_id;
+
+    beforeAll(() => {
+        // initialize the userPersistence
+        user_persistence = new UserPersistence();
+
+        user_id = "test@gmail.com";
+        no_notif_user_id = "test11@gmail.com";
+    });
+
+    it("Should return notification", async () => {
+        result = await user_persistence.get_notification(user_id);
+        expect(result).toEqual(new Set(["123", "456"]));
+    });
+
+    it("Should return an error that user doesn't have a notification yet", async () => {
+        await expect(user_persistence.get_notification(no_notif_user_id)).rejects.toThrow(
+            `User ${no_notif_user_id} doesn't have a notification yet`,
+        );
+    });
+});
+
+describe("UserPersistence Class-- Update a users notification", () => {
+    let user_persistence;
+    let user_id;
+    let notif_id;
+
+    beforeAll(() => {
+        // initialize the userPersistence
+        user_persistence = new UserPersistence();
+
+        user_id = "test@gmail.com";
+        notif_id = "123";
+        // populate_db();
+    });
+
+    it("Should not throw error- meaning successful update of the notification", async () => {
+        await expect(user_persistence.update_user_notifications(notif_id, user_id)).resolves.not.toThrow();
+    });
+});
