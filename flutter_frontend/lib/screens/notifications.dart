@@ -2,15 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/header.dart';
 import 'package:flutter_frontend/widgets/action_notification.dart';
 
-class Notifications extends StatelessWidget {
-  final List<NotificationItem> notificationItems; 
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/config.dart';
+import 'package:flutter_frontend/utils/custom_exceptions.dart';
+import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/utils/our_theme.dart';
+
+class Notifications extends StatefulWidget {
+  final List<NotificationItem> notificationItems;
   const Notifications({
     Key? key,
     required this.notificationItems, // Marking the list as required
   }) : super(key: key);
 
   @override
+  State<Notifications> createState() => _NotificationsState();
+}
+
+class _NotificationsState extends State<Notifications> {
+  final theme = OurTheme();
+  @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -28,9 +41,21 @@ class Notifications extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     const SizedBox(height: 10),
+                    widget.notificationItems.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No notifications',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(color: theme.darkblue),
+                            ),
+                          )
+                        : NotificationList(items: widget.notificationItems),
+
+    
                     // List of new notifications
-                    
-                    NotificationList(items: notificationItems),
+
                     
                   ],
                 ),
@@ -50,7 +75,6 @@ class Notifications extends StatelessWidget {
       ),
     );
   }
- 
 }
 
 class NotificationList extends StatelessWidget {
@@ -65,11 +89,16 @@ class NotificationList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return ActionNotification(message: items[index].msg, id: items[index].notificationid );
+        return ActionNotification(
+          message: items[index].msg,
+          id: items[index].notificationid,
+          new_roommate: items[index].from,
+        );
       },
     );
   }
-   void printNotificationList(List<NotificationItem> notifications) {
+
+  void printNotificationList(List<NotificationItem> notifications) {
     for (var notification in notifications) {
       print(notification); // This will call the toString method
     }

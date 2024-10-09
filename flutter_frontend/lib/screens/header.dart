@@ -24,7 +24,6 @@ class _ActionNotificationState extends ConsumerState<Header> {
   @override
   void initState() {
     super.initState();
-    userEmail = ref.read(emailProvider); // Store the email in initState
   }
 
   Future<bool> getNotifications(String email) async {
@@ -61,6 +60,8 @@ class _ActionNotificationState extends ConsumerState<Header> {
 
   @override
   Widget build(BuildContext context) {
+    userEmail = ref.read(emailProvider);
+    print(userEmail);
     return Container(
       color: Colors.grey[300],
       height: 135,
@@ -76,7 +77,7 @@ class _ActionNotificationState extends ConsumerState<Header> {
                   padding: const EdgeInsets.only(left: 16.0, top: 50),
                   child: Icon(
                     Icons.menu,
-                    color: theme.darkblue,
+                    color: Colors.grey[300],
                     size: 34.0,
                   ),
                 ),
@@ -101,7 +102,7 @@ class _ActionNotificationState extends ConsumerState<Header> {
                     ),
                     onPressed: () async {
                       print("Notification button pressed");
-                      await getNotifications("odumahwilliam@gmail.com");
+                      await getNotifications(userEmail);
                     },
                   ),
                 ),
@@ -113,60 +114,6 @@ class _ActionNotificationState extends ConsumerState<Header> {
     );
   }
 }
-
-
-  /*Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0), // Add padding to the left
-          child: Icon(
-            Icons.menu,
-            color: theme.darkblue,
-            size: 34.0,
-          ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(top: 33.0), // Add padding to the title
-          child: Text(
-            'RoomHub',
-            style: TextStyle(
-              color: theme.darkblue,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 16.0), // Add padding to the right
-            child: IconButton(
-              icon: Icon(
-                Icons.notifications,
-                color: theme.darkblue,
-                size: 34.0,
-              ),
-              onPressed: () {
-                getNotifications("odumahwilliam@gmail.com");
-              },
-            ),
-          ),
-        ],
-      ),
-      body: Center(
-        child: Text(
-          'This is the body of the page',
-          style: TextStyle(fontSize: 18.0),
-        ),
-      ),
-    );
-  }*/
-
-  
 
 
 class NotificationItem {
