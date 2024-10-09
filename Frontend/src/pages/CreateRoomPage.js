@@ -1,6 +1,5 @@
 import React,{useState} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { createRoom } from '../mockApi';
 import axios from 'axios'
 import styles from '../styles/CreateRoomPage.module.css';
 
@@ -55,6 +54,8 @@ const CreateRoomPage = () => {
                     </div>
                     <button type="button" onClick={handleSubmit}>Create Room</button>
                 </form>
+                {/* Display error message if any */}
+                {error && <p className={styles.error}>{error}</p>}
                 <button className={styles.backButton} onClick={() => navigate('/home', { state: { email, hasRoom: true } })}>Back to Home</button>
             </div>
         </div>

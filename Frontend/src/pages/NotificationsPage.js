@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getNotificationsByUserId, addMemberToRoom, markNotificationAsRead } from '../mockApi'; 
 import axios from 'axios';
 import styles from '../styles/NotificationsPage.module.css';
 
@@ -22,8 +21,6 @@ const NotificationsPage = () => {
                     const response = await axios.get(
                       `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-notification`
                     );
-                    console.log('THis is the RESPONSE')
-                    console.log(response.data.All_Notifications)
 
                     setNotifications(response.data.All_Notifications);
                 } catch (error) {
@@ -36,16 +33,10 @@ const NotificationsPage = () => {
 
     // Function to accept a room invite
     const handleAccept = async (notification) => {
-        console.log('IN HANDLE ACCEPT')
-        console.log(notification);
-        // console.log(notification.from);
         const from =notification.from;
         const id = notification.notification_id
-        console.log(id)
-        console.log(from);
         try {
             // Make the API call to add the new roommate
-            console.log(email+' IS ACCEPTING REQUEST FROM '+from)
             const response = await axios.post(
                 'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/add-roommate',
                 {
@@ -60,9 +51,7 @@ const NotificationsPage = () => {
                 // If the request is successful, mark the notification as accepted
                 const updatedNotifications = notifications.map((n) =>
                     n.notification_id === id ? { ...n, status: 'accepted' } : n
-                ); 
-                console.log('UPDATED NOTIFICATIONS')
-                console.log(updatedNotifications);               
+                );              
                 setNotifications(updatedNotifications);
                 alert('User successfully to your room!');
             } else {

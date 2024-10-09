@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { getUserById } from '../mockApi';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/HomePage.module.css'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 
 const HomePage = ({ user, signOut }) => {
   const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
   const [roomName, setRoomName] = useState('');
   const [loading, setLoading] = useState(true);
-  const location = useLocation();
   const email = user?.signInDetails?.loginId;
-  // const hasRoom = !!getUserById(email).roomId;
   const navigate = useNavigate();
 
   const handleFindRoommate = () => {
@@ -49,7 +44,6 @@ const HomePage = ({ user, signOut }) => {
   return (
     <div className={styles.container}>
       <Header email={email} hasRoom={hasRoom} roomName={roomName} />
-        {/* <h1 className={styles.title}>Home Page for {email}</h1> */}
         {hasRoom ? (
           <>
           <div className={styles.cardGrid}>

@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
@@ -12,7 +11,6 @@ import NotificationsPage from './pages/NotificationsPage';
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
-import { addUser, getUserById } from './mockApi';
 import axios from 'axios'
 import UserProfile from './pages/UserProfile';
 import ScrollToTop from './ScrollToTop';
