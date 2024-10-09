@@ -48,7 +48,7 @@ const HomePage = ({ user, signOut }) => {
 
   return (
     <div className={styles.container}>
-      <Header email={email} hasRoom={hasRoom} />
+      <Header email={email} hasRoom={hasRoom} roomName={roomName} />
         {/* <h1 className={styles.title}>Home Page for {email}</h1> */}
         {hasRoom ? (
           <>

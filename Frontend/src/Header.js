@@ -3,17 +3,34 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { getNotificationsByUserId } from './mockApi';
+import axios from 'axios';
 
 import styles from './styles/Header.module.css';
-const Header = ({ email, hasRoom }) => {
+const Header = ({ email, hasRoom, roomName }) => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch notifications to check if there are unread ones
+  //Fetch notifications to check if there are unread ones
   useEffect(() => {
-    const notifications = getNotificationsByUserId(email);
-    const hasUnread = notifications.some(notification => notification.status === 'unread');
-    setHasUnreadNotifications(hasUnread);
+    const fetchNotifications = async () => {
+      try {
+        
+        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-notification`);
+        
+        
+        // Check if any notifications have status 'unread'
+        const notifications = response.data.All_Notifications; 
+        const hasUnread = notifications.length > 0;
+        setHasUnreadNotifications(hasUnread);
+
+      } catch (error) {
+        console.error('Error fetching notifications:', error);
+      }
+    };
+
+    if (email) {
+      fetchNotifications();
+    }
   }, [email]);
 
   return (
@@ -26,7 +43,7 @@ const Header = ({ email, hasRoom }) => {
           <FontAwesomeIcon 
             icon={faBell} 
             className={styles.icon} 
-            onClick={() => navigate('/notifications', { state: { email, hasRoom } })}
+            onClick={() => navigate('/notifications', { state: { email, hasRoom, roomName } })}
           />
           {hasUnreadNotifications && <span className={styles.redDot}></span>}
         </div>

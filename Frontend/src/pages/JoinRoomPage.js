@@ -16,38 +16,16 @@ const JoinRoomPage = () => {
         setOwnerEmail(event.target.value);
     };
 
-    // Function to send the GET request to check if the user has a room
-    const checkRoommateRoom = async (roommateEmail) => {
-        try {
-            const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${roommateEmail}/get-room`);
-            return response.data.room_name; // Return the room name if found
-        } catch (error) {
-            console.error('Error fetching room name:', error);
-            return null; // Return null if there's an error or no room
-        }
-    };
-
     // Function to handle the join request submission
     const handleSubmit = async (event) => {
-        event.preventDefault();  
-
-        // const roomMember = getUserById(ownerEmail);  // Check if the room member exists
-
+        event.preventDefault();
 
         try {
-            const roomName = await checkRoommateRoom(ownerEmail); // Check if the owner actually has a room
-
-            if (!roomName) {
-                // If the user doesnt have a room, show an error
-                setError('This user currently is not part of a room.');
-                return;
-            }
-
-            // If the user doesn't have a room, send a request (create a notification)
-            await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/create-notification', {
+            // Send a request to create a join-room notification
+            await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/join-room-request', {
                 from: email,
                 to: ownerEmail,
-                type: 'request',
+                type: 'join-request',
             });
 
             alert('Request sent to ' + ownerEmail);
@@ -60,10 +38,10 @@ const JoinRoomPage = () => {
                         setError('Error: User not found.');
                         break;
                     case 400:
-                        setError('Error: Invalid request. The message is empty or incorrect.');
+                        setError('Oops: Invalid request. Please check the details.');
                         break;
                     case 500:
-                        setError('Error: There was an error from our end. Please try again later.');
+                        setError('Error: There was an error on our end. Please try again later.');
                         break;
                     default:
                         setError('An unexpected error occurred.');

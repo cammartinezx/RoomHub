@@ -7,6 +7,7 @@ import styles from '../styles/JoinRoomPage.module.css';
 const AddRoommatePage = () => {
     const [roommateEmail, setRoommateEmail] = useState('');
     const [error, setError] = useState('');
+    const [available, setAvailable] = useState(false); // State to check if the feature is available
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state?.email;
@@ -27,6 +28,8 @@ const AddRoommatePage = () => {
             return null; // Return null if there's an error or no room
         }
     };
+
+
 
     // Function to handle the request to add a roommate
     const handleSendRequest = async () => {
@@ -62,6 +65,19 @@ const AddRoommatePage = () => {
             setError('Error sending request.');
         }
     };
+
+    // Render the page based on the availability of the feature
+    if (!available) {
+        return (
+            <div className={styles.container}>
+                <div className={styles.unavailable}>
+                    <h1>Feature Currently Unavailable</h1>
+                    <p>This feature is not available at the moment. You can ask the person to join your room instead.</p>
+                    <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Back to Room</button>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.container}>
