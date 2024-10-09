@@ -10,28 +10,11 @@ const notification_handler = new NotificationHander();
 
 /**
  * @memberof Notification
- * @name Add a new notification
- * @path {POST} notification/create-notification
+ * @name Create a new join-room-request notification
+ * @path {POST} notification/join-room-request
  * @query {String} from The sender user ID
  * @query {String} to The receiver user ID
- * @query {String} type The type of notification
- * @code {200} Notification Successfully created
- * @code {404} Error Creating Notification - User not found
- * @code {400} Error Creating Notification - Message is empty
- * @code {500} Backend error from the database
- * @response {String} message See description of the different status codes
- */
-router.post("/create-notification", (req, res) => {
-    notification_handler.create_notification(req, res);
-});
-
-/**
- * @memberof Notification
- * @name Add a new notification
- * @path {POST} notification/create-room-invite
- * @query {String} from The sender user ID
- * @query {String} to The receiver user ID
- * @query {String} type The type of notification
+ * @query {String} type The type of notification: join-request or (more coming soon)
  * @code {200} Notification Successfully created
  * @code {404} Error Creating Notification - User not found
  * @code {400} Error Creating Notification - Message is empty

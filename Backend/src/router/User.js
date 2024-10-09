@@ -51,7 +51,19 @@ router.get("/:id/get-room", (req, res) => {
  * @code {200} A valid notification
  * @code {400} Invalid username
  * @code {500} Backend error from the database
- * @response {JSON} A list of Notification See description of the different status codes
+ * @response {JSON} All-Notifications list of Notification See description of the different status codes
+ * @example Response: {
+    "All_Notifications": [
+        {
+            "msg": "hung@gmail.com requests to join your room",
+            "type": "join-request"
+        },
+        {
+            "msg": "dan@gmail.com invites luke@gmail.com to join their room",
+            "type": "invite"
+        }
+    ]
+}
  */
 router.get("/:id/get-notification", (req, res) => {
     user_info_handler.get_user_notification(req, res);
