@@ -2,11 +2,27 @@ import 'dart:async';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'providers.dart';
+
 /// A provider for the AWS Authentication Repository, allowing access to authentication methods.
 final authAWSRepositoryProvider =
     Provider<AWSAuthRepository>((ref) => AWSAuthRepository());
 
 class AWSAuthRepository {
+
+  Future<Map<String, String>> getUserAttributes() async {
+    // Get the current user
+    final user = await Amplify.Auth.getCurrentUser();
+    
+    // Fetch the user attributes
+    final attributes = await Amplify.Auth.fetchUserAttributes();
+    
+    // Convert attributes to a map with string keys
+    return {for (var attr in attributes) attr.userAttributeKey.toString(): attr.value};
+  }
+
+
+
   /// A getter that returns the current user's ID as a [String].
   ///
   /// This method retrieves the currently authenticated user from AWS Amplify.
@@ -85,9 +101,10 @@ class AWSAuthRepository {
   /// the user stream to emit [User.empty].
   ///
   /// Throws an exception if the sign-out fails.
-  Future<void> logOut() async {
+  Future<void> logOut(WidgetRef ref) async {
     try {
       await Amplify.Auth.signOut();
+      ref.read(emailProvider.notifier).state = '';
     } on Exception {
       rethrow; // Rethrow the exception for handling in the UI layer
     }

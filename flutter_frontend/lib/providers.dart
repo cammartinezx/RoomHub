@@ -1,16 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/aws_auth.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
 
 
 final authUserProvider = FutureProvider<String?>((ref) {
-
   // Watch the authAWSRepositoryProvider
   final authAWSRepo = ref.watch(authAWSRepositoryProvider);
   return authAWSRepo.user.then((value)=>value);
   // If authAWSRepo is not null, retrieve the user
 });
 
+/*final authUserProvider = FutureProvider<String?>((ref) async {
+  // Watch the authAWSRepositoryProvider
+  final authAWSRepo = ref.watch(authAWSRepositoryProvider);
+  try {
+    // Fetch the authenticated user's attributes
+    var userAttributes = await authAWSRepo.getUserAttributes();
+    // Find the email attribute and return i
+    return userAttributes['email'];
+  } catch (e) {
+    return null;
+  }
+});*/
 
+
+
+
+final emailProvider = StateProvider<String>((ref) => '');
 
 
 /*inal authUserProvider = FutureProvider<String>((ref) {
