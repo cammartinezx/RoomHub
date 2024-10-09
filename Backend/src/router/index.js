@@ -28,4 +28,4 @@ exports.handler = (event, context) => {
 };
 
 // useful for tests to treat backend like a regular express app.
-// module.exports = app;
+module.exports = app;
