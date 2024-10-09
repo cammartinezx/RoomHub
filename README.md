@@ -44,8 +44,8 @@ Users can rate and provide detailed feedback about their roommates, offering val
   A minimal and flexible Node.js web application framework that is ideal for handling HTTP requests and server-side logic efficiently, making it a suitable choice for API development.
 
   * **Database:**
-    **Amazon RDS:**
-    A managed relational database service that supports MySQL, offering automated backups, scaling, and high availability. This will serve as the primary database for the app, ensuring robust data management and reliability.
+    **DynamoDb:**
+    A managed nosql database service service that has direct javascript compatibility, offering automated backups, scaling, and high availability. This will serve as the primary database for the app, ensuring robust data management and reliability.
 
 ### How to Run the Project
 To get started with the RoomHub application, follow the instructions in the respective README files for the [Front End](link-to-frontend-readme) and [Back End](link-to-backend-readme). These files provide detailed steps on setting up the development environment, running the project locally, and executing tests.
