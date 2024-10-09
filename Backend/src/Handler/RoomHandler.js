@@ -142,7 +142,6 @@ class RoomHandler {
             const user_persistence = this.#user_persistence;
             const old_roommate = await user_persistence.get_user(existing_roommate_id);
             const new_roommate = await user_persistence.get_user(new_roommate_id);
-
             if (old_roommate !== null && new_roommate !== null) {
                 const room_id = old_roommate.room_id;
                 if (room_id !== undefined) {
