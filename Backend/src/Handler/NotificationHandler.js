@@ -68,14 +68,13 @@ class NotificationHandler {
             // need to verify if sender and receiver exist in database and also sender have a room
             let sender = await this.#user_persistence.get_user(from);
             // currently we have only one type "Join-request"
-            let room_id = await this.#user_persistence.get_room_id(to);
             let receiver = await this.#user_persistence.get_user(to);
 
             if (sender === null || receiver === null) {
                 response.status(404).json({ message: "User not found" });
             }
             const type = request.body.type;
-
+            let room_id = await this.#user_persistence.get_room_id(to);
             const msg = this.generate_message(from, to, type);
             if (!this.#is_valid_msg(msg)) {
                 // give a certain type of response
