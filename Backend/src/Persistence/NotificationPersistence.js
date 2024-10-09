@@ -172,7 +172,7 @@ class NotificationPersistence {
             },
         });
 
-        await docClient.send(delete_command);
+        await this.#doc_client.send(delete_command);
     }
 }
 

@@ -55,10 +55,14 @@ router.get("/:id/get-room", (req, res) => {
  * @example Response: {
     "All_Notifications": [
         {
+            "notification_id": "111-333"
+            "from": "test@gmail.com"
             "msg": "hung@gmail.com requests to join your room",
             "type": "join-request"
         },
         {
+            "notification_id": "111-444"
+            "from": "test2@gmail.com"
             "msg": "dan@gmail.com invites luke@gmail.com to join their room",
             "type": "invite"
         }
