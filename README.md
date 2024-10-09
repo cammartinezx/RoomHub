@@ -51,8 +51,8 @@ Users can rate and provide detailed feedback about their roommates, offering val
 To get started with the RoomHub application, follow the instructions in the respective README files for the [Front End](link-to-frontend-readme) and [Back End](link-to-backend-readme). These files provide detailed steps on setting up the development environment, running the project locally, and executing tests.
 
 ### Front End:
-- Instructions for running and testing the React front-end are available in the [Front End README](link-to-frontend-readme).
+- Instructions for running and testing the React front-end are available in the [Front End README](https://github.com/WilliamOdumah/RoomHub/blob/main/Frontend/README.md).
 
 ### Back End:
-- Steps for setting up the Express backend and performing tests are documented in the [Back End README](link-to-backend-readme).
+- Steps for setting up the Express backend and performing tests are documented in the [Back End README](https://github.com/WilliamOdumah/RoomHub/tree/main/Backend/README.md).
 
