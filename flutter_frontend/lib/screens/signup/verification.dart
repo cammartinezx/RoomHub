@@ -7,6 +7,12 @@ import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/config.dart';
+import 'dart:convert';
+import 'package:flutter_frontend/utils/custom_exceptions.dart';
+import 'package:flutter_frontend/utils/response_handler.dart';
+
 class Verification extends ConsumerStatefulWidget {
   final String email;
   const Verification({super.key, required this.email});
@@ -62,22 +68,10 @@ class _VerificationState extends ConsumerState<Verification> {
             // Login button to trigger sign-in operation
             ElevatedButton(
               onPressed: () async {
-                try {
-                  // Accessing AWS authentication repository using Riverpod provider
-                  final authAWSRepo = ref.read(authAWSRepositoryProvider);
-                  // Attempting to sign in with email and password
-                  await authAWSRepo.confirmSignUp(
-                      widget.email, verifyController.text);
-                  // Refresh the auth user provider after signing in
-                  ref.refresh(authUserProvider);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) => const OurHomeNewUser()),
-                  );
-                } on AuthException catch (e) {
-                  theme.buildToastMessage(e.message);
-                }
-              },
+              if(await amplifyConfirmSignUp()){
+                registerUserBE();
+              }
+            },
               child: const Text(
                 "Verify",
                 style: TextStyle(
@@ -89,6 +83,8 @@ class _VerificationState extends ConsumerState<Verification> {
             const SizedBox(
               height: 25.0,
             ),
+
+            
             // TextButton for navigating to the sign-up page
             TextButton(
               onPressed: () async {
@@ -99,6 +95,7 @@ class _VerificationState extends ConsumerState<Verification> {
                   await authAWSRepo.resendCode(widget.email);
                   // Refresh the auth user provider after signing in
                   ref.refresh(authUserProvider);
+                  theme.buildToastMessage("verification code was resent");
                 } on AuthException catch (e) {
                   theme.buildToastMessage(e.message);
                 }
@@ -119,5 +116,42 @@ class _VerificationState extends ConsumerState<Verification> {
         ),
       ),
     );
+  }
+
+  void registerUserBE() async {
+    var regBody = {
+      "id": widget.email,
+    };
+    var response = await http.post(
+      Uri.parse(signup),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode(regBody),
+    );
+    try {
+      await handlePost(response, responseType: 'signup');
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => OurHomeNewUser(),
+        ),
+      );
+    } on UserException catch (e) {
+      theme.buildToastMessage(e.message);
+    }
+  }
+
+  Future<bool> amplifyConfirmSignUp() async {
+    bool loginSuccess = false;
+    try {
+      // Accessing AWS authentication repository using Riverpod provider
+      final authAWSRepo = ref.read(authAWSRepositoryProvider);
+      // Attempting to sign in with email and password
+      await authAWSRepo.confirmSignUp( widget.email,verifyController.text);
+      // Refresh the auth user provider after signing in
+      ref.refresh(authUserProvider);
+      loginSuccess = true;
+    } on AuthException catch (e) {
+      theme.buildToastMessage(e.message);
+    }
+    return loginSuccess;
   }
 }

@@ -4,9 +4,14 @@ import 'package:flutter_frontend/screens/signup/verification.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/providers.dart';
+
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/config.dart';
+import 'dart:convert';
 
 class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({super.key});
@@ -99,21 +104,8 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0),
               ),
-              onPressed: () async {
-                try {
-                  _validateConfirmPassword();
-                  final authAWSRepo = ref.read(authAWSRepositoryProvider);
-                  await authAWSRepo.signUp(
-                      emailController.text, passwordController.text);
-                  ref.refresh(authUserProvider);
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            Verification(email: emailController.text)),
-                  );
-                } on AuthException catch (e) {
-                  theme.buildToastMessage(e.message);
-                }
+              onPressed: () {
+                amplifySignUp();
               }),
           const SizedBox(
             height: 25.0,
@@ -128,6 +120,23 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
     if (password2Controller.text != passwordController.text) {
       throw const InvalidPasswordException(
           "Password and Confirm Password don't match");
+    }
+  }
+
+  void amplifySignUp() async {
+    try {
+      _validateConfirmPassword();
+
+      final authAWSRepo = ref.read(authAWSRepositoryProvider);
+      await authAWSRepo.signUp(emailController.text, passwordController.text);
+      ref.refresh(authUserProvider);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Verification(email: emailController.text),
+        ),
+      );
+    } on AuthException catch (e) {
+      theme.buildToastMessage(e.message);
     }
   }
 }
