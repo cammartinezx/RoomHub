@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: UserPersistence</title>
+    <title>JSDoc: Class: NotificationHandler</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: UserPersistence</h1>
+    <h1 class="page-title">Class: NotificationHandler</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-Persistence.html">Persistence</a>~</span>UserPersistence<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-Handler.html">Handler</a>~</span>NotificationHandler<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Represents the user persistence layer that is linked to the user table in the database.</p></div>
+            <div class="class-description"><p>Represents the notification handler</p></div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="UserPersistence"><span class="type-signature"></span>new UserPersistence<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="NotificationHandler"><span class="type-signature"></span>new NotificationHandler<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -54,7 +54,7 @@
 
 
 <div class="description">
-    <p>Create a new UserPersistence object</p>
+    <p>Create a new NotificationHandler object</p>
 </div>
 
 
@@ -98,7 +98,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line13">line 13</a>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line12">line 12</a>
     </li></ul></dd>
     
 
@@ -154,7 +154,7 @@
     
 
     
-    <h4 class="name" id="get_notification"><span class="type-signature">(async) </span>get_notification<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id=""><span class="type-signature"></span><span class="signature">(msg)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
     
 
     
@@ -162,7 +162,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb GetCommand to get list of notification from existing user from database</p>
+    <p>Check if the passed in message is valid</p>
 </div>
 
 
@@ -198,7 +198,7 @@
 
         <tr>
             
-                <td class="name"><code>user_id</code></td>
+                <td class="name"><code>msg</code></td>
             
 
             <td class="type">
@@ -214,7 +214,7 @@
 
             
 
-            <td class="description last"><p>&quot;New user's name to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;A string representing the message to be validated&quot;</p></td>
         </tr>
 
     
@@ -255,7 +255,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line152">line 152</a>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line48">line 48</a>
     </li></ul></dd>
     
 
@@ -284,7 +284,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Return list of notification or throw new error if no notification for exist user&quot;</p>
+    <p>&quot;Returns true if valid message, return false if invalid&quot;</p>
 </div>
 
 
@@ -295,7 +295,7 @@
     </dt>
     <dd>
         
-<span class="param-type">String</span>
+<span class="param-type">Boolean</span>
 
 
     </dd>
@@ -313,7 +313,7 @@
     
 
     
-    <h4 class="name" id="get_room_id"><span class="type-signature">(async) </span>get_room_id<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="create_notification"><span class="type-signature">(async) </span>create_notification<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
     
 
     
@@ -321,7 +321,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb GetCommand to get room ID from existing user from database</p>
+    <p>Add a new notification to the persistence Layer</p>
 </div>
 
 
@@ -357,13 +357,13 @@
 
         <tr>
             
-                <td class="name"><code>user_id</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Express.request</span>
 
 
             
@@ -373,7 +373,30 @@
 
             
 
-            <td class="description last"><p>&quot;New user's name to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
         </tr>
 
     
@@ -414,7 +437,167 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line131">line 131</a>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line61">line 61</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="generate_invite_message"><span class="type-signature"></span>generate_invite_message<span class="signature">(from, to)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Create an invite message based on sender, receiver</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>from</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;a receiver ID&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line127">line 127</a>
     </li></ul></dd>
     
 
@@ -443,7 +626,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Return room ID or throw new error if no room for exist user&quot;</p>
+    <p>&quot;notification invite message&quot;</p>
 </div>
 
 
@@ -472,7 +655,7 @@
     
 
     
-    <h4 class="name" id="get_user"><span class="type-signature">(async) </span>get_user<span class="signature">(user_id)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    <h4 class="name" id="generate_message"><span class="type-signature"></span>generate_message<span class="signature">(from, to, type)</span><span class="type-signature"> &rarr; {String}</span></h4>
     
 
     
@@ -480,7 +663,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb GetCommand to get existing user from database</p>
+    <p>Create a message based on sender, receiver and type</p>
 </div>
 
 
@@ -516,7 +699,7 @@
 
         <tr>
             
-                <td class="name"><code>user_id</code></td>
+                <td class="name"><code>from</code></td>
             
 
             <td class="type">
@@ -532,7 +715,53 @@
 
             
 
-            <td class="description last"><p>&quot;New user's name to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>to</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;a receiver ID&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;a type of notification, for now we just have invite&quot;</p></td>
         </tr>
 
     
@@ -573,7 +802,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line107">line 107</a>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line114">line 114</a>
     </li></ul></dd>
     
 
@@ -602,7 +831,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Returns a user object or null if no user exists&quot;</p>
+    <p>&quot;notification message&quot;</p>
 </div>
 
 
@@ -613,7 +842,7 @@
     </dt>
     <dd>
         
-<span class="param-type">JSON</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -631,7 +860,7 @@
     
 
     
-    <h4 class="name" id="save_new_user"><span class="type-signature">(async) </span>save_new_user<span class="signature">(user_name)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    <h4 class="name" id="generate_room_request_message"><span class="type-signature"></span>generate_room_request_message<span class="signature">(from)</span><span class="type-signature"> &rarr; {String}</span></h4>
     
 
     
@@ -639,7 +868,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb PutCommand to add the new user to the database</p>
+    <p>Create an invite message based on sender, receiver</p>
 </div>
 
 
@@ -675,7 +904,7 @@
 
         <tr>
             
-                <td class="name"><code>user_name</code></td>
+                <td class="name"><code>from</code></td>
             
 
             <td class="type">
@@ -691,7 +920,7 @@
 
             
 
-            <td class="description last"><p>&quot;New user's name to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
         </tr>
 
     
@@ -732,7 +961,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line80">line 80</a>
+        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -761,7 +990,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Returns a json object with 2 keys; status and message. &quot;</p>
+    <p>&quot;notification invite message&quot;</p>
 </div>
 
 
@@ -772,333 +1001,13 @@
     </dt>
     <dd>
         
-<span class="param-type">JSON</span>
+<span class="param-type">String</span>
 
 
     </dd>
 </dl>
 
     
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="update_user_notifications"><span class="type-signature">(async) </span>update_user_notifications<span class="signature">(notif_id, user_id)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Updates the user notifications field with the new notification id</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>notif_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;The unique identifier for the notification&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>user_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;The id for the user who now belongs to this notification&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line173">line 173</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="update_user_room"><span class="type-signature">(async) </span>update_user_room<span class="signature">(room_id, user_id)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Updates the users room_id field with the new room id</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>room_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;The unique identifier for the room&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>user_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;The id for the user who now belongs to this room&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_UserPersistence.js.html">Persistence/UserPersistence.js</a>, <a href="Persistence_UserPersistence.js.html#line198">line 198</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: Services</title>
+    <title>JSDoc: Source: router/Notification.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,139 +17,50 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: Services</h1>
+    <h1 class="page-title">Source: router/Notification.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>All services to access the different persistence objects</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Utility_Services.js.html">Utility/Services.js</a>, <a href="Utility_Services.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-Services-Services.html">Services</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace Notification
+ * @description Routes related to notifications
+ */
+const express = require("express");
+const router = express.Router();
+const NotificationHander = require("../Handler/NotificationHandler");
+
+const notification_handler = new NotificationHander();
+
+/**
+ * @memberof Notification
+ * @name Create a new join-room-request notification
+ * @path {POST} notification/join-room-request
+ * @query {String} from The sender user ID
+ * @query {String} to The receiver user ID
+ * @query {String} type The type of notification: join-request or (more coming soon)
+ * @code {200} Notification Successfully created
+ * @code {404} Error Creating Notification - User not found
+ * @code {400} Error Creating Notification - Message is empty
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ */
+router.post("/join-room-request", (req, res) => {
+    notification_handler.create_notification(req, res);
+});
+
+router.use("/", (req, res) => {
+    res.status(200).json({ message: "Welcome to the Notification paths" });
+});
+
+module.exports = router;
+</code></pre>
+        </article>
+    </section>
 
 
 
