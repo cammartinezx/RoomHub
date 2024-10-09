@@ -72,7 +72,7 @@ class UserInfoHandler {
      */
     async create_user(request, response) {
         try {
-            const user_id = request.body.id;
+            const user_id = request.body.id.trim().toLowerCase();
             if (!this.#is_valid_id(user_id)) {
                 // give a certain type of response
                 return response.status(400).json({ message: "Error Creating User- User id is invalid" });
