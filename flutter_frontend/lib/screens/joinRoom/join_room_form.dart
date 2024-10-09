@@ -29,11 +29,11 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
   void initState() {
     super.initState();
     // Store the email in initState
-    userEmail = ref.read(emailProvider);
   }
 
   @override
   Widget build(BuildContext context) {
+    userEmail = ref.read(emailProvider);
     return Scaffold(
         body: Stack(
       //thanks for watching
@@ -43,19 +43,39 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
           width: double.infinity,
           decoration: BoxDecoration(
             gradient: LinearGradient(colors: [
-              theme.darkblue,
               theme.mintgreen,
+              theme.darkblue,
             ]),
           ),
-          child: const Padding(
-            padding: EdgeInsets.only(top: 85.0, left: 22),
-            child: Text(
-              'Request to join\n A Room',
-              style: TextStyle(
-                  fontSize: 30,
+        ),
+        Positioned(
+          top: 40.0,
+          left: 20.0,
+          right: 20.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Back button
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
                   color: Colors.white,
-                  fontWeight: FontWeight.w900),
-            ),
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Go back to previous screen
+                },
+              ),
+              // Title on the right
+              const Text(
+                '\nRequest to join\n A Room',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900),
+              ),
+            ],
           ),
         ),
         Padding(
@@ -218,10 +238,12 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(regBody),
       );
-      await handlePost(response, responseType: 'joinRoom');
+      print(JoinRoom);
       print(response.body);
+      print(response.statusCode);
+      await handlePost(response, responseType: 'joinRoom');
       createSuccess = true;
-    } on UserException catch (e) {
+    } on NotificationException catch (e) {
       theme.buildToastMessage(e.message);
     }
     return createSuccess;

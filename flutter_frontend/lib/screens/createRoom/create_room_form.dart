@@ -29,11 +29,12 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
   void initState() {
     super.initState();
     // Store the email in initState
-    userEmail = ref.read(emailProvider as ProviderListenable<String>);
   }
 
   @override
   Widget build(BuildContext context) {
+    userEmail = ref.read(emailProvider);
+    print(userEmail);
     return Scaffold(
         body: Stack(
       //thanks for watching
@@ -47,15 +48,35 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
               theme.darkblue,
             ]),
           ),
-          child: const Padding(
-            padding: EdgeInsets.only(top: 70.0, left: 22),
-            child: Text(
-              'Create New\nRoom',
-              style: TextStyle(
-                  fontSize: 30,
+        ),
+        Positioned(
+          top: 40.0,
+          left: 20.0,
+          right: 20.0,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Back button
+              IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
                   color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Go back to previous screen
+                },
+              ),
+              // Title on the right
+              const Text(
+                '\nCreating your\n Room',
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                    fontSize: 30,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900),
+              ),
+            ],
           ),
         ),
         Padding(
@@ -205,11 +226,13 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(regBody),
       );
+      print(createRoom);
+      print(regBody);
+      print(response);
+
       await handlePost(response, responseType: 'createRoom');
-      print(response.body);
       createSuccess = true;
     } on RoomException catch (e) {
-      print(userEmail);
       print(e.message);
       theme.buildToastMessage(e.message);
     }
