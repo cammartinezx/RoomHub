@@ -49,7 +49,7 @@ describe("Unit test for creating user", () => {
 
         res.status = jest.fn().mockReturnValue(res); // Allows chaining like res.status(200).json()
         res.json = jest.fn();
-        jest.clearAllMocks();                                                
+        jest.clearAllMocks();
     });
 
     it("Send a success response verifying that the user was correctly created", async () => {
@@ -220,8 +220,7 @@ describe("Testing getting a user notification", () => {
                     msg: "dan invite luke to join their room",
                     type: "invite",
                 };
-            }
-            else if (notif_id === "222-222") {
+            } else if (notif_id === "222-222") {
                 return {
                     msg: "daniel invite lu to join their room",
                     type: "invite",
@@ -236,7 +235,7 @@ describe("Testing getting a user notification", () => {
         await userInfoHandler.get_user_notification(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({ 
+        expect(res.json).toHaveBeenCalledWith({
             All_Notifications: [
                 {
                     msg: "dan invite luke to join their room",
@@ -245,8 +244,8 @@ describe("Testing getting a user notification", () => {
                 {
                     msg: "daniel invite lu to join their room",
                     type: "invite",
-                }
-            ]
+                },
+            ],
         });
     });
 

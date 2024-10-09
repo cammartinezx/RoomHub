@@ -14,8 +14,8 @@ jest.mock("../../../src/Handler/UserInfoHandler", () => {
                     {
                         msg: "dan invite luke to join their room",
                         type: "invite",
-                    }
-                ]
+                    },
+                ],
             });
         }),
 
@@ -43,13 +43,13 @@ describe("User router tests", () => {
         const user_id = "test@gmail.com";
         const response = await request(app).get(`/user/${user_id}/get-notification`);
         const exp_stat = 200;
-        const exp_msg = { 
+        const exp_msg = {
             All_Notification: [
                 {
                     msg: "dan invite luke to join their room",
                     type: "invite",
-                }
-            ] 
+                },
+            ],
         };
         expect(response.status).toBe(exp_stat);
         expect(response.body).toEqual(exp_msg);

@@ -40,14 +40,15 @@ describe("Unit test for creating notification", () => {
         notificationHandler.get_user_persistence().get_user.mockImplementation(() => {
             return { user_id: "test234@gmail.com", notification: ["111-111", "222-222"] };
         });
-        notificationHandler.get_notification_persistence().generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
-            return "SUCCESS"
-        });
+        notificationHandler
+            .get_notification_persistence()
+            .generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
+                return "SUCCESS";
+            });
         notificationHandler.get_user_persistence().update_user_notifications.mockImplementation((notif_id, user_id) => {
             if (user_id === "test123@gmail.com") {
                 console.log(`Update notification ${notif_id} for user ${user_id}`);
-            }
-            else if (user_id === "test234@gmail.com") {
+            } else if (user_id === "test234@gmail.com") {
                 console.log(`Update notification ${notif_id} for user ${user_id}`);
             }
         });
@@ -71,9 +72,11 @@ describe("Unit test for creating notification", () => {
         notificationHandler.get_user_persistence().get_user.mockImplementation(() => {
             return { user_id: "test234@gmail.com", notification: ["111-111", "222-222"] };
         });
-        notificationHandler.get_notification_persistence().generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
-            return "FAILURE";
-        });
+        notificationHandler
+            .get_notification_persistence()
+            .generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
+                return "FAILURE";
+            });
 
         req.body = { from: "test123@gmail.com", to: "test234@gmail.com", type: "invite" };
 
@@ -107,14 +110,15 @@ describe("Unit test for creating notification", () => {
         notificationHandler.get_user_persistence().get_user.mockImplementation(() => {
             return { user_id: "test234@gmail.com", notification: ["111-111", "222-222"] };
         });
-        notificationHandler.get_notification_persistence().generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
-            return "SUCCESS"
-        });
+        notificationHandler
+            .get_notification_persistence()
+            .generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
+                return "SUCCESS";
+            });
         notificationHandler.get_user_persistence().update_user_notifications.mockImplementation((notif_id, user_id) => {
             if (user_id === "test123@gmail.com") {
                 console.log(`Update notification ${notif_id} for user ${user_id}`);
-            }
-            else if (user_id === "test234@gmail.com") {
+            } else if (user_id === "test234@gmail.com") {
                 console.log(`Update notification ${notif_id} for user ${user_id}`);
             }
         });
