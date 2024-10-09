@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+
+
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'dart:convert';
@@ -15,10 +16,8 @@ Future<void> handlePost(http.Response response,
           break;
         case 400:
           throw UserException("Error Creating User - Email is invalid");
-          break;
         case 500:
           throw UserException("Something went wrong. Try again later");
-          break;
         default:
           throw UserException("Something went wrong. Try again later");
       }
@@ -35,7 +34,6 @@ Future<void> handlePost(http.Response response,
           break;
         case 500:
           throw RoomException("Something went wrong. Try again later");
-          break;
         default:
           throw RoomException("Something went wrong. Try again later");
       }
@@ -45,13 +43,13 @@ Future<void> handlePost(http.Response response,
       switch (response.statusCode) {
         case 404:
           if (response.body.contains("Room not found")) {
-            print("Room not found");
+            throw UserException("Room not found");
           } else if (response.body.contains("User not found")) {
-            print("User not found");
+            throw UserException("User not found");
           } else if (response.body.contains("New roommate not found")) {
-            print("New roommate not found");
+            throw UserException("New roommate not found");
           } else if (response.body.contains("Old roommate not found")) {
-            print("Old roommate not found");
+            throw UserException("Old roommate not found");
           }
           break;
         case 500:
@@ -142,13 +140,6 @@ Future<String> getResponse(http.Response response,
 
     case 'getUserNotification':
       switch (response.statusCode) {
-        case 200:
-          var jsonResponse = jsonDecode(response.body);
-          if (jsonResponse.containsKey('notification')) {
-            return jsonResponse['notification'];
-          } else {
-            throw UserException('Notification not found in the response');
-          }
         case 400:
           if (response.body.contains("Invalid username")) {
             throw UserException('Invalid username');

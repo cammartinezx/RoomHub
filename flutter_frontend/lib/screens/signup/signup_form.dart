@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/signup/verification.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,9 +8,6 @@ import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:flutter_frontend/config.dart';
-import 'dart:convert';
 
 class SignUpForm extends ConsumerStatefulWidget {
   const SignUpForm({super.key});
@@ -26,8 +22,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController password2Controller = TextEditingController();
   final theme = OurTheme();
-  Color _confirmPasswordBorderColor = Color.fromARGB(255, 29, 52, 83);
-  String? _errorMessage; // State variable for error message
+// State variable for error message
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +42,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
             controller: emailController,
             cursorColor: theme.darkblue,
             decoration: InputDecoration(
-                prefixIcon: Icon(Icons.alternate_email),
+                prefixIcon: const Icon(Icons.alternate_email),
                 label: Text(
                   "Email",
                   style: TextStyle(color: theme.darkblue),
@@ -59,7 +54,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           TextFormField(
             cursorColor: theme.darkblue,
             decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person_outline),
+                prefixIcon: const Icon(Icons.person_outline),
                 label: Text(
                   "Full Name",
                   style: TextStyle(color: theme.darkblue),
@@ -72,7 +67,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
             controller: passwordController,
             cursorColor: theme.darkblue,
             decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outline),
+                prefixIcon: const Icon(Icons.lock_outline),
                 label: Text(
                   " Password",
                   style: TextStyle(color: theme.darkblue),
@@ -86,7 +81,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
             controller: password2Controller,
             cursorColor: theme.darkblue,
             decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock_outline),
+                prefixIcon: const Icon(Icons.lock_outline),
                 label: Text(
                   "Confirm Password",
                   style: TextStyle(color: theme.darkblue),

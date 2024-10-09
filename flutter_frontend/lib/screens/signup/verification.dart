@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
