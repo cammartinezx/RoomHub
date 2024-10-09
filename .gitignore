@@ -2,8 +2,9 @@ node_modules
 .env
 testing
 testings1
+testings2
 *.zip
-
+coverage
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
 amplify/.config/local-*
