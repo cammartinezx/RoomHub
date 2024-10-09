@@ -37,6 +37,8 @@ class AWSAuthRepository {
     }
   }
 
+   
+
   /// Signs up a new user with the provided [email] and [password].
   ///
   /// This method creates a new account in AWS Cognito using the specified email
@@ -103,9 +105,42 @@ class AWSAuthRepository {
   Future<void> logOut(WidgetRef ref) async {
     try {
       await Amplify.Auth.signOut();
-      ref.read(emailProvider.notifier).state = '';
+      ref.read(emailProvider.notifier).state = ''; // Check if the widget is still mounted before navigating
+
     } on Exception {
       rethrow; // Rethrow the exception for handling in the UI layer
     }
   }
+
+  Future<String?> getUserEmail(WidgetRef ref) async {
+  try {
+    // Fetch user attributes like email
+    List<AuthUserAttribute> attributes = await Amplify.Auth.fetchUserAttributes();
+
+    // Extract email
+    String? email;
+    for (var attribute in attributes) {
+      if (attribute.userAttributeKey == CognitoUserAttributeKey.email) {
+        email = attribute.value;
+        break;
+      }
+    }
+
+    if (email != null) {
+      // Store the email in the provider
+      ref.read(emailProvider.notifier).state = email;
+      return email; // Return the email
+    } else {
+      print("Email not found for the user");
+      return null; // Return null if the email is not found
+    }
+  } catch (e) {
+    print("Error retrieving user email: $e");
+    return null; // Return null in case of an error
+  }
+}
+
+
+
+
 }
