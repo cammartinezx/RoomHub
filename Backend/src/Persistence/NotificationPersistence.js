@@ -164,6 +164,10 @@ class NotificationPersistence {
         await this.#doc_client.send(update_command);
     }
 
+    /**
+     * Delete a notification with the notification id.
+     * @param {String} notification_id  "The unique identifier for the notification"
+     */
     async delete_notification(notification_id) {
         const delete_command = new DeleteCommand({
             TableName: "Notification",

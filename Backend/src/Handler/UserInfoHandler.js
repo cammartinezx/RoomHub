@@ -24,7 +24,7 @@ class UserInfoHandler {
     #room_persistence;
 
     /**
-     * The room persistence object used by the info handler.
+     * The notificaion persistence object used by the info handler.
      * @type {string}
      * @private
      */

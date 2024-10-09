@@ -23,7 +23,11 @@ class RoomHandler {
      * @private
      */
     #user_persistence;
-
+    /**
+     * The room persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
     #notification_persistence;
 
     /**

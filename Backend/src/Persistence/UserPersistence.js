@@ -213,6 +213,11 @@ class UserPersistence {
         await this.#doc_client.send(update_command);
     }
 
+    /**
+     * Deletes a notification from a users set of notification
+     * @param {String} notification_id "The unique identifier for the notification"
+     * @param {String} user_id "The id for the user who now belongs to this room"
+     */
     async update_notification_set(notification_id, user_id) {
         const update_command = new UpdateCommand({
             TableName: "User",
