@@ -38,6 +38,19 @@ class OurTheme {
               const EdgeInsets.symmetric(horizontal: 100.0, vertical: 12.0),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        ),
+        textTheme: TextTheme(
+          // Define headline styles
+          headlineLarge: TextStyle(
+            fontSize: 32, // Example size for headline
+            fontWeight: FontWeight.bold,
+            color: darkblue, // Use your defined mainText color
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: darkblue,
+          ),
         ));
   }
 
