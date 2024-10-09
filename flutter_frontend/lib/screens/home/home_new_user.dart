@@ -1,23 +1,4 @@
-/*import 'package:flutter/material.dart';
 
-class Homenewuser extends StatelessWidget {
-  const Homenewuser({super.key});
-
-  @override
-  Widget build(BuildContext context){
-    return Scaffold(   
-        body: Container(
-        decoration: const BoxDecoration (
-          gradient: LinearGradient(
-          colors: [ Color.fromARGB(255, 29, 52, 83), ],
-          begin: FractionalOffset(0.0, 0.4), 
-          end: Alignment. topRight,
-        )
-        )
-    )
-    );
-  }
-}*/
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/createRoom/create_room.dart';
 import 'package:flutter_frontend/screens/header.dart';
@@ -25,7 +6,8 @@ import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
-import 'package:flutter_frontend/utils/comingsoon.dart';
+//import 'package:flutter_frontend/utils/comingsoon.dart';
+import 'package:flutter_frontend/screens/login/login.dart';
 
 import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -150,9 +132,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                           GradientButton(
                               text: "Continue",
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const ComingSoonPage()));
+                               theme.buildToastMessage("coming soon");
                               })
                         ],
                       ),
@@ -195,6 +175,10 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
       // Refresh the auth user provider after signing in
       // ignore: unused_result
       ref.refresh(authUserProvider);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) =>
+                OurLogin()));
     } on AuthException catch (e) {
       theme.buildToastMessage(e.message);
     }

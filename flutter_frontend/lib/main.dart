@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/header.dart';
 import 'package:flutter_frontend/screens/notifications.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
-import 'package:flutter_frontend/screens/home/home.dart';
+import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
@@ -12,6 +12,7 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
+import 'package:flutter_frontend/aws_auth.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
@@ -38,13 +39,13 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
   bool _amplifyConfigured = false;
   final theme = OurTheme();
-  late String? userEmail;
+  String? userEmail;
+  late String eemail;
   @override
   void initState() {
     super.initState();
     // Configure Amplify when the app initializes
     _configureAmplify();
-    userEmail = ref.read(emailProvider);
   }
 
   /// Configures the Amplify libraries and adds the necessary plugins.
@@ -65,7 +66,102 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     }
   }
 
+  @override
+  Widget build(BuildContext) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false, // Hides the debug banner
+      theme: OurTheme().buildTheme(),
+      // Sets the app's theme
+      home: _amplifyConfigured
+          ? Consumer(builder: (context, ref, child) {
+              final currentUser = ref.watch(authUserProvider);
+              return currentUser.when(
+                data: (userId) {
+                  if (userId == null) {
+                    return const OurLogin(); // Show login page if no user is logged in
+                  } else {
+                    return FutureBuilder<Widget>(
+                      future:
+                          redirectHome(), // Call redirectHome with non-null userEmail
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // Loading state
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          // Handle error state
+                          return const OurHomeNewUser(); // Show an error page
+                        } else {
+                          // Successfully fetched the room name, return the widget
+                          return snapshot.data ??
+                              const OurHomeNewUser(); // Fallback if data is null
+                        }
+                      },
+                    ); // Show home page if user is logged in
+                  }
+                },
+                loading: () {
+                  // You can either return a loading indicator or a placeholder here
+                  return const Center(
+                      child: CircularProgressIndicator()); // Loading state
+                },
+                error: (e, st) {
+                  return const OurHomeNewUser(); // Show login page on error
+                },
+              );
+            })
+          : const Center(
+              child:
+                  CircularProgressIndicator()), // Show a loading indicator while checking configuration
+      routes: {
+        '/loginPage': (context) =>
+            const OurLogin(), // Defines the route for the login page
+        //'/homeNewPage': (context) =>const OurHomeNewUser(), // Defines the route for the home page
+      },
+    );
+  }
 
+  Future<Widget> redirectHome() async {
+    try {
+      userEmail = await getEmail();
+
+      // Send a POST request to the backend to get the user's room information
+      var response = await http.get(
+        Uri.parse(
+            "${url}user/$userEmail/get-room"), // Make sure 'url' is defined correctly
+        headers: {"Content-Type": "application/json"},
+      );
+      //print("${url}user/$user/get-room");
+      // Await the response and get the room name
+      print("${url}user/$userEmail/get-room");
+
+      String roomName =
+          await getResponse(response, responseType: 'getUserRoom');
+
+      // Display a toast message with the room name
+      // Based on the roomName, return the appropriate widget
+      if (roomName == "NA") {
+        return const OurHomeNewUser();
+      } else {
+        return OurHome(roomID: roomName);
+      }
+    } on UserException catch (e) {}
+    return OurLogin(); // Fallback in case of error
+  }
+
+  Future<String?> getEmail() async {
+    final authAWSRepo = ref.read(authAWSRepositoryProvider);
+    userEmail = await authAWSRepo.getUserEmail(ref);
+    print(userEmail);
+    return userEmail;
+  }
+}
+
+
+  
+
+/*
    @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -143,4 +239,4 @@ Future<Widget> redirectHome(String user) async {
 
 
  
-}
+}*/
