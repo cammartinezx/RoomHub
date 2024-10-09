@@ -70,10 +70,18 @@ class NotificationHandler {
             // currently we have only one type "Join-request"
             let room_id = await this.#user_persistence.get_room_id(to);
             let receiver = await this.#user_persistence.get_user(to);
+
+            // actions
+            let action_required;
+            let action_taken;
             if (sender === null || receiver === null) {
                 response.status(404).json({ message: "User not found" });
             }
             const type = request.body.type;
+            if (type === "join-request") {
+                action_required = "True";
+                action_taken = "False";
+            }
 
             const msg = this.generate_message(from, to, type);
             if (!this.#is_valid_msg(msg)) {
@@ -88,6 +96,8 @@ class NotificationHandler {
                 to,
                 type,
                 room_id,
+                action_required,
+                action_taken,
             );
 
             if (new_notification_status === "SUCCESS") {
