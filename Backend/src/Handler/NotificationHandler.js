@@ -52,6 +52,13 @@ class NotificationHandler {
         return true;
     }
 
+    #is_valid_user_string(user_string) {
+        if (user_string.length <= 0 || user_string === undefined) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Add a new notification to the persistence Layer
      * @async
@@ -64,6 +71,10 @@ class NotificationHandler {
             const status = "unread";
             const from = request.body.from;
             const to = request.body.to;
+
+            if (!this.#is_valid_user_string(to)) {
+                response.status("404").json({ message: "User not found" });
+            }
 
             // need to verify if sender and receiver exist in database and also sender have a room
             let sender = await this.#user_persistence.get_user(from);
