@@ -160,7 +160,8 @@ class UserPersistence {
 
         let notification = response.Item.notification;
         if (notification === undefined) {
-            throw new Error(`User ${user_id} doesn't have a notification yet`);
+            // throw new Error(`User ${user_id} doesn't have a notification yet`);
+            notification = new Set([]);
         }
         return notification;
     }
@@ -204,6 +205,23 @@ class UserPersistence {
             UpdateExpression: "set room_id = :room_id",
             ExpressionAttributeValues: {
                 ":room_id": room_id,
+            },
+            ConditionExpression: "attribute_exists(user_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    async update_notification_set(notification_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "DELETE notification :notification_id",
+            ExpressionAttributeValues: {
+                ":notification_id": new Set([notification_id]),
             },
             ConditionExpression: "attribute_exists(user_id)",
             ReturnValues: "NONE",
