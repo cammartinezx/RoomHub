@@ -11,9 +11,10 @@
       "recurse": true,
       "title": "RoomHub Documentation"
     },
-    "plugins": ["jsdoc-http-plugin", "plugins/markdown"],
+    "plugins": [ "plugins/markdown" ,"jsdoc-http-plugin"],
     "templates": {
       "cleverLinks":true,
       "monospaceLinks":true
     }
   }
+

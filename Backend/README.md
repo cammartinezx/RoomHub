@@ -1,6 +1,6 @@
-### RoomHub
+# RoomHub
 
-# Backend Quickstart
+## Backend Quickstart
 No need to host the backend manually. It is hosted on aws lambda.
 If lambda doesn't work:
 1. Make sure `node` and `npm` are installed. To check:
