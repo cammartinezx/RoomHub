@@ -87,12 +87,14 @@ class NotificationPersistence {
 
         let message = response.Item.message;
         let type = response.Item.type;
+        let from = response.Item.from;
         if (message === undefined || message === "") {
             throw new Error("Notification doesn't have a message");
         }
         return {
             msg: message,
             type: type,
+            from: from,
         };
     }
 

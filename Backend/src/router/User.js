@@ -51,7 +51,7 @@ router.get("/:id/get-room", (req, res) => {
  * @code {200} A valid notification
  * @code {400} Invalid username
  * @code {500} Backend error from the database
- * @response {JSON} All-Notifications list of Notification See description of the different status codes
+ * @response {JSON} All_Notifications list of Notification See description of the different status codes
  * @example Response: {
     "All_Notifications": [
         {

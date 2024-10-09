@@ -92,7 +92,7 @@ class NotificationHandler {
 
             if (new_notification_status === "SUCCESS") {
                 // assign new notification to both sender and receiver
-                await this.#user_persistence.update_user_notifications(notif_id, from);
+                // await this.#user_persistence.update_user_notifications(notif_id, from);
                 await this.#user_persistence.update_user_notifications(notif_id, to);
                 response.status(200).json({ message: "Successfully Created the new notification" });
             } else {
