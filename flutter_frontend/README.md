@@ -10,47 +10,66 @@ After cloning, they should navigate to the project's root directory:
 cd flutter_frontend
 ```
 
-1. ## Install Flutter SDK
-Install the Flutter SDK if you don't have it already.Follow the official installation instructions for their operating system on the Flutter website: https://flutter.dev/docs/get-started/install
+## Prerequisites
 
-2. ## Install Dart SDK
-The Dart SDK is bundled with Flutter, so once you install Flutter, Dart is also installed.
+Step 1: Install Xcode
 
-3. ## Install Flutter Dependencies
-After cloning the repo, run the following command to install all the necessary dependencies specified in the pubspec.yaml file:
-```
-flutter pub get
-```
+Open the App Store on your Mac.
+Search for Xcode and click Get to download it.
+Install Xcode by following the on-screen instructions.
+Open Xcode after installation to complete the setup.
+Step 2: Install Xcode Command-Line Tools
 
-4. ## Set Up an Emulator
-Set up an ios simulator from xcode.
-### Step 1: Open Xcode
-1. Launch Xcode on your Mac.
+Open Terminal (found in Applications > Utilities).
+Run the following command to set the Xcode developer directory:
+bash
+Copy code
+sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
+Accept the Xcode License Agreement:
+You can do this by opening Xcode, which will prompt you to accept the agreement, or by running the following command in Terminal:
+bash
+Copy code
+sudo xcodebuild -license accept
+Step 3: Install Homebrew
 
-### Step 2: Open Preferences
-1. In the menu bar, click on Xcode.
-2. Select Preferences from the dropdown menu.
+In the Terminal, run the following command to install Homebrew:
+bash
+Copy code
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+Follow the on-screen instructions. You may need to enter your password.
+Step 4: Install CocoaPods
 
-### Step 3: Go to Components
-1. In the Preferences window, click on the Components tab. This section allows you to manage the simulators available for installation.
+After installing Homebrew, install CocoaPods by running:
+bash
+Copy code
+brew install cocoapods
+Step 5: Install Flutter
 
-### Step 4: Download Simulators
-1. You will see a list of available simulator versions under the Simulators section.
-2. Click the download icon (a cloud with an arrow) next to the simulator versions you want to install. This typically includes different iOS versions and device types (e.g., iPhone, iPad).
+If you haven’t installed Flutter yet, download the Flutter SDK from the Flutter official website.
+Extract the downloaded archive to a desired location (e.g., ~/flutter).
+Add Flutter to your PATH by adding the following line to your .bash_profile, .zshrc, or .bashrc file (depending on your shell):
+bash
+Copy code
+export PATH="$PATH:`pwd`/flutter/bin"
+Run the following command to apply the changes:
+bash
+Copy code
+source ~/.bash_profile   # or source ~/.zshrc
+Step 6: Verify Flutter Installation
 
-### Step 5: Wait for the Download to Complete
-1. Xcode will download and install the selected simulators. This may take some time depending on your internet connection.
+Run flutter doctor in the Terminal to check if Flutter is set up correctly:
+bash
+Copy code
+flutter doctor
+Follow any prompts to install missing dependencies or resolve issues.
 
-### Step 6: Use the Simulators
-1. Once the download is complete, you can start using the simulators.
-2. To run your app on a simulator, go to the Product menu in Xcode, select Destination, and then choose the simulator you want to use from the list.
 
-### Notes
-- Make sure your version of Xcode is up to date, as older versions may not support newer simulators.
-- You can create new simulator devices from the Devices and Simulators window, which can be accessed via Window > Devices and Simulators1. Run the App
+
  
 Finally run in your vscode terminal:
 ```
 flutter run
 ```
+
+
 
