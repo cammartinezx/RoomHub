@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/widgets/button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
-import 'package:flutter_frontend/utils/comingsoon.dart';
+//import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/screens/header.dart';
 
@@ -29,8 +30,9 @@ class _OurHomeState extends ConsumerState<OurHome> {
           children: <Widget>[
             Header(),
             ListView(
-              padding: const EdgeInsets.only(left: 20,right:20),
-              physics: const NeverScrollableScrollPhysics(), // Prevent scrolling
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              physics:
+                  const NeverScrollableScrollPhysics(), // Prevent scrolling
               shrinkWrap: true,
               children: <Widget>[
                 //MY ROOM
@@ -88,8 +90,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                             MyButton(
                               text: "Continue",
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => ComingSoonPage()));
+                                theme.buildToastMessage("coming soon");
                               },
                             ),
                           ],
@@ -120,10 +121,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                               MyButton(
                                   text: "Continue",
                                   onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ComingSoonPage()));
+                                    theme.buildToastMessage("coming soon");
                                   })
                             ]),
                       ),
@@ -135,7 +133,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                     ],
                   ),
                 ),
-                    
+
                 ElevatedButton(
                   onPressed: () async {
                     logOut();
@@ -164,6 +162,9 @@ class _OurHomeState extends ConsumerState<OurHome> {
       await authAWSRepo.logOut(ref);
       // Refresh the auth user provider after signing in
       ref.refresh(authUserProvider);
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => OurLogin()));
     } on AuthException catch (e) {
       theme.buildToastMessage(e.message);
     }

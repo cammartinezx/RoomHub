@@ -121,6 +121,7 @@ class _VerificationState extends ConsumerState<Verification> {
   }
 
   void registerUserBE() async {
+    try {
     var regBody = {
       "id": widget.email,
     };
@@ -129,13 +130,14 @@ class _VerificationState extends ConsumerState<Verification> {
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(regBody),
     );
-    try {
       await handlePost(response, responseType: 'signup');
+      ref.read(emailProvider.notifier).state = widget.email;
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => OurHomeNewUser(),
         ),
       );
+      
     } on UserException catch (e) {
       theme.buildToastMessage(e.message);
     }
