@@ -24,7 +24,7 @@ class UserInfoHandler {
     #room_persistence;
 
     /**
-     * The room persistence object used by the info handler.
+     * The notificaion persistence object used by the info handler.
      * @type {string}
      * @private
      */
@@ -72,7 +72,7 @@ class UserInfoHandler {
      */
     async create_user(request, response) {
         try {
-            const user_id = request.body.id;
+            const user_id = request.body.id.trim().toLowerCase();
             if (!this.#is_valid_id(user_id)) {
                 // give a certain type of response
                 return response.status(400).json({ message: "Error Creating User- User id is invalid" });
@@ -133,7 +133,7 @@ class UserInfoHandler {
                 // if valid user id
                 let user = await this.#user_persistence.get_user(user_id);
                 if (user === null) {
-                    response.status(404).json({ room_name: "User not found" });
+                    response.status(404).json({ message: "User not found" });
                 } else {
                     let notification = await this.#user_persistence.get_notification(user_id);
                     // convert set into array
