@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -95,7 +97,7 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
                         ),
                       ]),
 
-                  SizedBox(width: 50),
+                  const SizedBox(width: 50),
 
                   Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +123,7 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
                         ),
                       ]),
 
-                  SizedBox(width: 50), // Space between instructions
+                  const SizedBox(width: 50), // Space between instructions
 
                   // Third instruction
                   Row(

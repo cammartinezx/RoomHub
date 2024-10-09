@@ -12,7 +12,6 @@ class AWSAuthRepository {
 
   Future<Map<String, String>> getUserAttributes() async {
     // Get the current user
-    final user = await Amplify.Auth.getCurrentUser();
     
     // Fetch the user attributes
     final attributes = await Amplify.Auth.fetchUserAttributes();

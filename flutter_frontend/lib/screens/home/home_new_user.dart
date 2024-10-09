@@ -20,8 +20,8 @@ class Homenewuser extends StatelessWidget {
 }*/
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/createRoom/create_room.dart';
+import 'package:flutter_frontend/screens/header.dart';
 import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
-import 'package:flutter_frontend/widgets/button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
@@ -44,187 +44,147 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0), // Add padding to the left
-          child: Icon(
-            Icons.menu,
-            color: theme.darkblue,
-            size: 34.0,
-          ),
-        ),
-        title: Padding(
-          padding: const EdgeInsets.only(
-              top: 33.0), // Add horizontal padding to the text
-          child: Text(
-            'RoomHub',
-            style: TextStyle(
-              color: theme.darkblue,
-              fontSize: 28.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        actions: [
-          Padding(
-            padding:
-                const EdgeInsets.only(right: 16.0), // Add padding to the right
-            child: IconButton(
-              icon: Icon(
-                Icons.notifications,
-                color: theme.darkblue,
-                size: 34.0,
-              ),
-              onPressed: () {
-                // Add functionality here
-              },
-            ),
-          ),
-        ],
-      ),
-      body: Column(
+  return Scaffold(
+    backgroundColor: Colors.grey[300],
+    body: SingleChildScrollView(
+      child: Column(
         children: <Widget>[
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.only(
-                  top: 40.0, right: 20, left: 20, bottom: 20),
-              children: <Widget>[
-//CREATE ROOM CONTAINER
-                OurContainer(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 6,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text("Create a Room",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 29, 52, 83),
-                                      fontSize: 23.0,
-                                      fontWeight: FontWeight.bold)),
-                              const Text('If is your first time in the app',
-                                  softWrap: true),
-                              const SizedBox(height: 10),
-                              GradientButton(
-                                  text: "Continue",
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => CreateRoom(),
-                                    ));
-                                  })
-                            ]),
+          Header(),
+          ListView(
+            padding: const EdgeInsets.only(
+                top: 10.0, right: 20, left: 20, bottom: 20),
+            physics: const NeverScrollableScrollPhysics(), // Prevent scrolling
+            shrinkWrap: true, // Allow it to take only the needed space
+            children: <Widget>[
+              // CREATE ROOM CONTAINER
+              OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Create a Room",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text('If this is your first time in the app',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const CreateRoom(),
+                                ));
+                              })
+                        ],
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Image.asset(
-                            'assets/bed.png'), //,width: 150.0, height: 150.0)
-                      )
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/bed.png'),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 10),
+              ),
+              const SizedBox(height: 10),
 
-//JOIN ROOM
-                OurContainer(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 6,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text("Join a Room",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 29, 52, 83),
-                                      fontSize: 23.0,
-                                      fontWeight: FontWeight.bold)),
-                              const Text(
-                                  'If the room has already been created by your roommates',
-                                  softWrap: true),
-                              const SizedBox(height: 10),
-                              GradientButton(
-                                  text: "Continue",
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => JoinRoom(),
-                                    ));
-                                  })
-                            ]),
+              // JOIN ROOM
+              OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Join a Room",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                              'If the room has already been created by your roommates',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const JoinRoom(),
+                                ));
+                              })
+                        ],
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Image.asset(
-                            'assets/find_room.png'), //,width: 150.0, height: 150.0)
-                      )
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/find_room.png'),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 10),
+              ),
+              const SizedBox(height: 10),
 
-//FIND ROOMMATES
-
-                OurContainer(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        flex: 6,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text("Find Roommates",
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 29, 52, 83),
-                                      fontSize: 23.0,
-                                      fontWeight: FontWeight.bold)),
-                              const Text(
-                                  'If you are looking for your perfect match',
-                                  softWrap: true),
-                              const SizedBox(height: 10),
-                              GradientButton(
-                                  text: "Continue",
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ComingSoonPage()));
-                                  })
-                            ]),
+              // FIND ROOMMATES
+              OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Find Roommates",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                              'If you are looking for your perfect match',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ComingSoonPage()));
+                              })
+                        ],
                       ),
-                      Expanded(
-                        flex: 4,
-                        child: Image.asset(
-                            'assets/find_roommate.png'), //,width: 150.0, height: 150.0)
-                      )
-                    ],
-                  ),
+                    ),
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/find_roommate.png'),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () async {
-                    logOut();
-                  },
-                  child: const Text(
-                    "Log Out",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 8.0),
-                  ),
+              ),
+              const SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  logOut();
+                },
+                child: const Text(
+                  "Log Out",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 7.0),
                 ),
-              ],
-            ),
-          )
+              ),
+            ],
+          ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   void logOut() async {
     try {
@@ -233,6 +193,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
       // Attempting to sign in with email and password
       await authAWSRepo.logOut(ref);
       // Refresh the auth user provider after signing in
+      // ignore: unused_result
       ref.refresh(authUserProvider);
     } on AuthException catch (e) {
       theme.buildToastMessage(e.message);

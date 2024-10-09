@@ -3,6 +3,7 @@ import 'package:flutter_frontend/widgets/button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
+import 'package:flutter_frontend/screens/header.dart';
 
 import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,30 +24,23 @@ class _OurHomeState extends ConsumerState<OurHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Icon(Icons.menu, color: Theme.of(context).primaryColorDark),
-        title: Text('RoomHub',
-            style: TextStyle(
-                color: Theme.of(context).primaryColorDark,
-                fontSize: 25.0,
-                fontWeight: FontWeight.bold)),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(20.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Header(),
+            ListView(
+              padding: const EdgeInsets.only(left: 20,right:20),
+              physics: const NeverScrollableScrollPhysics(), // Prevent scrolling
+              shrinkWrap: true,
               children: <Widget>[
                 //MY ROOM
                 Container(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Theme.of(context).primaryColor.withOpacity(0.9),
-                        Theme.of(context).primaryColorLight.withOpacity(0.9),
+                        theme.darkblue,
+                        theme.mintgreen,
                       ],
                       begin: Alignment.bottomLeft,
                       end: Alignment.topRight,
@@ -65,7 +59,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                       const Text(
                         "My Room",
                         style: TextStyle(
-                          color: Color.fromARGB(255, 29, 52, 83),
+                          color: Colors.white,
                           fontSize: 40.0,
                           fontWeight: FontWeight.w700,
                         ),
@@ -75,7 +69,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                         "Visit ${widget.roomID}",
                         style: const TextStyle(
                           fontSize: 25.0,
-                          color: Color.fromARGB(255, 89, 88, 88),
+                          color: Colors.white,
                         ),
                         softWrap: true,
                       ),
@@ -86,7 +80,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                             Image.asset(
                               'assets/bed.png',
                               width: 200.0,
-                              height: 200.0,
+                              height: 170.0,
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(
@@ -141,7 +135,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
                     ],
                   ),
                 ),
-
+                    
                 ElevatedButton(
                   onPressed: () async {
                     logOut();
@@ -155,9 +149,9 @@ class _OurHomeState extends ConsumerState<OurHome> {
                   ),
                 ),
               ],
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

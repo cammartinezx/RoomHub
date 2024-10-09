@@ -11,7 +11,6 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
-import 'dart:convert';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 
@@ -166,11 +165,6 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
   }
 
   void redirectHome() async {
-    Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => OurHomeNewUser(),
-          ),
-        );
     try {
       var response = await http.get(
         Uri.parse(url+"user/" + emailController.text + "/get-room"),

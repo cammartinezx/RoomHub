@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/aws_auth.dart';
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
 
 
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -130,7 +132,7 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
                     ],
                   ),
 
-                  SizedBox(width: 50), // Space between instructions
+                  const SizedBox(width: 50), // Space between instructions
 
                   // Third Instruction
                   Row(
@@ -185,7 +187,7 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
                           Future.delayed(const Duration(seconds: 1), () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => OurHomeNewUser(),
+                                builder: (context) => const OurHomeNewUser(),
                               ),
                             );
                           });

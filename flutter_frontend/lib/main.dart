@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/createRoom/create_room.dart';
-import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
+import 'package:flutter_frontend/screens/header.dart';
+import 'package:flutter_frontend/screens/notifications.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
-import 'package:flutter_frontend/screens/home/home_new_user.dart';
+import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
@@ -12,7 +12,6 @@ import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
@@ -66,8 +65,22 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     }
   }
 
-  // This widget is the root of your application.
+
+   @override
   Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: OurTheme().buildTheme(),
+      home: OurHome(roomID: "OO"),
+      routes: {
+        '/loginPage': (context) => const OurLogin(),
+        //'/homeNewPage': (context) => const OurHomeNewUser(),
+      },
+    );
+  }
+
+  // This widget is the root of your application.
+ /* Widget build(BuildContext context) {
   return MaterialApp(
     debugShowCheckedModeBanner: false, // Hides the debug banner
     theme: OurTheme().buildTheme(), // Sets the app's theme
@@ -105,7 +118,7 @@ Future<Widget> redirectHome(String user) async {
       var regBody = {"id": user};
       // Send a POST request to the backend to get the user's room information
       var response = await http.post(
-        Uri.parse(url + "user/" + user + "/get-room"), // Make sure 'url' is defined correctly
+        Uri.parse("${url}user/$user/get-room"), // Make sure 'url' is defined correctly
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(regBody),
       );
@@ -115,7 +128,7 @@ Future<Widget> redirectHome(String user) async {
       theme.buildToastMessage(roomName);
       // Based on the roomName, return the appropriate widget
       if (roomName == "NA") {
-        return OurHomeNewUser();
+        return const OurHomeNewUser();
       } else {
         return OurHome(roomID: roomName);
       }
@@ -123,22 +136,11 @@ Future<Widget> redirectHome(String user) async {
       // Handle any exceptions and display an error message
       theme.buildToastMessage(e.message);
   }
-  return OurLogin(); // Fallback in case of error
-  }
-}
-
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: OurTheme().buildTheme(),
-      home: const JoinRoom(),
-      routes: {
-        '/loginPage': (context) => const OurLogin(),
-        '/homeNewPage': (context) => const OurHomeNewUser(),
-      },
-    );
+  return const OurLogin(); // Fallback in case of error
   }
 }*/
+
+
+
+ 
+}
