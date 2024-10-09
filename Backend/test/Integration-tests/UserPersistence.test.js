@@ -119,7 +119,7 @@ describe("UserPersistence Class -- Getting notifications", () => {
 
     it("Should return notification", async () => {
         result = await user_persistence.get_notification(user_id);
-        expect(result).toEqual(new Set(["123", "456","delete_req"]));
+        expect(result).toEqual(new Set(["123", "456", "delete_req"]));
     });
 
     it("Should return an error that user doesn't have a notification yet", async () => {
