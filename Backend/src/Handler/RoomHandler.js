@@ -152,7 +152,7 @@ class RoomHandler {
                         // update the new_roommates room.
                         await this.#user_persistence.update_user_room(room_id, new_roommate_id);
                         await this.#room_persistence.add_new_roommate(room_id, new_roommate_id);
-                        await this.#notification_persistence.delete_notification(notification_id);
+                        await this.#notification_persistence.delete_notification(notif_id);
                         response.status(200).json({ message: "New Roommate successfully added" });
                     } else {
                         // basically denying access to that room resource
