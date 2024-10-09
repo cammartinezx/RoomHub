@@ -47,7 +47,7 @@ class _GradientButtonState extends State<GradientButton> with SingleTickerProvid
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
             gradient:LinearGradient(colors: [
-              theme.darkblue, theme.mintgreen
+             theme.mintgreen, theme.darkblue, 
             ]),
           ),
           child: Center(

@@ -1,32 +1,4 @@
-/*import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
-  final String text; 
-  final void Function()? onTap;
-  const MyButton({super.key, required this.text, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).secondaryHeaderColor,
-          borderRadius: BorderRadius.circular(40.0),
-        ), // BoxDecoration
-        padding: const EdgeInsets.all(13),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(text, style: const TextStyle(color: Colors.white)), // Text
-            const SizedBox(width: 10),
-            const Icon(Icons.arrow_forward, color: Colors.white)
-          ],
-        ),
-      ),
-    );
-  }
-}*/
 import 'package:flutter/material.dart';
 
 class MyButton extends StatefulWidget {
