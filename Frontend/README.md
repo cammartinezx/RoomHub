@@ -45,5 +45,8 @@ To test the RoomHub features, you can create a new account or use the following 
 - **Email:** aderemid@myumanitoba.ca
 - **Password:** daniel123
 
+- **Email:** odumahw@myumanitoba.ca
+- **Password:** william123
+
 Feel free to log in with these credentials to explore and test the app's functionalities.
 
