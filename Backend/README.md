@@ -45,11 +45,11 @@ If lambda doesn't work:
     ```
 5. Run Unit tests.
    ```
-   $ npm run unit-tests
+   $ npm run unit-test
     ```
 6. Run Integration tests.
    ```
-   $npm run integration-tests
+   $npm run integration-test
    ```
 
 ## Backend Documentation
