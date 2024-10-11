@@ -10,18 +10,18 @@
 
 ---
 
-### **1. Purpose**  
+# **1. Purpose**  
 To verify that a new user can successfully sign up for an account on RoomHub by entering valid information and confirming their email with a verification code.
 
 ---
 
-### **2. Pre-conditions**  
+# **2. Pre-conditions**  
 - RoomHub application is installed and running.
 - The user is on the sign-up page.
 
 ---
 
-### **3. Test Steps**  
+# **3. Test Steps**  
 
 | Step Number | Action Description                                    | Input Data                                                | Expected Result                                             |
 |-------------|--------------------------------------------------------|-----------------------------------------------------------|-------------------------------------------------------------|
@@ -36,20 +36,17 @@ To verify that a new user can successfully sign up for an account on RoomHub by 
 
 ---
 
-### **4. Post-conditions**  
+# **4. Post-conditions**  
 - The user is registered in the system and can log in with the email and password provided.
 ---
 
-### **5. Acceptance Criteria**  
+# **5. Acceptance Criteria**  
 - The user must be able to complete the sign-up process without errors.
 - The verification code should be received via email and must be valid.
 - Upon entering the verification code, the user should be redirected to the RoomHub home page.
 
 ---
 
-### **7. Pass/Fail Criteria**  
-- **Pass:** All steps are executed successfully and the user is able to sign up, confirm the account, and access RoomHub.
-- **Fail:** Any step fails, such as not receiving the verification code or accepting incorrect emails.
 
 
 
@@ -64,18 +61,18 @@ To verify that a new user can successfully sign up for an account on RoomHub by 
 
 ---
 
-### **1. Purpose**  
+# **1. Purpose**  
 To verify that an existing user can successfully log into RoomHub using their email and password, and that they are redirected appropriately after a successful login.
 
 ---
 
-### **2. Pre-conditions**  
+# **2. Pre-conditions**  
 - RoomHub application is installed and running.
 - The user is using a registered email
 
 ---
 
-### **3. Test Steps**  
+# **3. Test Steps**  
 
 | Step Number | Action Description                                        | Input Data                               | Expected Result                                                                                  |
 |-------------|------------------------------------------------------------|------------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -89,13 +86,13 @@ To verify that an existing user can successfully log into RoomHub using their em
 
 ---
 
-### **4. Post-conditions**  
+# **4. Post-conditions**  
 - The user is logged into the system and can access the appropriate home page.
 - The user can log out of the system.
 
 ---
 
-### **5. Acceptance Criteria**  
+# **5. Acceptance Criteria**  
 - The user must be able to log in with a valid email and password.
 - Upon login, the user should be redirected to the appropriate page based on their room status.
 - The user must be able to log out successfully and return to the login screen.
@@ -114,18 +111,18 @@ To verify that an existing user can successfully log into RoomHub using their em
 
 ---
 
-### **1. Purpose**  
+# **1. Purpose**  
 To verify that a user can successfully create a room in RoomHub, and that the system responds with appropriate feedback and redirection after the room is created.
 
 ---
 
-### **2. Pre-conditions**  
+# **2. Pre-conditions**  
 - RoomHub application is installed and running.
 - The user is logged in and authenticated.
 
 ---
 
-### **3. Test Steps**
+# **3. Test Steps**
 
 | Step Number | Action Description                                      | Input Data                    | Expected Result                                                                                  |
 |-------------|----------------------------------------------------------|-------------------------------|--------------------------------------------------------------------------------------------------|
@@ -135,10 +132,9 @@ To verify that a user can successfully create a room in RoomHub, and that the sy
 | 4           | Verify that a success message is displayed if the room creation is successful. | N/A                         | A message like "Room successfully created" is displayed.                                          |
 | 5           | After the room is created, check if the user is redirected to a new home page, . | N/A                       | The user is redirected to the "OurHome" page with the newly created room ID.                      |
 
-
 ---
 
-### **4. Post-conditions**  
+# **4. Post-conditions**  
 - A new room is created in the system, associated with the logged-in user.
 - The user is redirected to the home screen with the newly created room displayed.
 
@@ -164,18 +160,18 @@ To verify that a user can successfully create a room in RoomHub, and that the sy
 
 ---
 
-### **1. Purpose**  
+# **1. Purpose**  
 To verify that a user can successfully send a request to join a room in RoomHub, and that the room owner receives a notification to accept or reject the request.
 
 ---
 
-### **2. Pre-conditions**  
+# **2. Pre-conditions**  
 - The user is logged in and authenticated.
 - A room exists, and the user has the correct email address of a roommate.
 
 ---
 
-### **3. Test Steps**
+# **3. Test Steps**
 
 | Step Number | Action Description                                      | Input Data                              | Expected Result                                                                                  |
 |-------------|----------------------------------------------------------|-----------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -188,14 +184,14 @@ To verify that a user can successfully send a request to join a room in RoomHub,
 
 ---
 
-### **4. Post-conditions**  
+# **4. Post-conditions**  
 - The user successfully sends a request to join a room.
 - The room owner receives a notification to accept the request.
 - If accepted, the user is added to the room and can view the room.
 
 ---
 
-### **5. Acceptance Criteria**  
+# **5. Acceptance Criteria**  
 - The user must be able to input a valid email address and send a request to join a room.
 - A success message is displayed upon sending the request.
 - The room owner receives a notification to accept the request.
@@ -204,3 +200,47 @@ To verify that a user can successfully send a request to join a room in RoomHub,
 
 ---
 
+
+
+### **Acceptance Test for Notifications in RoomHub**
+
+---
+
+**Project Name:** RoomHub  
+**Test Case ID:** Iteration1  
+**Test Title:** Notifications Display and Action Handling  
+---
+
+# **1. Purpose**  
+To verify that notifications in RoomHub are displayed correctly, users can interact with them, and accepting roommate requests are handled appropriately.
+
+---
+
+# **2. Pre-conditions**  
+- RoomHub app is installed and running.
+
+
+---
+
+# **3. Test Steps**
+
+| Step Number | Action Description                                        | Input Data                             | Expected Result                                                                                      |
+|-------------|------------------------------------------------------------|----------------------------------------|------------------------------------------------------------------------------------------------------|
+| 1           | Open RoomHub app and navigate to the Notifications page.  | N/A                                    | Notifications page is displayed, showing all the user’s current notifications.                        |
+| 2           | Check if the notification list is displayed correctly when there are notifications. | A list of notifications              | Notifications are displayed in a scrollable list, with each item showing the notification message.     |
+| 3           | Check the behavior when there are no notifications.       | N/A                                    | A message “No notifications” is displayed if the list is empty.                                       |
+| 4           | Tap the "Accept" button on a notification for a new roommate request. | N/A                                  | Roommate is added successfully, a success message is displayed, and the notification is removed from the list. |
+
+| 5           | Verify proper navigation on pressing the back button.     | N/A                                    | The user is returned to the previous page.                                                            |
+
+---
+
+# **4. Post-conditions**  
+- Notifications are cleared from the list after interaction.
+
+---
+
+# **5. Acceptance Criteria**  
+- Notifications must be displayed properly, even when there are no notifications.
+- accepting a notification must perform correctly.
+- User must be able to get back to the previous page 
