@@ -3,12 +3,14 @@
 ## Backend Quickstart
 No need to host the backend manually. It is hosted on aws lambda.
 If lambda doesn't work:
-1. Make sure `node` and `npm` are installed. To check:
+1. Make sure `node` , `npm` and `java` are installed.To check:
     ```
     $ node -v
     $ npm -v
+    $ java -version
     ```
     - Go to [https://nodejs.org/en/download/](https://nodejs.org/en/download/) to download the installer.
+    - Go to [Java windows installation guide](https://www.youtube.com/watch?app=desktop&v=jPwrWjEwtrw) , [Java Mac installation guide](https://www.youtube.com/watch?v=PQk9O03cukQ) to install java
 2. Go to the backend directory.
     ```
     $ cd Backend
@@ -24,12 +26,14 @@ If lambda doesn't work:
     ```
 
 ## Backend Testing
-1. Make sure `node` and `npm` are installed. To check:
+1. Make sure `node` , `npm` and `java` are installed. To check:
     ```
     $ node -v
     $ npm -v
+    $ java -version
     ```
     - Go to [https://nodejs.org/en/download/](https://nodejs.org/en/download/) to download the installer.
+    - Go to [Java windows installation guide](https://www.youtube.com/watch?app=desktop&v=jPwrWjEwtrw) , [Java Mac installation guide](https://www.youtube.com/watch?v=PQk9O03cukQ) to install java
 2. Go to the backend directory.
     ```
     $ cd Backend
