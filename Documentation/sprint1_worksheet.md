@@ -16,11 +16,15 @@ Please follow the link below to check out our **Testing Plan**
 **2. Frontend:**
  * For Frontend, we did not have a logic layer since the UI just calling the API routes given from back end to decide whether go to next page (or state) based on API response. 
  * We did some acceptance tests manually for our UI based on the user stories we writed before. Here are a few key examples:
-   **1. Landing Page Acceptance Test:** Verifies that when a user who is not logged in lands on the RoomHub page, they see the proper welcome message, login button, and branding elements. The test also checks that clicking the "Log In To Get Started" button redirects to the login page.
+   **1. Join Room Acceptance Test:** To verify that a user can successfully send a request to join a room in RoomHub, and that the room owner receives a notification to accept or reject the request.
    **2. Login Acceptance Test:** Ensures that the login form contains the necessary fields (email, password), and users are correctly logged in upon entering valid credentials. It also verifies error handling, such as showing a clear error message when invalid credentials are used.
-   **3. Home Page Acceptance Test:** Confirms that, after login, the user sees the appropriate options based on their status (e.g., "Create Room," "Join Room"). It ensures the presence of important UI elements like the notification bell and profile icon, and handles user interactions like clicking these elements.
- * We also prodive detailed steps which explain how to manually run our tests 
- and the expected outcome for the test below.
+   **3.Create Room Acceptance Test:** To verify that a user can successfully create a room in RoomHub, and that the system responds with appropriate feedback and redirection after the room is created
+   
+ * We also prodive detailed steps which explain how to manually run our tests and the expected outcome for the test.
+
+Please follow the link below to check out our **AcceptanceTests**
+ **Flutter UI**
+ * [Flutter acceptance test](https://github.com/WilliamOdumah/RoomHub/blob/main/Documentation/acceptance_it1.md)
 
 ### Coverage report for class and line coverage
 
