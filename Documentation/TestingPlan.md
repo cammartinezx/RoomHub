@@ -198,9 +198,10 @@ The testplan for this sprint contains Unit tests and Integration tests
         - Mock:
         - get_user_persistence.get_user returns valid user data for the sender.
         - generate_new_notification returns "SUCCESS".
-        - Expected Output: 404 Not Found with { message: "User not found" }.
-
-##### 2.22 Persistence Integration Tests
+        - Expected Output: 404 Not Found with { message: "User not found" }. 
+### 2.3 Integration Tests
+   - Integration Tests test the persistence classes
+##### 2.31 Persistence Integration Tests
 1. UserPersistence
    1. Test Case 1: Create a new user
        - Input: user_id = "test3@gmail.com"
