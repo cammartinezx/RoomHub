@@ -9,8 +9,34 @@ After cloning, they should navigate to the project's root directory:
 ```
 cd flutter_frontend
 ```
+## Prerequisites for running the android version
+1. **Android Studio** installed with Flutter and Dart plugins.
+2. **Flutter SDK** installed.
+3. **APK** file built and ready.
 
-## Prerequisites
+### Instructions:
+#### 1. **Launch Android Studio**:
+   - Open Android Studio on your computer.
+#### 2. **Start Android Emulator**:
+   - On the top right of Android Studio, click the **Device Manager** icon (a phone-shaped icon).
+   - Select or create an Android Virtual Device (AVD) to simulate a phone. Once ready, click **Run** (green play button) to start the emulator.
+#### 3. **Access the Android Emulator**:
+   - Once the emulator starts, it will display a virtual Android device.
+   - Keep this emulator open while you run the APK.
+#### 4. **Locate the APK file**
+     ```
+    RoomHub/flutter_frontend/flutter-apk.zip
+     ```
+#### 5. **Install APK on the Emulator**:
+   Unzip and you can install the APK using two methods:
+   ##### Method 1: Drag-and-Drop APK
+   - Drag the APK file from your computer and drop it onto the emulator screen. The APK will automatically install and launch.
+#### 6. **Launch the App**:
+   - Once the APK is installed, you should see the flutter icon on the emulator’s home screen.
+   - Tap the icon to launch your Flutter app.
+
+
+## Prerequisites for running the ios version
 
 Step 1: Install Xcode
 
