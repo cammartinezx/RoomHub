@@ -59,3 +59,8 @@ To get started with the RoomHub application, follow the instructions in the resp
 ### Back End:
 - Steps for setting up the Express backend and performing tests are documented in the [Back End README](https://github.com/WilliamOdumah/RoomHub/tree/main/Backend/README.md).
 
+### Meeting Minutes:
+- [Meeting Minutes](https://docs.google.com/document/d/1gmPyqcMPgaCIxmgW3wgfEdduZb-75aF9UhfTTLr__OI/edit?usp=sharing)
+
+### Sequence Diagrams:
+- [Sequence Diagrams](https://docs.google.com/document/d/1M3B92XEyDP4L9LY-5olZOBhAJlwPlI1XnUZCIL129f8/edit?usp=sharing)

@@ -30,7 +30,7 @@ class _ActionNotificationState extends ConsumerState<Header> {
     bool success = false;
     try {
       var response = await http.get(
-        Uri.parse(url + "user/" + email + "/get-notification"),
+        Uri.parse("${url}user/$email/get-notification"),
         headers: {"Content-Type": "application/json"},
       );
       print("Response status: ${response.statusCode}");

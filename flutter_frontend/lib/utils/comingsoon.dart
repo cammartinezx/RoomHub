@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/home/home_new_user.dart';
 // ignore: unused_import
 import 'package:lottie/lottie.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 
 class ComingSoonPage extends StatefulWidget {
+  const ComingSoonPage({super.key});
+
   @override
   _ComingSoonPageState createState() => _ComingSoonPageState();
 }

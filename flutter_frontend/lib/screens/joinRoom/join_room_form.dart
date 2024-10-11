@@ -57,7 +57,7 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
             children: [
               // Back button
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                   size: 30,

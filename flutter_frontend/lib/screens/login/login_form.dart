@@ -50,7 +50,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
               controller: emailController,
               cursorColor: Theme.of(context).primaryColorDark,
               decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.alternate_email),
+                  prefixIcon: const Icon(Icons.alternate_email),
                   label: Text(
                     "Email",
                     style: TextStyle(color: theme.darkblue),
@@ -65,7 +65,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
               obscureText: true,
               cursorColor: Theme.of(context).primaryColorDark,
               decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock_outline),
+                  prefixIcon: const Icon(Icons.lock_outline),
                   label: Text(
                     "Password",
                     style: TextStyle(color: theme.darkblue),
@@ -167,7 +167,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
   void redirectHome() async {
     try {
       var response = await http.get(
-        Uri.parse(url + "user/" + emailController.text + "/get-room"),
+        Uri.parse("${url}user/${emailController.text}/get-room"),
         headers: {"Content-Type": "application/json"},
       );
       print(response.body);
@@ -180,7 +180,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
       if (roomName == "NA") {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => OurHomeNewUser(),
+            builder: (context) => const OurHomeNewUser(),
           ),
         );
       } else {

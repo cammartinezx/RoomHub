@@ -58,7 +58,7 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
             children: [
               // Back button
               IconButton(
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                   color: Colors.white,
                   size: 30,
