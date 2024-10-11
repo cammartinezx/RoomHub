@@ -28,7 +28,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Header(),
+            const Header(),
             ListView(
               padding: const EdgeInsets.only(left: 20, right: 20),
               physics:
@@ -164,7 +164,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
       ref.refresh(authUserProvider);
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => OurLogin()));
+          .push(MaterialPageRoute(builder: (context) => const OurLogin()));
     } on AuthException catch (e) {
       theme.buildToastMessage(e.message);
     }

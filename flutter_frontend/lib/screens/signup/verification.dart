@@ -134,7 +134,7 @@ class _VerificationState extends ConsumerState<Verification> {
       ref.read(emailProvider.notifier).state = widget.email;
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => OurHomeNewUser(),
+          builder: (context) => const OurHomeNewUser(),
         ),
       );
       

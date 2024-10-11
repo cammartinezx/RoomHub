@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/action_button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -46,7 +45,7 @@ class _ActionNotificationState extends ConsumerState<ActionNotification> {
           children: <Widget>[
             Expanded(
               flex: 5,
-              child: Container(
+              child: SizedBox(
                 height: 100,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +120,7 @@ class _ActionNotificationState extends ConsumerState<ActionNotification> {
     String roomName = '';
     try {
       var response = await http.get(
-        Uri.parse(url + "user/" + from + "/get-room"),
+        Uri.parse("${url}user/$from/get-room"),
         headers: {"Content-Type": "application/json"},
       );
       print(response.body);

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/header.dart';
-import 'package:flutter_frontend/screens/notifications.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
@@ -16,7 +14,6 @@ import 'package:flutter_frontend/aws_auth.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
-import 'dart:convert';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 
@@ -146,8 +143,8 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
       } else {
         return OurHome(roomID: roomName);
       }
-    } on UserException catch (e) {}
-    return OurLogin(); // Fallback in case of error
+    } on UserException {}
+    return const OurLogin(); // Fallback in case of error
   }
 
   Future<String?> getEmail() async {
