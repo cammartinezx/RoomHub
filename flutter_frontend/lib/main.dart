@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+
+// Importing screens for navigation within the app
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
-// Amplify imports
+// Amplify imports for authentication using AWS Cognito
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +14,11 @@ import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_frontend/aws_auth.dart';
 
+// imports for making requests to a backend server
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
-import 'package:flutter_frontend/utils/custom_exceptions.dart';
-import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/utils/custom_exceptions.dart'; 
+import 'package:flutter_frontend/utils/response_handler.dart'; 
 
 void main() {
   // Entry point of the application, launching the MyApp widget
@@ -34,10 +37,10 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
-  bool _amplifyConfigured = false;
-  final theme = OurTheme();
-  String? userEmail;
-  late String eemail;
+  bool _amplifyConfigured = false; // Tracks whether Amplify has been configured
+  final theme = OurTheme(); // App theme setup
+  String? userEmail; // Stores the user's email
+
   @override
   void initState() {
     super.initState();
@@ -55,7 +58,7 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
       // Call Amplify.configure to use the initialized categories in your app
       await Amplify.configure(amplifyconfig);
       setState(() {
-        _amplifyConfigured = true;
+        _amplifyConfigured = true; // Update state when configuration is successful
       });
     } on Exception catch (e) {
       // Print an error message if Amplify configuration fails
@@ -67,22 +70,19 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext) {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // Hides the debug banner
-      theme: OurTheme().buildTheme(),
-      // Sets the app's theme
+      theme: OurTheme().buildTheme(), // Sets the app's theme
       home: _amplifyConfigured
           ? Consumer(builder: (context, ref, child) {
-              final currentUser = ref.watch(authUserProvider);
+              final currentUser = ref.watch(authUserProvider); // Watches for user authentication state
               return currentUser.when(
                 data: (userId) {
                   if (userId == null) {
                     return const OurLogin(); // Show login page if no user is logged in
                   } else {
                     return FutureBuilder<Widget>(
-                      future:
-                          redirectHome(), // Call redirectHome with non-null userEmail
+                      future: redirectHome(), // Call redirectHome with non-null userEmail
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           // Loading state
                           return const Center(
                               child: CircularProgressIndicator());
@@ -95,69 +95,63 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
                               const OurHomeNewUser(); // Fallback if data is null
                         }
                       },
-                    ); // Show home page if user is logged in
+                    );
                   }
                 },
                 loading: () {
-                  // You can either return a loading indicator or a placeholder here
+                  // Show a loading indicator while the authentication state is being determined
                   return const Center(
-                      child: CircularProgressIndicator()); // Loading state
+                      child: CircularProgressIndicator());
                 },
                 error: (e, st) {
-                  return const OurHomeNewUser(); // Show login page on error
+                  return const OurHomeNewUser(); // Show an error page in case of an authentication error
                 },
               );
             })
           : const Center(
-              child:
-                  CircularProgressIndicator()), // Show a loading indicator while checking configuration
+              child: CircularProgressIndicator()), // Show a loading indicator while checking configuration
       routes: {
         '/loginPage': (context) =>
             const OurLogin(), // Defines the route for the login page
-        //'/homeNewPage': (context) =>const OurHomeNewUser(), // Defines the route for the home page
       },
     );
   }
 
+  // Redirects user to their home or new user page depending on their room status
   Future<Widget> redirectHome() async {
     try {
-      userEmail = await getEmail();
+      userEmail = await getEmail(); // Retrieves the user's email
 
-      // Send a POST request to the backend to get the user's room information
+      // Send a GET request to the backend to get the user's room information
       var response = await http.get(
-        Uri.parse(
-            "${url}user/$userEmail/get-room"), // Make sure 'url' is defined correctly
+        Uri.parse("${url}user/$userEmail/get-room"), // Backend URL to get room details
         headers: {"Content-Type": "application/json"},
       );
-      //print("${url}user/$user/get-room");
-      // Await the response and get the room name
+      // Log the request URL for debugging
       print("${url}user/$userEmail/get-room");
-
-      String roomName =
-          await getResponse(response, responseType: 'getUserRoom');
-
-      // Display a toast message with the room name
-      // Based on the roomName, return the appropriate widget
+      // Await the response and extract the room name
+      String roomName = await getResponse(response, responseType: 'getUserRoom');
+      // Display appropriate page based on the room name
       if (roomName == "NA") {
-        return const OurHomeNewUser();
+        return const OurHomeNewUser(); // If no room, redirect to new user page
       } else {
-        return OurHome(roomID: roomName);
+        return OurHome(roomID: roomName); // If room exists, redirect to home page
       }
-    } on UserException {}
+    } on UserException {
+      // Handle user-specific exceptions if necessary
+    }
     return const OurLogin(); // Fallback in case of error
   }
 
+  // Retrieves the user's email from the authentication provider
   Future<String?> getEmail() async {
-    final authAWSRepo = ref.read(authAWSRepositoryProvider);
-    userEmail = await authAWSRepo.getUserEmail(ref);
-    print(userEmail);
+    final authAWSRepo = ref.read(authAWSRepositoryProvider); // Access the auth provider
+    userEmail = await authAWSRepo.getUserEmail(ref); // Retrieve email from the provider
     return userEmail;
   }
 }
 
-
   
-
 /*
    @override
   Widget build(BuildContext context) {
