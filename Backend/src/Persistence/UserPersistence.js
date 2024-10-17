@@ -59,6 +59,7 @@ class UserPersistence {
             working_client = new DynamoDBClient(remote_client);
         }
 
+        // working_client = new DynamoDBClient(local_test_client);
         this.#doc_client = DynamoDBDocumentClient.from(working_client);
         this.#table_name = "users";
     }
@@ -159,7 +160,8 @@ class UserPersistence {
 
         let notification = response.Item.notification;
         if (notification === undefined) {
-            throw new Error(`User ${user_id} doesn't have a notification yet`);
+            // throw new Error(`User ${user_id} doesn't have a notification yet`);
+            notification = new Set([]);
         }
         return notification;
     }
@@ -181,6 +183,50 @@ class UserPersistence {
             },
             ExpressionAttributeValues: {
                 ":notif_id": new Set([notif_id]), // Convert notif_id into a String Set (SS)
+            },
+            ConditionExpression: "attribute_exists(user_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Updates the users room_id field with the new room id
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {String} user_id "The id for the user who now belongs to this room"
+     */
+    async update_user_room(room_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "set room_id = :room_id",
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
+            },
+            ConditionExpression: "attribute_exists(user_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Deletes a notification from a users set of notification
+     * @param {String} notification_id "The unique identifier for the notification"
+     * @param {String} user_id "The id for the user who now belongs to this room"
+     */
+    async update_notification_set(notification_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "DELETE notification :notification_id",
+            ExpressionAttributeValues: {
+                ":notification_id": new Set([notification_id]),
             },
             ConditionExpression: "attribute_exists(user_id)",
             ReturnValues: "NONE",

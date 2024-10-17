@@ -5,6 +5,7 @@
 
 // userpersistence object-- to get access to all the methods
 const UserPersistence = require("../Persistence/UserPersistence");
+const RoomPersistence = require("../Persistence/RoomPersistence");
 
 const NotificationPersistence = require("../Persistence/NotificationPersistence");
 
@@ -15,6 +16,7 @@ const NotificationPersistence = require("../Persistence/NotificationPersistence"
 class Services {
     // only one instance of the all persistence is created
     static #user_persistence = null;
+    static #room_persistence = null;
     static #notification_persistence = null;
 
     static get_user_persistence() {
@@ -23,6 +25,14 @@ class Services {
         }
 
         return this.#user_persistence;
+    }
+
+    static get_room_persistence() {
+        if (this.#room_persistence === null) {
+            this.#room_persistence = new RoomPersistence();
+        }
+
+        return this.#room_persistence;
     }
 
     static get_notification_persistence() {

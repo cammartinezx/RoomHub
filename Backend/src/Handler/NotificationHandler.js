@@ -16,18 +16,28 @@ class NotificationHandler {
      * @private
      */
     #notification_persistence;
+    /**
+     * The user persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #user_persistence;
 
     /**
      * Create a new NotificationHandler object
      * @constructor
-     * @private
      */
     constructor() {
+        this.#user_persistence = Services.get_user_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
     }
 
     get_notification_persistence() {
         return this.#notification_persistence;
+    }
+
+    get_user_persistence() {
+        return this.#user_persistence;
     }
 
     /**
@@ -37,6 +47,13 @@ class NotificationHandler {
      */
     #is_valid_msg(msg) {
         if (msg === "") {
+            return false;
+        }
+        return true;
+    }
+
+    #is_valid_user_string(user_string) {
+        if (user_string.length <= 0 || user_string === undefined) {
             return false;
         }
         return true;
@@ -55,16 +72,21 @@ class NotificationHandler {
             const from = request.body.from;
             const to = request.body.to;
 
-            // need to verify if sender and receiver exist in database
-            let sender = await Services.get_user_persistence().get_user(from);
-            let receiver = await Services.get_user_persistence().get_user(to);
-            if (sender === null || receiver === null) {
+            if (!this.#is_valid_user_string(to)) {
                 response.status(404).json({ message: "User not found" });
             }
 
+            // need to verify if sender and receiver exist in database and also sender have a room
+            let sender = await this.#user_persistence.get_user(from);
+            // currently we have only one type "Join-request"
+            let receiver = await this.#user_persistence.get_user(to);
+
+            if (sender === null || receiver === null) {
+                response.status(404).json({ message: "User not found" });
+            }
             const type = request.body.type;
+            let room_id = await this.#user_persistence.get_room_id(to);
             const msg = this.generate_message(from, to, type);
-            const room_id = await Services.get_user_persistence().get_room_id(from);
             if (!this.#is_valid_msg(msg)) {
                 // give a certain type of response
                 response.status(400).json({ message: "Error Creating Notification - Message is empty" });
@@ -78,12 +100,12 @@ class NotificationHandler {
                 type,
                 room_id,
             );
-            // assign new notification to both sender and receiver
-            await Services.get_user_persistence().update_user_notifications(notif_id, from);
-            await Services.get_user_persistence().update_user_notifications(notif_id, to);
 
             if (new_notification_status === "SUCCESS") {
-                response.status(200).json({ message: "Successfully created the new notifcation" });
+                // assign new notification to both sender and receiver
+                // await this.#user_persistence.update_user_notifications(notif_id, from);
+                await this.#user_persistence.update_user_notifications(notif_id, to);
+                response.status(200).json({ message: "Successfully Created the new notification" });
             } else {
                 response.status(500).json({ message: "Retry creating the notification" });
             }
@@ -100,8 +122,8 @@ class NotificationHandler {
      * @returns {String} "notification message"
      */
     generate_message(from, to, type) {
-        if (type === "invite") {
-            return this.generate_invite_message(from, to);
+        if (type == "join-request") {
+            return this.generate_room_request_message(from);
         }
         return "";
     }
@@ -114,6 +136,15 @@ class NotificationHandler {
      */
     generate_invite_message(from, to) {
         return `${from} invites ${to} to join their room`;
+    }
+
+    /**
+     * Create an invite message based on sender, receiver
+     * @param {String} from "a sender ID"
+     * @returns {String} "notification invite message"
+     */
+    generate_room_request_message(from) {
+        return `${from} requests to join your room`;
     }
 }
 
