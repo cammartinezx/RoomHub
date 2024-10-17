@@ -41,10 +41,10 @@ class Navbar extends StatelessWidget {
           Container(
           // room hub logo
             width: double.infinity, // Take up full width of the drawer
-            height: MediaQuery.of(context).size.height * 0.3,  // 30% of the screen height
+            height: MediaQuery.of(context).size.height * 0.25,  // 30% of the screen height
             child: Image.asset(
               imagePath,  // Load the local image
-              fit: BoxFit.cover,  // Make the image cover the full container
+              fit: BoxFit.contain,  // Make the image cover the full container
             ),
           ),
           ListTile(
