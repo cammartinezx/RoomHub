@@ -42,6 +42,7 @@ class Navbar extends StatelessWidget {
           // room hub logo
             width: double.infinity, // Take up full width of the drawer
             height: MediaQuery.of(context).size.height * 0.25,  // 30% of the screen height
+            margin: EdgeInsets.only(top: 30.0,),
             child: Image.asset(
               imagePath,  // Load the local image
               fit: BoxFit.contain,  // Make the image cover the full container
