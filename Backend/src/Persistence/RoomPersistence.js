@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -144,6 +144,53 @@ class RoomPersistence {
             },
             ReturnValues: "NONE",
         });
+        await this.#doc_client.send(update_command);
+    }
+
+    async get_room_users(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let user_list = response.Item.users;
+        if (user_list === undefined) {
+            throw new Error("Room doesn't have an user--Service Unavailable");
+        }
+        return user_list;
+    }
+
+    async delete_room(room_id) {
+        const delete_command = new DeleteCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+
+        await this.#doc_client.send(delete_command);
+    }
+
+    async remove_user_id(user_id, room_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "DELETE #users :user_id",
+            ExpressionAttributeNames: {
+                "#users": "users",
+            },
+            ExpressionAttributeValues: {
+                ":user_id": new Set([user_id]),
+            },
+            ConditionExpression: "attribute_exists(room_id)",
+            ReturnValues: "NONE",
+        });
+
         await this.#doc_client.send(update_command);
     }
 }

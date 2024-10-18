@@ -234,6 +234,23 @@ class UserPersistence {
 
         await this.#doc_client.send(update_command);
     }
+
+    async remove_room_id(room_id, user_id) {
+        const update_command = new UpdateCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression: "REMOVE room_id",
+            ConditionExpression: "attribute_exists(user_id) AND room_id = :room_id", // Optional: Ensures you only remove the room_id if it matches the provided value.
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
+            },
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
 }
 
 module.exports = UserPersistence;

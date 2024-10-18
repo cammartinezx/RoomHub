@@ -152,6 +152,44 @@ class UserInfoHandler {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async leave_user_room(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            // validate user_id
+            if (!this.#is_valid_id(user_id)) {
+                response.status(400).json({ message: "This username is invalid" });
+            } else {
+                // if valid user id
+                let user = await this.#user_persistence.get_user(user_id);
+                if (user === null) {
+                    response.status(404).json({ message: "User not found" });
+                } else {
+                    // get the room id from the given user
+                    let room_id = await this.#user_persistence.get_room_id(user_id);
+                    // get the total number of users in the room
+                    let users = await this.#room_persistence.get_room_users(room_id);
+                    let total_users = users.size;
+                    console.log(`Total user in room ${room_id} is: ${total_users}`);
+                    if (total_users === 1) { // the room only have 1 user
+                        // delete room
+                        await this.#room_persistence.delete_room(room_id);
+                        // remove room_id from the specific user
+                        await this.#user_persistence.remove_room_id(room_id, user_id);
+                        response.status(200).json({ message: `The room ${room_id} is being deleted and user ${user_id} leave the room successfully`});
+                    } else { // more than 1 user in the room
+                        // remove user_id from the specific room
+                        await this.#room_persistence.remove_user_id(user_id, room_id);
+                        // remove room_id from the specific user
+                        await this.#user_persistence.remove_room_id(room_id, user_id);
+                        response.status(200).json({ message: `User ${user_id} leave the room ${room_id} successfully`});
+                    }
+                }
+            }
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = UserInfoHandler;
