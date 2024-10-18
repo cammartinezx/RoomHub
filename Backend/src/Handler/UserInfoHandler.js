@@ -171,18 +171,24 @@ class UserInfoHandler {
                     let users = await this.#room_persistence.get_room_users(room_id);
                     let total_users = users.size;
                     console.log(`Total user in room ${room_id} is: ${total_users}`);
-                    if (total_users === 1) { // the room only have 1 user
+                    // the room only have 1 user
+                    if (total_users === 1) {
                         // delete room
                         await this.#room_persistence.delete_room(room_id);
                         // remove room_id from the specific user
                         await this.#user_persistence.remove_room_id(room_id, user_id);
-                        response.status(200).json({ message: `The room ${room_id} is being deleted and user ${user_id} leave the room successfully`});
-                    } else { // more than 1 user in the room
+                        response.status(200).json({
+                            message: `The room ${room_id} is being deleted and user ${user_id} leave the room successfully`,
+                        });
+                        // more than 1 user in the room
+                    } else {
                         // remove user_id from the specific room
                         await this.#room_persistence.remove_user_id(user_id, room_id);
                         // remove room_id from the specific user
                         await this.#user_persistence.remove_room_id(room_id, user_id);
-                        response.status(200).json({ message: `User ${user_id} leave the room ${room_id} successfully`});
+                        response
+                            .status(200)
+                            .json({ message: `User ${user_id} leave the room ${room_id} successfully` });
                     }
                 }
             }
