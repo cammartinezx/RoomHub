@@ -31,7 +31,7 @@
         <h2><span class="attribs"><span class="type-signature"></span></span>
             <span class="ancestors"><a href="module-Handler.html">Handler</a>~</span>UserInfoHandler<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">Represents the user information handler</div>
+            <div class="class-description"><p>Represents the user information handler</p></div>
         
     
 </header>
@@ -54,7 +54,7 @@
 
 
 <div class="description">
-    Create a new UserInfoHandler object
+    <p>Create a new UserInfoHandler object</p>
 </div>
 
 
@@ -162,7 +162,7 @@
 
 
 <div class="description">
-    Check if the passed in user_id is valid
+    <p>Check if the passed in user_id is valid</p>
 </div>
 
 
@@ -214,7 +214,7 @@
 
             
 
-            <td class="description last">"A string representing the user_id to be validated"</td>
+            <td class="description last"><p>&quot;A string representing the user_id to be validated&quot;</p></td>
         </tr>
 
     
@@ -255,7 +255,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line37">line 37</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -284,7 +284,7 @@
 
         
 <div class="param-desc">
-    "Returns true if valid id, returns false if invalid"
+    <p>&quot;Returns true if valid id, returns false if invalid&quot;</p>
 </div>
 
 
@@ -321,7 +321,7 @@
 
 
 <div class="description">
-    Add a new user to the persistence Layer
+    <p>Add a new user to the persistence Layer</p>
 </div>
 
 
@@ -373,7 +373,7 @@
 
             
 
-            <td class="description last">"Reequest received by the router"</td>
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
         </tr>
 
     
@@ -396,7 +396,7 @@
 
             
 
-            <td class="description last">"Response to be sent back to the service that sent the original request"</td>
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
         </tr>
 
     
@@ -437,7 +437,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line51">line 51</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -466,7 +466,349 @@
 
         
 <div class="param-desc">
-    "A response object which contains the response to the request."
+    <p>&quot;A response object which contains the response to the request.&quot;</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Express.response</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get_user_notification"><span class="type-signature">(async) </span>get_user_notification<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get a list of notification from specific existing user in the database</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line126">line 126</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get_user_room"><span class="type-signature">(async) </span>get_user_room<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {Express.response}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get a users room</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Reequest received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line94">line 94</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>&quot;A response object which contains the response to the request.&quot;</p>
 </div>
 
 
@@ -505,13 +847,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li><li><a href="module-User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#studentName">studentName</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Oct 03 2024 22:27:21 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Oct 09 2024 11:52:40 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

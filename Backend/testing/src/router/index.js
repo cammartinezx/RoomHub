@@ -1,11 +1,13 @@
 const awsServerlessExpress = require("aws-serverless-express");
 const express = require("express");
 const User = require("./User");
+const cors = require("cors");
 require("dotenv").config(); // Load environment variables
 
 // entrance into all other routes
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/user", User);
 
