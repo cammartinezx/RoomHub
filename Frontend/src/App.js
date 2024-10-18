@@ -14,6 +14,7 @@ import '@aws-amplify/ui-react/styles.css';
 import axios from 'axios'
 import UserProfile from './pages/UserProfile';
 import ScrollToTop from './ScrollToTop';
+import AnnouncementsPage from './pages/AnnouncementsPage';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -141,6 +142,17 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <NotificationsPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/announcements"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <AnnouncementsPage user={user} />;
                 }}
               </Authenticator>
             }

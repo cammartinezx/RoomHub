@@ -56,6 +56,12 @@ const VirtualRoomPage = () => {
             <p>Add someone to your room</p>
             <button onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email }})}>Add Roommate</button>
           </div>
+          <div className={styles.card} onClick={() => navigate('/announcements', { state: { hasRoom, email } })}>
+            <img src="find_roommate.png" alt="Room" className={styles.cardImage}/>
+            <h2>Send Announcement</h2>
+            <p>Send announcemets to all roomates</p>
+            <button onClick={() => navigate('/announcements', { state: { hasRoom, email }})}>Send Announcement</button>
+          </div>
         </div>
 
         {/* <button onClick={toggleRoommates} className={styles.action}>
