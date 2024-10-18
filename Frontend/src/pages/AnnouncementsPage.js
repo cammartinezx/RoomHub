@@ -23,10 +23,14 @@ const AnnouncementsPage = () => {
     ];
 
     const handlePresetClick = (preset) => {
-        setSelectedPreset(preset);
-        setCustomMessage('');  // Clear custom message when a preset is selected
+        // Toggle the selected preset
+        if (selectedPreset === preset) {
+            setSelectedPreset('');  // Unselect the preset if it's clicked again
+        } else {
+            setSelectedPreset(preset);
+            setCustomMessage('');  // Clear custom message when a preset is selected
+        }
     };
-
     const handleSendAnnouncement = async () => {
         const messageToSend = selectedPreset || customMessage;
 
