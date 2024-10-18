@@ -77,6 +77,10 @@ router.get("/:id/leave-room", (req, res) => {
     user_info_handler.leave_user_room(req, res);
 });
 
+router.get("/:id/leave-warning", (req, res) => {
+    user_info_handler.get_user_warning(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });

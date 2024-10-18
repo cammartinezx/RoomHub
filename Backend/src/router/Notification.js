@@ -25,6 +25,10 @@ router.post("/join-room-request", (req, res) => {
     notification_handler.create_notification(req, res);
 });
 
+router.post("/send-announcement", (req, res) => {
+    notification_handler.send_announcement(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the Notification paths" });
 });

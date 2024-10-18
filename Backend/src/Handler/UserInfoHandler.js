@@ -170,7 +170,6 @@ class UserInfoHandler {
                     // get the total number of users in the room
                     let users = await this.#room_persistence.get_room_users(room_id);
                     let total_users = users.size;
-                    console.log(`Total user in room ${room_id} is: ${total_users}`);
                     // the room only have 1 user
                     if (total_users === 1) {
                         // delete room
@@ -189,6 +188,37 @@ class UserInfoHandler {
                         response
                             .status(200)
                             .json({ message: `User ${user_id} leave the room ${room_id} successfully` });
+                    }
+                }
+            }
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
+
+    async get_user_warning(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            // validate user_id
+            if (!this.#is_valid_id(user_id)) {
+                response.status(400).json({ message: "This username is invalid" });
+            } else {
+                // if valid user id
+                let user = await this.#user_persistence.get_user(user_id);
+                if (user === null) {
+                    response.status(404).json({ message: "User not found" });
+                } else {
+                    // get the room id from the given user
+                    let room_id = await this.#user_persistence.get_room_id(user_id);
+                    // get the total number of users in the room
+                    let users = await this.#room_persistence.get_room_users(room_id);
+                    let total_users = users.size;
+                    // the room only have 1 user
+                    if (total_users === 1) {
+                        response.status(200).json({ message: "Warning: If you leave, the room will be deleted!" });
+                        // more than 1 user in the room
+                    } else {
+                        response.status(200).json({ message: "Warning: Are you sure want to leave this room!" });
                     }
                 }
             }
