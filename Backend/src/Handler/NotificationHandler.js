@@ -184,34 +184,39 @@ class NotificationHandler {
             let users = await this.#room_persistence.get_room_users(room_id);
             // remove the sender id
             users.delete(from);
-            // convert set into array
-            let user_list = [...users];
-            let success = true;
-            for (let item of user_list) {
-                // generate a new id for each notification received of each users
-                const notif_id = uuidv4();
-                // create an annoucement for everone in the room except sender
-                let notification_status = await this.#notification_persistence.generate_new_notification(
-                    notif_id,
-                    message,
-                    status,
-                    from,
-                    item,
-                    type,
-                    room_id,
-                );
-                if (notification_status === "SUCCESS") {
-                    // update the new notif into user table except sender
-                    await this.#user_persistence.update_user_notifications(notif_id, item);
-                } else {
-                    success = false;
-                    break;
-                }
-            }
-            if (success) {
-                response.status(200).json({ message: "Send announcement successfully" });
+            // the room only have one user which is sender
+            if (users.size === 0) {
+                response.status(200).json({ message: "You are the only person in this room" });
             } else {
-                response.status(500).json({ message: "Retry creating the notification" });
+                // convert set into array
+                let user_list = [...users];
+                let success = true;
+                for (let item of user_list) {
+                    // generate a new id for each notification received of each users
+                    const notif_id = uuidv4();
+                    // create an annoucement for everone in the room except sender
+                    let notification_status = await this.#notification_persistence.generate_new_notification(
+                        notif_id,
+                        message,
+                        status,
+                        from,
+                        item,
+                        type,
+                        room_id,
+                    );
+                    if (notification_status === "SUCCESS") {
+                        // update the new notif into user table except sender
+                        await this.#user_persistence.update_user_notifications(notif_id, item);
+                    } else {
+                        success = false;
+                        break;
+                    }
+                }
+                if (success) {
+                    response.status(200).json({ message: "Send announcement successfully" });
+                } else {
+                    response.status(500).json({ message: "Retry creating the notification" });
+                }
             }
         } catch (error) {
             response.status(500).json({ message: error.message });
