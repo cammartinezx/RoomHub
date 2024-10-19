@@ -1,89 +1,110 @@
 import "package:flutter/material.dart";
+import "package:flutter_frontend/screens/createAnnouncement/ChipSelection.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "../header.dart";
 
-class CreateAnnouncement extends StatelessWidget {
+class CreateAnnouncement extends StatefulWidget {
   const CreateAnnouncement({super.key});
+
+  @override
+  State<CreateAnnouncement> createState() => _CreateAnnouncementState();
+}
+
+class _CreateAnnouncementState extends State<CreateAnnouncement> {
+  final List<String> announcements = [
+    "I forgot my keys—can someone let me in?",
+    "Having friends over tonight, just a heads up",
+    "Going to be late, don't stay up",
+    "The Wi-Fi’s down—anyone else having issues?",
+    "I have a package arriving today, could someone grab it?",
+    "Keep it down. Music is too Loud"
+  ];
+  late List<bool> isSelected = List.filled(announcements.length, false);
+  late int activeAnnouncement ;
+  bool disableChips = false;
+  TextEditingController _textController = TextEditingController();
 
 
   @override
+  void initState() {
+    super.initState();
+    // Add listener to the TextField controller
+    _textController.addListener(() {
+      setState(() {
+        disableChips = _textController.text.isNotEmpty;
+      });
+    });
+  }
+
+  // handle chip selection
+  void handleChipSelected(int index){
+    // update the index of the active announcement.
+    activeAnnouncement = index;
+    setState(() {
+      for(int i =0; i< isSelected.length; i++){
+        isSelected[i] = (i == index);
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     final theme = OurTheme();
-    final List<String> announcements = [
-      "Forgot my keys, please leave the door unlocked!",
-      "Having friends over tonight at 8 PM.",
-      "Out of milk, please restock!",
-      "Going away for the weekend.",
-      "Left my laundry in the machine—please remind me!",
-      "Hosting a study session at 6 PM.",
-      "Ran out of dish soap—can someone pick some up?"
-    ];
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          const Header(),
-          Text("Create Announcement",
-            style: TextStyle(
-              color: theme.darkblue,
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Wrap(
-                  spacing: 10.0,
-                  runSpacing: 8.0,
-                  children: [
-                    Chip(label: Text("I forgot my keys—can someone let me in?")),
-                    Chip(label: Text("Having friends over tonight, just a heads up")),
-                    Chip(label: Text("Going to be late, don't stay up")),
-                    Chip(label: Text("The Wi-Fi’s down—anyone else having issues?")),
-                    Chip(label: Text("I have a package arriving today, could someone grab it?")),
-                    Chip(label: Text("Keep it down. Music is too Loud")),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const Header(),
+            Text("Create Announcement",
+              style: TextStyle(
+                color: theme.darkblue,
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
               ),
-          ),
-          const SizedBox(height: 10.0),
-          Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text("Make your own announcement",
-                    style: TextStyle(
-                      color: theme.darkblue,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,)
-                ),
-              ]
             ),
-          ),
-          const SizedBox(
-            height: 30.0,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextField(
-                cursorColor: Theme.of(context).primaryColorDark,
-                decoration: InputDecoration(
-                    label: Text(
-                      "Your Announcement",
-                      style: TextStyle(color: theme.darkgrey),
-                    )
-                )
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ChipSelection(disableChips: this.disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
             ),
-          ),
-          const SizedBox(
-            height: 30.0,
-          ),
-         OutlinedButton(onPressed: () {debugPrint("Yolo");}, child:Text("Create Announcement")),
-          const SizedBox(
-            height: 100.0,
-          ),
-        ],
+            const SizedBox(height: 10.0),
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Make your own announcement",
+                      style: TextStyle(
+                        color: theme.darkblue,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,)
+                  ),
+                ]
+              ),
+            ),
+            const SizedBox(
+              height: 30.0,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: TextField(
+                  controller: _textController,
+                  cursorColor: Theme.of(context).primaryColorDark,
+                  decoration: InputDecoration(
+                      label: Text(
+                        "Your Announcement",
+                        style: TextStyle(color: theme.darkgrey),
+                      )
+                  )
+              ),
+            ),
+            const SizedBox(
+              height: 30.0,
+            ),
+           OutlinedButton(onPressed: () {debugPrint("Yolo");}, child:Text("Create Announcement")),
+            const SizedBox(
+              height: 100.0,
+            ),
+          ],
+        ),
       ),
     );
   }
