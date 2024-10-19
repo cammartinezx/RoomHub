@@ -11,6 +11,7 @@ class CreateAnnouncement extends StatefulWidget {
 }
 
 class _CreateAnnouncementState extends State<CreateAnnouncement> {
+  final theme = OurTheme();
   final List<String> announcements = [
     "I forgot my keys—can someone let me in?",
     "Having friends over tonight, just a heads up",
@@ -20,7 +21,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     "Keep it down. Music is too Loud"
   ];
   late List<bool> isSelected = List.filled(announcements.length, false);
-  late int activeAnnouncement ;
+  late int activeAnnouncement;
   bool disableChips = false;
   TextEditingController _textController = TextEditingController();
 
@@ -48,7 +49,6 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   }
   @override
   Widget build(BuildContext context) {
-    final theme = OurTheme();
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -62,11 +62,23 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            Text("Select a preset announcement",
+                style: TextStyle(
+                  color: theme.darkblue,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,)
+            ),
+            const SizedBox(
+              height: 5.0,
+            ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.only(bottom: 10.0),
               child: ChipSelection(disableChips: this.disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             Container(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +93,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
               ),
             ),
             const SizedBox(
-              height: 30.0,
+              height: 10.0,
             ),
             Padding(
               padding: const EdgeInsets.all(5.0),
@@ -97,16 +109,42 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
               ),
             ),
             const SizedBox(
-              height: 30.0,
+              height: 40.0,
             ),
-           OutlinedButton(onPressed: () {debugPrint("Yolo");}, child:Text("Create Announcement")),
-            const SizedBox(
-              height: 100.0,
-            ),
+           OutlinedButton(onPressed: () {send_announcement();}, child:Text("Create Announcement")),
           ],
         ),
       ),
     );
+  }
+
+  void send_announcement(){
+    try{
+      String announcement_msg;
+      if(disableChips){
+        //   then text should have been entered
+        announcement_msg = _textController.text;
+      }else{
+        announcement_msg = announcements[activeAnnouncement];
+      }
+
+      if(isvalid_announcement_msg(announcement_msg)){
+        //   send announcement
+        debugPrint("Sending announcement.......");
+        theme.buildToastMessage("Sending announcement $announcement_msg");
+      }
+      else{
+        //   Toast -- that they should select
+        throw Exception("Invalid announcement");
+      }
+    }catch(e){
+      theme.buildToastMessage("Select a preset message or make a custom announcement!!");
+    }
+
+  }
+
+  bool isvalid_announcement_msg(String msg) {
+    return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
   }
 }
 
