@@ -92,7 +92,6 @@ class _ActionNotificationState extends ConsumerState<Header> {
                           size: 34.0,
                         ),
                         onPressed: () {
-                          print("On pressed is got.");
                           Scaffold.of(context).openDrawer(); // Opens the drawer
                         },
                       ):null,

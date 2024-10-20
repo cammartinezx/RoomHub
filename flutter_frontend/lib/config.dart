@@ -18,3 +18,4 @@ const signup = "$user/add-user"; // Endpoint to sign up a new user
 const addRoommate =
     "$room/add-roommate"; // Endpoint to add a roommate to an existing room
 const createRoom = "$room/create-room"; // Endpoint to create a new room
+const leaveRoomWarning ="/leave-warning";//endpoint to get warning associated with leaving a room.

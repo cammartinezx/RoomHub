@@ -1,12 +1,18 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/config.dart';
+import 'package:flutter_frontend/utils/our_theme.dart';
+
 
 class Navbar extends StatelessWidget {
   final String roomId;
-  const Navbar({super.key, required this.roomId});
+  final String email;
+  const Navbar({super.key, required this.roomId, required this.email});
 
-  void _showDialog(context){
+  void _showDialog(context, leaveRoomWarning){
     showDialog(
         context: context,
         builder: (context) {
@@ -17,7 +23,7 @@ class Navbar extends StatelessWidget {
                   fontSize: 24,
             ),
           ),
-            content: Text("Are you sure you want to leave room"),            // this should be gen from api call
+            content: Text(leaveRoomWarning),            // this should be gen from api call
             actions: [
               TextButton(
                 onPressed: () {print("Go ahead with the leave");},//tell the backend to do stuff.
@@ -68,16 +74,42 @@ class Navbar extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => const CreateAnnouncement(),
               ),
-            );},
+            );
+          },
           ),
           ListTile(
             // leave room action
             leading: const Icon(Icons.exit_to_app),
             title: const Text("Leave Room"),
-            onTap: () => _showDialog(context)
+            onTap: () async {String warningMsg = await get_warning_msg();
+              if(warningMsg == "ERROR")
+              {
+                OurTheme().buildToastMessage("Request not available please try again later");
+              }else{
+                _showDialog(context, warningMsg);
+              }
+            }
           )
         ],
       ),
     );
+  }
+
+  Future<String> get_warning_msg() async {
+    String warning_msg;
+    try {
+      var response = await http.get(
+        Uri.parse("$user/$email$leaveRoomWarning"),
+        headers: {"Content-Type": "application/json"},
+      );
+
+      warning_msg =
+      await getResponse(response, responseType: 'getLeaveRoomWarning');
+    } catch (e) {
+      warning_msg = "ERROR";
+    }
+
+    debugPrint(warning_msg);
+    return warning_msg;
   }
 }
