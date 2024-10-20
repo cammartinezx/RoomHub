@@ -1,6 +1,7 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
+import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
@@ -75,7 +76,7 @@ class Navbar extends StatelessWidget {
             title: const Text("Create Announcement"),
             onTap: () {Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const CreateAnnouncement(),
+                builder: (context) => CreateAnnouncement(email: email),
               ),
             );
           },
@@ -101,6 +102,7 @@ class Navbar extends StatelessWidget {
   Future<String> get_warning_msg() async {
     String warning_msg;
     try {
+      debugPrint(email);
       var response = await http.get(
         Uri.parse("$user/$email$leaveRoomWarning"),
         headers: {"Content-Type": "application/json"},
@@ -108,7 +110,8 @@ class Navbar extends StatelessWidget {
 
       warning_msg =
       await getResponse(response, responseType: 'getLeaveRoomWarning');
-    } catch (e) {
+    } on UserException catch (e) {
+      debugPrint(e.message);
       warning_msg = "ERROR";
     }
 

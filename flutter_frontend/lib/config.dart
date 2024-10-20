@@ -4,6 +4,7 @@ const url = 'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/';
 // Endpoints for user-related API requests
 const user = "${url}user"; // Base endpoint for user
 const room = "${url}room"; // Base endpoint for room
+const notification = "${url}notification";// Base endpoint for notification
 
 // GET requests
 // Endpoint to get user notifications
@@ -19,3 +20,4 @@ const addRoommate =
     "$room/add-roommate"; // Endpoint to add a roommate to an existing room
 const createRoom = "$room/create-room"; // Endpoint to create a new room
 const leaveRoomWarning ="/leave-warning";//endpoint to get warning associated with leaving a room.
+const sendAnnouncement = "$notification/send-announcement";

@@ -1,10 +1,19 @@
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/ChipSelection.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/config.dart';
+
+import '../../utils/custom_exceptions.dart';
+
 
 class CreateAnnouncement extends StatefulWidget {
-  const CreateAnnouncement({super.key});
+  final String email;
+  const CreateAnnouncement({super.key, required this.email});
 
   @override
   State<CreateAnnouncement> createState() => _CreateAnnouncementState();
@@ -21,7 +30,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     "Keep it down. Music is too Loud"
   ];
   late List<bool> isSelected = List.filled(announcements.length, false);
-  late int activeAnnouncement;
+  late int activeAnnouncement = -1;
   bool disableChips = false;
   TextEditingController _textController = TextEditingController();
 
@@ -179,7 +188,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
 
 
 
-  void send_announcement(){
+  void send_announcement() {
     try{
       String announcement_msg;
       if(disableChips){
@@ -189,10 +198,10 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
         announcement_msg = announcements[activeAnnouncement];
       }
 
-      if(isvalid_announcement_msg(announcement_msg)){
+      if(isValidAnnouncement(announcement_msg)){
         //   send announcement
         debugPrint("Sending announcement.......");
-        theme.buildToastMessage("Sending announcement $announcement_msg");
+        sendAnnouncementRequest(announcement_msg);
       }
       else{
         //   Toast -- that they should select
@@ -204,8 +213,35 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
 
   }
 
-  bool isvalid_announcement_msg(String msg) {
+  bool isValidAnnouncement(String msg) {
     return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
+  }
+
+  void sendAnnouncementRequest(String msg) async{
+    try {
+      debugPrint(widget.email);
+      var reqBody = {
+        "from": widget.email, // User's email (sender)
+        "message": msg, // Roommate's email (recipient)
+        "type": 'announcement', // Request type
+      };
+      var response = await http.post(
+        Uri.parse(sendAnnouncement),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'sendAnnouncement');
+      theme.buildToastMessage("Announcement sent successfully");
+      resetChips();
+    } on NotificationException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
+  }
+
+  void resetChips(){
+    _textController.clear();
+    isSelected = List.filled(announcements.length, false);
+    activeAnnouncement = -1;
   }
 }
 

@@ -84,6 +84,27 @@ Future<void> handlePost(http.Response response,
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
+
+    case 'sendAnnouncement':
+      switch (response.statusCode) {
+        case 404:
+        // Handle case where the user is not found
+          if (response.body.contains("User not found")) {
+            throw NotificationException('User not found');
+          }
+          break;
+        case 400:
+        // Handle case where the notification message is empty
+          if (response.body.contains("Message is empty")) {
+            throw NotificationException(
+                'Error Creating Notification - Message is empty');
+          }
+          break;
+        case 500:
+        // Server error for join room request
+          throw NotificationException('Something went wrong. Try again later');
+      }
+      break;
   }
 }
 
