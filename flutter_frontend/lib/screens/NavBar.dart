@@ -1,5 +1,6 @@
 
 import "package:flutter/material.dart";
+import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
 
 class Navbar extends StatelessWidget {
   final String roomId;
@@ -43,7 +44,7 @@ class Navbar extends StatelessWidget {
             width: double.infinity, // Take up full width of the drawer
             height: MediaQuery.of(context).size.height * 0.25,  // 30% of the screen height
             margin: EdgeInsets.only(top: 30.0,),
-            child: Image.asset(
+             child: Image.asset(
               imagePath,  // Load the local image
               fit: BoxFit.contain,  // Make the image cover the full container
             ),
@@ -63,7 +64,11 @@ class Navbar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.announcement),
             title: const Text("Create Announcement"),
-            onTap: () => print("Create New announcement tapped."),
+            onTap: () {Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CreateAnnouncement(),
+              ),
+            );},
           ),
           ListTile(
             // leave room action
