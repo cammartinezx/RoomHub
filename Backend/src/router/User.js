@@ -73,10 +73,42 @@ router.get("/:id/get-notification", (req, res) => {
     user_info_handler.get_user_notification(req, res);
 });
 
+/**
+ * @memberof User
+ * @name Get a notify message when user leave the room successfully
+ * @path {GET} user/:id/leave-room
+ * @params {String} :id is the id of the user whose room we are trying to get.
+ * @code {200} A valid message
+ * @code {400} This username is invalid
+ * @code {404} User not found
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ * @example
+    If there is only one user in the room
+        Response: { "message": "The room is being deleted and user leave the room successfully" }
+If there is more than one user in the room
+        Response: { "message": "User leave the room successfully" }
+ */
 router.get("/:id/leave-room", (req, res) => {
     user_info_handler.leave_user_room(req, res);
 });
 
+/**
+ * @memberof User
+ * @name Get a warning message when user want to leave the room
+ * @path {GET} user/:id/leave-warning
+ * @params {String} :id is the id of the user whose room we are trying to get.
+ * @code {200} A valid message
+ * @code {400} This username is invalid
+ * @code {404} User not found
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ * @example
+    If there is only one user in the room
+        Response: { "message": "Warning: If you leave, the room will be deleted!" }
+If there is more than one user in the room
+        Response: { "message": "Warning: Are you sure want to leave this room!" }
+ */
 router.get("/:id/leave-warning", (req, res) => {
     user_info_handler.get_user_warning(req, res);
 });

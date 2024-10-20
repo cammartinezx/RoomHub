@@ -80,7 +80,7 @@ class RoomPersistence {
     }
 
     /**
-     *
+     * Use Get command to get the room name from Room table
      * @param {String} room_id "The unique identifier for the room"
      * @returns {String} "The roomname associated with the room_id"
      */
@@ -101,7 +101,7 @@ class RoomPersistence {
     }
 
     /**
-     *
+     * Use Put command to create the new room into Room table
      * @param {String} unique_id "The unique identifier for the room"
      * @param {String} room_name "The room name as defined by user or function caller"
      * @param {String} user_id "Id of user belonging to the room."
@@ -153,6 +153,11 @@ class RoomPersistence {
         await this.#doc_client.send(update_command);
     }
 
+    /**
+     * Use Get command to get the list of users from the given room
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Set} "The list of users associated with the room_id"
+     */
     async get_room_users(room_id) {
         const get_command = new GetCommand({
             TableName: "Room",
@@ -169,6 +174,10 @@ class RoomPersistence {
         return user_list;
     }
 
+    /**
+     * Use Delete command to delete the specific room given room_id from Room table
+     * @param {String} room_id "The unique identifier for the room"
+     */
     async delete_room(room_id) {
         const delete_command = new DeleteCommand({
             TableName: "Room",
@@ -180,6 +189,11 @@ class RoomPersistence {
         await this.#doc_client.send(delete_command);
     }
 
+    /**
+     * Use Update command to delete specific user from specific room
+     * @param {String} user_id "The unique identifier for the user"
+     * @param {String} room_id "The unique identifier for the room"
+     */
     async remove_user_id(user_id, room_id) {
         const update_command = new UpdateCommand({
             TableName: "Room",

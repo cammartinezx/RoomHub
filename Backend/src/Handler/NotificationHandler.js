@@ -158,12 +158,18 @@ class NotificationHandler {
         return `${from} requests to join your room`;
     }
 
+    /**
+     * Add some new announcements to the persistence Layer
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
     async send_announcement(request, response) {
         try {
             const status = "unread";
-            const type = "announcement";
             const from = request.body.from;
             const message = request.body.message;
+            const type = request.body.type;
 
             if (!this.#is_valid_user_string(from)) {
                 response.status(404).json({ message: "User not found" });

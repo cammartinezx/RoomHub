@@ -87,7 +87,7 @@ class UserInfoHandler {
     /**
      * Get a users room
      * @async
-     * @param {Express.request} request "Reequest received by the router"
+     * @param {Express.request} request "Request received by the router"
      * @param {Express.response} response "Response to be sent back to the service that sent the original request"
      * @returns {Express.response} "A response object which contains the response to the request."
      */
@@ -153,6 +153,13 @@ class UserInfoHandler {
         }
     }
 
+    /**
+     * Get a message notify user left the room
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     * @returns {Express.response} "A response object which contains the response to the request."
+     */
     async leave_user_room(request, response) {
         try {
             let user_id = request.params.id.trim().toLowerCase();
@@ -177,7 +184,7 @@ class UserInfoHandler {
                         // remove room_id from the specific user
                         await this.#user_persistence.remove_room_id(room_id, user_id);
                         response.status(200).json({
-                            message: `The room ${room_id} is being deleted and user ${user_id} leave the room successfully`,
+                            message: "The room is being deleted and user leave the room successfully",
                         });
                         // more than 1 user in the room
                     } else {
@@ -187,7 +194,7 @@ class UserInfoHandler {
                         await this.#user_persistence.remove_room_id(room_id, user_id);
                         response
                             .status(200)
-                            .json({ message: `User ${user_id} leave the room ${room_id} successfully` });
+                            .json({ message: "User leave the room successfully" });
                     }
                 }
             }
@@ -196,6 +203,13 @@ class UserInfoHandler {
         }
     }
 
+    /**
+     * Get a warning message if user want to leave the room
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     * @returns {Express.response} "A response object which contains the response to the request."
+     */
     async get_user_warning(request, response) {
         try {
             let user_id = request.params.id.trim().toLowerCase();

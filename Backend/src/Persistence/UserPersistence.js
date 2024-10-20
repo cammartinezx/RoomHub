@@ -235,6 +235,11 @@ class UserPersistence {
         await this.#doc_client.send(update_command);
     }
 
+    /**
+     * Use Update command to delete specific room for specific user
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {String} user_id "The unique identifier for the user"
+     */
     async remove_room_id(room_id, user_id) {
         const update_command = new UpdateCommand({
             TableName: "User",
