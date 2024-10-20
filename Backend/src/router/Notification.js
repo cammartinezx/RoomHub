@@ -31,7 +31,7 @@ router.post("/join-room-request", (req, res) => {
  * @path {POST} notification/send-announcement
  * @query {String} from The sender user ID
  * @query {String} message The message of announcement
- * @query {String} type The type of notification: join-request or announcement
+ * @query {String} type The type of notification: must be announcement
  * @code {200} Notify you are the only person in this room
  * @code {200} Announcement Successfully sent
  * @code {404} Error Sending Announcement - User not found

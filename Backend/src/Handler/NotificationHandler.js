@@ -63,11 +63,29 @@ class NotificationHandler {
         return true;
     }
 
+    /**
+     * Check if user id is valid
+     * @param {String} user_string "A string representing user id to be validated"
+     * @returns {Boolean} "Returns true if valid user id, return false if invalid"
+     */
     #is_valid_user_string(user_string) {
         if (user_string.length <= 0 || user_string === undefined) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Check if notification type is valid
+     * @param {String} type "A string representing type to be validated"
+     * @returns {Boolean} "Returns true if valid type, return false if invalid"
+     */
+    #is_valid_type(type) {
+        // for now we just have 2 types of notification (join-request or announcement)
+        if (type === "join-request" || type === "announcement") {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -185,6 +203,11 @@ class NotificationHandler {
             if (!this.#is_valid_msg(message)) {
                 response.status(400).json({ message: "Message is empty" });
             }
+
+            if (!this.#is_valid_type(type)) {
+                response.status(400).json({ message: "Notification type is invalid" });
+            }
+
             let room_id = await this.#user_persistence.get_room_id(from);
             // get the total number of users in the room
             let users = await this.#room_persistence.get_room_users(room_id);
