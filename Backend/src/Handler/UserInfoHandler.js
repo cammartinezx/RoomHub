@@ -192,9 +192,7 @@ class UserInfoHandler {
                         await this.#room_persistence.remove_user_id(user_id, room_id);
                         // remove room_id from the specific user
                         await this.#user_persistence.remove_room_id(room_id, user_id);
-                        response
-                            .status(200)
-                            .json({ message: "User leave the room successfully" });
+                        response.status(200).json({ message: "User leave the room successfully" });
                     }
                 }
             }
