@@ -102,7 +102,7 @@ class NotificationHandler {
             const to = request.body.to;
 
             if (!this.#is_valid_user_string(to)) {
-                response.status(404).json({ message: "User not found" });
+                return response.status(404).json({ message: "User not found" });
             }
 
             // need to verify if sender and receiver exist in database and also sender have a room
@@ -111,14 +111,14 @@ class NotificationHandler {
             let receiver = await this.#user_persistence.get_user(to);
 
             if (sender === null || receiver === null) {
-                response.status(404).json({ message: "User not found" });
+                return response.status(404).json({ message: "User not found" });
             }
             const type = request.body.type;
             let room_id = await this.#user_persistence.get_room_id(to);
             const msg = this.generate_message(from, to, type);
             if (!this.#is_valid_msg(msg)) {
                 // give a certain type of response
-                response.status(400).json({ message: "Error Creating Notification - Message is empty" });
+                return response.status(400).json({ message: "Error Creating Notification - Message is empty" });
             }
             let new_notification_status = await this.#notification_persistence.generate_new_notification(
                 notif_id,
@@ -134,12 +134,12 @@ class NotificationHandler {
                 // assign new notification to both sender and receiver
                 // await this.#user_persistence.update_user_notifications(notif_id, from);
                 await this.#user_persistence.update_user_notifications(notif_id, to);
-                response.status(200).json({ message: "Successfully Created the new notification" });
+                return response.status(200).json({ message: "Successfully Created the new notification" });
             } else {
-                response.status(500).json({ message: "Retry creating the notification" });
+                return response.status(500).json({ message: "Retry creating the notification" });
             }
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            return response.status(500).json({ message: error.message });
         }
     }
 
@@ -190,22 +190,22 @@ class NotificationHandler {
             const type = request.body.type;
 
             if (!this.#is_valid_user_string(from)) {
-                response.status(404).json({ message: "User not found" });
+                return response.status(404).json({ message: "User not found" });
             }
 
             // need to verify if sender and receiver exist in database and also sender have a room
             let sender = await this.#user_persistence.get_user(from);
 
             if (sender === null) {
-                response.status(404).json({ message: "User not found" });
+                return response.status(404).json({ message: "User not found" });
             }
 
             if (!this.#is_valid_msg(message)) {
-                response.status(400).json({ message: "Message is empty" });
+                return response.status(400).json({ message: "Message is empty" });
             }
 
             if (!this.#is_valid_type(type)) {
-                response.status(400).json({ message: "Notification type is invalid" });
+                return response.status(400).json({ message: "Notification type is invalid" });
             }
 
             let room_id = await this.#user_persistence.get_room_id(from);
@@ -215,7 +215,7 @@ class NotificationHandler {
             users.delete(from);
             // the room only have one user which is sender
             if (users.size === 0) {
-                response.status(200).json({ message: "You are the only person in this room" });
+                return response.status(200).json({ message: "You are the only person in this room" });
             } else {
                 // convert set into array
                 let user_list = [...users];
@@ -242,13 +242,13 @@ class NotificationHandler {
                     }
                 }
                 if (success) {
-                    response.status(200).json({ message: "Send announcement successfully" });
+                    return response.status(200).json({ message: "Send announcement successfully" });
                 } else {
-                    response.status(500).json({ message: "Retry creating the notification" });
+                    return response.status(500).json({ message: "Retry creating the notification" });
                 }
             }
         } catch (error) {
-            response.status(500).json({ message: error.message });
+            return response.status(500).json({ message: error.message });
         }
     }
 }
