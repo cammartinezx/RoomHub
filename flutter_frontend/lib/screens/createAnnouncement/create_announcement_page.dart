@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/ChipSelection.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
-import "../header.dart";
+import "package:flutter_frontend/widgets/gradient_button.dart";
 
 class CreateAnnouncement extends StatefulWidget {
   const CreateAnnouncement({super.key});
@@ -50,73 +50,134 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Header(),
-            Text("Create Announcement",
-              style: TextStyle(
-                color: theme.darkblue,
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold,
-              ),
+      body: Stack(
+        children: [
+          // Background gradient container
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                theme.mintgreen, // Gradient starting color
+                theme.darkblue,  // Gradient ending color
+              ]),
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Text("Select a preset announcement",
-                style: TextStyle(
-                  color: theme.darkblue,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,)
-            ),
-            const SizedBox(
-              height: 5.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10.0),
-              child: ChipSelection(disableChips: this.disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
-            ),
-            const SizedBox(height: 20.0),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Make your own announcement",
-                      style: TextStyle(
-                        color: theme.darkblue,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,)
+          ),
+          // Positioned header with back button and title
+          Positioned(
+            top: 40.0,
+            left: 20.0,
+            right: 20.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Back button to return to the previous screen
+                IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                    size: 30,
                   ),
-                ]
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Pop the current screen
+                  },
+                ),
+                // Title text indicating the purpose of the screen
+                const Text(
+                  '\nSend \nAnnouncement',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900),
+                ),
+              ],
+            ),
+          ),
+          // Main content container for instructions and email input
+          Padding(
+            padding: const EdgeInsets.only(top: 200.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
+                color: Colors.white, // Background color for the input area
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18.0, right: 18),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Text("Select a preset announcement",
+                            style: TextStyle(
+                              color: theme.darkblue,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,)
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5.0,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: ChipSelection(disableChips: this.disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
+                      ),
+                      const SizedBox(height: 20.0),
+                      Container(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Make your own announcement",
+                                  style: TextStyle(
+                                    color: theme.darkblue,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,)
+                              ),
+                            ]
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: TextField(
+                            controller: _textController,
+                            cursorColor: Theme.of(context).primaryColorDark,
+                            decoration: InputDecoration(
+                                label: Text(
+                                  "Your Announcement",
+                                  style: TextStyle(color: theme.darkgrey),
+                                )
+                            )
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      GradientButton(text: 'Send',
+                          onTap: () {send_announcement();}),
+                      const SizedBox(height: 50), // Spacer below button
+                    ],
+                  ),
+                ),
               ),
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: TextField(
-                  controller: _textController,
-                  cursorColor: Theme.of(context).primaryColorDark,
-                  decoration: InputDecoration(
-                      label: Text(
-                        "Your Announcement",
-                        style: TextStyle(color: theme.darkgrey),
-                      )
-                  )
-              ),
-            ),
-            const SizedBox(
-              height: 40.0,
-            ),
-           OutlinedButton(onPressed: () {send_announcement();}, child:Text("Create Announcement")),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
+
+
+
 
   void send_announcement(){
     try{
