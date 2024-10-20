@@ -17,12 +17,15 @@ class Navbar extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text("Leave Room" ,
-                  style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
+            title: const Align(
+              alignment: Alignment.center,
+              child: Text("Leave Room" ,
+                    style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+              ),
+                        ),
             ),
-          ),
             content: Text(leaveRoomWarning),            // this should be gen from api call
             actions: [
               TextButton(
