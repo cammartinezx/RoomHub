@@ -186,6 +186,33 @@ Future<String> getResponse(http.Response response,
         // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
+    // should be in a handle put or patch
+    case 'leaveRoom':
+      switch(response.statusCode) {
+        case 200:
+        // Decode JSON response and return the room name if it exists
+          var jsonResponse = jsonDecode(response.body);
+          if (jsonResponse.containsKey('message')) {
+            return jsonResponse['message'];
+          } else {
+            throw UserException('Message not found in the response');
+          }
+        case 400:
+        // Handle invalid username scenario
+          if (response.body.contains("Invalid username")) {
+            throw UserException('This username is invalid');
+          }
+          throw UserException('Invalid request');
+        case 404:
+        // Handle user not found scenario
+          throw UserException('User not found');
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
     default:
       // Fallback for unknown responseType
       throw Exception('Something went wrong. Try again later');

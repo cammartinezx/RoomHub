@@ -1,6 +1,7 @@
 
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
+import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/response_handler.dart';
@@ -30,7 +31,7 @@ class Navbar extends StatelessWidget {
             content: Text(leaveRoomWarning),            // this should be gen from api call
             actions: [
               TextButton(
-                onPressed: () {print("Go ahead with the leave");},//tell the backend to do stuff.
+                onPressed: () {print("Go ahead with the leave");leaveRoom(context);},//tell the backend to do stuff.
                 child: Text("Leave")),
               TextButton(
                 onPressed: () {
@@ -46,6 +47,7 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String imagePath = "assets/logo.png";
+    int  numRoomMates = 0;
     return Drawer(
       child: ListView(
         children:[
@@ -73,8 +75,9 @@ class Navbar extends StatelessWidget {
         ),
           ListTile(
             leading: const Icon(Icons.announcement),
-            title: const Text("Create Announcement"),
-            onTap: () {Navigator.of(context).push(
+            title: const Text("Send Announcement"),
+            enabled: numRoomMates > 0,
+            onTap: () { Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => CreateAnnouncement(email: email),
               ),
@@ -85,7 +88,7 @@ class Navbar extends StatelessWidget {
             // leave room action
             leading: const Icon(Icons.exit_to_app),
             title: const Text("Leave Room"),
-            onTap: () async {String warningMsg = await get_warning_msg();
+            onTap: () async {String warningMsg = await getWarningMsg();
               if(warningMsg == "ERROR")
               {
                 OurTheme().buildToastMessage("Request not available please try again later");
@@ -99,7 +102,7 @@ class Navbar extends StatelessWidget {
     );
   }
 
-  Future<String> get_warning_msg() async {
+  Future<String> getWarningMsg() async {
     String warning_msg;
     try {
       debugPrint(email);
@@ -117,5 +120,25 @@ class Navbar extends StatelessWidget {
 
     debugPrint(warning_msg);
     return warning_msg;
+  }
+
+  void leaveRoom(BuildContext context) async {
+    try {
+      debugPrint(email);
+      var response = await http.get(
+        Uri.parse("$user/$email$leaveRoomPth"),
+        headers: {"Content-Type": "application/json"},
+      );
+      await getResponse(response, responseType: 'leaveRoom');
+    //   go back to the home page for new users.
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const OurHomeNewUser(),
+        ),
+      );
+    } on UserException catch (e) {
+      debugPrint(e.message);
+      OurTheme().buildToastMessage(e.message);
+    }
   }
 }
