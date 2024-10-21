@@ -10,13 +10,16 @@
 
 .presetContainer {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 60px;
 
 }
 
 .presetBtn {
-    padding: 10px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
     border: 1px solid #ccc;
     background-color: #bbbbbb;
     cursor: pointer;
@@ -28,8 +31,14 @@
 }
 
 .selected {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
     background-color: #007bff;
-    color: white;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 80px;
 }
 
 .customMessage input {
@@ -49,8 +58,4 @@
     font-size: 16px;
 }
 
-.feedback {
-    margin-top: 20px;
-    color: red;
-}
 
