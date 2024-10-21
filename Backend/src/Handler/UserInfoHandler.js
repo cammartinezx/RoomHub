@@ -206,7 +206,7 @@ class UserInfoHandler {
      * @async
      * @param {Express.request} request "Request received by the router"
      * @param {Express.response} response "Response to be sent back to the service that sent the original request"
-     * @returns {Express.response} "A response object which contains the response to the request."
+     * @returns {Express.response} "A response message which contains the response to the request."
      */
     async get_user_warning(request, response) {
         try {
@@ -231,6 +231,44 @@ class UserInfoHandler {
                         // more than 1 user in the room
                     } else {
                         response.status(200).json({ message: "Warning: Are you sure want to leave this room!" });
+                    }
+                }
+            }
+        } catch (error) {
+            response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get a message notify if you have roommate or not
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     * @returns {Express.response} "A response message which contains the response to the request."
+     */
+    async get_roommate(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            // validate user_id
+            if (!this.#is_valid_id(user_id)) {
+                response.status(400).json({ message: "This username is invalid" });
+            } else {
+                // if valid user id
+                let user = await this.#user_persistence.get_user(user_id);
+                if (user === null) {
+                    response.status(404).json({ message: "User not found" });
+                } else {
+                    // get the room id from the given user
+                    let room_id = await this.#user_persistence.get_room_id(user_id);
+                    // get the total number of users in the room
+                    let users = await this.#room_persistence.get_room_users(room_id);
+                    let total_users = users.size;
+                    // the room only have 1 user
+                    if (total_users === 1) {
+                        response.status(200).json({ message: "You have no roommate" });
+                        // more than 1 user in the room
+                    } else {
+                        response.status(200).json({ message: "You have at least one roommate" });
                     }
                 }
             }

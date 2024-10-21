@@ -113,6 +113,26 @@ router.get("/:id/leave-warning", (req, res) => {
     user_info_handler.get_user_warning(req, res);
 });
 
+/**
+ * @memberof User
+ * @name Get a message notify if you have roommate or not
+ * @path {GET} user/:id/get-roommate
+ * @params {String} :id is the id of the user whose room we are trying to get.
+ * @code {200} A valid message
+ * @code {400} This username is invalid
+ * @code {404} User not found
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ * @example
+    If there is only one user in the room
+        Response: { "message": "You have no roommate" }
+If there is more than one user in the room
+        Response: { "message": "You have at least one roommate" }
+ */
+router.get("/:id/get-roommate", (req, res) => {
+    user_info_handler.get_roommate(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });
