@@ -41,6 +41,24 @@ const VirtualRoomPage = () => {
       }
     }, [email]);
 
+    const handleLeaveRoom = async () => {
+      const confirmation = window.confirm('Are you sure you want to leave the room?');
+      if (confirmation) {
+        try {
+          const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/leave-room`);
+          if (response.status === 200) {
+            alert('You have successfully left the room.');
+            navigate('/home', { state: { hasRoom: false, email } });
+          } else {
+            alert('Failed to leave the room. Please try again.');
+          }
+        } catch (error) {
+          console.error('Error leaving the room:', error);
+          alert('An error occurred while trying to leave the room.');
+        }
+      }
+    };
+
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -70,7 +88,7 @@ const VirtualRoomPage = () => {
             <img src="leave.png" alt="Room" className={styles.cardImage}/>
             <h2>Leave Room</h2>
             <p>Leave the current room</p>
-            <button onClick={() => navigate('/leave-room', { state: { hasRoom, email } })}>Leave Room</button>
+            <button onClick={handleLeaveRoom}>Leave Room</button>
           </div>
 
           <div className={styles.card} onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email } })}>
