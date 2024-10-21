@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomByUser, getRoomName } from '../mockApi';
 import styles from '../styles/HomePage.module.css';
+import roomStyles from '../styles/VirtualRoomPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
@@ -15,6 +16,9 @@ const VirtualRoomPage = () => {
     const email = location.state?.email;
     const [roomName, setRoomName] = useState('')
     const [loading, setLoading] = useState(true);
+    const [showLeavePopup, setShowLeavePopup] = useState(false);
+    const [warningMessage, setWarningMessage] = useState('');
+    const [error, setError] = useState('');
 
     // const [showRoommates, setShowRoommates] = useState(false);  // State to toggle showing roommates
     
@@ -41,21 +45,29 @@ const VirtualRoomPage = () => {
       }
     }, [email]);
 
-    const handleLeaveRoom = async () => {
-      const confirmation = window.confirm('Are you sure you want to leave the room?');
-      if (confirmation) {
-        try {
-          const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/leave-room`);
-          if (response.status === 200) {
-            alert('You have successfully left the room.');
-            navigate('/home', { state: { hasRoom: false, email } });
-          } else {
-            alert('Failed to leave the room. Please try again.');
-          }
-        } catch (error) {
-          console.error('Error leaving the room:', error);
-          alert('An error occurred while trying to leave the room.');
+    // Function to fetch the leave warning
+    const fetchLeaveWarning = async () => {
+      try {
+        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/leave-warning`);
+        if (response.status === 200) {
+          setWarningMessage(response.data.message);
+          setShowLeavePopup(true);  // Show the popup with the warning message
         }
+      } catch (error) {
+        setError('Error fetching the warning message.');
+      }
+    };
+
+    // Function to leave the room
+    const handleLeaveRoom = async () => {
+      try {
+        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/leave-room`);
+        if (response.status === 200) {
+          alert('You have successfully left the room.');
+          navigate('/home', { state: { hasRoom: false, email } }); // Redirect to home
+        }
+      } catch (error) {
+        setError('Error leaving the room.');
       }
     };
 
@@ -84,11 +96,11 @@ const VirtualRoomPage = () => {
           </div>
 
 
-          <div className={styles.card} onClick={() => navigate('/leave-room', { state: { hasRoom, email } })}>
+          <div className={styles.card} onClick={fetchLeaveWarning}>
             <img src="leave.png" alt="Room" className={styles.cardImage}/>
             <h2>Leave Room</h2>
             <p>Leave the current room</p>
-            <button onClick={handleLeaveRoom}>Leave Room</button>
+            <button onClick={fetchLeaveWarning}>Leave Room</button>
           </div>
 
           <div className={styles.card} onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email } })}>
@@ -99,6 +111,17 @@ const VirtualRoomPage = () => {
           </div>
 
         </div>
+
+          {/* Leave Room Popup Confirmation */}
+        {showLeavePopup && (
+          <div className={roomStyles.popup}>
+            <p>{warningMessage}</p>
+            <button className={roomStyles.confirmButton} onClick={handleLeaveRoom}>Yes, Leave Room</button>
+            <button className={roomStyles.cancelButton} onClick={() => setShowLeavePopup(false)}>Cancel</button>
+          </div>
+        )}
+
+        {error && <p className={styles.error}>{error}</p>}
 
         {/* <button onClick={toggleRoommates} className={styles.action}>
           {showRoommates ? 'Hide Roommates' : 'Show Roommates'}
