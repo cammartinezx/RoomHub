@@ -3,6 +3,7 @@ import 'package:flutter_frontend/screens/header.dart';
 import 'package:flutter_frontend/widgets/action_notification.dart';
 
 import 'package:flutter_frontend/utils/our_theme.dart';
+import 'package:flutter_frontend/widgets/noaction_notification.dart';
 
 class Notifications extends StatefulWidget {
   final List<NotificationItem> notificationItems;
@@ -85,11 +86,16 @@ class NotificationList extends StatelessWidget {
       shrinkWrap: true,
       itemCount: items.length,
       itemBuilder: (context, index) {
-        return ActionNotification(
-          message: items[index].msg,
-          id: items[index].notificationid,
-          new_roommate: items[index].from,
-        );
+        if(items[index].type == "announcement"){
+          return NoActionNotification(message: items[index].msg, id: items[index].notificationid);
+        }
+        else if(items[index].type == "join-request"){
+          return ActionNotification(
+            message: items[index].msg,
+            id: items[index].notificationid,
+            new_roommate: items[index].from,
+          );
+        }
       },
     );
   }

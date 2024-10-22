@@ -153,6 +153,8 @@ Future<String> getResponse(http.Response response,
           }
           throw UserException('Invalid request');
         case 500:
+          print(response);
+          print(response.body);
           // Server error
           throw UserException('Something went wrong. Try again later');
         default:
