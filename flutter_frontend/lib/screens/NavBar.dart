@@ -47,7 +47,6 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String imagePath = "assets/logo.png";
-    int  numRoomMates = 0;
     return Drawer(
       child: ListView(
         children:[
@@ -66,7 +65,8 @@ class Navbar extends StatelessWidget {
             title: Align(
                 alignment: Alignment.center,
                 child: Text(this.roomId,
-                        style: const TextStyle(
+                        style: TextStyle(
+                          color: OurTheme().darkblue,
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
                         ),
@@ -76,14 +76,19 @@ class Navbar extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.announcement),
             title: const Text("Send Announcement"),
-            enabled: numRoomMates > 0,
-            onTap: () { Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => CreateAnnouncement(email: email),
-              ),
-            );
+            onTap: () async{ String hasRoommates = await hasRoommate();
+              if(hasRoommates == "true"){
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CreateAnnouncement(email: email),
+                  ),
+                );
+              }
+              else{
+                OurTheme().buildToastMessage("You have no roommates");
+              }
           },
-          ),
+        ),
           ListTile(
             // leave room action
             leading: const Icon(Icons.exit_to_app),
@@ -140,5 +145,21 @@ class Navbar extends StatelessWidget {
       debugPrint(e.message);
       OurTheme().buildToastMessage(e.message);
     }
+  }
+
+  Future<String> hasRoommate() async {
+    String hasRoommate = "";
+    try {
+      debugPrint(email);
+      var response =  await http.get(
+        Uri.parse("$user/$email$getRoommatePth"),
+        headers: {"Content-Type": "application/json"},
+      );
+      hasRoommate =  await getResponse(response, responseType: 'hasRoommate');
+    } on UserException catch (e) {
+      debugPrint(e.message);
+      OurTheme().buildToastMessage(e.message);
+    }
+    return hasRoommate;
   }
 }

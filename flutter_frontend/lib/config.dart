@@ -22,3 +22,4 @@ const createRoom = "$room/create-room"; // Endpoint to create a new room
 const leaveRoomWarning ="/leave-warning";//endpoint to get warning associated with leaving a room.
 const sendAnnouncement = "$notification/send-announcement";//endpoint to send an announcement
 const leaveRoomPth = "/leave-room"; //endpoint to leave a room
+const getRoommatePth = "/get-roommate";//endpoint to get message whether or not  the user has roommates
