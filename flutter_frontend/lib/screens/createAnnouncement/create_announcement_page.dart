@@ -123,7 +123,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.only(top: 30),
                         child: Text("Select a preset announcement",
                             style: TextStyle(
                               color: theme.darkblue,

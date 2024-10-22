@@ -12,10 +12,10 @@ class UserRoom extends StatelessWidget {
     // update the boiz with the valid roomID
     return Scaffold(
       backgroundColor: Colors.grey,
-      drawer: Navbar(roomId: "The boiz", email: email),
+      drawer: Navbar(roomId: roomID, email: email),
       body: SingleChildScrollView(
           child: Column(
-            children: <Widget> [Header(roomId: "The boiz")],
+            children: <Widget> [Header(roomId: roomID)],
           )
         ),
       );
