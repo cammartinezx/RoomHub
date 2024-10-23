@@ -53,7 +53,7 @@ const NotificationsPage = () => {
                     n.notification_id === id ? { ...n, status: 'accepted' } : n
                 );              
                 setNotifications(updatedNotifications);
-                alert('User successfully to your room!');
+                alert('User successfully added to your room!');
             } else {
                 setError('Error: ' + response.data.message);
             }

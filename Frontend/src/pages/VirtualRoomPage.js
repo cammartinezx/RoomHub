@@ -31,9 +31,13 @@ const VirtualRoomPage = () => {
       const checkRoomStatus = async () => {
         try {
           const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-room`);
-          if (response.status === 200 && response.data.room_name) {
+          if (response.status === 200 && response.data.room_name && response.data.room_name !== 'NA') {
             setRoomName(response.data.room_name);
             setLoading(false);
+          }
+          else {
+            // Redirect to home if the room is not found or the user is no longer in the room
+            navigate('/home', { state: { email, hasRoom: false } });
           }
         } catch (error) {
           console.error("Error fetching room data", error);
