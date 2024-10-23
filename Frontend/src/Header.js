@@ -8,6 +8,7 @@ import styles from './styles/Header.module.css';
 const Header = ({ email, hasRoom, roomName }) => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const navigate = useNavigate();
+  
 
   //Fetch notifications to check if there are unread ones
   useEffect(() => {
@@ -35,7 +36,7 @@ const Header = ({ email, hasRoom, roomName }) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <img src="/logo2.png" alt="RoomHub Logo" />
+        <img src="/logo2.png" alt="RoomHub Logo" onClick={() => navigate('/home', { state: { hasRoom, email } })}/>
       </div>
       <div className={styles.icons}>
         <div className={styles.notificationWrapper}>
