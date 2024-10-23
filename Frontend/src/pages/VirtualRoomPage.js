@@ -19,6 +19,7 @@ const VirtualRoomPage = () => {
     const [showLeavePopup, setShowLeavePopup] = useState(false);
     const [warningMessage, setWarningMessage] = useState('');
     const [error, setError] = useState('');
+    const [tasks, setTasks] = useState([{ task: "Clean the kitchen", completed: false },{ task: "Take out trash", completed: true }]);
 
     // const [showRoommates, setShowRoommates] = useState(false);  // State to toggle showing roommates
     
@@ -79,6 +80,27 @@ const VirtualRoomPage = () => {
       <div className={styles.container}>
         <Header email={email} hasRoom={hasRoom} />
         <h2 className={styles.title}>{roomName}</h2>
+
+        <div className={roomStyles.mainContent}>
+          {/* Left Side - Tasks */}
+          <div className={roomStyles.tasksSection}>
+            <h3>Tasks</h3>
+            <ul>
+              {tasks.map((task, index) => (
+                <li key={index}>
+                  {task.task} - {task.completed ? "Completed" : "Not Completed"}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Right Side - Shared Expenses */}
+          <div className={roomStyles.expensesSection}>
+            <h3>Shared Expenses</h3>
+            <p>No expenses recorded yet.</p>
+          </div>
+        </div>
+
         <div className={styles.cardGrid}>
 
           <div className={styles.card} onClick={() => navigate('/announcements', { state: { hasRoom, email } })}>
