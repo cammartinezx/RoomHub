@@ -285,9 +285,10 @@ class UserInfoHandler {
     }
 
     async areRoommates(user_id1, user_id2) {
-        this.get_roommates(user_id1);
+        let users = await this.get_roommates(user_id1);
         // Check if user_id2 is in the users list and return true or false
-        return users.includes(user_id2);
+        console.log(users);
+        return users.has(user_id2);
     }
 
     /**
@@ -298,8 +299,7 @@ class UserInfoHandler {
      */
     async is_valid_user(user_id) {
         // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
-        let user_persistence = this.#user_persistence;
-        let user = await user_persistence.get_user(user_id);
+        let user = await this.#user_persistence.get_user(user_id);
         if (user != null) {
             return true;
         }
