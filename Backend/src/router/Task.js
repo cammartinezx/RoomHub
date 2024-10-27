@@ -8,6 +8,8 @@ const TaskHandler = require("../Handler/TaskHandler");
 
 const task_handler = new TaskHandler();
 
+//CREATE A TASK
+
 /**
  * @memberof Task
  * @name Add a new Task
@@ -22,6 +24,33 @@ const task_handler = new TaskHandler();
  */
 router.post("/create-task", (req, res) => {
     task_handler.create_task(req, res);
+});
+
+//EDIT TASK
+router.post("/edit-task", (req, res) => {
+    task_handler.edit_task(req, res);
+});
+
+//DELETE TASK
+router.delete("/delete-task", (req, res) => {
+    task_handler.delete_task(req, res);
+});
+
+//MARK AS COMPLETED
+router.patch("/mark-completed", (req, res) => {
+    task_handler.mark_completed(req, res);
+});
+
+//GET ALL COMPLETED TASKS
+
+router.get("/:id/get-completed-tasks", (req, res) => {
+    user_info_handler.get_completed_tasks(req, res);
+});
+
+//GET ALL PENDING TASKS
+
+router.get("/:id/get-pending-tasks", (req, res) => {
+    user_info_handler.get_pending_tasks(req, res);
 });
 
 router.use("/", (req, res) => {
