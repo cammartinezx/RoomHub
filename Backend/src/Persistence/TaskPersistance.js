@@ -88,7 +88,7 @@ class TaskPersistence {
 
         const response = await this.#doc_client.send(get_command);
         if (!response.Item) {
-            throw new Error("Task not found");
+            return "FAILURE";
         }
         return response.Item;
     }
@@ -119,7 +119,13 @@ class TaskPersistence {
             ReturnValues: "UPDATED_NEW",
         });
 
-        await this.#doc_client.send(update_command);
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Update task failed:", error);
+            return "FAILURE";
+        }
     }
 
     /**
@@ -130,7 +136,7 @@ class TaskPersistence {
      * @returns {String} "SUCCESS OR FAILURE - if the db write succeeded or failed."
      */
     async generate_new_task(unique_id, task_description, user_id, due_date) {
-        // add the new user
+        // Add the new task
         const put_command = new PutCommand({
             TableName: "Task",
             Item: {
@@ -142,7 +148,14 @@ class TaskPersistence {
             },
             ConditionExpression: "attribute_not_exists(task_id)",
         });
-        await this.#doc_client.send(put_command);
+
+        try {
+            await this.#doc_client.send(put_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Generate new task failed:", error);
+            return "FAILURE";
+        }
     }
 
     /**
@@ -163,12 +176,19 @@ class TaskPersistence {
             ConditionExpression: "attribute_exists(task_id)", // Ensure the task exists
         });
 
-        await this.#doc_client.send(update_command);
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Mark task as completed failed:", error);
+            return "FAILURE";
+        }
     }
 
     /**
      * Deletes a task by its task_id.
      * @param {String} task_id "The unique identifier for the task"
+     * @returns {String} "SUCCESS or FAILURE - whether the deletion was successful"
      */
     async delete_task(task_id) {
         const delete_command = new DeleteCommand({
@@ -177,7 +197,14 @@ class TaskPersistence {
                 task_id: task_id,
             },
         });
-        await this.#doc_client.send(delete_command);
+
+        try {
+            await this.#doc_client.send(delete_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Delete task failed:", error);
+            return "FAILURE";
+        }
     }
 }
 
