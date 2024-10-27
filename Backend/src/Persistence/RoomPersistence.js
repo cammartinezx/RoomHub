@@ -116,6 +116,7 @@ class RoomPersistence {
                     room_id: unique_id,
                     name: room_name,
                     users: new Set([user_id]),
+                    tasks: new Set(),
                 },
                 ConditionExpression: "attribute_not_exists(room_id)",
             });
@@ -185,7 +186,6 @@ class RoomPersistence {
                 room_id: room_id,
             },
         });
-
         await this.#doc_client.send(delete_command);
     }
 
@@ -211,6 +211,129 @@ class RoomPersistence {
             ReturnValues: "NONE",
         });
 
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Use Update command to add a new task to the list of tasks for a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {Object} task "The task object to be added to the room"
+     */
+    async add_task_to_room(room_id, task) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "ADD #tasks :newTask",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks", // The attribute (field) you're updating
+            },
+            ExpressionAttributeValues: {
+                ":newTask": new Set([task]), // The new task to add to the set
+            },
+            ConditionExpression: "attribute_exists(room_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Use Get command to retrieve the list of tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Set} "The list of tasks associated with the room_id"
+     */
+    async get_room_tasks(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let tasks_list = response.Item.tasks;
+        if (tasks_list === undefined) {
+            throw new Error("Room doesn't have any tasks--Service Unavailable");
+        }
+        return tasks_list;
+    }
+
+    /**
+     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_pending_tasks(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+            FilterExpression: "contains(tasks.#complete, :falseVal)",
+            ExpressionAttributeNames: {
+                "#complete": "complete",
+            },
+            ExpressionAttributeValues: {
+                ":falseVal": false,
+            },
+        });
+
+        const response = await this.#doc_client.send(get_command);
+
+        // Get the tasks list from the response
+        let tasks_list = response.Item?.tasks || [];
+
+        // Return the filtered tasks
+        return tasks_list.filter((task) => task.complete === false);
+    }
+
+    /**
+     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_completed_tasks(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+            FilterExpression: "contains(tasks.#complete, :trueVal)",
+            ExpressionAttributeNames: {
+                "#complete": "complete",
+            },
+            ExpressionAttributeValues: {
+                ":trueVal": true,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        // Get the tasks list from the response
+        let tasks_list = response.Item?.tasks || [];
+
+        // Return the filtered tasks
+        return tasks_list.filter((task) => task.complete === false);
+    }
+
+    async delete_task_from_room(room_id, task_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "DELETE #tasks :taskToRemove",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks",
+            },
+            ExpressionAttributeValues: {
+                ":taskToRemove": new Set([task_id]),
+            },
+            ConditionExpression: "attribute_exists(tasks)",
+        });
         await this.#doc_client.send(update_command);
     }
 }
