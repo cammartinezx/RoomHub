@@ -6,6 +6,7 @@ import JoinRoomPage from './pages/JoinRoomPage';
 import VirtualRoomPage from './pages/VirtualRoomPage';
 import AddRoommatePage from './pages/AddRoommatePage';
 import NotificationsPage from './pages/NotificationsPage';
+import ManageTasksPage from './pages/ManageTasksPage';
 
 // Amplify UI components
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -153,6 +154,17 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <AnnouncementsPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ManageTasksPage user={user} />;
                 }}
               </Authenticator>
             }
