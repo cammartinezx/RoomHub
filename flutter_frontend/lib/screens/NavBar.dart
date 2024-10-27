@@ -3,13 +3,19 @@ import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
+import 'package:flutter_frontend/aws_auth.dart';
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:flutter_frontend/providers.dart';
 
-class Navbar extends StatelessWidget {
+import 'login/login.dart';
+
+class Navbar extends ConsumerWidget {
   final String roomId;
   final String email;
   const Navbar({super.key, required this.roomId, required this.email});
@@ -32,21 +38,22 @@ class Navbar extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () {print("Go ahead with the leave");leaveRoom(context);},//tell the backend to do stuff.
-                child: Text("Leave")),
+                child: const Text("Leave")),
               TextButton(
                 onPressed: () {
                   // dismiss the alert dialog
                   Navigator.pop(context);
                   },
-                child: Text("Cancel")),
+                child: const Text("Cancel")),
             ],
 
           );
         });
   }
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     String imagePath = "assets/logo.png";
+    final theme = OurTheme();
     return Drawer(
       child: ListView(
         children:[
@@ -64,9 +71,9 @@ class Navbar extends StatelessWidget {
             // room name
             title: Align(
                 alignment: Alignment.center,
-                child: Text(this.roomId,
+                child: Text(roomId,
                         style: TextStyle(
-                          color: OurTheme().darkblue,
+                          color: theme.darkblue,
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
                         ),
@@ -74,8 +81,13 @@ class Navbar extends StatelessWidget {
           ),
         ),
           ListTile(
-            leading: const Icon(Icons.announcement),
-            title: const Text("Send Announcement"),
+            leading: const Icon(Icons.campaign),
+            title: Text("Send Announcement",
+                style: TextStyle(
+                  color: theme.darkblue,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,)
+            ),
             onTap: () async{ String hasRoommates = await hasRoommate();
               if(hasRoommates == "true"){
                 Navigator.of(context).push(
@@ -92,7 +104,13 @@ class Navbar extends StatelessWidget {
           ListTile(
             // leave room action
             leading: const Icon(Icons.exit_to_app),
-            title: const Text("Leave Room"),
+            title: Text("Leave Room",
+                style: TextStyle(
+                  color: theme.darkblue,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                  )
+            ),
             onTap: () async {String warningMsg = await getWarningMsg();
               if(warningMsg == "ERROR")
               {
@@ -100,6 +118,19 @@ class Navbar extends StatelessWidget {
               }else{
                 _showDialog(context, warningMsg);
               }
+            }
+          ),
+          const SizedBox(height: 30.0),
+          ListTile(
+            // leave room action
+              title: Text("Log Out",
+                  style: TextStyle(
+                    color: theme.red,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,),
+                textAlign: TextAlign.center,
+              ),
+              onTap: () async { logOut(context, ref);
             }
           )
         ],
@@ -161,5 +192,20 @@ class Navbar extends StatelessWidget {
       OurTheme().buildToastMessage(e.message);
     }
     return hasRoommate;
+  }
+
+  void logOut(BuildContext context, WidgetRef ref) async {
+    try {
+      // Accessing AWS authentication repository using Riverpod provider
+      final authAWSRepo = ref.read(authAWSRepositoryProvider);
+      // Attempting to sign in with email and password
+      await authAWSRepo.logOut(ref);
+      // Refresh the auth user provider after signing in
+      ref.refresh(authUserProvider);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const OurLogin()));
+    } on AuthException catch (e) {
+      OurTheme().buildToastMessage(e.message);
+    }
   }
 }
