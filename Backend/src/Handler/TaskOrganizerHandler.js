@@ -51,19 +51,26 @@ class TaskOrganizerHandler {
         return this.#user_persistence;
     }
     /** V A L I D A T O R S  */
+
     /**
-     * Validate a task name
-     * @param {String} room_name "The room name to be validated"
-     * @returns {Boolean} valid_name "True if valid room name and false otherwise"
+     * Validate a task name.
+     * @param {String} task_name "The task name to be validated"
+     * @returns {Boolean} valid_name "True if valid task name and false otherwise"
      */
     #is_valid_task_name(task_name) {
         let valid_name = false;
+        // Check if task_name is a non-empty string
         if (typeof task_name === "string" && task_name.length > 0) {
             valid_name = true;
         }
         return valid_name;
     }
 
+    /**
+     * Validate a date string.
+     * @param {String} dateString "The date string to be validated in yyyy-MM-dd format"
+     * @returns {Boolean} "True if valid date format and date is today or in the future, false otherwise"
+     */
     #is_valid_date(dateString) {
         // Regular expression to validate the format (yyyy-MM-dd)
         const dateRegExp = /^\d{4}-\d{2}-\d{2}$/;
@@ -83,16 +90,21 @@ class TaskOrganizerHandler {
         today.setHours(0, 0, 0, 0); // Set the time to 00:00:00 to only compare dates
 
         // Compare the input date with today's date
-        return inputDate >= today;
+        return inputDate >= today; // Returns true if inputDate is today or in the future
     }
 
     /* T A S K       A C T I O N S */
 
+    /**
+     * Create a new task based on user input.
+     * @param {request} request - The HTTP request object containing task details.
+     * @param {response } response - The HTTP response object for sending responses.
+     */
     async create_task(request, response) {
         try {
             const { tn, frm, to, date } = request.body;
 
-            // Sanitize inputs
+            // Sanitize inputs by trimming whitespace and converting to lowercase where appropriate
             const task_name = tn.trim();
             const user_from = frm.trim().toLowerCase();
             const user_to = to.trim().toLowerCase();
@@ -117,7 +129,7 @@ class TaskOrganizerHandler {
                 return response.status(400).json({ message: "Invalid task name or due date" });
             }
 
-            // Generate task
+            // Generate a unique task ID
             const task_id = uuidv4();
             const new_task_status = await this.#task_persistence.generate_new_task(
                 task_id,
@@ -126,9 +138,11 @@ class TaskOrganizerHandler {
                 due_date,
             );
 
-            if (!new_task_status) {
+            // Handle task generation failure
+            if (new_task_status === "FAILURE") {
                 return response.status(500).json({ message: "Error generating task" });
             }
+            // Add the newly created task to the room
             this.#room_persistence.add_task_to_room(room_id, task_id);
             return response.status(200).json({ message: "Task created successfully" });
         } catch (error) {
@@ -137,15 +151,20 @@ class TaskOrganizerHandler {
         }
     }
 
+    /**
+     * Delete a task based on task ID and user information.
+     * @param {request}  - The HTTP request object containing task ID and user ID.
+     * @param {response } - The HTTP response object for sending responses.
+     */
     async delete_task(request, response) {
         try {
             const { id, frm } = request.body;
             const task_id = id.trim().toLowerCase();
             // Sanitize inputs
             const user_id = frm.trim().toLowerCase();
-            //get room id from the user
+            // Get room ID from the user
             const room_id = this.#user_persistence.get_room_id(user_id);
-            task_list = this.#task_persistence.get_room_tasks(room_id);
+            const task_list = await this.#task_persistence.get_room_tasks(room_id);
 
             // Check if the user is valid
             const is_valid_from = await this.userHandler.is_valid_user(user_from);
@@ -155,7 +174,7 @@ class TaskOrganizerHandler {
 
             // Fetch the existing task by task_id to ensure it exists
             const existing_task = await this.#task_persistence.get_task_by_id(task_id);
-            if (!existing_task) {
+            if (existing_task === "FAILURE") {
                 return response.status(404).json({ message: "Task not found" });
             }
 
@@ -163,6 +182,7 @@ class TaskOrganizerHandler {
             if (!task_list.includes(task_id)) {
                 return response.status(403).json({ message: "User is not authorized to delete this task" });
             }
+            // Remove the task from the room and delete it from the database
             this.#room_persistence.delete_task_from_room(room_id, task_id);
             await this.#task_persistence.delete_task(task_id);
             return response.status(200).json({ message: "Task deleted successfully" });
@@ -172,6 +192,11 @@ class TaskOrganizerHandler {
         }
     }
 
+    /**
+     * Edit an existing task based on user input.
+     * @param {request} - The HTTP request object containing task details.
+     * @param {response }- The HTTP response object for sending responses.
+     */
     async edit_task(request, response) {
         try {
             const { id, tn, frm, to, date } = request.body;
@@ -206,13 +231,13 @@ class TaskOrganizerHandler {
 
             // Fetch the existing task by task_id
             const existing_task = await this.#task_persistence.get_task_by_id(task_id);
-            if (!existing_task) {
+            if (existing_task === "FAILURE") {
                 return response.status(404).json({ message: "Task not found" });
             }
 
             // Update task with new values
             const update_status = await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
-            if (!update_status) {
+            if (update_status === "FAILURE") {
                 return response.status(500).json({ message: "Failed to update task" });
             }
             return response.status(200).json({ message: "Task updated successfully" });
@@ -221,11 +246,11 @@ class TaskOrganizerHandler {
             return response.status(500).json({ message: "An error occurred while updating the task" });
         }
     }
+
     /**
-     *
-     * @param {*} req
-     * @param {*} response
-     * @returns
+     * Mark a task as completed based on task ID and user information.
+     * @param {request}  The HTTP request object containing task ID and user ID.
+     * @param {response } - The HTTP response object for sending responses.
      */
     async mark_completed(request, response) {
         try {
@@ -250,12 +275,12 @@ class TaskOrganizerHandler {
 
             // Fetch the existing task by task_id
             const existing_task = await this.#task_persistence.get_task_by_id(task_id);
-            if (!existing_task) {
+            if (existing_task === "FAILURE") {
                 return response.status(404).json({ message: "Task not found" });
             }
             // Update task with new values
             const update_status = await this.#task_persistence.mark_completed(task_id);
-            if (!update_status) {
+            if (update_status === "FAILURE") {
                 return response.status(500).json({ message: "Failed to mark task as completed" });
             }
             return response.status(200).json({ message: "Task marked as completed" });
