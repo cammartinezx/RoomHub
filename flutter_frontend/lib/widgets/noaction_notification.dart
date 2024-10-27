@@ -40,7 +40,7 @@ class _ActionNotificationState extends ConsumerState<NoActionNotification> {
             Expanded(
               flex: 5,
               child: SizedBox(
-                height: 100,
+                height: 70,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,7 +69,11 @@ class _ActionNotificationState extends ConsumerState<NoActionNotification> {
                           onPressed: () {debugPrint("delete pressed");},
                         ),
                       ],
-                    )
+                    ),
+                    Divider(
+                      color: theme.lightgrey, // Color of the divider
+                      thickness: 2, // Thickness of the line
+                    ),
                   ],
                 ),
               ),
