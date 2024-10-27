@@ -6,9 +6,7 @@
 // userpersistence object-- to get access to all the methods
 const UserPersistence = require("../Persistence/UserPersistence");
 const RoomPersistence = require("../Persistence/RoomPersistence");
-
 const NotificationPersistence = require("../Persistence/NotificationPersistence");
-
 const TaskPersistence = require("../Persistence/TaskPersistence");
 
 /**
