@@ -75,21 +75,51 @@ class TaskPersistence {
 
     /**
      *
-     * @param {String} task_id "The unique identifier for the room"
-     * @returns {String} task_description "description of the task"
+     * @param {String} task_id "The unique identifier for the task"
+     * @returns {Object} task "The task details from the database"
      */
-    async get_task_description(task_id) {
+    async get_task_by_id(task_id) {
         const get_command = new GetCommand({
-            TableName: "Task",
+            TableName: this.#table_name,
             Key: {
                 task_id: task_id,
             },
         });
-        const response = await this.#doc_client.send(get_command);
 
-        let task_description = response.task_description;
-        if (task_description === undefined) throw new Error("Task doesn't have a description--Service Unavailable");
-        return task_description;
+        const response = await this.#doc_client.send(get_command);
+        if (!response.Item) {
+            throw new Error("Task not found");
+        }
+        return response.Item;
+    }
+
+    /**
+     * Updates an existing task's details.
+     * @param {String} task_id "The unique identifier for the task"
+     * @param {String} task_name "The updated task name"
+     * @param {String} user_to "The updated assignee"
+     * @param {String} due_date "The updated due date"
+     * @returns {String} "SUCCESS or FAILURE - whether the update was successful"
+     */
+    async update_task(task_id, task_name, user_to, due_date) {
+        const update_command = new UpdateCommand({
+            TableName: this.#table_name,
+            Key: {
+                task_id: task_id,
+            },
+            UpdateExpression:
+                "set task_description = :task_name, asignee = :user_to, due_date = :due_date, complete = :complete",
+            ExpressionAttributeValues: {
+                ":task_name": task_name,
+                ":user_to": user_to,
+                ":due_date": due_date,
+                ":complete": false, // Set complete to false on update
+            },
+            ConditionExpression: "attribute_exists(task_id)", // Ensure the task exists
+            ReturnValues: "UPDATED_NEW",
+        });
+
+        await this.#doc_client.send(update_command);
     }
 
     /**
@@ -99,29 +129,55 @@ class TaskPersistence {
      * @param {String} user_id "Id of user belonging to the room."
      * @returns {String} "SUCCESS OR FAILURE - if the db write succeeded or failed."
      */
-    async generate_new_task(unique_id, task_description, user_id, due_date, complete) {
-        try {
-            // add the new user
-            const put_command = new PutCommand({
-                TableName: "Task",
-                Item: {
-                    task_id: unique_id,
-                    task_description: task_description,
-                    asignee: user_id,
-                    due_date: due_date,
-                    complete: false,
-                },
-                ConditionExpression: "attribute_not_exists(task_id)",
-            });
-            await this.#doc_client.send(put_command);
-            return "SUCCESS";
-        } catch (error) {
-            if (error.name === "ConditionalCheckFailedException") {
-                return "FAILED";
-            } else {
-                throw error;
-            }
-        }
+    async generate_new_task(unique_id, task_description, user_id, due_date) {
+        // add the new user
+        const put_command = new PutCommand({
+            TableName: "Task",
+            Item: {
+                task_id: unique_id,
+                task_description: task_description,
+                asignee: user_id,
+                due_date: due_date,
+                complete: false,
+            },
+            ConditionExpression: "attribute_not_exists(task_id)",
+        });
+        await this.#doc_client.send(put_command);
+    }
+
+    /**
+     * Marks a task as completed by updating the `complete` attribute to true.
+     * @param {String} task_id "The unique identifier for the task"
+     * @returns {String} "SUCCESS or FAILURE - whether the update was successful"
+     */
+    async mark_completed(task_id) {
+        const update_command = new UpdateCommand({
+            TableName: this.#table_name,
+            Key: {
+                task_id: task_id,
+            },
+            UpdateExpression: "set complete = :complete",
+            ExpressionAttributeValues: {
+                ":complete": true, // Set complete to true
+            },
+            ConditionExpression: "attribute_exists(task_id)", // Ensure the task exists
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Deletes a task by its task_id.
+     * @param {String} task_id "The unique identifier for the task"
+     */
+    async delete_task(task_id) {
+        const delete_command = new DeleteCommand({
+            TableName: this.#table_name,
+            Key: {
+                task_id: task_id,
+            },
+        });
+        await this.#doc_client.send(delete_command);
     }
 }
 
