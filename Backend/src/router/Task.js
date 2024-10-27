@@ -13,12 +13,15 @@ const task_handler = new TaskHandler();
 /**
  * @memberof Task
  * @name Add a new Task
- * @path {POST} room/create-task
- * @query {String} rm The name of the new room to be created
- * @query {String} id The new users e-mail to be added to the database
- * @code {200} Successfully Created the new task
- * @code {400} Bad Request-Invalid Task Description
- * @code {400} Bad Request-Invalid date
+ * @path {POST} /create-task
+ * @body {String} tn The task name
+ * @body {String} frm The user creating the task
+ * @body {String} to The user assigned the task
+ * @body {String} date The due date for the task
+ * @code {200} Task created successfully
+ * @code {400} Invalid users involved
+ * @code {400} Users are not roommates
+ * @code {400} Invalid task name or due date
  * @code {500} Error message from backend
  * @response {String} message See description of the different status codes
  */
@@ -27,30 +30,64 @@ router.post("/create-task", (req, res) => {
 });
 
 //EDIT TASK
+
+/**
+ * @memberof Task
+ * @name Edit an existing Task
+ * @path {POST} /edit-task
+ * @body {String} id The task ID
+ * @body {String} tn The updated task name
+ * @body {String} frm The user modifying the task
+ * @body {String} to The new user assigned to the task
+ * @body {String} date The updated due date for the task
+ * @code {200} Task updated successfully
+ * @code {400} Invalid users involved
+ * @code {400} Users are not roommates
+ * @code {400} Invalid task name or due date
+ * @code {404} Task not found
+ * @code {500} Error message from backend
+ * @response {String} message See description of the different status codes
+ */
 router.post("/edit-task", (req, res) => {
     task_handler.edit_task(req, res);
 });
 
 //DELETE TASK
+
+/**
+ * @memberof Task
+ * @name Delete an existing Task
+ * @path {DELETE} /delete-task
+ * @body {String} id The task ID
+ * @body {String} frm The user requesting the deletion
+ * @code {200} Task deleted successfully
+ * @code {400} Invalid user
+ * @code {403} User is not authorized to delete this task
+ * @code {404} Task not found
+ * @code {500} Error message from backend
+ * @response {String} message See description of the different status codes
+ */
 router.delete("/delete-task", (req, res) => {
     task_handler.delete_task(req, res);
 });
 
-//MARK AS COMPLETED
+//MARK TASK AS COMPLETED
+
+/**
+ * @memberof Task
+ * @name Mark Task as Completed
+ * @path {PATCH} /mark-completed
+ * @body {String} id The task ID
+ * @body {String} frm The user marking the task as completed
+ * @code {200} Task marked as completed
+ * @code {400} Invalid user
+ * @code {403} User is not authorized to mark this task as completed
+ * @code {404} Task not found
+ * @code {500} Error message from backend
+ * @response {String} message See description of the different status codes
+ */
 router.patch("/mark-completed", (req, res) => {
     task_handler.mark_completed(req, res);
-});
-
-//GET ALL COMPLETED TASKS
-
-router.get("/:id/get-completed-tasks", (req, res) => {
-    user_info_handler.get_completed_tasks(req, res);
-});
-
-//GET ALL PENDING TASKS
-
-router.get("/:id/get-pending-tasks", (req, res) => {
-    user_info_handler.get_pending_tasks(req, res);
 });
 
 router.use("/", (req, res) => {
