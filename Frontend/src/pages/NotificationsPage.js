@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/NotificationsPage.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 const NotificationsPage = () => {
     const location = useLocation();
@@ -75,6 +77,27 @@ const NotificationsPage = () => {
         }
     };
 
+    // Function to delete a notification
+    const handleDelete = async (notification) => {
+        const id = notification.notification_id;
+        const confirmDelete = window.confirm("Are you sure you want to delete this notification?");
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(
+                    `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/notification/${id}`
+                );
+                if (response.status === 200) {
+                    setNotifications(notifications.filter((n) => n.notification_id !== id));
+                    alert('Notification successfully deleted.');
+                } else {
+                    setError('Error: Could not delete the notification.');
+                }
+            } catch (error) {
+                setError('Error deleting notification.');
+            }
+        }
+    };
+
 
     return (
         <div className={styles.container}>
@@ -88,12 +111,19 @@ const NotificationsPage = () => {
                                 key={notification.notification_id} 
                                 className={notification.status === 'accepted' ? styles.accepted : ''}
                             >
-                                {notification.msg} - {notification.status}
+                                {notification.msg} {notification.status}
                                 {notification.type === 'join-request' && notification.status !== 'accepted' && (
-                                    <button onClick={() => handleAccept(notification)}>
-                                        Accept
-                                    </button>
+                                    <FontAwesomeIcon
+                                        icon={faCheck}
+                                        className={styles.checkIcon}
+                                        onClick={() => handleAccept(notification)}
+                                    />
                                 )}
+                                <FontAwesomeIcon
+                                    icon={faTrash}
+                                    className={styles.deleteIcon}
+                                    onClick={() => handleDelete(notification)}
+                                />
                             </li>
                         ))}
                     </ul>

@@ -31,8 +31,7 @@
   }
   
   li {
-    background-color: #e9f1fc;
-    padding: 15px;
+    padding: 10px;
     margin: 10px 0;
     border-radius: 5px;
     display: flex;
@@ -63,7 +62,34 @@
   button:hover {
     background-color: #45a049;
   }
-  
+
+  .deleteIcon {
+    color: rgb(90, 90, 90);
+    cursor: pointer;
+    margin-left: 10px;
+    font-size: 0.9rem;
+   
+  }
+
+  .deleteIcon:hover {
+    color: darkred;
+    font-size: 1.5rem;
+  }
+
+  .checkIcon {
+    color: rgb(90, 90, 90);
+    cursor: pointer;
+    margin-left: 80px;
+    font-size: 1.2rem;
+  }
+
+  .checkIcon:hover {
+    color: darkgreen;
+    font-size: 1.8rem;
+  }
+
+
+    
   .backButton {
     background-color: #f0f0f0;
     color: #333;
