@@ -58,7 +58,7 @@ router.post("/add-roommate", (req, res) => {
  * @response {Object[]} tasks List of completed tasks
  */
 router.get("/:id/get-completed-tasks", (req, res) => {
-    user_info_handler.get_completed_tasks(req, res);
+    room_handler.get_completed_tasks(req, res);
 });
 
 //GET ALL PENDING TASKS
@@ -74,7 +74,7 @@ router.get("/:id/get-completed-tasks", (req, res) => {
  * @response {Object[]} tasks List of pending tasks
  */
 router.get("/:id/get-pending-tasks", (req, res) => {
-    user_info_handler.get_pending_tasks(req, res);
+    room_handler.get_pending_tasks(req, res);
 });
 
 router.use("/", (req, res) => {
