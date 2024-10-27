@@ -276,6 +276,35 @@ class UserInfoHandler {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async get_roommates(user_id) {
+        let room_id = await this.#user_persistence.get_room_id(user_id);
+        // get the total number of users in the room
+        let users = await this.#room_persistence.get_room_users(room_id);
+        return users;
+    }
+
+    async areRoommates(user_id1, user_id2) {
+        this.get_roommates(user_id1);
+        // Check if user_id2 is in the users list and return true or false
+        return users.includes(user_id2);
+    }
+
+    /**
+     * Validate a user id
+     * @async
+     * @param {String} user_id "The user_id to be validated"
+     * @returns {Boolean} "True if valid user_id and false otherwise"
+     */
+    async is_valid_user(user_id) {
+        // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
+        let user_persistence = this.#user_persistence;
+        let user = await user_persistence.get_user(user_id);
+        if (user != null) {
+            return true;
+        }
+        return false;
+    }
 }
 
 module.exports = UserInfoHandler;
