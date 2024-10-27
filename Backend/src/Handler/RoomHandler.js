@@ -1,5 +1,6 @@
 const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
+const UserInfoHandler = require("./UserInfoHandler");
 
 /**
  * @module Handler
@@ -29,6 +30,7 @@ class RoomHandler {
      * @private
      */
     #notification_persistence;
+    userHandler;
 
     /**
      * Create a new RoomHandler object
@@ -38,6 +40,7 @@ class RoomHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
+        this.userHandler = new UserInfoHandler();
     }
 
     get_room_persistence() {
@@ -59,23 +62,6 @@ class RoomHandler {
         }
         return false;
     }
-
-    /**
-     * Validate a user id
-     * @async
-     * @param {String} user_id "The user_id to be validated"
-     * @returns {Boolean} "True if valid user_id and false otherwise"
-     */
-    async #is_valid_user(user_id) {
-        // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
-        let user_persistence = this.#user_persistence;
-        let user = await user_persistence.get_user(user_id);
-        if (user != null) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Creates a new room in the persistence layer and updates user
      * @async
@@ -88,7 +74,7 @@ class RoomHandler {
             let room_name = request.body.rm.trim().toLowerCase();
             let user_id = request.body.id.trim().toLowerCase();
             const is_valid_room = this.#is_valid_room_name(room_name);
-            const is_valid_user = await this.#is_valid_user(user_id);
+            const is_valid_user = this.userHandler.is_valid_user(user_id);
             if (is_valid_room && is_valid_user) {
                 // generate room id
                 const room_id = uuidv4();
