@@ -45,6 +45,38 @@ router.post("/add-roommate", (req, res) => {
     room_handler.add_roommate(req, res);
 });
 
+//GET ALL COMPLETED TASKS
+
+/**
+ * @memberof Task
+ * @name Get All Completed Tasks
+ * @path {GET} /:id/get-completed-tasks
+ * @param {String} id The user ID to retrieve completed tasks for
+ * @code {200} Successfully retrieved completed tasks
+ * @code {404} User or tasks not found
+ * @code {500} Error message from backend
+ * @response {Object[]} tasks List of completed tasks
+ */
+router.get("/:id/get-completed-tasks", (req, res) => {
+    user_info_handler.get_completed_tasks(req, res);
+});
+
+//GET ALL PENDING TASKS
+
+/**
+ * @memberof Task
+ * @name Get All Pending Tasks
+ * @path {GET} /:id/get-pending-tasks
+ * @param {String} id The user ID to retrieve pending tasks for
+ * @code {200} Successfully retrieved pending tasks
+ * @code {404} User or tasks not found
+ * @code {500} Error message from backend
+ * @response {Object[]} tasks List of pending tasks
+ */
+router.get("/:id/get-pending-tasks", (req, res) => {
+    user_info_handler.get_pending_tasks(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the Room paths" });
 });
