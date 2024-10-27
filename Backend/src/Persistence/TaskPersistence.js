@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -62,7 +62,7 @@ class TaskPersistence {
         // working_client = new DynamoDBClient(local_test_client);
 
         this.#doc_client = DynamoDBDocumentClient.from(working_client);
-        this.#table_name = "task";
+        this.#table_name = "Task";
     }
 
     get_doc_client() {
@@ -79,6 +79,7 @@ class TaskPersistence {
      * @returns {Object} task "The task details from the database"
      */
     async get_task_by_id(task_id) {
+        console.log(task_id);
         const get_command = new GetCommand({
             TableName: this.#table_name,
             Key: {
@@ -90,6 +91,7 @@ class TaskPersistence {
         if (!response.Item) {
             return "FAILURE";
         }
+
         return response.Item;
     }
 
@@ -138,7 +140,7 @@ class TaskPersistence {
     async generate_new_task(unique_id, task_description, user_id, due_date) {
         // Add the new task
         const put_command = new PutCommand({
-            TableName: "Task",
+            TableName: this.#table_name,
             Item: {
                 task_id: unique_id,
                 task_description: task_description,
@@ -169,11 +171,12 @@ class TaskPersistence {
             Key: {
                 task_id: task_id,
             },
-            UpdateExpression: "set complete = :complete",
+            UpdateExpression: "set complete = :completed",
             ExpressionAttributeValues: {
-                ":complete": true, // Set complete to true
+                ":completed": true, // Set complete to true
             },
             ConditionExpression: "attribute_exists(task_id)", // Ensure the task exists
+            ReturnValues: "UPDATED_NEW",
         });
 
         try {
