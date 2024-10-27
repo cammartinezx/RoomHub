@@ -125,6 +125,10 @@ class TaskOrganizerHandler {
                 user_to,
                 due_date,
             );
+
+            if (!new_task_status) {
+                return response.status(500).json({ message: "Error generating task" });
+            }
             this.#room_persistence.add_task_to_room(room_id, task_id);
             return response.status(200).json({ message: "Task created successfully" });
         } catch (error) {
@@ -161,6 +165,7 @@ class TaskOrganizerHandler {
             }
             this.#room_persistence.delete_task_from_room(room_id, task_id);
             await this.#task_persistence.delete_task(task_id);
+            return response.status(200).json({ message: "Task deleted successfully" });
         } catch (error) {
             console.error("Error deleting task:", error);
             return response.status(500).json({ message: "An error occurred while deleting the task" });
@@ -207,6 +212,10 @@ class TaskOrganizerHandler {
 
             // Update task with new values
             const update_status = await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
+            if (!update_status) {
+                return response.status(500).json({ message: "Failed to update task" });
+            }
+            return response.status(200).json({ message: "Task updated successfully" });
         } catch (error) {
             console.error("Error updating task:", error);
             return response.status(500).json({ message: "An error occurred while updating the task" });
@@ -215,10 +224,10 @@ class TaskOrganizerHandler {
     /**
      *
      * @param {*} req
-     * @param {*} res
+     * @param {*} response
      * @returns
      */
-    async mark_completed(req, res) {
+    async mark_completed(request, response) {
         try {
             const { id, frm } = request.body;
             // Sanitize inputs
@@ -230,7 +239,7 @@ class TaskOrganizerHandler {
 
             // Check if the user is valid
             const is_valid_user = await this.userHandler.is_valid_user(user_from);
-            if (!is_valid_from) {
+            if (!is_valid_user) {
                 return response.status(400).json({ message: "Invalid user" });
             }
 
@@ -246,6 +255,10 @@ class TaskOrganizerHandler {
             }
             // Update task with new values
             const update_status = await this.#task_persistence.mark_completed(task_id);
+            if (!update_status) {
+                return response.status(500).json({ message: "Failed to mark task as completed" });
+            }
+            return response.status(200).json({ message: "Task marked as completed" });
         } catch (error) {
             console.error("Error updating task:", error);
             return response.status(500).json({ message: "An error occurred while updating the task" });
