@@ -254,3 +254,48 @@ Future<String> getResponse(http.Response response,
       throw Exception('Something went wrong. Try again later');
   }
 }
+
+// This function handles Delete requests and returns the desired value from the response body.
+// It also handles and throws custom exceptions based on status codes and response content.
+Future<String> deleteResponse(http.Response response,
+    {required String responseType}) async {
+  // Uncomment these for debugging purposes
+  // print(response.body);
+  // print(response.statusCode);
+
+  switch (responseType) {
+    case 'deleteNotification':
+      switch (response.statusCode) {
+        case 200:
+          return "SUCCESS";
+        // 200 in this case is a successful decision.
+        case 400:
+        // Handle invalid username scenario
+          if (response.body.contains("This username is invalid")) {
+            throw UserException('This username is invalid');
+          }
+          else if(response.body.contains("The notification id is invalid")){
+            throw NotificationException('Notification is invalid');
+          }
+          throw NotificationException('Invalid request');
+        case 404:
+        // Handle user not found scenario or notification not found
+          if (response.body.contains("User not found")) {
+            throw UserException('User Not found');
+          }
+          else if(response.body.contains("Notification not found")){
+            throw NotificationException('Notification not found');
+          }
+          throw UserException('User not found');
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+    default:
+    // Fallback for unknown responseType
+      throw Exception('Something went wrong. Try again later');
+  }
+}
