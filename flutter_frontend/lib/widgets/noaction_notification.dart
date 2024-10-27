@@ -8,11 +8,13 @@ import 'package:flutter_frontend/providers.dart';
 class NoActionNotification extends ConsumerStatefulWidget {
   final String message;
   final String id;
+  final Function(String id)  onRemove;
 
   const NoActionNotification(
       {super.key,
         required this.message,
         required this.id,
+        required this.onRemove,
       });
 
   @override
@@ -66,7 +68,7 @@ class _ActionNotificationState extends ConsumerState<NoActionNotification> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.close),
-                          onPressed: () {debugPrint("delete pressed");},
+                          onPressed: () {debugPrint("delete pressed"); widget.onRemove(widget.id);},
                         ),
                       ],
                     ),

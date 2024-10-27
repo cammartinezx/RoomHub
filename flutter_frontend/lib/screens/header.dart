@@ -55,7 +55,7 @@ class _ActionNotificationState extends ConsumerState<Header> {
         print("Navigating to notifications screen");
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Notifications(notificationItems: notifications),
+            builder: (context) => Notifications(notificationItems: notifications, email: email),
           ),
         );
         success = true;
@@ -73,7 +73,6 @@ class _ActionNotificationState extends ConsumerState<Header> {
   Widget build(BuildContext context) {
     userEmail = ref.read(emailProvider);
     String? currRoomId = widget.roomId;
-    print(userEmail);
     return Builder(
       builder: (context) {
         return Container(

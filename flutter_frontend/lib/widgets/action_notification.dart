@@ -14,12 +14,15 @@ class ActionNotification extends ConsumerStatefulWidget {
   final String message;
   final String id;
   final String new_roommate;
+  final Function(String id)  onRemove;
 
   const ActionNotification(
       {super.key,
       required this.message,
       required this.id,
-      required this.new_roommate});
+      required this.new_roommate,
+      required this.onRemove
+      });
 
   @override
   ConsumerState<ActionNotification> createState() => _ActionNotificationState();
@@ -77,7 +80,10 @@ class _ActionNotificationState extends ConsumerState<ActionNotification> {
                         ),
                         Expanded(
                             child: ActionButton(
-                                text: "Reject", color: theme.darkgrey)),
+                                text: "Reject",
+                                color: theme.darkgrey,
+                                onTap: () {widget.onRemove(widget.id);},
+                            )),
                       ],
                     ),
                     Divider(
