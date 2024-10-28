@@ -233,10 +233,15 @@ class RoomPersistence {
                 ":newTask": new Set([task]), // The new task to add to the set
             },
             ConditionExpression: "attribute_exists(room_id)",
-            ReturnValues: "NONE",
         });
 
-        await this.#doc_client.send(update_command);
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Adding task to a room failed:", error);
+            return "FAILURE";
+        }
     }
 
     /**
@@ -392,7 +397,14 @@ class RoomPersistence {
             },
             ConditionExpression: "attribute_exists(tasks)",
         });
-        await this.#doc_client.send(update_command);
+
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Error deleting task from room:", error);
+            return "FAILURE";
+        }
     }
 }
 
