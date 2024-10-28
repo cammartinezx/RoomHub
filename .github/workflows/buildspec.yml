@@ -20,3 +20,9 @@ phases:
       - echo "Updating Lambda function..."
       - aws lambda update-function-code --function-name Roomhub --zip-file fileb://testings2.zip --region ca-central-1
       - echo "Deployment to Roomhub Lambda function complete!"
+
+# Define event triggers
+on:
+  push:
+    branches:
+      - main  # Define the branch you want to trigger the build on
