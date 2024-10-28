@@ -1,6 +1,7 @@
 const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
 const UserInfoHandler = require("./UserInfoHandler");
+const RoomHandler = require("./RoomHandler");
 
 /**
  * @module Handler
@@ -41,6 +42,7 @@ class TaskOrganizerHandler {
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.userHandler = new UserInfoHandler();
+        this.RoomHandler = new RoomHandler();
     }
 
     get_task_persistence() {
@@ -49,6 +51,10 @@ class TaskOrganizerHandler {
 
     get_user_persistence() {
         return this.#user_persistence;
+    }
+
+    get_room_persistence() {
+        return this.#room_persistence;
     }
     /** V A L I D A T O R S  */
 
@@ -110,7 +116,7 @@ class TaskOrganizerHandler {
             const user_from = frm.trim().toLowerCase();
             const user_to = to.trim().toLowerCase();
             const due_date = date.trim();
-            const room_id = await this.#user_persistence.get_room_id(user_from);
+            const room_id = await this.userHandler.get_room_persistence().get_room_id(user_from);
             //print(user_from);
 
             // Validate inputs
@@ -121,14 +127,14 @@ class TaskOrganizerHandler {
 
             // Check if task can be created
             if (!is_valid_from || !is_valid_to) {
-                return response.status(400).json({ message: "Invalid users involved" });
+                return response.status(403).json({ message: "Invalid users involved" });
             }
 
             if (!this.userHandler.areRoommates(user_from, user_to)) {
-                return response.status(400).json({ message: "Users are not roommates" });
+                return response.status(403).json({ message: "Users are not roommates" });
             }
             if (!is_valid_task || !is_valid_date) {
-                return response.status(400).json({ message: "Invalid task name or due date" });
+                return response.status(403).json({ message: "Invalid task name or due date" });
             }
 
             // Generate a unique task ID
@@ -146,6 +152,8 @@ class TaskOrganizerHandler {
             }
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
+
+
             return response.status(200).json({ message: "Task created successfully" });
         } catch (error) {
             console.error("Error creating task:", error);
@@ -171,7 +179,7 @@ class TaskOrganizerHandler {
             // Check if the user is valid
             const is_valid_from = await this.userHandler.is_valid_user(user_id);
             if (!is_valid_from) {
-                return response.status(400).json({ message: "Invalid user" });
+                return response.status(403).json({ message: "Invalid user" });
             }
 
             // Fetch the existing task by task_id to ensure it exists
@@ -185,7 +193,7 @@ class TaskOrganizerHandler {
                 return response.status(403).json({ message: "Task not found" });
             }
             // Remove the task from the room and delete it from the database
-            this.#room_persistence.delete_task_from_room(room_id, task_id);
+            await this.#room_persistence.delete_task_from_room(room_id, task_id);
             await this.#task_persistence.delete_task(task_id);
             return response.status(200).json({ message: "Task deleted successfully" });
         } catch (error) {
@@ -211,7 +219,7 @@ class TaskOrganizerHandler {
 
             // Validate inputs
             if (!task_id) {
-                return response.status(400).json({ message: "Task ID is required" });
+                return response.status(403).json({ message: "Task ID is required" });
             }
 
             const is_valid_task = this.#is_valid_task_name(task_name);
@@ -220,21 +228,21 @@ class TaskOrganizerHandler {
             const is_valid_date = this.#is_valid_date(due_date);
 
             if (!is_valid_from || !is_valid_to) {
-                return response.status(400).json({ message: "Invalid users involved" });
+                return response.status(403).json({ message: "Invalid users involved" });
             }
 
             if (!this.userHandler.areRoommates(user_from, user_to)) {
-                return response.status(400).json({ message: "Users are not roommates" });
+                return response.status(403).json({ message: "Users are not roommates" });
             }
 
             if (!is_valid_task || !is_valid_date) {
-                return response.status(400).json({ message: "Invalid task name or due date" });
+                return response.status(403).json({ message: "Invalid task name or due date" });
             }
 
             // Fetch the existing task by task_id
             const existing_task = await this.#task_persistence.get_task_by_id(task_id);
             if (existing_task === "FAILURE") {
-                return response.status(404).json({ message: "Task not found" });
+                return response.status(403).json({ message: "Task not found" });
             }
 
             // Update task with new values
@@ -268,7 +276,7 @@ class TaskOrganizerHandler {
             // Check if the user is valid
             const is_valid_user = await this.userHandler.is_valid_user(user_id);
             if (!is_valid_user) {
-                return response.status(400).json({ message: "Invalid user" });
+                return response.status(403).json({ message: "Invalid user" });
             }
 
             // Check if the task is in pending tasks in the room
