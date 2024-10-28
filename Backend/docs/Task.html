@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: User</title>
+    <title>JSDoc: Namespace: Task</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: User</h1>
+    <h1 class="page-title">Namespace: Task</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>User</h2>
+        <h2>Task</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Routes related to users</p></div>
+            <div class="description"><p>Routes related to tasks</p></div>
         
 
         
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line5">line 5</a>
+        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -105,7 +105,7 @@
 
         
             
-<h4 class="name" id="Addanewuser"><span class="type-signature">(route) </span>Add a new user<span class="type-signature"></span></h4>
+<h4 class="name" id="AddanewTask"><span class="type-signature">(route) </span>Add a new Task<span class="type-signature"></span></h4>
 
 
 
@@ -116,11 +116,180 @@
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">POST</td>
-                            <td class="name last">user/add-user</td>
+                            <td class="name last">/create-task</td>
                             </tr>
                             </table>
                             
-                            <h5>Query Parameters:</h5>
+                            <h5>Body Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">tn</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The task name</td>
+          </tr><tr>
+            <td class="name">frm</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The user creating the task</td>
+          </tr><tr>
+            <td class="name">to</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The user assigned the task</td>
+          </tr><tr>
+            <td class="name">date</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The due date for the task</td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">message</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">See description of the different status codes</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Task created successfully</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">Invalid users involved</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">Users are not roommates</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">Invalid task name or due date</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="DeleteanexistingTask"><span class="type-signature">(route) </span>Delete an existing Task<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">DELETE</td>
+                            <td class="name last">/delete-task</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Body Parameters:</h5>
           <table class="params">
             <thead>
               <tr>
@@ -136,7 +305,13 @@
             <td class="type">String</td>
             
             
-            <td class="description last">The new users e-mail to be added to the database</td>
+            <td class="description last">The task ID</td>
+          </tr><tr>
+            <td class="name">frm</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The user requesting the deletion</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -174,25 +349,25 @@
             <td class="type">200</td>
             
             
-            <td class="description last">This user name already exist</td>
-          </tr><tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">User Successfully created</td>
+            <td class="description last">Task deleted successfully</td>
           </tr><tr>
             
             <td class="type">400</td>
             
             
-            <td class="description last">Error Creating User- User id is invalid</td>
+            <td class="description last">Invalid user</td>
+          </tr><tr>
+            
+            <td class="type">403</td>
+            
+            
+            <td class="description last">Task not found</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Backend error from the database</td>
+            <td class="description last">Error message from backend</td>
           </tr>
           </table>
 </div>
@@ -232,7 +407,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line15">line 15</a>
+        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line57">line 57</a>
     </li></ul></dd>
     
 
@@ -250,7 +425,7 @@
 
         
             
-<h4 class="name" id="Deleteanotificationofspecificuser"><span class="type-signature">(route) </span>Delete a notification of specific user<span class="type-signature"></span></h4>
+<h4 class="name" id="EditanexistingTask"><span class="type-signature">(route) </span>Edit an existing Task<span class="type-signature"></span></h4>
 
 
 
@@ -260,12 +435,12 @@
                             <table class="params">
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
-                            <td class="type">Delete</td>
-                            <td class="name last">user/:id/notification/:notif_id</td>
+                            <td class="type">POST</td>
+                            <td class="name last">/edit-task</td>
                             </tr>
                             </table>
                             
-                            <h5>Route Parameters:</h5>
+                            <h5>Body Parameters:</h5>
           <table class="params">
             <thead>
               <tr>
@@ -277,17 +452,35 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">:id</td>
+            <td class="name">id</td>
             <td class="type">String</td>
             
             
-            <td class="description last"><p>is the id of the user we are trying to get.</p></td>
+            <td class="description last">The task ID</td>
           </tr><tr>
-            <td class="name">:notif_id</td>
+            <td class="name">tn</td>
             <td class="type">String</td>
             
             
-            <td class="description last"><p>is the id of the notification from user with user id above</p></td>
+            <td class="description last">The updated task name</td>
+          </tr><tr>
+            <td class="name">frm</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The user modifying the task</td>
+          </tr><tr>
+            <td class="name">to</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The new user assigned to the task</td>
+          </tr><tr>
+            <td class="name">date</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The updated due date for the task</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -325,37 +518,37 @@
             <td class="type">200</td>
             
             
-            <td class="description last">A valid message</td>
+            <td class="description last">Task updated successfully</td>
           </tr><tr>
             
             <td class="type">400</td>
             
             
-            <td class="description last">This username is invalid</td>
+            <td class="description last">Invalid users involved</td>
           </tr><tr>
             
             <td class="type">400</td>
             
             
-            <td class="description last">The notification is is invalid</td>
+            <td class="description last">Users are not roommates</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">Invalid task name or due date</td>
           </tr><tr>
             
             <td class="type">404</td>
             
             
-            <td class="description last">User not found</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Notification not found</td>
+            <td class="description last">Task not found</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Backend error from the database</td>
+            <td class="description last">Error message from backend</td>
           </tr>
           </table>
 </div>
@@ -395,7 +588,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line136">line 136</a>
+        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -410,18 +603,10 @@
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>If notification exist for user
-        Response: { "message": "Notification deleted successfully" }
-If notification no longer or never exist for user
-        Response: { "message": "Notification not found" }</code></pre>
-
-
 
         
             
-<h4 class="name" id="Getamessagenotifyifyouhaveroommateornot"><span class="type-signature">(route) </span>Get a message notify if you have roommate or not<span class="type-signature"></span></h4>
+<h4 class="name" id="GetAllCompletedTasks"><span class="type-signature">(route) </span>Get All Completed Tasks<span class="type-signature"></span></h4>
 
 
 
@@ -432,7 +617,7 @@ If notification no longer or never exist for user
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">GET</td>
-                            <td class="name last">user/:id/get-roommate</td>
+                            <td class="name last">/:id/get-completed-tasks</td>
                             </tr>
                             </table>
                             
@@ -448,11 +633,295 @@ If notification no longer or never exist for user
               </tr>
             </thead>
             <tr>
-            <td class="name">:id</td>
+            <td class="name">id</td>
+            <td class="type">[object Object]</td>
+            
+            
+            <td class="description last"><p>The user ID to retrieve completed tasks for</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">tasks</td>
+            <td class="type">Array.&lt;Object&gt;</td>
+            
+            
+            <td class="description last">List of completed tasks</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Successfully retrieved completed tasks</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User or tasks not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line50">line 50</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GetAllPendingTasks"><span class="type-signature">(route) </span>Get All Pending Tasks<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">/:id/get-pending-tasks</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">id</td>
+            <td class="type">[object Object]</td>
+            
+            
+            <td class="description last"><p>The user ID to retrieve pending tasks for</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">tasks</td>
+            <td class="type">Array.&lt;Object&gt;</td>
+            
+            
+            <td class="description last">List of pending tasks</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Successfully retrieved pending tasks</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User or tasks not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line66">line 66</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="MarkTaskasCompleted"><span class="type-signature">(route) </span>Mark Task as Completed<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">PATCH</td>
+                            <td class="name last">/mark-completed</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Body Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">id</td>
             <td class="type">String</td>
             
             
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
+            <td class="description last">The task ID</td>
+          </tr><tr>
+            <td class="name">frm</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The user marking the task as completed</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -490,25 +959,25 @@ If notification no longer or never exist for user
             <td class="type">200</td>
             
             
-            <td class="description last">A valid message</td>
+            <td class="description last">Task marked as completed</td>
           </tr><tr>
             
             <td class="type">400</td>
             
             
-            <td class="description last">This username is invalid</td>
+            <td class="description last">Invalid user</td>
           </tr><tr>
             
-            <td class="type">404</td>
+            <td class="type">403</td>
             
             
-            <td class="description last">User not found</td>
+            <td class="description last">Task not found</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Backend error from the database</td>
+            <td class="description last">Error message from backend</td>
           </tr>
           </table>
 </div>
@@ -548,7 +1017,7 @@ If notification no longer or never exist for user
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line116">line 116</a>
+        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -561,630 +1030,6 @@ If notification no longer or never exist for user
 
 
 
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>If there is only one user in the room
-        Response: { "message": "You have no roommate" }
-If there is more than one user in the room
-        Response: { "message": "You have at least one roommate" }</code></pre>
-
-
-
-        
-            
-<h4 class="name" id="Getanotifymessagewhenuserleavetheroomsuccessfully"><span class="type-signature">(route) </span>Get a notify message when user leave the room successfully<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">GET</td>
-                            <td class="name last">user/:id/leave-room</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Route Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">:id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">message</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">A valid message</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">This username is invalid</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">User not found</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Backend error from the database</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line76">line 76</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>If there is only one user in the room
-        Response: { "message": "The room is being deleted and user leave the room successfully" }
-If there is more than one user in the room
-        Response: { "message": "User leave the room successfully" }</code></pre>
-
-
-
-        
-            
-<h4 class="name" id="Getausersroomname"><span class="type-signature">(route) </span>Get a users room name<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">GET</td>
-                            <td class="name last">user/:id/get-room</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Route Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">:id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">room_name</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">NA</td>
-          </tr><tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">A valid room name</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">This username is invalid</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">User not found</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Backend error from the database</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line30">line 30</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="Getawarningmessagewhenuserwanttoleavetheroom"><span class="type-signature">(route) </span>Get a warning message when user want to leave the room<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">GET</td>
-                            <td class="name last">user/:id/leave-warning</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Route Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">:id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">message</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">A valid message</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">This username is invalid</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">User not found</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Backend error from the database</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line96">line 96</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>If there is only one user in the room
-        Response: { "message": "Warning: If you leave, the room will be deleted!" }
-If there is more than one user in the room
-        Response: { "message": "Warning: Are you sure want to leave this room!" }</code></pre>
-
-
-
-        
-            
-<h4 class="name" id="Getanusernotification"><span class="type-signature">(route) </span>Get an user notification<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">GET</td>
-                            <td class="name last">user/:id/get-notification</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Route Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">:id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">All_Notifications</td>
-            <td class="type">JSON</td>
-            
-            
-            <td class="description last">list of Notification See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">A valid notification</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">Invalid username</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Backend error from the database</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line46">line 46</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>Response: {
-    "All_Notifications": [
-        {
-            "notification_id": "111-333"
-            "from": "test@gmail.com"
-            "msg": "hung@gmail.com requests to join your room",
-            "type": "join-request"
-        },
-        {
-            "notification_id": "111-444"
-            "from": "test2@gmail.com"
-            "msg": "dan@gmail.com invites luke@gmail.com to join their room",
-            "type": "invite"
-        }
-    ]
-}</code></pre>
 
 
 

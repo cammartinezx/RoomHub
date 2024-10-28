@@ -144,6 +144,7 @@ class RoomPersistence {
                     room_id: unique_id,
                     name: room_name,
                     users: new Set([user_id]),
+                    tasks: new Set(),
                 },
                 ConditionExpression: "attribute_not_exists(room_id)",
             });
@@ -213,7 +214,6 @@ class RoomPersistence {
                 room_id: room_id,
             },
         });
-
         await this.#doc_client.send(delete_command);
     }
 
@@ -241,6 +241,187 @@ class RoomPersistence {
 
         await this.#doc_client.send(update_command);
     }
+
+    /**
+     * Use Update command to add a new task to the list of tasks for a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {Object} task "The task object to be added to the room"
+     */
+    async add_task_to_room(room_id, task) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "ADD #tasks :newTask",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks", // The attribute (field) you're updating
+            },
+            ExpressionAttributeValues: {
+                ":newTask": new Set([task]), // The new task to add to the set
+            },
+            ConditionExpression: "attribute_exists(room_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Use Get command to retrieve the list of tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Set} "The list of tasks associated with the room_id"
+     */
+    async get_room_tasks(room_id) {
+        // Step 1: Get the task IDs from the room
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+        });
+
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // Step 2: Check if tasks exist
+            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
+
+            // Step 3: Prepare to collect pending tasks
+            const pending_tasks = [];
+
+            // Step 4: Fetch each task's details
+            for (const task_id of task_ids) {
+                const task_command = new GetCommand({
+                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    Key: {
+                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                    },
+                });
+                const task_response = await this.#doc_client.send(task_command);
+
+                if (task_response.Item) {
+                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
+                    //console.log(pending_tasks);
+                }
+            }
+            return pending_tasks; // Return the list of pending tasks
+        } catch (error) {
+            console.error("Error getting all room tasks:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_pending_tasks(room_id) {
+        // Step 1: Get the task IDs from the room
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+        });
+
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // Step 2: Check if tasks exist
+            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
+
+            // Step 3: Prepare to collect pending tasks
+            const pending_tasks = [];
+
+            // Step 4: Fetch each task's details
+            for (const task_id of task_ids) {
+                const task_command = new GetCommand({
+                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    Key: {
+                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                    },
+                });
+                const task_response = await this.#doc_client.send(task_command);
+
+                if (task_response.Item &amp;&amp; task_response.Item.complete === false) {
+                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
+                    //console.log(pending_tasks);
+                }
+            }
+            return pending_tasks; // Return the list of pending tasks
+        } catch (error) {
+            console.error("Error getting pending tasks:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_completed_tasks(room_id) {
+        // Step 1: Get the task IDs from the room
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+        });
+
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // Step 2: Check if tasks exist
+            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
+
+            // Step 3: Prepare to collect pending tasks
+            const pending_tasks = [];
+
+            // Step 4: Fetch each task's details
+            for (const task_id of task_ids) {
+                const task_command = new GetCommand({
+                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    Key: {
+                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                    },
+                });
+                const task_response = await this.#doc_client.send(task_command);
+
+                if (task_response.Item &amp;&amp; task_response.Item.complete === true) {
+                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
+                    //console.log(pending_tasks);
+                }
+            }
+            return pending_tasks; // Return the list of pending tasks
+        } catch (error) {
+            console.error("Error getting complete tasks:", error);
+            return [];
+        }
+    }
+
+    async delete_task_from_room(room_id, task_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "DELETE #tasks :taskToRemove",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks",
+            },
+            ExpressionAttributeValues: {
+                ":taskToRemove": new Set([task_id]),
+            },
+            ConditionExpression: "attribute_exists(tasks)",
+        });
+        await this.#doc_client.send(update_command);
+    }
 }
 
 module.exports = RoomPersistence;
@@ -254,13 +435,13 @@ module.exports = RoomPersistence;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Oct 22 2024 10:08:15 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Oct 27 2024 20:46:22 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

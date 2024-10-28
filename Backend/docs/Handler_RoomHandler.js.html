@@ -28,6 +28,7 @@
         <article>
             <pre class="prettyprint source linenums"><code>const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
+const UserInfoHandler = require("./UserInfoHandler");
 
 /**
  * @module Handler
@@ -58,6 +59,8 @@ class RoomHandler {
      */
     #notification_persistence;
 
+    userHandler;
+
     /**
      * Create a new RoomHandler object
      * @constructor
@@ -66,6 +69,7 @@ class RoomHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
+        this.userHandler = new UserInfoHandler();
     }
 
     get_room_persistence() {
@@ -87,23 +91,6 @@ class RoomHandler {
         }
         return false;
     }
-
-    /**
-     * Validate a user id
-     * @async
-     * @param {String} user_id "The user_id to be validated"
-     * @returns {Boolean} "True if valid user_id and false otherwise"
-     */
-    async #is_valid_user(user_id) {
-        // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
-        let user_persistence = this.#user_persistence;
-        let user = await user_persistence.get_user(user_id);
-        if (user != null) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Creates a new room in the persistence layer and updates user
      * @async
@@ -116,7 +103,7 @@ class RoomHandler {
             let room_name = request.body.rm.trim().toLowerCase();
             let user_id = request.body.id.trim().toLowerCase();
             const is_valid_room = this.#is_valid_room_name(room_name);
-            const is_valid_user = await this.#is_valid_user(user_id);
+            const is_valid_user = this.userHandler.is_valid_user(user_id);
             if (is_valid_room &amp;&amp; is_valid_user) {
                 // generate room id
                 const room_id = uuidv4();
@@ -206,6 +193,68 @@ class RoomHandler {
             response.status(500).json({ message: error.message });
         }
     }
+
+    async get_pending_tasks(request, response) {
+        try {
+            const { frm } = request.body;
+            const user_id = frm.trim().toLowerCase();
+
+            // Validate if the user is valid
+            const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
+            if (!is_valid_user) {
+                return response.status(404).json({ message: "Invalid user" });
+            }
+
+            // Get the room ID associated with the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            if (!room_id) {
+                return response.status(404).json({ message: "Room not found" });
+            }
+
+            // Fetch the pending tasks for the user's room
+            const pending_tasks = await this.#room_persistence.get_pending_tasks(room_id);
+            if (!pending_tasks || pending_tasks.length === 0) {
+                return response.status(404).json({ message: "No pending tasks found" });
+            }
+
+            // Return the pending tasks
+            return response.status(200).json({ pending_tasks });
+        } catch (error) {
+            console.error("Error fetching pending tasks:", error);
+            return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });
+        }
+    }
+
+    async get_complete_tasks(request, response) {
+        try {
+            const { frm } = request.body;
+            const user_id = frm.trim().toLowerCase();
+
+            // Validate if the user is valid
+            const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
+            if (!is_valid_user) {
+                return response.status(404).json({ message: "Invalid user" });
+            }
+
+            // Get the room ID associated with the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            if (!room_id) {
+                return response.status(404).json({ message: "Room not found" });
+            }
+
+            // Fetch the pending tasks for the user's room
+            const pending_tasks = await this.#room_persistence.get_completed_tasks(room_id);
+            if (!pending_tasks || pending_tasks.length === 0) {
+                return response.status(404).json({ message: "No pending tasks found" });
+            }
+
+            // Return the pending tasks
+            return response.status(200).json({ pending_tasks });
+        } catch (error) {
+            console.error("Error fetching pending tasks:", error);
+            return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });
+        }
+    }
 }
 
 module.exports = RoomHandler;
@@ -219,13 +268,13 @@ module.exports = RoomHandler;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Oct 22 2024 10:08:15 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Oct 27 2024 20:46:22 GMT-0500 (Central Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

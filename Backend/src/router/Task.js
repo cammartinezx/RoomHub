@@ -62,8 +62,7 @@ router.post("/edit-task", (req, res) => {
  * @body {String} frm The user requesting the deletion
  * @code {200} Task deleted successfully
  * @code {400} Invalid user
- * @code {403} User is not authorized to delete this task
- * @code {404} Task not found
+ * @code {403} Task not found
  * @code {500} Error message from backend
  * @response {String} message See description of the different status codes
  */
@@ -81,8 +80,7 @@ router.delete("/delete-task", (req, res) => {
  * @body {String} frm The user marking the task as completed
  * @code {200} Task marked as completed
  * @code {400} Invalid user
- * @code {403} User is not authorized to mark this task as completed
- * @code {404} Task not found
+ * @code {403} Task not found
  * @code {500} Error message from backend
  * @response {String} message See description of the different status codes
  */
