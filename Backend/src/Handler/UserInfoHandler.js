@@ -276,8 +276,48 @@ class UserInfoHandler {
             response.status(500).json({ message: error.message });
         }
     }
+    /**
+     * Get the list of roommates for the specified user.
+     * @async
+     * @param {Express.request} request - "Request received by the router"
+     * @param {Express.response} response - "Response to be sent back to the service that sent the original request"
+     * @returns {Express.response} - "A response message which contains the list of roommates or an error message."
+     */
+    async get_user_roommates(request, response) {
+        try {
+            const user_id = request.params.id.trim().toLowerCase();
 
-    async get_roommates(user_id) {
+            // Validate the user ID
+            if (!this.#is_valid_id(user_id)) {
+                return response.status(403).json({ message: "This username is invalid" });
+            }
+
+            // Retrieve the user to ensure they exist
+            const user = await this.#user_persistence.get_user(user_id);
+            if (user === null) {
+                return response.status(403).json({ message: "User not found" });
+            }
+
+            // Get the room ID associated with the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+
+            // Get the list of users in the room
+            let users;
+            users = await this.#room_persistence.get_room_users(room_id);
+            users = Array.from(users);
+            console.log(users);
+            if (users.length === 0) {
+                return response.status(200).json({ message: "You have no roommate", roommates: [] });
+            } else {
+                return response.status(200).json({users});
+            }
+        } catch (error) {
+            console.error("Error fetching roommates:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    async get_roommates_helper(user_id) {
         let room_id = await this.#user_persistence.get_room_id(user_id);
         // get the total number of users in the room
         let users = await this.#room_persistence.get_room_users(room_id);
@@ -285,7 +325,7 @@ class UserInfoHandler {
     }
 
     async areRoommates(user_id1, user_id2) {
-        let users = await this.get_roommates(user_id1);
+        let users = await this.get_roommates_helper(user_id1);
         // Check if user_id2 is in the users list and return true or false
         console.log(users);
         return users.has(user_id2);
