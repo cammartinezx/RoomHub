@@ -32,5 +32,5 @@ jobs:
       - name: Deploy to Lambda
         run: |
           zip -r ../testings2.zip node_modules src package.json package-lock.json
-          aws lambda update-function-code --function-name Roomhub --zip-file fileb://../testings2.zip
+          aws lambda update-function-code --function-name Roomhub --zip-file fileb://../testings2.zip --region ca-central-1
         working-directory: ./Backend
