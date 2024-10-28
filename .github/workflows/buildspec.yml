@@ -1,28 +1,25 @@
 version: 0.2
 
-phases:
-  install:
-    runtime-versions:
-      nodejs: 22 # Use the Node.js version your application requires
-    commands:
-      - echo "Installing Node.js dependencies..."
-      - cd Backend
-      - npm install
-
+jobs:
   build:
-    commands:
-      - echo "Zipping deployment package with selected files..."
-      - cd Backend
-      - zip -r ../testings2.zip node_modules src package.json package-lock.json
+    runs-on: ubuntu-latest  # Specify the environment for the job
+    steps:
+      - name: Install Node.js dependencies
+        runtime-versions:
+          nodejs: 22  # Use the Node.js version your application requires
+        commands:
+          - echo "Installing Node.js dependencies..."
+          - cd Backend
+          - npm install
 
-  post_build:
-    commands:
-      - echo "Updating Lambda function..."
-      - aws lambda update-function-code --function-name Roomhub --zip-file fileb://testings2.zip --region ca-central-1
-      - echo "Deployment to Roomhub Lambda function complete!"
+      - name: Zip deployment package
+        commands:
+          - echo "Zipping deployment package with selected files..."
+          - cd Backend
+          - zip -r ../testings2.zip node_modules src package.json package-lock.json
 
-# Define event triggers
-on:
-  push:
-    branches:
-      - main  # Define the branch you want to trigger the build on
+      - name: Update Lambda function
+        commands:
+          - echo "Updating Lambda function..."
+          - aws lambda update-function-code --function-name Roomhub --zip-file fileb://testings2.zip --region ca-central-1
+          - echo "Deployment to Roomhub Lambda function complete!"
