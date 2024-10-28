@@ -1,25 +1,36 @@
-version: 0.2
+name: CI/CD for Roomhub
+
+on:
+  push:
+    branches:
+      - main  # Trigger this workflow on pushes to the main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest  # Specify the environment for the job
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Checkout the repository code
+
+      - name: Set up Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'  # Use the Node.js version your application requires
+
       - name: Install Node.js dependencies
-        runtime-versions:
-          nodejs: 22  # Use the Node.js version your application requires
-        commands:
-          - echo "Installing Node.js dependencies..."
-          - cd Backend
-          - npm install
+        run: |
+          echo "Installing Node.js dependencies..."
+          cd Backend
+          npm install
 
       - name: Zip deployment package
-        commands:
-          - echo "Zipping deployment package with selected files..."
-          - cd Backend
-          - zip -r ../testings2.zip node_modules src package.json package-lock.json
+        run: |
+          echo "Zipping deployment package with selected files..."
+          cd Backend
+          zip -r ../testings2.zip node_modules src package.json package-lock.json
 
       - name: Update Lambda function
-        commands:
-          - echo "Updating Lambda function..."
-          - aws lambda update-function-code --function-name Roomhub --zip-file fileb://testings2.zip --region ca-central-1
-          - echo "Deployment to Roomhub Lambda function complete!"
+        run: |
+          echo "Updating Lambda function..."
+          aws lambda update-function-code --function-name Roomhub --zip-file fileb://testings2.zip --region ca-central-1
+          echo "Deployment to Roomhub Lambda function complete!"
