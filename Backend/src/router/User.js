@@ -133,6 +133,29 @@ router.get("/:id/get-roommate", (req, res) => {
     user_info_handler.get_roommate(req, res);
 });
 
+/**
+ * @memberof User
+ * @name Delete a notification of specific user
+ * @path {Delete} user/:id/notification/:notif_id
+ * @params {String} :id is the id of the user we are trying to get.
+ * @params {String} :notif_id is the id of the notification from user with user id above
+ * @code {200} A valid message
+ * @code {400} This username is invalid
+ * @code {400} The notification is is invalid
+ * @code {404} User not found
+ * @code {404} Notification not found
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ * @example
+    If notification exist for user
+        Response: { "message": "Notification deleted successfully" }
+If notification no longer or never exist for user
+        Response: { "message": "Notification not found" }
+ */
+router.delete("/:id/notification/:notif_id", (req, res) => {
+    user_info_handler.delete_notification(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });
