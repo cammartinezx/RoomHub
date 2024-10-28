@@ -135,6 +135,25 @@ router.get("/:id/get-roommate", (req, res) => {
 
 /**
  * @memberof User
+ * @name Get a user's roommates
+ * @path {GET} user/:id/get-roommates
+ * @params {String} :id is the id of the user whose roommates we are trying to get.
+ * @code {200} Successfully retrieved roommates list
+ * @code {200} You have no roommate
+ * @code {403} Invalid username
+ * @code {403} User not found
+ * @code {500} Backend error from the database
+ * @response {JSON} Roommates_List A list of roommates associated with the user
+ * @example Response: {
+     "roommates": ["user_id_1", "user_id_2", "user_id_3"]
+}
+ */
+router.get("/:id/get_user_roommates", (req, res) => {
+    user_info_handler.get_user_roommates(req, res);
+});
+
+/**
+ * @memberof User
  * @name Delete a notification of specific user
  * @path {Delete} user/:id/notification/:notif_id
  * @params {String} :id is the id of the user we are trying to get.
