@@ -67,7 +67,9 @@ class RoomPersistence {
 
         // working_client = new DynamoDBClient(local_test_client);
 
-        this.#doc_client = DynamoDBDocumentClient.from(working_client);
+        this.#doc_client = DynamoDBDocumentClient.from(working_client, {
+            marshallOptions: { convertEmptyValues: true }
+        });
         this.#table_name = "room";
     }
 
