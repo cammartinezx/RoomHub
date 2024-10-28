@@ -24,10 +24,12 @@ app.use("/", async (req, res) => {
 
 const server = awsServerlessExpress.createServer(app);
 
-// AWS express
-exports.handler = (event, context) => {
-    awsServerlessExpress.proxy(server, event, context);
-};
-
-// useful for tests to treat backend like a regular express app.
-module.exports = app;
+if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    // AWS express
+    exports.handler = (event, context) => {
+        awsServerlessExpress.proxy(server, event, context);
+    };
+} else {
+    // useful for tests to treat backend like a regular express app.
+    module.exports = app;
+}
