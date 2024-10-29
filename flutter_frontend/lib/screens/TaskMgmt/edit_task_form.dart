@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -10,22 +9,25 @@ import 'package:flutter_frontend/config.dart';
 import '../../utils/custom_exceptions.dart';
 
 
-class TaskForm extends StatefulWidget {
-  final String email;
-  const TaskForm({super.key, required this.email});
+class EditTaskForm extends StatefulWidget {
+  final String taskName;
+  final String assignedTo;
+  // not all tasks have due dates.
+  final String? dueDate;
+  final String taskId;
+  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, this.dueDate });
 
   @override
-  State<TaskForm> createState() => _TaskFormState();
+  State<EditTaskForm> createState() => _EditTaskFormState();
 }
 
-class _TaskFormState extends State<TaskForm> {
+class _EditTaskFormState extends State<EditTaskForm> {
   final theme = OurTheme();
   TextEditingController _taskNameController = TextEditingController();
-  String? selectedRoommate;
-  final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
   DateTime? selectedDate;
   TextEditingController _dateController = TextEditingController();
-
+  String? selectedRoommate;
+  final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
   String? _taskNameError; // Error message for name field
   String? _assigneeError; // Error message for email field
 
@@ -34,6 +36,12 @@ class _TaskFormState extends State<TaskForm> {
   void initState() {
     super.initState();
     // Add listener to the TextField controller
+    debugPrint(widget.taskId);
+    _taskNameController.text = widget.taskName;
+    selectedRoommate = widget.assignedTo;
+    if(widget.dueDate != null){
+      _dateController.text = widget.dueDate!;
+    }
   }
 
   // date selection
@@ -49,6 +57,7 @@ class _TaskFormState extends State<TaskForm> {
       setState(() {
         selectedDate = pickedDate;
         _dateController.text = "${pickedDate.toLocal()}".split(' ')[0]; // Formatting date
+        debugPrint(_dateController.text);
       });
     }
   }
@@ -73,30 +82,35 @@ class _TaskFormState extends State<TaskForm> {
             top: 40.0,
             left: 20.0,
             right: 20.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Back button to return to the previous screen
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 30,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Pop the current screen
-                  },
-                ),
-                // Title text indicating the purpose of the screen
-                const Text(
-                  '\nCreate \nTask',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                      fontSize: 30,
+            child: Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Stack(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Back button to return to the previous screen
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
                       color: Colors.white,
-                      fontWeight: FontWeight.w900),
-                ),
-              ],
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Pop the current screen
+                    },
+                  ),
+                  // Title text indicating the purpose of the screen
+                  const Center(
+                    child: Text(
+                      'Task Management',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // Main content container for instructions and email input
@@ -123,7 +137,7 @@ class _TaskFormState extends State<TaskForm> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
-                        child: Text("Create/Edit a Task",
+                        child: Text("Edit a Task",
                             style: TextStyle(
                               color: theme.darkblue,
                               fontSize: 30.0,
@@ -141,7 +155,7 @@ class _TaskFormState extends State<TaskForm> {
                               "Task Name",
                               style: TextStyle(color: theme.darkblue),
                             ),
-                          errorText: _taskNameError
+                            errorText: _taskNameError
                         ),
                       ),
                       const SizedBox(
@@ -151,11 +165,11 @@ class _TaskFormState extends State<TaskForm> {
                           value: selectedRoommate,
                           icon: const Icon(Icons.arrow_drop_down),
                           decoration: InputDecoration(
-                            label: Text(
-                              "Choose Roommate",
-                              style: TextStyle(color: theme.darkblue),
-                            ),
-                            errorText: _assigneeError
+                              label: Text(
+                                "Choose Roommate",
+                                style: TextStyle(color: theme.darkblue),
+                              ),
+                              errorText: _assigneeError
                           ),
                           items: roomMates.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(value: value, child: Text(value));
@@ -175,11 +189,11 @@ class _TaskFormState extends State<TaskForm> {
                         readOnly: true,
                         onTap: () => _selectDate(context), // Show date picker on tap
                         decoration: InputDecoration(
-                            prefixIcon: const Icon(Icons.calendar_today),
-                            label: Text(
-                              "Due date",
-                              style: TextStyle(color: theme.darkblue),
-                            ),
+                          prefixIcon: const Icon(Icons.calendar_today),
+                          label: Text(
+                            "Due date",
+                            style: TextStyle(color: theme.darkblue),
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -223,7 +237,7 @@ class _TaskFormState extends State<TaskForm> {
   void save_Task() {
     try{
       if(_validateFields()){
-        debugPrint("Add backend stuff to create a new task");
+        debugPrint("Add backend stuff to save an existing task");
       }
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");
@@ -234,27 +248,6 @@ class _TaskFormState extends State<TaskForm> {
   bool isValidAnnouncement(String msg) {
     return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
   }
-
-  void sendAnnouncementRequest(String msg) async{
-    try {
-      debugPrint(widget.email);
-      var reqBody = {
-        "from": widget.email, // User's email (sender)
-        "message": msg, // Roommate's email (recipient)
-        "type": 'announcement', // Request type
-      };
-      var response = await http.post(
-        Uri.parse(sendAnnouncement),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody), // Encode the request body as JSON
-      );
-      await handlePost(response, responseType: 'sendAnnouncement');
-      theme.buildToastMessage("Announcement sent successfully");
-    } on NotificationException catch(e) {
-      theme.buildToastMessage(e.message);
-    }
-  }
-
 }
 
 
