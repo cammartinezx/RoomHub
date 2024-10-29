@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
@@ -11,7 +13,8 @@ import '../../utils/custom_exceptions.dart';
 
 class TaskForm extends StatefulWidget {
   final String email;
-  const TaskForm({super.key, required this.email});
+  final List<String> roomMates;
+  const TaskForm({super.key, required this.email, required this.roomMates});
 
   @override
   State<TaskForm> createState() => _TaskFormState();
@@ -21,12 +24,13 @@ class _TaskFormState extends State<TaskForm> {
   final theme = OurTheme();
   TextEditingController _taskNameController = TextEditingController();
   String? selectedRoommate;
-  final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
+  // final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
   DateTime? selectedDate;
   TextEditingController _dateController = TextEditingController();
 
-  String? _taskNameError; // Error message for name field
-  String? _assigneeError; // Error message for email field
+  String? _taskNameError; // Error message for task name field
+  String? _assigneeError; // Error message for assignee field
+  String? _dateError;       // Error message for date field
 
 
   @override
@@ -72,31 +76,34 @@ class _TaskFormState extends State<TaskForm> {
             top: 40.0,
             left: 20.0,
             right: 20.0,
-            child: Stack(
-              children: [
-                // Back button to return to the previous screen
-                IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                    size: 30,
+            child: Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Stack(
+                children: [
+                  // Back button to return to the previous screen
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Pop the current screen
+                    },
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Pop the current screen
-                  },
-                ),
-                // Title text indicating the purpose of the screen
-                const Center(
-                  child: Text(
-                    'Task Management',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900),
+                  // Title text indicating the purpose of the screen
+                  const Center(
+                    child: Text(
+                      'Task Management',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           // Main content container for instructions and email input
@@ -157,7 +164,7 @@ class _TaskFormState extends State<TaskForm> {
                             ),
                             errorText: _assigneeError
                           ),
-                          items: roomMates.map<DropdownMenuItem<String>>((String value) {
+                          items: widget.roomMates.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(value: value, child: Text(value));
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -180,6 +187,7 @@ class _TaskFormState extends State<TaskForm> {
                               "Due date",
                               style: TextStyle(color: theme.darkblue),
                             ),
+                            errorText: _dateError,
                         ),
                       ),
                       const SizedBox(
@@ -199,13 +207,12 @@ class _TaskFormState extends State<TaskForm> {
   }
 
   bool _validateFields() {
-    print(_taskNameController.text);
-    print(selectedRoommate);
     setState(() {
       // Check if the name field is empty
       _taskNameError = _taskNameController.text.isEmpty ? 'This field is required' : null;
       // Check if the email field is empty
       _assigneeError = selectedRoommate == null ? 'This field is required' : null;
+      _dateError = _dateController.text.isEmpty ? 'This field is required' : null;
     });
 
     // If both fields are valid, you can proceed with your logic
@@ -220,15 +227,42 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  void save_Task() {
+  void save_Task() async{
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to create a new task");
+        createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
       }
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");
     }
+  }
 
+  // tn	String	The task name
+  // frm	String	The user creating the task
+  // to	String	The user assigned the task
+  // date	String	The due date for the task
+
+  void createNewTask(String currUserId, String taskName, String assignedTo, String dueDate) async {
+    try {
+      var reqBody = {
+        "frm": currUserId, // The user creating the task
+        "tn": taskName, // The task name
+        "to": assignedTo, // The user assigned the task
+        "date": dueDate // The due date for the task
+      };
+      print(reqBody);
+      var response = await http.post(
+        Uri.parse(createTaskPth),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'createTask');
+      theme.buildToastMessage("Task created successfully");
+    //   kick back to the notification page
+    } on UserException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
   }
 
   bool isValidAnnouncement(String msg) {

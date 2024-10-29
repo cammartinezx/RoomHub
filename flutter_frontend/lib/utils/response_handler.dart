@@ -85,6 +85,28 @@ Future<void> handlePost(http.Response response,
       }
       break;
 
+    case 'createTask':
+      print(response.statusCode);
+      print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          // valid case
+          break;
+        case 400:
+        // Handle case where the notification message is empty
+          throw UserException(
+                'Something Went Wrong. Please Try again later');
+        case 500:
+        // Server error for join room request
+          throw UserException('Something went wrong. Try again later.');
+        default:
+        // Fallback error for any other status codes
+          print(response.statusCode);
+          print(response.body);
+          throw UserException("Something went wrong. Try again later");
+      }
+      break;
+
     case 'sendAnnouncement':
       switch (response.statusCode) {
         case 404:
@@ -262,7 +284,6 @@ Future<String> deleteResponse(http.Response response,
   // Uncomment these for debugging purposes
   // print(response.body);
   // print(response.statusCode);
-
   switch (responseType) {
     case 'deleteNotification':
       switch (response.statusCode) {

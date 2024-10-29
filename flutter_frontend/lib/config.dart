@@ -5,7 +5,7 @@ const url = 'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/';
 const user = "${url}user"; // Base endpoint for user
 const room = "${url}room"; // Base endpoint for room
 const notification = "${url}notification";// Base endpoint for notification
-
+const task = "${url}task";
 // GET requests
 // Endpoint to get user notifications
 // final getNotification = user/:id/get-notification
@@ -23,3 +23,4 @@ const leaveRoomWarning ="/leave-warning";//endpoint to get warning associated wi
 const sendAnnouncement = "$notification/send-announcement";//endpoint to send an announcement
 const leaveRoomPth = "/leave-room"; //endpoint to leave a room
 const getRoommatePth = "/get-roommate";//endpoint to get message whether or not  the user has roommates
+const createTaskPth = "$task/create-task";
