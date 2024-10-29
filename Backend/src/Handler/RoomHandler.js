@@ -179,7 +179,7 @@ class RoomHandler {
             // Fetch the pending tasks for the user's room
             const pending_tasks = await this.#room_persistence.get_pending_tasks(room_id);
             if (pending_tasks.length === 0) {
-                return response.status(200).json({ message: "No pending tasks found" });
+                return response.status(404).json({ message: "No pending tasks found" });
             }
 
             // Return the pending tasks
@@ -210,7 +210,7 @@ class RoomHandler {
             // Fetch the pending tasks for the user's room
             const completed_tasks = await this.#room_persistence.get_completed_tasks(room_id);
             if (completed_tasks.length === 0) {
-                return response.status(200).json({ message: "No completed tasks found" });
+                return response.status(404).json({ message: "No completed tasks found" });
             }
 
             // Return the pending tasks

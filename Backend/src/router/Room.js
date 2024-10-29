@@ -12,8 +12,8 @@ const room_handler = new RoomHandler();
  * @memberof Room
  * @name Add a new room
  * @path {POST} room/create-room
- * @query {String} rm The name of the new room to be created
- * @query {String} id The new users e-mail to be added to the database
+ * @body {String} rm The name of the new room to be created
+ * @body {String} id The new users e-mail to be added to the database
  * @code {200} Successfully Created the new room
  * @code {400} Bad Request-Invalid Room Name
  * @code {400} Bad Request-Invalid User
@@ -28,10 +28,10 @@ router.post("/create-room", (req, res) => {
  * @memberof Room
  * @name Add a new roommate to a room
  * @path {POST} room/add-roommate
- * @query {String} existing_roommate The name of the already existing roommate
- * @query {String} new_roommate The name of the roommate to be added newly to the room
- * @query {String} room_nm The name of the new room the new roommate is getting added to
- * @query {String} notification_id The notification id linked to the room join request.
+ * @body {String} existing_roommate The name of the already existing roommate
+ * @body {String} new_roommate The name of the roommate to be added newly to the room
+ * @body {String} room_nm The name of the new room the new roommate is getting added to
+ * @body {String} notification_id The notification id linked to the room join request.
  * @code {200} New Roommate successfully added
  * @code {404} Room not found
  * @code {404} Room not found. Create or Join a room
@@ -48,14 +48,14 @@ router.post("/add-roommate", (req, res) => {
 /**
  * @memberof Room
  * @name Get All Completed Tasks
- * @path {GET} /get-completed-tasks
+ * @path {GET} room/get-completed-tasks?frm=userid
  * @query {String} frm User requesting to get the list
  * @code {200} Successfully retrieved completed tasks
- * @code {404} Invalid User
+ * @code {403} Invalid User
  * @code {404} Room not found
  * @code {404} No completed tasks found
  * @code {500} Error message from backend
- * @response {JSON} tasks List of completed tasks
+ * @response {JSON} complete_tasks List of completed tasks
  * @example Response: {
  *     "complete_tasks": [
  *         {
@@ -81,14 +81,14 @@ router.get("/get-completed-tasks", (req, res) => {
 /**
  * @memberof Room
  * @name Get All Pending Tasks
- * @path {GET} /get-pending-tasks
+ * @path {GET} room/get-pending-tasks
  * @query {String} frm User requesting to get the list
  * @code {200} Successfully retrieved pending tasks
- * @code {404} Invalid User
+ * @code {403} Invalid User
  * @code {404} Room not found
  * @code {404} No pending tasks found
  * @code {500} Error message from backend
- * @response {JSON} tasks List of pending tasks
+ * @response {JSON} pending_tasks List of pending tasks
  * @example Response: {
  *     "pending_tasks": [
  *         {

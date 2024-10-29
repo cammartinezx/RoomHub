@@ -16,7 +16,7 @@ const user_info_handler = new UserInfoHandler();
  * @memberof User
  * @name Add a new user
  * @path {POST} user/add-user
- * @query {String} id The new users e-mail to be added to the database
+ * @body {String} id The new users e-mail to be added to the database
  * @code {200} This user name already exist
  * @code {200} User Successfully created
  * @code {400} Error Creating User- User id is invalid

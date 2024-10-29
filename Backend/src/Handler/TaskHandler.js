@@ -91,7 +91,6 @@ class TaskOrganizerHandler {
         // Get today's date in yyyy-MM-dd format (ignore time part)
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Set the time to 00:00:00 to only compare dates
-
         // Compare the input date with today's date
         return inputDate >= today; // Returns true if inputDate is today or in the future
     }
@@ -182,6 +181,7 @@ class TaskOrganizerHandler {
             // }
 
             // Check if the list includes the task
+            console.log(!task_list.includes(task_id));
             if (!task_list.includes(task_id)) {
                 return response.status(404).json({ message: "Task not found" });
             }
