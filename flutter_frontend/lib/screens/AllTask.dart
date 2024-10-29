@@ -80,12 +80,19 @@ class _AllTasksState extends State<AllTasks> {
                       children: [
                         Expanded(child: Column(
                           children: [
-                            Text("New Tasks",
-                              style: TextStyle(
-                                color: theme.darkblue,
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,)
-                          ),
+                            Stack(
+                              children: [
+                                Center(
+                                  child: Text("New Tasks",
+                                  style: TextStyle(
+                                    color: theme.darkblue,
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,)
+                                  ),
+                                ),
+                                Align(alignment: Alignment.topRight, child: IconButton(iconSize:35, onPressed: () { debugPrint("copied");}, icon: Icon(Icons.add_circle_outlined, color: theme.darkblue,size: 30,)))
+                              ],
+                            ),
                             Expanded(child: TaskGrid()),],
                         )
                       ),
