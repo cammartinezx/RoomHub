@@ -161,7 +161,7 @@ class RoomHandler {
 
     async get_pending_tasks(request, response) {
         try {
-            const { frm } = request.body;
+            const { frm } = request.query;
             const user_id = frm.trim().toLowerCase();
 
             // Validate if the user is valid
@@ -192,7 +192,7 @@ class RoomHandler {
 
     async get_completed_tasks(request, response) {
         try {
-            const { frm } = request.body;
+            const { frm } = request.query;
             const user_id = frm.trim().toLowerCase();
 
             // Validate if the user is valid
