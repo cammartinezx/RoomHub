@@ -167,7 +167,7 @@ class RoomHandler {
             // Validate if the user is valid
             const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
             if (!is_valid_user) {
-                return response.status(404).json({ message: "Invalid user" });
+                return response.status(403).json({ message: "Invalid user" });
             }
 
             // Get the room ID associated with the user
@@ -178,8 +178,8 @@ class RoomHandler {
 
             // Fetch the pending tasks for the user's room
             const pending_tasks = await this.#room_persistence.get_pending_tasks(room_id);
-            if (!pending_tasks || pending_tasks.length === 0) {
-                return response.status(404).json({ message: "No pending tasks found" });
+            if (pending_tasks.length === 0) {
+                return response.status(200).json({ message: "No pending tasks found" });
             }
 
             // Return the pending tasks
@@ -198,7 +198,7 @@ class RoomHandler {
             // Validate if the user is valid
             const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
             if (!is_valid_user) {
-                return response.status(404).json({ message: "Invalid user" });
+                return response.status(403).json({ message: "Invalid user" });
             }
 
             // Get the room ID associated with the user
@@ -209,12 +209,12 @@ class RoomHandler {
 
             // Fetch the pending tasks for the user's room
             const completed_tasks = await this.#room_persistence.get_completed_tasks(room_id);
-            if (!completed_tasks || completed_tasks.length === 0) {
-                return response.status(404).json({ message: "No completed tasks found" });
+            if (completed_tasks.length === 0) {
+                return response.status(200).json({ message: "No completed tasks found" });
             }
 
             // Return the pending tasks
-            return response.status(200).json({ completed_tasks: completed_tasks });
+            return response.status(200).json({ completed_tasks });
         } catch (error) {
             console.error("Error fetching completed tasks:", error);
             return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });

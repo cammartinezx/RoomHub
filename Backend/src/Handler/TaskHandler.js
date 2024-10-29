@@ -1,7 +1,6 @@
 const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
 const UserInfoHandler = require("./UserInfoHandler");
-const RoomHandler = require("./RoomHandler");
 
 /**
  * @module Handler
@@ -34,15 +33,13 @@ class TaskOrganizerHandler {
 
     userHandler;
     /**
-     * Create a new RoomHandler object
      * @constructor
      */
-    constructor() {
+    constructor(userHandler) {
         this.#user_persistence = Services.get_user_persistence();
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
-        this.userHandler = new UserInfoHandler();
-        this.RoomHandler = new RoomHandler();
+        this.userHandler = userHandler
     }
 
     get_task_persistence() {
@@ -139,17 +136,14 @@ class TaskOrganizerHandler {
 
             // Generate a unique task ID
             const task_id = uuidv4();
-            const new_task_status = await this.#task_persistence.generate_new_task(
+            await this.#task_persistence.generate_new_task(
                 task_id,
                 task_name,
                 user_to,
                 due_date,
             );
 
-            // Handle task generation failure
-            if (new_task_status === "FAILURE") {
-                return response.status(500).json({ message: "Error generating task" });
-            }
+
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
 
@@ -189,7 +183,7 @@ class TaskOrganizerHandler {
 
             // Check if the list includes the task
             if (!task_list.includes(task_id)) {
-                return response.status(403).json({ message: "Task not found" });
+                return response.status(404).json({ message: "Task not found" });
             }
             // Remove the task from the room and delete it from the database
             await this.#room_persistence.delete_task_from_room(room_id, task_id);
@@ -216,10 +210,6 @@ class TaskOrganizerHandler {
             const user_to = to.trim().toLowerCase();
             const due_date = date.trim();
 
-            // Validate inputs
-            if (!task_id) {
-                return response.status(403).json({ message: "Task ID is required" });
-            }
 
             const is_valid_task = this.#is_valid_task_name(task_name);
             const is_valid_from = await this.userHandler.is_valid_user(user_from);
@@ -239,16 +229,9 @@ class TaskOrganizerHandler {
             }
 
             // Fetch the existing task by task_id
-            const existing_task = await this.#task_persistence.get_task_by_id(task_id);
-            if (existing_task === "FAILURE") {
-                return response.status(403).json({ message: "Task not found" });
-            }
+           await this.#task_persistence.get_task_by_id(task_id);
 
-            // Update task with new values
-            const update_status = await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
-            if (update_status === "FAILURE") {
-                return response.status(500).json({ message: "Failed to update task" });
-            }
+            await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
             return response.status(200).json({ message: "Task updated successfully" });
         } catch (error) {
             console.error("Error updating task:", error);
@@ -280,7 +263,7 @@ class TaskOrganizerHandler {
 
             // Check if the task is in pending tasks in the room
             if (!task_list.includes(task_id)) {
-                return response.status(403).json({ message: "Task not found" });
+                return response.status(404).json({ message: "Task not found" });
             }
 
             // // Fetch the existing task by task_id
@@ -290,10 +273,7 @@ class TaskOrganizerHandler {
             // }
 
             // Update task with new values
-            const update_status = await this.#task_persistence.mark_completed(task_id);
-            if (update_status === "FAILURE") {
-                return response.status(500).json({ message: "Failed to mark task as completed" });
-            }
+            await this.#task_persistence.mark_completed(task_id);
             return response.status(200).json({ message: "Task marked as completed" });
         } catch (error) {
             console.error("Error updating task:", error);
