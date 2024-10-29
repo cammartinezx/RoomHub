@@ -238,11 +238,13 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
+  String generateAnnouncementMsg(String user){
+    return "A new task has been assigned to $user";
+  }
   // tn	String	The task name
   // frm	String	The user creating the task
   // to	String	The user assigned the task
   // date	String	The due date for the task
-
   void createNewTask(String currUserId, String taskName, String assignedTo, String dueDate) async {
     try {
       var reqBody = {
@@ -258,6 +260,8 @@ class _TaskFormState extends State<TaskForm> {
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
       await handlePost(response, responseType: 'createTask');
+      String announcementMsg = generateAnnouncementMsg(assignedTo);
+      sendAnnouncementRequest(announcementMsg, currUserId);
       theme.buildToastMessage("Task created successfully");
     //   kick back to the notification page
     } on UserException catch(e) {
@@ -265,17 +269,22 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  bool isValidAnnouncement(String msg) {
-    return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
+  void sendAnnouncementRequest(String announcement, String sender) async {
+    try {
+      var reqBody = {
+        "from": sender, // User's email (sender)
+        "message": announcement, // New announcement.
+        "type": 'announcement', // Request type
+      };
+      var response = await http.post(
+        Uri.parse(sendAnnouncement),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'sendAnnouncement');
+      theme.buildToastMessage("Announcement sent successfully");
+    } on NotificationException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
   }
-
 }
-
-
-// I forgot my keys—can someone let me in?"
-// "I'm having friends over tonight, just a heads-up."
-// "I’ll be late coming home, don’t wait up!"
-// "The Wi-Fi’s down—anyone else having issues?"
-// "Left the stove on—could someone check?"
-// "Package is arriving today, could someone grab it?"
-// "Cleaning day tomorrow—let's remember to tidy up!"
