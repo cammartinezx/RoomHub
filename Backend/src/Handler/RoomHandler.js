@@ -59,7 +59,6 @@ class RoomHandler {
      */
     #is_valid_room_name(room_name) {
         return typeof room_name === "string" && room_name.length > 0;
-
     }
     /**
      * Creates a new room in the persistence layer and updates user
