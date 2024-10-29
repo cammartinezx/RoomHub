@@ -58,10 +58,8 @@ class RoomHandler {
      * @returns {Boolean} "True if valid room name and false otherwise"
      */
     #is_valid_room_name(room_name) {
-        if (typeof room_name === "string" && room_name.length > 0) {
-            return true;
-        }
-        return false;
+        return typeof room_name === "string" && room_name.length > 0;
+
     }
     /**
      * Creates a new room in the persistence layer and updates user
@@ -110,11 +108,7 @@ class RoomHandler {
      * @returns {Boolean} "True if both names are the same and false otherwise"
      */
     #is_valid_roomname(persist_room_name, room_name) {
-        if (persist_room_name.trim().toLowerCase() === room_name.trim().toLowerCase()) {
-            return true;
-        } else {
-            return false;
-        }
+        return persist_room_name.trim().toLowerCase() === room_name.trim().toLowerCase();
     }
 
     /**
@@ -197,7 +191,7 @@ class RoomHandler {
         }
     }
 
-    async get_complete_tasks(request, response) {
+    async get_completed_tasks(request, response) {
         try {
             const { frm } = request.body;
             const user_id = frm.trim().toLowerCase();
@@ -215,15 +209,15 @@ class RoomHandler {
             }
 
             // Fetch the pending tasks for the user's room
-            const pending_tasks = await this.#room_persistence.get_completed_tasks(room_id);
-            if (!pending_tasks || pending_tasks.length === 0) {
-                return response.status(404).json({ message: "No pending tasks found" });
+            const completed_tasks = await this.#room_persistence.get_completed_tasks(room_id);
+            if (!completed_tasks || completed_tasks.length === 0) {
+                return response.status(404).json({ message: "No completed tasks found" });
             }
 
             // Return the pending tasks
-            return response.status(200).json({ pending_tasks });
+            return response.status(200).json({ completed_tasks: completed_tasks });
         } catch (error) {
-            console.error("Error fetching pending tasks:", error);
+            console.error("Error fetching completed tasks:", error);
             return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });
         }
     }
