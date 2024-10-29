@@ -306,10 +306,12 @@ class UserInfoHandler {
             users = await this.#room_persistence.get_room_users(room_id);
             users = Array.from(users);
             console.log(users);
-            if (users.length === 0) {
-                return response.status(200).json({ message: "You have no roommate", roommates: [] });
+            // Filter out the current user from the list
+            const roommates = users.filter((id) => id !== user_id);
+            if (roommates.length === 0) {
+                return response.status(200).json({ message: "You have no roommates" });
             } else {
-                return response.status(200).json({users});
+                return response.status(200).json({ roommates });
             }
         } catch (error) {
             console.error("Error fetching roommates:", error);

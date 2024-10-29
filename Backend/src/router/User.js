@@ -148,7 +148,7 @@ router.get("/:id/get-roommate", (req, res) => {
      "roommates": ["user_id_1", "user_id_2", "user_id_3"]
 }
  */
-router.get("/:id/get_user_roommates", (req, res) => {
+router.get("/:id/get-user-roommates", (req, res) => {
     user_info_handler.get_user_roommates(req, res);
 });
 

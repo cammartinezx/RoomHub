@@ -116,7 +116,7 @@ class TaskOrganizerHandler {
             const user_from = frm.trim().toLowerCase();
             const user_to = to.trim().toLowerCase();
             const due_date = date.trim();
-            const room_id = await this.userHandler.get_room_persistence().get_room_id(user_from);
+            const room_id = await this.#user_persistence.get_room_id(user_from);
             //print(user_from);
 
             // Validate inputs
@@ -152,7 +152,6 @@ class TaskOrganizerHandler {
             }
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
-
 
             return response.status(200).json({ message: "Task created successfully" });
         } catch (error) {

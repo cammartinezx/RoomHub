@@ -50,14 +50,31 @@ router.post("/add-roommate", (req, res) => {
 /**
  * @memberof Task
  * @name Get All Completed Tasks
- * @path {GET} /:id/get-completed-tasks
- * @param {String} id The user ID to retrieve completed tasks for
+ * @path {GET} /get-completed-tasks
  * @code {200} Successfully retrieved completed tasks
  * @code {404} User or tasks not found
  * @code {500} Error message from backend
- * @response {Object[]} tasks List of completed tasks
+ * @response {JSON}  tasks List of completed tasks
+ * {
+    "complete_tasks": [
+        {
+            "complete": true,
+            "due_date": "2024-11-11",
+            "task_id": "2e047472",
+            "asignee": "user1@gmail.com",
+            "task_description": "washing dishes"
+        },
+        {
+            "complete": true,
+            "due_date": "2024-11-11",
+            "task_id": "55e10ce7",
+            "asignee": "user2@gmail.com",
+            "task_description": "throw trash"
+        },
+    ]
+}
  */
-router.get("/:id/get-completed-tasks", (req, res) => {
+router.get("/get-completed-tasks", (req, res) => {
     room_handler.get_completed_tasks(req, res);
 });
 
@@ -66,14 +83,31 @@ router.get("/:id/get-completed-tasks", (req, res) => {
 /**
  * @memberof Task
  * @name Get All Pending Tasks
- * @path {GET} /:id/get-pending-tasks
- * @param {String} id The user ID to retrieve pending tasks for
+ * @path {GET} /get-pending-tasks
  * @code {200} Successfully retrieved pending tasks
  * @code {404} User or tasks not found
  * @code {500} Error message from backend
- * @response {Object[]} tasks List of pending tasks
+ * @response {JSON}  tasks List of pending tasks
+ * {
+    "pending_tasks": [
+        {
+            "complete": false,
+            "due_date": "2024-11-11",
+            "task_id": "2e047472",
+            "asignee": "user1@gmail.com",
+            "task_description": "washing dishes"
+        },
+        {
+            "complete": false,
+            "due_date": "2024-11-11",
+            "task_id": "55e10ce7",
+            "asignee": "user2@gmail.com",
+            "task_description": "throw trash"
+        },
+    ]
+}
  */
-router.get("/:id/get-pending-tasks", (req, res) => {
+router.get("/get-pending-tasks", (req, res) => {
     room_handler.get_pending_tasks(req, res);
 });
 

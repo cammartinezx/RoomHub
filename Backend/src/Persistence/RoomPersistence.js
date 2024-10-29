@@ -281,7 +281,7 @@ class RoomPersistence {
                 const task_response = await this.#doc_client.send(task_command);
 
                 if (task_response.Item) {
-                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
+                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
                     //console.log(pending_tasks);
                 }
             }
@@ -327,8 +327,8 @@ class RoomPersistence {
                 const task_response = await this.#doc_client.send(task_command);
 
                 if (task_response.Item && task_response.Item.complete === false) {
-                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
-                    //console.log(pending_tasks);
+                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
+                    console.log(pending_tasks);
                 }
             }
             return pending_tasks; // Return the list of pending tasks
@@ -373,7 +373,7 @@ class RoomPersistence {
                 const task_response = await this.#doc_client.send(task_command);
 
                 if (task_response.Item && task_response.Item.complete === true) {
-                    pending_tasks.push(task_response.Item.task_id); // Add to pending tasks if complete is false
+                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
                     //console.log(pending_tasks);
                 }
             }
