@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
-import 'package:flutter_frontend/widgets/gradient_button.dart';
 
 class AllTasks extends StatefulWidget {
   const AllTasks({super.key});
@@ -34,8 +33,8 @@ class _AllTasksState extends State<AllTasks> {
             top: 40.0,
             left: 20.0,
             right: 20.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // Back button to return to the previous screen
                 IconButton(
@@ -49,13 +48,15 @@ class _AllTasksState extends State<AllTasks> {
                   },
                 ),
                 // Title text indicating the purpose of the screen
-                const Text(
-                  'Tasks Organizer',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w900),
+                const Center(
+                  child: Text(
+                    'Task Management',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w900),
+                  ),
                 ),
               ],
             ),
@@ -119,51 +120,84 @@ class TaskGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = OurTheme();
     return GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 1, // Number of columns
-          childAspectRatio: 2.1, // Aspect ratio of each grid item
+          childAspectRatio: 2.6, // Aspect ratio of each grid item
           crossAxisSpacing: 10, // Horizontal spacing between items
           mainAxisSpacing: 10, // Vertical spacing between items
         )
         , padding: const EdgeInsets.all(10),// Padding around the grid
         itemCount: pendingTasks.length, // Total number of items
         itemBuilder: (context, index) {
-          return Card(
-            color: Colors.black87,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center, // Aligns text to the start
-                  children: [
-                    Text(
-                      "Task Name: Wash the dishes ",
-                      style: TextStyle(
-                          color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1, // Limits to 1 line, so it only shows the ellipsis after the first line
-                    ),
-                    Text(
-                      "Assigned To: dan@gmail.com",
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Due Date: 22-10-2024",
-                      style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    // is pending task type then return reuse and delete else return completed
-                    isPending ?
-                    Row(
+          return IntrinsicWidth(
+            child: IntrinsicHeight(
+              child: Card(
+                color: theme.lightgrey,
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center, // Aligns text to the center
+                      mainAxisSize: MainAxisSize.min, // Ensures the card only wraps its contents
                       children: [
-                        Expanded(child: GradientButton(text: "Reuse", onTap: () {debugPrint("Reuse button clicked");})),
-                        SizedBox(width: 15,),
-                        Expanded(child: GradientButton(text: "Delete", onTap: () {debugPrint("Delete button clicked");}))
-                      ],
-                    ) :
-                    GradientButton(text: "Completed", onTap: () {debugPrint("Completed button clicked");})
-                  ]
+                        Text(
+                          "Wash the dishes ",
+                          style: TextStyle(
+                              color: theme.darkblue, fontSize: 20, fontWeight: FontWeight.bold
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1, // Limits to 1 line, so it only shows the ellipsis after the first line
+                        ),
+                        Text(
+                          "Assigned To: dan@gmail.com",
+                          style: TextStyle(color: theme.darkgrey, fontSize: 15),
+                        ),
+                        Text(
+                          "Due Date: 22-10-2024",
+                          style: TextStyle(color: theme.darkgrey, fontSize: 15),
+                        ),
+                        const SizedBox(height: 10),
+                        // is pending task type then return reuse and delete else return completed
+                        isPending ?
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                            ElevatedButton(onPressed: () { debugPrint("pressed");},
+
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: theme.darkblue,
+                                fixedSize: const Size(100, 30), // Minimum width and height
+                                padding: EdgeInsets.all(5.0), // Padding
+                              ), child: const Text("Reuse",
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                            const SizedBox(width: 15,),
+                            ElevatedButton(onPressed: () { debugPrint("pressed");},
+
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: theme.darkblue,
+                                fixedSize: const Size(100, 30), // Minimum width and height
+                                padding: EdgeInsets.all(5.0), // Padding
+                              ), child: const Text("Delete",
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                              ),
+                            )                          ],
+                        ) :
+                        ElevatedButton(onPressed: () { debugPrint("pressed");},
+
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: theme.darkblue,
+                            fixedSize: const Size(200, 30), // Minimum width and height
+                            padding: EdgeInsets.all(5.0), // Padding
+                          ), child: const Text("Completed",
+                                      style: TextStyle(color: Colors.white, fontSize: 15),
+                          ),
+                        )
+                      ]
+                  ),
+                ),
               ),
             ),
           );
