@@ -7,7 +7,6 @@ const request = require("supertest");
 
 jest.mock("../../../src/Utility/Services", () => ({
     get_user_persistence: () => ({
-        save_new_user: jest.fn(),
         get_user: jest.fn(),
         get_notification: jest.fn(),
     }),
