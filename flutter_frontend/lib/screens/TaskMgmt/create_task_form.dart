@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter_frontend/screens/AllTask.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -230,7 +231,7 @@ class _TaskFormState extends State<TaskForm> {
                         height: 40.0,
                       ),
                       GradientButton(text: 'Save Task',
-                          onTap: () {save_Task();}),
+                          onTap: () {save_Task(context);}),
                     ],
                   ),
                 ),
@@ -263,11 +264,16 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  void save_Task() async{
+  void save_Task(BuildContext context) async{
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to create a new task");
         createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => AllTasks(email: widget.email),
+          ),
+        );
       }
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");
