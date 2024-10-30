@@ -14,30 +14,31 @@ const ManageTasksPage = () => {
     const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
 
-    const roomMembers = ['John Doe', 'Jane Smith', 'Bob Johnson']; // Replace with actual room members
+    const roomMembers = ['John Doe', 'Jane Smith', 'Bob Johnson'];
 
     // Fetch pending and completed tasks on component load
     useEffect(() => {
         const fetchTasks = async () => {
-            console.log('FETCHING TASKS...')
             try {
-                const completedTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks`, {
-                    params: { frm: email }
-                });
                 const pendingTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks`, {
                     params: { frm: email }
                 });
-                setCompletedTasks(completedTasksResponse.data.complete_tasks || []);
+                // const completedTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks`, {
+                //     params: { frm: email }
+                // });
+                console.log(pendingTasksResponse.data.pending_tasks);
                 setPendingTasks(pendingTasksResponse.data.pending_tasks || []);
+                
+                // setCompletedTasks(completedTasksResponse.data.complete_tasks || []);
             } catch (error) {
-                console.error("Error fetching tasks:", error);
+                console.error("Error fetching tasks:", error.message);
             }
         };
         fetchTasks();
     }, [email]);
 
-    // Create a new task
-    const handleAddTask = async () => {
+      // Create a new task
+      const handleAddTask = async () => {
         if (newTask.task && newTask.assignee && newTask.dueDate) {
             console.log(`Task is ${newTask.task}`)
             console.log(`Assigned to ${newTask.assignee}`)
@@ -52,6 +53,7 @@ const ManageTasksPage = () => {
                 });
                 if(response.status === 200){
                     alert(`Task assigned to ${newTask.assignee}`);
+                    window.location.reload();
                 }
                 setNewTask({ task: '', assignee: '', dueDate: '' });
             } catch (error) {
@@ -68,8 +70,7 @@ const ManageTasksPage = () => {
             await axios.delete('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/delete-task', {
                 data: { id: taskId, frm: email }
             });
-            setPendingTasks(pendingTasks.filter(task => task.id !== taskId));
-            setCompletedTasks(completedTasks.filter(task => task.id !== taskId));
+            setCompletedTasks(completedTasks.filter(task => task.task_id !== taskId));
         } catch (error) {
             console.error("Error deleting task:", error);
         }
@@ -77,19 +78,20 @@ const ManageTasksPage = () => {
 
     // Update an existing task
     const handleUpdateTask = async () => {
-        try {
-            
-            await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/edit-task', {
-                id: editingTask.id,
-                tn: editingTask.task,
-                frm: email,
-                to: editingTask.assignee,
-                date: editingTask.dueDate
-            });
-            setPendingTasks(pendingTasks.map(task => task.id === editingTask.id ? editingTask : task));
-            setEditingTask(null);
-        } catch (error) {
-            console.error("Error updating task:", error);
+        if (editingTask) {
+            try {
+                await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/edit-task', {
+                    id: editingTask.task_id,
+                    tn: editingTask.task,
+                    frm: email,
+                    to: editingTask.assignee,
+                    date: formatDateToBackend(editingTask.dueDate)
+                });
+                setCompletedTasks(completedTasks.map(task => task.task_id === editingTask.task_id ? editingTask : task));
+                setEditingTask(null);
+            } catch (error) {
+                console.error("Error updating task:", error);
+            }
         }
     };
 
@@ -99,12 +101,12 @@ const ManageTasksPage = () => {
             await axios.patch('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/mark-completed', { id: taskId, frm: email });
             if (completed) {
                 // Move from completed to pending
-                setPendingTasks([...pendingTasks, { ...completedTasks.find(task => task.id === taskId), completed: false }]);
-                setCompletedTasks(completedTasks.filter(task => task.id !== taskId));
+                setPendingTasks([...pendingTasks, { ...completedTasks.find(task => task.task_id === taskId), complete: false }]);
+                setCompletedTasks(completedTasks.filter(task => task.task_id !== taskId));
             } else {
                 // Move from pending to completed
-                setCompletedTasks([...completedTasks, { ...pendingTasks.find(task => task.id === taskId), completed: true }]);
-                setPendingTasks(pendingTasks.filter(task => task.id !== taskId));
+                setCompletedTasks([...completedTasks, { ...pendingTasks.find(task => task.task_id === taskId), complete: true }]);
+                setPendingTasks(pendingTasks.filter(task => task.task_id !== taskId));
             }
         } catch (error) {
             console.error("Error marking task as completed:", error);
@@ -112,10 +114,8 @@ const ManageTasksPage = () => {
     };
 
     function formatDateToBackend(dateString) {
-        // Use the 'split' method to isolate the date portion before the 'T'
         return dateString.split('T')[0];
     }
-    
 
     return (
         <div className={styles.container}>
@@ -143,87 +143,53 @@ const ManageTasksPage = () => {
                     ))}
                 </select>
                 <input
-                    type="datetime-local"
+                    type="date"
                     value={newTask.dueDate}
                     onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                 />
                 <button onClick={handleAddTask}>Add Task</button>
             </div>
 
-            {/* Pending Tasks List */}
+            {/* Task Lists */}
             <div className={styles.taskList}>
                 <h3>Pending Tasks</h3>
                 <ul>
                     {pendingTasks.map((task) => (
-                        <li key={task.id}>
-                            {editingTask?.id === task.id ? (
-                                // Edit mode
-                                <div>
-                                    <input
-                                        type="text"
-                                        value={editingTask.task}
-                                        onChange={(e) => setEditingTask({ ...editingTask, task: e.target.value })}
-                                    />
-                                    <select
-                                        value={editingTask.assignee}
-                                        onChange={(e) => setEditingTask({ ...editingTask, assignee: e.target.value })}
-                                    >
-                                        <option value="">Assign to Roommate</option>
-                                        {roomMembers.map((member, idx) => (
-                                            <option key={idx} value={member}>
-                                                {member}
-                                            </option>
-                                        ))}
-                                    </select>
-                                    <input
-                                        type="datetime-local"
-                                        value={editingTask.dueDate}
-                                        onChange={(e) => setEditingTask({ ...editingTask, dueDate: e.target.value })}
-                                    />
-                                    <button onClick={handleUpdateTask}>Update Task</button>
-                                </div>
-                            ) : (
-                                // Normal view
-                                <div>
-                                    <span>{task.task}</span> - <span>Assigned to: {task.assignee}</span> -{' '}
-                                    <span>Due: {new Date(task.dueDate).toLocaleString()}</span>
-                                    <input
-                                        type="checkbox"
-                                        checked={task.completed}
-                                        onChange={() => toggleCompletion(task.id, task.completed)}
-                                    />
-                                    <button onClick={() => setEditingTask(task)}>Edit</button>
-                                    <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
-                                </div>
-                            )}
+                        <li key={task.task_id}>
+                            <div>
+                                <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
+                                <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                                <input
+                                    type="checkbox"
+                                    checked={task.complete}
+                                    onChange={() => toggleCompletion(task.task_id, task.complete)}
+                                />
+                            </div>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            {/* Completed Tasks List */}
             <div className={styles.taskList}>
                 <h3>Completed Tasks</h3>
                 <ul>
                     {completedTasks.map((task) => (
-                        <li key={task.id}>
-                            <span>{task.task_description}</span> - <span>Assigned to: {task.assignee}</span> -{' '}
+                        <li key={task.task_id}>
+                            <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
                             <span>Due: {new Date(task.due_date).toLocaleString()}</span>
                             <input
                                 type="checkbox"
                                 checked={task.complete}
-                                onChange={() => toggleCompletion(task.id, task.complete)}
+                                onChange={() => toggleCompletion(task.task_id, task.complete)}
                             />
-                            <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+                            <button onClick={() => setEditingTask(task)}>Edit</button>
+                            <button onClick={() => handleDeleteTask(task.task_id)}>Delete</button>
                         </li>
                     ))}
                 </ul>
             </div>
 
-            <button
-                className={styles.backButton}
-                onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}
-            >
+            <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}>
                 Back to Virtual Room
             </button>
         </div>
