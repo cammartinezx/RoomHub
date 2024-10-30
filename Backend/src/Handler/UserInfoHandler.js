@@ -287,11 +287,6 @@ class UserInfoHandler {
         try {
             const user_id = request.params.id.trim().toLowerCase();
 
-            // Validate the user ID
-            if (!this.#is_valid_id(user_id)) {
-                return response.status(403).json({ message: "This username is invalid" });
-            }
-
             // Retrieve the user to ensure they exist
             const user = await this.#user_persistence.get_user(user_id);
             if (user === null) {
