@@ -27,3 +27,6 @@ const createTaskPth = "$task/create-task";
 const getPendingTasks = "$room/get-pending-tasks";
 const getCompletedTasks = "$room/get-completed-tasks";
 const getRoommatesList = "get-user-roommates";
+const markComplete = "$task/mark-completed";
+const deleteTask = "$task/delete-task";
+const editTaskPth = "$task/edit-task";

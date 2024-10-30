@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
@@ -7,15 +9,17 @@ import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
+import '../AllTask.dart';
 
 
 class EditTaskForm extends StatefulWidget {
   final String taskName;
   final String assignedTo;
   // not all tasks have due dates.
-  final String? dueDate;
+  final String dueDate;
   final String taskId;
-  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, this.dueDate });
+  final String loggedInUser;
+  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, required this.dueDate,required this.loggedInUser });
 
   @override
   State<EditTaskForm> createState() => _EditTaskFormState();
@@ -27,9 +31,10 @@ class _EditTaskFormState extends State<EditTaskForm> {
   DateTime? selectedDate;
   TextEditingController _dateController = TextEditingController();
   String? selectedRoommate;
-  final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
+  List<dynamic> roomMates  = [];
   String? _taskNameError; // Error message for name field
   String? _assigneeError; // Error message for email field
+  bool isLoading = true; // Track loading state
 
 
   @override
@@ -38,10 +43,42 @@ class _EditTaskFormState extends State<EditTaskForm> {
     // Add listener to the TextField controller
     debugPrint(widget.taskId);
     _taskNameController.text = widget.taskName;
-    selectedRoommate = widget.assignedTo;
-    if(widget.dueDate != null){
-      _dateController.text = widget.dueDate!;
+    _dateController.text = widget.dueDate;
+    getRoommatesCaller();
     }
+
+  Future<void> getRoommatesCaller() async {
+    // Simulate an API request or some async operation
+    roomMates = await getRoommates();
+    // Update the loading state and rebuild the UI
+    setState(() {
+      isLoading = false; // Update loading state
+      // choose selected roommate after roommate has be
+      selectedRoommate = widget.assignedTo;
+    });
+  }
+
+  Future<List<dynamic>> getRoommates() async {
+    List<dynamic> result = [];
+    print(widget.loggedInUser);
+    try {
+      var response = await http.get(
+        Uri.parse("$user/${widget.loggedInUser}/$getRoommatesList"),
+        headers: {"Content-Type": "application/json"},
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        List<dynamic> roommates = jsonData['roommates'];
+        result = roommates;
+      } else {
+        await getResponse(response, responseType: 'getRoommateList');
+      }
+    } on UserException catch (e) {
+      OurTheme().buildToastMessage(e.message);
+    }
+    return result;
   }
 
   // date selection
@@ -171,7 +208,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                               ),
                               errorText: _assigneeError
                           ),
-                          items: roomMates.map<DropdownMenuItem<String>>((String value) {
+                          items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
                             return DropdownMenuItem<String>(value: value, child: Text(value));
                           }).toList(),
                           onChanged: (String? newValue) {
@@ -200,7 +237,16 @@ class _EditTaskFormState extends State<EditTaskForm> {
                         height: 40.0,
                       ),
                       GradientButton(text: 'Save Task',
-                          onTap: () {save_Task();}),
+                          onTap: () async {
+                              await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
+                              String announcementMsg = generateAnnouncementMsg(selectedRoommate!);
+                              sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => AllTasks(email: widget.loggedInUser),
+                                ),
+                              );}
+                            ),
                     ],
                   ),
                 ),
@@ -234,10 +280,57 @@ class _EditTaskFormState extends State<EditTaskForm> {
     }
   }
 
-  void save_Task() {
+  String generateAnnouncementMsg(String user){
+    return "A new task has been assigned to $user";
+  }
+
+  void sendAnnouncementRequest(String announcement, String sender) async {
+    try {
+      var reqBody = {
+        "from": sender, // User's email (sender)
+        "message": announcement, // New announcement.
+        "type": 'announcement', // Request type
+      };
+      var response = await http.post(
+        Uri.parse(sendAnnouncement),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'sendAnnouncement');
+      theme.buildToastMessage("Announcement sent successfully");
+    } on NotificationException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
+  }
+
+  Future<void> editTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
+    try {
+      var reqBody = {
+        "id" : taskId,
+        "frm": currUserId, // The user creating the task
+        "tn": taskName, // The task name
+        "to": assignedTo, // The user assigned the task
+        "date": dueDate // The due date for the task
+      };
+      print(reqBody);
+      var response = await http.post(
+        Uri.parse(editTaskPth),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'editTask');
+      theme.buildToastMessage("Task created successfully");
+      //   kick back to the notification page
+    } on UserException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
+  }
+
+  Future<void> saveTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to save an existing task");
+        await editTask(currUserId, taskName, assignedTo, dueDate, taskId);
       }
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");

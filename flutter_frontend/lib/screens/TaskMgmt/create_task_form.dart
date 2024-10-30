@@ -32,7 +32,7 @@ class _TaskFormState extends State<TaskForm> {
   String? _assigneeError; // Error message for assignee field
   String? _dateError;       // Error message for date field
 
-  List<dynamic> roomMates  = ["No roommates"];
+  List<dynamic> roomMates  = [];
   bool isLoading = true; // Track loading state
 
 
@@ -231,7 +231,16 @@ class _TaskFormState extends State<TaskForm> {
                         height: 40.0,
                       ),
                       GradientButton(text: 'Save Task',
-                          onTap: () {save_Task(context);}),
+                          onTap: () async{
+                            await saveTask(context);
+                            String announcementMsg = generateAnnouncementMsg(_taskNameController.text);
+                            sendAnnouncementRequest(announcementMsg, widget.email);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => AllTasks(email: widget.email),
+                              ),
+                            );
+                      }),
                     ],
                   ),
                 ),
@@ -264,16 +273,11 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  void save_Task(BuildContext context) async{
+  Future<void> saveTask(BuildContext context) async{
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to create a new task");
-        createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => AllTasks(email: widget.email),
-          ),
-        );
+        await createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
       }
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");
@@ -283,11 +287,12 @@ class _TaskFormState extends State<TaskForm> {
   String generateAnnouncementMsg(String user){
     return "A new task has been assigned to $user";
   }
+
   // tn	String	The task name
   // frm	String	The user creating the task
   // to	String	The user assigned the task
   // date	String	The due date for the task
-  void createNewTask(String currUserId, String taskName, String assignedTo, String dueDate) async {
+  Future<void> createNewTask(String currUserId, String taskName, String assignedTo, String dueDate) async {
     try {
       var reqBody = {
         "frm": currUserId, // The user creating the task
@@ -302,8 +307,6 @@ class _TaskFormState extends State<TaskForm> {
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
       await handlePost(response, responseType: 'createTask');
-      String announcementMsg = generateAnnouncementMsg(assignedTo);
-      sendAnnouncementRequest(announcementMsg, currUserId);
       theme.buildToastMessage("Task created successfully");
     //   kick back to the notification page
     } on UserException catch(e) {
