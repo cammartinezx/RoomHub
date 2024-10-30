@@ -219,7 +219,6 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
 
   void sendAnnouncementRequest(String msg) async{
     try {
-      debugPrint(widget.email);
       var reqBody = {
         "from": widget.email, // User's email (sender)
         "message": msg, // Roommate's email (recipient)
