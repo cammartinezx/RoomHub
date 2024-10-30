@@ -262,7 +262,7 @@ class TaskOrganizerHandler {
             }
 
             // Check if the task is in pending tasks in the room
-            if (!task_list.includes(task_id)) {
+            if (!task_list.some(task => task.task_id === task_id)) {
                 return response.status(404).json({ message: "Task not found" });
             }
 
