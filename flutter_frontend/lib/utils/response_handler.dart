@@ -86,13 +86,11 @@ Future<void> handlePost(http.Response response,
       break;
 
     case 'createTask':
-      print(response.statusCode);
-      print(response.body);
       switch (response.statusCode) {
         case 200:
           // valid case
           break;
-        case 400:
+        case 403:
         // Handle case where the notification message is empty
           throw UserException(
                 'Something Went Wrong. Please Try again later');
@@ -175,13 +173,46 @@ Future<String> getResponse(http.Response response,
           }
           throw UserException('Invalid request');
         case 500:
-          print(response);
-          print(response.body);
           // Server error
           throw UserException('Something went wrong. Try again later');
         default:
           // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+    case 'getRoommateList':
+      switch (response.statusCode) {
+        case 400:
+        // Handle invalid username error
+          if (response.body.contains("Invalid username")) {
+            throw UserException('Invalid username');
+          }
+          throw UserException('User not found');
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+      case 'getTasks':
+        switch (response.statusCode) {
+          case 404:
+          // Handle invalid username error
+            if (response.body.contains("Invalid User")) {
+              throw UserException('Invalid User');
+            }
+            else if(response.body.contains("Room not found")) {
+              throw RoomException("Room not found");
+            }else{
+              print("Properly reaching 404");
+              return "";
+            }
+          case 500:
+            // Server error
+            throw UserException('Something went wrong. Try again later is it thissss??????${response.body}');
+          default:
+          // Handle unexpected status codes
+            throw UserException('Unexpected status code: ${response.statusCode}');
       }
 
     case 'getLeaveRoomWarning':

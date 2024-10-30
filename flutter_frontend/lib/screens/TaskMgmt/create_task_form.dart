@@ -13,8 +13,7 @@ import '../../utils/custom_exceptions.dart';
 
 class TaskForm extends StatefulWidget {
   final String email;
-  final List<String> roomMates;
-  const TaskForm({super.key, required this.email, required this.roomMates});
+  const TaskForm({super.key, required this.email});
 
   @override
   State<TaskForm> createState() => _TaskFormState();
@@ -32,11 +31,48 @@ class _TaskFormState extends State<TaskForm> {
   String? _assigneeError; // Error message for assignee field
   String? _dateError;       // Error message for date field
 
+  List<dynamic> roomMates  = ["No roommates"];
+  bool isLoading = true; // Track loading state
+
 
   @override
   void initState() {
     super.initState();
-    // Add listener to the TextField controller
+    getRoommatesCaller();
+  }
+
+
+  Future<void> getRoommatesCaller() async {
+    // Simulate an API request or some async operation
+    roomMates = await getRoommates();
+
+    // Update the loading state and rebuild the UI
+    setState(() {
+      isLoading = false; // Update loading state
+    });
+  }
+
+    Future<List<dynamic>> getRoommates() async {
+    List<dynamic> result = [];
+    print(widget.email);
+    try {
+      var response = await http.get(
+        Uri.parse("$user/${widget.email}/$getRoommatesList"),
+        headers: {"Content-Type": "application/json"},
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        List<dynamic> roommates = jsonData['roommates'];
+        result = roommates;
+      } else {
+        await getResponse(response, responseType: 'getRoommateList');
+      }
+    } on UserException catch (e) {
+      OurTheme().buildToastMessage(e.message);
+    }
+    return result;
   }
 
   // date selection
@@ -164,7 +200,7 @@ class _TaskFormState extends State<TaskForm> {
                             ),
                             errorText: _assigneeError
                           ),
-                          items: widget.roomMates.map<DropdownMenuItem<String>>((String value) {
+                          items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
                             return DropdownMenuItem<String>(value: value, child: Text(value));
                           }).toList(),
                           onChanged: (String? newValue) {
