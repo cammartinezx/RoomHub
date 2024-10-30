@@ -39,7 +39,7 @@ class TaskOrganizerHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
-        this.userHandler = userHandler
+        this.userHandler = userHandler;
     }
 
     get_task_persistence() {
@@ -135,13 +135,7 @@ class TaskOrganizerHandler {
 
             // Generate a unique task ID
             const task_id = uuidv4();
-            await this.#task_persistence.generate_new_task(
-                task_id,
-                task_name,
-                user_to,
-                due_date,
-            );
-
+            await this.#task_persistence.generate_new_task(task_id, task_name, user_to, due_date);
 
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
@@ -164,15 +158,14 @@ class TaskOrganizerHandler {
             const task_id = id.trim().toLowerCase();
             // Sanitize inputs
             const user_id = frm.trim().toLowerCase();
-            // Get room ID from the user
-            const room_id = await this.#user_persistence.get_room_id(user_id);
-            const task_list = await this.#room_persistence.get_completed_tasks(room_id);
-
             // Check if the user is valid
             const is_valid_from = await this.userHandler.is_valid_user(user_id);
             if (!is_valid_from) {
                 return response.status(403).json({ message: "Invalid user" });
             }
+            // Get room ID from the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            const task_list = await this.#room_persistence.get_completed_tasks(room_id);
 
             // Fetch the existing task by task_id to ensure it exists
             // const existing_task = await this.#task_persistence.get_task_by_id(task_id);
@@ -210,7 +203,6 @@ class TaskOrganizerHandler {
             const user_to = to.trim().toLowerCase();
             const due_date = date.trim();
 
-
             const is_valid_task = this.#is_valid_task_name(task_name);
             const is_valid_from = await this.userHandler.is_valid_user(user_from);
             const is_valid_to = await this.userHandler.is_valid_user(user_to);
@@ -229,7 +221,7 @@ class TaskOrganizerHandler {
             }
 
             // Fetch the existing task by task_id
-           await this.#task_persistence.get_task_by_id(task_id);
+            await this.#task_persistence.get_task_by_id(task_id);
 
             await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
             return response.status(200).json({ message: "Task updated successfully" });
@@ -251,18 +243,17 @@ class TaskOrganizerHandler {
             const task_id = id.trim().toLowerCase();
             const user_id = frm.trim().toLowerCase();
             //get room id from the user
-            const room_id = await this.#user_persistence.get_room_id(user_id);
-            const task_list = await this.#room_persistence.get_pending_tasks(room_id);
-            console.log(task_list);
-
             // Check if the user is valid
             const is_valid_user = await this.userHandler.is_valid_user(user_id);
             if (!is_valid_user) {
                 return response.status(403).json({ message: "Invalid user" });
             }
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            const task_list = await this.#room_persistence.get_pending_tasks(room_id);
+            console.log(task_list);
 
             // Check if the task is in pending tasks in the room
-            if (!task_list.some(task => task.task_id === task_id)) {
+            if (!task_list.some((task) => task.task_id === task_id)) {
                 return response.status(404).json({ message: "Task not found" });
             }
 

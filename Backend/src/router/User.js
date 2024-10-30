@@ -138,8 +138,7 @@ router.get("/:id/get-roommate", (req, res) => {
  * @name Get a user's roommates
  * @path {GET} user/:id/get-user-roommates
  * @params {String} :id is the id of the user whose roommates we are trying to get.
- * @code {200} Successfully retrieved roommates list
- * @code {200} You have no roommate
+ * @code {200} roommates list
  * @code {403} User not found
  * @code {500} Backend error from the database
  * @response {JSON} roommates A list of roommates associated with the user
