@@ -5,6 +5,7 @@ import Header from '../Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const ManageTasksPage = () => {
+    const [roomMembers, setRoomMembers] = useState([]);
     const [pendingTasks, setPendingTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
     const [newTask, setNewTask] = useState({ task: '', assignee: '', dueDate: '' });
@@ -14,7 +15,20 @@ const ManageTasksPage = () => {
     const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
 
-    const roomMembers = ['John Doe', 'Jane Smith', 'Bob Johnson'];
+        // Fetch roommates on component load
+    useEffect(() => {
+        const fetchRoommates = async () => {
+            try {
+                const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
+                if (response.status === 200 && response.data.roommates) {
+                    setRoomMembers(response.data.roommates); // Set roommates in the state
+                }
+            } catch (error) {
+                console.error("Error fetching roommates:", error.message);
+            }
+        };
+        fetchRoommates();
+    }, [email]);
 
     // Fetch pending and completed tasks on component load
     useEffect(() => {
@@ -48,7 +62,7 @@ const ManageTasksPage = () => {
                 const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task', {
                     tn: newTask.task,
                     frm: email,
-                    to: 'odumahw@myumanitoba.ca',
+                    to: newTask.assignee,
                     date: formattedDate,
                 });
                 if(response.status === 200){
