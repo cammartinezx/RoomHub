@@ -14,6 +14,8 @@ class AllTasks extends StatefulWidget {
 
 class _AllTasksState extends State<AllTasks> {
   final theme = OurTheme();
+  bool completedTaskReload = false;
+  bool newTaskReload = false;
 
   // This function is called when the button is pressed
   Future<void> onPlusButtonPressed(BuildContext context) async {
@@ -23,6 +25,18 @@ class _AllTasksState extends State<AllTasks> {
         builder: (context) => TaskForm(email: widget.email),
       ),
     );
+  }
+
+  void onCompletedButtonPressed(){
+    setState(() {
+      debugPrint("ButtonPressed");
+      completedTaskReload = !completedTaskReload;
+    });
+  }
+
+  // This function is called when a task is completed in TaskGrid
+  void onTaskUpdated() {
+    onCompletedButtonPressed(); // Call the function to update the state
   }
 
   @override
@@ -65,7 +79,7 @@ class _AllTasksState extends State<AllTasks> {
                                         onPressed: () { onPlusButtonPressed(context);}, icon: Icon(Icons.add_circle_outlined, color: theme.darkblue,size: 30,)))
                               ],
                             ),
-                            Expanded(child: TaskGrid(isPending: true, userId: "dan@gmail.com")),],
+                            Expanded(child: TaskGrid(isPending: true, userId: widget.email, onCompletePressed: onTaskUpdated, reload: newTaskReload,)),],
                         )
                       ),
                       Expanded(child: Column(
@@ -76,7 +90,8 @@ class _AllTasksState extends State<AllTasks> {
                                   fontSize: 30.0,
                                   fontWeight: FontWeight.bold,)
                             ),
-                            Expanded(child: TaskGrid(isPending: false, userId: "dan@gmail.com")),],
+                            Expanded(child: TaskGrid(isPending: false, userId: widget.email, onCompletePressed: onTaskUpdated, reload: completedTaskReload,)),
+                            ],
                           )
                         ),
                         const SizedBox(height: 10.0),

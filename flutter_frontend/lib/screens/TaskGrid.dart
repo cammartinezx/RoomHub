@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/config.dart';
+import 'package:flutter_frontend/screens/TaskMgmt/edit_task_form.dart';
 import 'package:http/http.dart' as http;
 
 import '../utils/custom_exceptions.dart';
@@ -12,7 +13,9 @@ class TaskGrid extends StatefulWidget {
   // Sample data array
   final String userId;
   final bool isPending;
-  const TaskGrid({super.key, required this.isPending, required this.userId});
+  final bool reload;
+  final VoidCallback? onCompletePressed;
+  const TaskGrid({super.key, required this.isPending, required this.userId, required this.reload, this.onCompletePressed});
 
   @override
   State<TaskGrid> createState() => _TaskGridState();
@@ -20,6 +23,7 @@ class TaskGrid extends StatefulWidget {
 
 class _TaskGridState extends State<TaskGrid> {
   late Future<List<Task>> futureTasks;
+  late List<Task> tasks;
 
   @override
   void initState() {
@@ -27,6 +31,14 @@ class _TaskGridState extends State<TaskGrid> {
     futureTasks = getTasks(widget.isPending, widget.userId); // Call the async function here
   }
 
+  @override
+  void didUpdateWidget(TaskGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.reload != oldWidget.reload && widget.reload) {
+      // Reload tasks if the reload flag has changed to true
+      futureTasks = getTasks(widget.isPending, widget.userId);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +51,7 @@ class _TaskGridState extends State<TaskGrid> {
       } else if (snapshot.hasError) {
         return Text('Weird error: ${snapshot.error}');
       } else {
-        final tasks = snapshot.data!;
+        tasks = snapshot.data!;
         if(tasks.isEmpty) {
           return const Center(child: Text("No Tasks at the moment"));
         }
@@ -82,7 +94,7 @@ class _TaskGridState extends State<TaskGrid> {
                             const SizedBox(height: 10),
                             // is pending task type then return reuse and delete else return completed
                             widget.isPending ?
-                            ElevatedButton(onPressed: () { debugPrint("pressed");},
+                            ElevatedButton(onPressed: () { markCompleted(tasks[index].taskId, widget.userId, index);},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: theme.darkblue,
                                 fixedSize: const Size(200, 30), // Minimum width and height
@@ -95,22 +107,21 @@ class _TaskGridState extends State<TaskGrid> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                ElevatedButton(onPressed: () { debugPrint("pressed");},
-
+                                ElevatedButton(onPressed: () { reuseTaskPressed(tasks[index].taskName, tasks[index].assignedTo, tasks[index].taskId, tasks[index].dueDate,);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
                                     fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: EdgeInsets.all(5.0), // Padding
+                                    padding: const EdgeInsets.all(5.0), // Padding
                                   ), child: const Text("Reuse",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                 ),
                                 const SizedBox(width: 15,),
-                                ElevatedButton(onPressed: () { debugPrint("pressed");},
+                                ElevatedButton(onPressed: () { deletePressed(tasks[index].taskId, widget.userId);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
                                     fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: EdgeInsets.all(5.0), // Padding
+                                    padding: const EdgeInsets.all(5.0), // Padding
                                   ), child: const Text("Delete",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
@@ -143,10 +154,13 @@ class _TaskGridState extends State<TaskGrid> {
         final jsonData = jsonDecode(response.body);
         List<Task> tasks =
         Task.parseTaskList(jsonData, isPendingTask);
-        for (var task in tasks) {
-          print(task); // This will call the toString method
-        }
+        // for (var task in tasks) {
+        //   print(task); // This will call the toString method
+        // }
         result = tasks;
+        if(isPendingTask == false){
+          print(result);
+        }
       } else {
         await getResponse(response, responseType: 'getTasks');
       }
@@ -154,8 +168,79 @@ class _TaskGridState extends State<TaskGrid> {
       print(e.toString());
       OurTheme().buildToastMessage(e.message);
     }
+    if(isPendingTask == false){
+      print(result);
+    }
     return result;
   }
+
+  void markCompleted(String taskId, String userId, int taskIndex) async {
+    try {
+      print(taskId);
+      print(userId);
+      var reqBody = {
+        "frm": userId,
+        "id" : taskId
+      };
+      print(reqBody);
+      var response = await http.patch(
+         Uri.parse(markComplete),
+         headers: {"Content-Type": "application/json"},
+         body: jsonEncode(reqBody)
+      );
+      print(response.statusCode);
+      print(response.body);
+      await patchResponse(response, responseType: 'markComplete');
+      //   reload state
+      //   completedTasks state
+      widget.onCompletePressed!();
+      // New tasks state
+      setState(() {
+        tasks.removeAt(taskIndex);
+      });
+    } on TaskException catch (e) {
+      print(e.toString());
+      OurTheme().buildToastMessage(e.message);
+    } on UserException catch (e) {
+      print(e.toString());
+      OurTheme().buildToastMessage(e.message);
+    }
+  }
+
+  void reuseTaskPressed(String taskName, String assignedTo, String taskId, String dueDate) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => EditTaskForm(taskName: taskName, assignedTo: assignedTo, taskId: taskId, dueDate: dueDate, loggedInUser: widget.userId,),
+      ),
+    ); // Pop the current screen
+  }
+
+  void deletePressed(String taskId, String userId) async{
+    try {
+      print(taskId);
+      print(userId);
+      var reqBody = {
+        "frm": taskId,
+        "id":userId,
+      };
+      print(reqBody);
+      var response = await http.delete(
+          Uri.parse(deleteTask),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody)
+      );
+      print(response.statusCode);
+      print(response.body);
+      await deleteResponse(response, responseType: 'deleteTask');
+      //   reload state
+      // widget.onCompletePressed!();
+    } on TaskException catch (e) {
+      print(e.toString());
+      OurTheme().buildToastMessage(e.message);
+    } on UserException catch (e) {
+      print(e.toString());
+      OurTheme().buildToastMessage(e.message);
+    }  }
 }
 
 class Task{
@@ -188,7 +273,7 @@ class Task{
       tasks = json['pending_tasks'] as List<dynamic>;
     }
     else{
-      tasks = json['complete_tasks'] as List<dynamic>;
+      tasks = json['completed_tasks'] as List<dynamic>;
     }
 
     // Map the list of JSON objects to Task objects
