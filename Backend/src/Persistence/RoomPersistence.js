@@ -118,7 +118,7 @@ class RoomPersistence {
                     room_id: unique_id,
                     name: room_name,
                     users: new Set([user_id]),
-                    tasks: new Set(),
+                    tasks: [],
                 },
                 ConditionExpression: "attribute_not_exists(room_id)",
             });
@@ -227,12 +227,12 @@ class RoomPersistence {
             Key: {
                 room_id: room_id,
             },
-            UpdateExpression: "ADD #tasks :newTask",
+            UpdateExpression: "SET #tasks = list_append(#tasks, :new_task)",
             ExpressionAttributeNames: {
                 "#tasks": "tasks", // The attribute (field) you're updating
             },
             ExpressionAttributeValues: {
-                ":newTask": new Set([task]), // The new task to add to the set
+                ":new_task": [task], // The new task to add as a single-element list
             },
             ConditionExpression: "attribute_exists(room_id)",
         });
@@ -247,57 +247,12 @@ class RoomPersistence {
     }
 
     /**
-     * Use Get command to retrieve the list of tasks associated with a specific room.
-     * @param {String} room_id "The unique identifier for the room"
-     * @returns {Set} "The list of tasks associated with the room_id"
-     */
-    async get_room_tasks(room_id) {
-        // Step 1: Get the task IDs from the room
-        const get_command = new GetCommand({
-            TableName: "Room",
-            Key: {
-                room_id: room_id,
-            },
-            ProjectionExpression: "tasks",
-        });
-
-        try {
-            const response = await this.#doc_client.send(get_command);
-
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
-
-            // Step 4: Fetch each task's details
-            for (const task_id of task_ids) {
-                const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
-                    Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
-                    },
-                });
-                const task_response = await this.#doc_client.send(task_command);
-
-                if (task_response.Item) {
-                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    //console.log(pending_tasks);
-                }
-            }
-            return pending_tasks; // Return the list of pending tasks
-        } catch (error) {
-            console.error("Error getting all room tasks:", error);
-            return [];
-        }
-    }
-
-    /**
      * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
      * @param {String} room_id "The unique identifier for the room"
      * @returns {Array} "The list of tasks where complete = false"
      */
     async get_pending_tasks(room_id) {
+        const pending_tasks = [];
         // Step 1: Get the task IDs from the room
         const get_command = new GetCommand({
             TableName: "Room",
@@ -306,32 +261,27 @@ class RoomPersistence {
             },
             ProjectionExpression: "tasks",
         });
-
         try {
             const response = await this.#doc_client.send(get_command);
 
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
 
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
                 const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
                     Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
                     },
                 });
                 const task_response = await this.#doc_client.send(task_command);
-
+                // Only add the task if it is incomplete
                 if (task_response.Item && task_response.Item.complete === false) {
                     pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    console.log(pending_tasks);
                 }
             }
-            return pending_tasks; // Return the list of pending tasks
+            return pending_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
             console.error("Error getting pending tasks:", error);
             return [];
@@ -339,11 +289,12 @@ class RoomPersistence {
     }
 
     /**
-     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * Use Get command to retrieve the list of complete tasks associated with a specific room.
      * @param {String} room_id "The unique identifier for the room"
      * @returns {Array} "The list of tasks where complete = false"
      */
     async get_completed_tasks(room_id) {
+        const completed_tasks = [];
         // Step 1: Get the task IDs from the room
         const get_command = new GetCommand({
             TableName: "Room",
@@ -352,34 +303,29 @@ class RoomPersistence {
             },
             ProjectionExpression: "tasks",
         });
-
         try {
             const response = await this.#doc_client.send(get_command);
 
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
 
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
                 const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
                     Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
                     },
                 });
                 const task_response = await this.#doc_client.send(task_command);
-
-                if (task_response.Item && task_response.Item.complete === true) {
-                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    //console.log(pending_tasks);
+                // Only add the task if it is incomplete
+                if (task_response.Item && task_response.Item.complete === false) {
+                    completed_tasks.push(task_response.Item); // Add to pending tasks if complete is false
                 }
             }
-            return pending_tasks; // Return the list of pending tasks
+            return completed_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
-            console.error("Error getting complete tasks:", error);
+            console.error("Error getting pending tasks:", error);
             return [];
         }
     }

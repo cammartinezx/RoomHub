@@ -39,7 +39,7 @@ class TaskOrganizerHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
-        this.userHandler = userHandler
+        this.userHandler = userHandler;
     }
 
     get_task_persistence() {
@@ -135,13 +135,7 @@ class TaskOrganizerHandler {
 
             // Generate a unique task ID
             const task_id = uuidv4();
-            await this.#task_persistence.generate_new_task(
-                task_id,
-                task_name,
-                user_to,
-                due_date,
-            );
-
+            await this.#task_persistence.generate_new_task(task_id, task_name, user_to, due_date);
 
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
@@ -210,7 +204,6 @@ class TaskOrganizerHandler {
             const user_to = to.trim().toLowerCase();
             const due_date = date.trim();
 
-
             const is_valid_task = this.#is_valid_task_name(task_name);
             const is_valid_from = await this.userHandler.is_valid_user(user_from);
             const is_valid_to = await this.userHandler.is_valid_user(user_to);
@@ -229,7 +222,7 @@ class TaskOrganizerHandler {
             }
 
             // Fetch the existing task by task_id
-           await this.#task_persistence.get_task_by_id(task_id);
+            await this.#task_persistence.get_task_by_id(task_id);
 
             await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
             return response.status(200).json({ message: "Task updated successfully" });

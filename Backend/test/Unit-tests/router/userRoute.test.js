@@ -58,7 +58,7 @@ describe("User router tests", () => {
         const query_params = { id: "test@gmail.com" };
 
         user_info_handler.create_user = jest.fn((req, res) =>
-            res.status(200).json({ message: "User Successfully created" })
+            res.status(200).json({ message: "User Successfully created" }),
         );
 
         const response = await request(app).post("/user/add-user").send(query_params);
@@ -71,7 +71,7 @@ describe("User router tests", () => {
         const user_id = "test@gmail.com";
 
         user_info_handler.leave_user_room = jest.fn((req, res) =>
-            res.status(200).json({ message: "User leave the room successfully" })
+            res.status(200).json({ message: "User leave the room successfully" }),
         );
 
         const response = await request(app).get(`/user/${user_id}/leave-room`);
@@ -84,7 +84,7 @@ describe("User router tests", () => {
         const user_id = "test@gmail.com";
 
         user_info_handler.get_roommate = jest.fn((req, res) =>
-            res.status(200).json({ message: "You have no roommate" })
+            res.status(200).json({ message: "You have no roommate" }),
         );
 
         const response = await request(app).get(`/user/${user_id}/get-roommate`);
@@ -98,7 +98,7 @@ describe("User router tests", () => {
         const notif_id = "111-444";
 
         user_info_handler.delete_notification = jest.fn((req, res) =>
-            res.status(200).json({ message: "Notification deleted successfully" })
+            res.status(200).json({ message: "Notification deleted successfully" }),
         );
 
         const response = await request(app).delete(`/user/${user_id}/notification/${notif_id}`);
@@ -106,5 +106,4 @@ describe("User router tests", () => {
         expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "Notification deleted successfully" });
     });
-
 });

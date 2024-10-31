@@ -57,7 +57,7 @@ router.post("/add-roommate", (req, res) => {
  * @code {500} Error message from backend
  * @response {JSON} complete_tasks List of completed tasks
  * @example Response: {
- *     "complete_tasks": [
+ *     "completed_tasks": [
  *         {
  *             "complete": true,
  *             "due_date": "2024-11-11",

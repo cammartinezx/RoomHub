@@ -37,11 +37,11 @@ class RoomHandler {
      * Create a new RoomHandler object
      * @constructor
      */
-    constructor() {
+    constructor(userHandler) {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
-        this.userHandler = new UserInfoHandler();
+        this.userHandler = userHandler;
     }
 
     get_room_persistence() {
@@ -72,7 +72,7 @@ class RoomHandler {
             let room_name = request.body.rm.trim().toLowerCase();
             let user_id = request.body.id.trim().toLowerCase();
             const is_valid_room = this.#is_valid_room_name(room_name);
-            const is_valid_user = this.userHandler.is_valid_user(user_id);
+            const is_valid_user = await this.userHandler.is_valid_user(user_id);
             if (is_valid_room && is_valid_user) {
                 // generate room id
                 const room_id = uuidv4();

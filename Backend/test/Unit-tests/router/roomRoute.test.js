@@ -52,16 +52,16 @@ describe("Room router tests", () => {
                     due_date: "2024-11-11",
                     task_id: "2e047472",
                     asignee: "user1@gmail.com",
-                    task_description: "washing dishes"
+                    task_description: "washing dishes",
                 },
                 {
                     complete: true,
                     due_date: "2024-11-11",
                     task_id: "55e10ce7",
                     asignee: "user2@gmail.com",
-                    task_description: "throw trash"
+                    task_description: "throw trash",
                 },
-            ]
+            ],
         };
         const response = await request(app).get("/room/get-completed-tasks").query(query_params);
         expect(response.status).toBe(200);
@@ -77,16 +77,16 @@ describe("Room router tests", () => {
                     due_date: "2024-11-15",
                     task_id: "7b23c541",
                     asignee: "user1@gmail.com",
-                    task_description: "vacuum the floor"
+                    task_description: "vacuum the floor",
                 },
                 {
                     complete: false,
                     due_date: "2024-11-18",
                     task_id: "8f60df82",
                     asignee: "user2@gmail.com",
-                    task_description: "grocery shopping"
+                    task_description: "grocery shopping",
                 },
-            ]
+            ],
         };
         const response = await request(app).get("/room/get-pending-tasks").query(query_params);
         expect(response.status).toBe(200);
