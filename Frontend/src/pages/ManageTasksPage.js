@@ -37,13 +37,14 @@ const ManageTasksPage = () => {
                 const pendingTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks`, {
                     params: { frm: email }
                 });
-                // const completedTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks`, {
-                //     params: { frm: email }
-                // });
+                const completedTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks`, {
+                    params: { frm: email }
+                });
                 console.log(pendingTasksResponse.data.pending_tasks);
                 setPendingTasks(pendingTasksResponse.data.pending_tasks || []);
                 
-                // setCompletedTasks(completedTasksResponse.data.complete_tasks || []);
+                console.log(completedTasksResponse.data.completed_tasks);
+                setCompletedTasks(completedTasksResponse.data.completed_tasks || []);
             } catch (error) {
                 console.error("Error fetching tasks:", error.message);
             }
@@ -135,62 +136,66 @@ const ManageTasksPage = () => {
         <div className={styles.container}>
             <Header email={email} hasRoom={hasRoom} />
             <h1>Manage Tasks</h1>
-
-            {/* Task Creation Form */}
-            <div className={styles.taskForm}>
-                <h3>Create New Task</h3>
-                <input
-                    type="text"
-                    placeholder="Task Name"
-                    value={newTask.task}
-                    onChange={(e) => setNewTask({ ...newTask, task: e.target.value })}
-                />
-                <select
-                    value={newTask.assignee}
-                    onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
-                >
-                    <option value="">Assign to Roommate</option>
-                    {roomMembers.map((member, index) => (
-                        <option key={index} value={member}>
-                            {member}
-                        </option>
-                    ))}
-                </select>
-                <input
-                    type="date"
-                    value={newTask.dueDate}
-                    onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-                />
-                <button onClick={handleAddTask}>Add Task</button>
+    
+            {/* Flex container for form and pending tasks */}
+            <div className={styles.flexContainer}>
+                {/* Task Creation Form */}
+                <div className={styles.taskForm}>
+                    <h3>Create New Task</h3>
+                    <input
+                        type="text"
+                        placeholder="Task Name"
+                        value={newTask.task}
+                        onChange={(e) => setNewTask({ ...newTask, task: e.target.value })}
+                    />
+                    <select
+                        value={newTask.assignee}
+                        onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
+                    >
+                        <option value="">Assign to Roommate</option>
+                        {roomMembers.map((member, index) => (
+                            <option key={index} value={member}>
+                                {member}
+                            </option>
+                        ))}
+                    </select>
+                    <input
+                        type="date"
+                        value={newTask.dueDate}
+                        onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+                    />
+                    <button onClick={handleAddTask}>Add Task</button>
+                </div>
+    
+                {/* Pending Tasks List */}
+                <div className={styles.taskList}>
+                    <h3>Pending Tasks</h3>
+                    <ul>
+                        {pendingTasks.map((task) => (
+                            <li key={task.task_id}>
+                                <div>
+                                    <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
+                                    <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                                    <input
+                                        type="checkbox"
+                                        checked={task.complete}
+                                        onChange={() => toggleCompletion(task.task_id, task.complete)}
+                                    />
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
-
-            {/* Task Lists */}
-            <div className={styles.taskList}>
-                <h3>Pending Tasks</h3>
-                <ul>
-                    {pendingTasks.map((task) => (
-                        <li key={task.task_id}>
-                            <div>
-                                <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
-                                <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
-                                <input
-                                    type="checkbox"
-                                    checked={task.complete}
-                                    onChange={() => toggleCompletion(task.task_id, task.complete)}
-                                />
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
+    
+            {/* Completed Tasks List */}
             <div className={styles.taskList}>
                 <h3>Completed Tasks</h3>
                 <ul>
                     {completedTasks.map((task) => (
                         <li key={task.task_id}>
                             <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
-                            <span>Due: {new Date(task.due_date).toLocaleString()}</span>
+                            <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
                             <input
                                 type="checkbox"
                                 checked={task.complete}
@@ -202,12 +207,12 @@ const ManageTasksPage = () => {
                     ))}
                 </ul>
             </div>
-
+    
             <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}>
                 Back to Virtual Room
             </button>
         </div>
     );
-};
+}    
 
 export default ManageTasksPage;
