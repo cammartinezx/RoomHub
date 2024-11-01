@@ -232,14 +232,16 @@ class _TaskFormState extends State<TaskForm> {
                       ),
                       GradientButton(text: 'Save Task',
                           onTap: () async{
-                            await saveTask(context);
-                            String announcementMsg = generateAnnouncementMsg(_taskNameController.text);
-                            sendAnnouncementRequest(announcementMsg, widget.email);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => AllTasks(email: widget.email),
-                              ),
-                            );
+                            bool isSaved = await saveTask(context);
+                            if(isSaved){
+                              String announcementMsg = generateAnnouncementMsg(_taskNameController.text);
+                              sendAnnouncementRequest(announcementMsg, widget.email);
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => AllTasks(email: widget.email),
+                                ),
+                              );
+                            }
                       }),
                     ],
                   ),
@@ -273,15 +275,19 @@ class _TaskFormState extends State<TaskForm> {
     }
   }
 
-  Future<void> saveTask(BuildContext context) async{
+  Future<bool> saveTask(BuildContext context) async{
+    bool isSaved = false;
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to create a new task");
         await createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
+        isSaved = true;
       }
-    }catch(e){
-      theme.buildToastMessage("Select a preset message or make a custom announcement!!");
+    } catch (e){
+      theme.buildToastMessage("Something went wrong. Please try again later");
+      isSaved = false;
     }
+    return isSaved;
   }
 
   String generateAnnouncementMsg(String user){
@@ -311,6 +317,7 @@ class _TaskFormState extends State<TaskForm> {
     //   kick back to the notification page
     } on UserException catch(e) {
       theme.buildToastMessage(e.message);
+      rethrow;
     }
   }
 
