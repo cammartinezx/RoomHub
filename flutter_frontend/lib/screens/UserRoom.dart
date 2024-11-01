@@ -33,18 +33,18 @@ class UserRoom extends StatelessWidget {
                     ),
                   );},
                   child: Card(
-                    color: theme.darkgrey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
+                    color: theme.darkblue,
+                    child: const Padding(
+                      padding: EdgeInsets.all(5.0),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center, // Aligns text to the center
                           mainAxisAlignment: MainAxisAlignment.center, // Centers text vertically
                           children: [
                             Text(
                               "TASKS",
-                              style: TextStyle(color: theme.darkblue, fontSize: 30, fontWeight: FontWeight.bold),
+                              style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 10),
+                            SizedBox(height: 10),
                           ]
                       ),
                     ),
