@@ -117,7 +117,7 @@ class _TaskGridState extends State<TaskGrid> {
                                   ),
                                 ),
                                 const SizedBox(width: 15,),
-                                ElevatedButton(onPressed: () { deletePressed(tasks[index].taskId, widget.userId);},
+                                ElevatedButton(onPressed: () { deletePressed(tasks[index].taskId, widget.userId, index);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
                                     fixedSize: const Size(100, 30), // Minimum width and height
@@ -215,30 +215,25 @@ class _TaskGridState extends State<TaskGrid> {
     ); // Pop the current screen
   }
 
-  void deletePressed(String taskId, String userId) async{
+  void deletePressed(String taskId, String userId, int taskIndex) async{
     try {
-      print(taskId);
-      print(userId);
       var reqBody = {
-        "frm": taskId,
-        "id":userId,
+        "frm": userId,
+        "id":taskId,
       };
-      print(reqBody);
       var response = await http.delete(
           Uri.parse(deleteTask),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(reqBody)
       );
-      print(response.statusCode);
-      print(response.body);
       await deleteResponse(response, responseType: 'deleteTask');
-      //   reload state
-      // widget.onCompletePressed!();
+      //   reload state  when no exception is thrown.
+      setState(() {
+        tasks.removeAt(taskIndex);
+      });
     } on TaskException catch (e) {
-      print(e.toString());
       OurTheme().buildToastMessage(e.message);
     } on UserException catch (e) {
-      print(e.toString());
       OurTheme().buildToastMessage(e.message);
     }  }
 }
