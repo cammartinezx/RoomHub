@@ -175,8 +175,8 @@ class TaskOrganizerHandler {
             // }
 
             // Check if the list includes the task
-            console.log(!task_list.includes(task_id));
-            if (!task_list.includes(task_id)) {
+            console.log(task_list);
+            if (!task_list.some((task) => task.task_id === task_id)) {
                 return response.status(404).json({ message: "Task not found" });
             }
             // Remove the task from the room and delete it from the database

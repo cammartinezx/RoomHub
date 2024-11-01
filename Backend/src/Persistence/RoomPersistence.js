@@ -319,11 +319,11 @@ class RoomPersistence {
                 });
                 const task_response = await this.#doc_client.send(task_command);
                 // Only add the task if it is incomplete
-                if (task_response.Item && task_response.Item.complete === false) {
+                if (task_response.Item && task_response.Item.complete === true) {
                     completed_tasks.push(task_response.Item); // Add to pending tasks if complete is false
                 }
             }
-            return completed_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
+            return completed_tasks; //.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
             console.error("Error getting pending tasks:", error);
             return [];

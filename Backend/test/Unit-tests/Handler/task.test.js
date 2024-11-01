@@ -346,9 +346,12 @@ describe("Unit test for delete a task", () => {
         // Commonly used mocks
         task_handler.get_user_persistence().get_room_id.mockImplementation((user_id) => "room1");
         task_handler.get_task_persistence().get_task_by_id.mockImplementation((task_id) => "SUCCESS");
-        get_task_list_mock = task_handler
+        task_handler
             .get_room_persistence()
-            .get_completed_tasks.mockImplementation((room_id) => ["task1", "task3"]);
+            .get_completed_tasks.mockImplementation((room_id) => [
+            { task_id: "task1", task_description: "Test Task 1" },
+            { task_id: "task3", task_description: "Test Task 3" }
+        ]);
         task_handler.get_room_persistence().delete_task_from_room.mockImplementation(() => "SUCCESS");
         delete_task_mock = task_handler.get_task_persistence().delete_task.mockImplementation(() => "SUCCESS");
     });
@@ -380,9 +383,8 @@ describe("Unit test for delete a task", () => {
     });
 
     it("should return 404 when the task is not found in completed tasks", async () => {
-        req.body = { id: "task1", frm: "user1@gmail.com" };
+        req.body = { id: "task2", frm: "user1@gmail.com" };
 
-        get_task_list_mock.mockImplementation((room_id) => ["task2", "task3"]);
         user_info_handler.is_valid_user.mockImplementation(() => true);
         // Adjust for this test
 
