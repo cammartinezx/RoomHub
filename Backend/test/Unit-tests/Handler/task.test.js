@@ -40,7 +40,7 @@ describe("Unit test for GET /", () => {
         const res = await request(app).get("/");
 
         expect(res.status).toBe(200);
-        expect(res.body).toEqual({ Message: "Welcome to the Task paths" });
+        expect(res.body).toEqual({ message: "Welcome to the Task paths" });
     });
 });
 
@@ -151,7 +151,7 @@ describe("Unit test for creating a task", () => {
         };
 
         // Mock generate_new_task to return a success response
-        const create_task_mock = task_handler.#task_persistence.generate_new_task;
+        const create_task_mock = task_handler.get_task_persistence().generate_new_task;
         create_task_mock.mockResolvedValue(new Error("Error message from backend"));
 
         // Call create_task
@@ -188,7 +188,7 @@ describe("Unit test for editing a task", () => {
         mock_are_roommates = jest.spyOn(user_info_handler, "areRoommates").mockResolvedValue(true);
         mock_generate_new_task = jest.spyOn(task_handler, "#task_persistence.generate_new_task").mockResolvedValue("SUCCESS");
         mock_add_task_to_room = jest.spyOn(task_handler, "#room_persistence.add_task_to_room").mockResolvedValue("SUCCESS");
-        mock_task_exists = jest.spyOn(task_handler.#task_persistence, "get_task_by_id").mockResolvedValue("SUCCESS");
+        mock_task_exists = jest.spyOn(task_handler.get_task_persistence(), "get_task_by_id").mockResolvedValue("SUCCESS");
     });
 
     afterEach(() => {
@@ -284,7 +284,7 @@ describe("Unit test for editing a task", () => {
         };
 
         // Mock generate_new_task to return a success response
-        const create_task_mock = task_handler.#task_persistence.generate_new_task;
+        const create_task_mock = task_handler.get_task_persistence().generate_new_task;
         create_task_mock.mockResolvedValue(new Error("Error message from backend"));
 
         // Call create_task
@@ -372,7 +372,7 @@ describe("Unit test for delete a notification of specific user", () => {
     it("should return 500 when unable to retrieve room ID", async () => {
         req.body = { id: "task1", frm: "user1@gmail.com" };
         const get_user_mock = jest.spyOn(user_info_handler, 'is_valid_user').mockResolvedValue(true);
-        const get_room_id_mock = jest.spyOn(task_handler.#user_persistence, 'get_room_id').mockResolvedValue(null); // Simulate failure
+        const get_room_id_mock = jest.spyOn(task_handler.get_user_persistence(), 'get_room_id').mockResolvedValue(null); // Simulate failure
 
         await task_handler.delete_task(req, res);
 
