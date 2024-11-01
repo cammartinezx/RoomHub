@@ -111,26 +111,30 @@ const VirtualRoomPage = () => {
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
           <div className={taskStyle.taskList}>
-                    <h3>Pending Tasks</h3>
-                    <ul>
-                        {pendingTasks.map((task) => (
-                            <li key={task.task_id} className={taskStyle.taskItem}>
-                                <div className={taskStyle.taskDetails}>
-                                    <span className={taskStyle.taskName}>{task.task_description}</span>
-                                    <span className={taskStyle.taskAssignee}>Assigned to: {task.asignee}</span>
-                                    <span className={taskStyle.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
-                                </div>
-                                <div className={taskStyle.taskActions}>
-                                    <input
-                                        type="checkbox"
-                                        onChange={() => toggleCompletion(task.task_id, task.complete, task)}
-                                        className={taskStyle.checkbox}
-                                    />
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+            <h3>Pending Tasks</h3>
+            {pendingTasks.length > 0 ? (
+                <ul>
+                    {pendingTasks.map((task) => (
+                        <li key={task.task_id} className={taskStyle.taskItem}>
+                            <div className={taskStyle.taskDetails}>
+                                <span className={taskStyle.taskName}>{task.task_description}</span>
+                                <span className={taskStyle.taskAssignee}>Assigned to: {task.asignee}</span>
+                                <span className={taskStyle.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                            </div>
+                            <div className={taskStyle.taskActions}>
+                                <input
+                                    type="checkbox"
+                                    onChange={() => toggleCompletion(task.task_id, task.complete, task)}
+                                    className={taskStyle.checkbox}
+                                />
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No pending tasks right now.</p>
+            )}
+        </div>
 
           {/* Right Side - Shared Expenses */}
           <div className={roomStyles.expensesSection}>

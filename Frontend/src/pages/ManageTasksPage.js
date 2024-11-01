@@ -40,23 +40,80 @@ const ManageTasksPage = () => {
     useEffect(() => {
         const fetchTasks = async () => {
             try {
-                const pendingTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks`, {
-                    params: { frm: email }
-                });
-                const completedTasksResponse = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks`, {
-                    params: { frm: email }
-                });
+                // Fetch pending tasks
+                const pendingTasksResponse = await axios.get(
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks',
+                    {
+                        params: { frm: email },
+                    }
+                );
                 console.log(pendingTasksResponse.data.pending_tasks);
                 setPendingTasks(pendingTasksResponse.data.pending_tasks || []);
-                
-                console.log(completedTasksResponse.data.completed_tasks);
-                setCompletedTasks(completedTasksResponse.data.completed_tasks || []);
             } catch (error) {
-                console.error("Error fetching tasks:", error.message);
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 403:
+                            console.error('Error: Invalid User.');
+                            break;
+                        case 404:
+                            console.error('Error: No pending tasks found.');
+                            break;
+                        case 500:
+                            console.error('Error: Backend error while fetching pending tasks.');
+                            break;
+                        default:
+                            console.error('An unexpected error occurred while fetching pending tasks.');
+                    }
+                } else if (error.request) {
+                    console.error('Error: No response from the server while fetching pending tasks.');
+                } else {
+                    console.error('Error: Failed to fetch pending tasks.');
+                }
+            }
+    
+            try {
+                // Fetch completed tasks
+                const completedTasksResponse = await axios.get(
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks',
+                    {
+                        params: { frm: email },
+                    }
+                );
+    
+                if (completedTasksResponse.status === 200) {
+                    console.log(completedTasksResponse.data.completed_tasks);
+                    setCompletedTasks(completedTasksResponse.data.completed_tasks || []);
+                } else if (completedTasksResponse.status === 403) {
+                    console.error('Error: Invalid User while fetching completed tasks.');
+                } else if (completedTasksResponse.status === 404) {
+                    console.error('Error: No completed tasks found.');
+                }
+            } catch (error) {
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 403:
+                            console.error('Error: Invalid User.');
+                            break;
+                        case 404:
+                            console.error('Error: No completed tasks found.');
+                            break;
+                        case 500:
+                            console.error('Error: Backend error while fetching completed tasks.');
+                            break;
+                        default:
+                            console.error('An unexpected error occurred while fetching completed tasks.');
+                    }
+                } else if (error.request) {
+                    console.error('Error: No response from the server while fetching completed tasks.');
+                } else {
+                    console.error('Error: Failed to fetch completed tasks.');
+                }
             }
         };
+    
         fetchTasks();
     }, [email]);
+    
 
       // Create a new task
       const handleAddTask = async () => {
@@ -88,18 +145,28 @@ const ManageTasksPage = () => {
 
     // Delete a task
     const handleDeleteTask = async (taskId) => {
-        console.log('DELETING TASK...');
-        console.log(taskId)
         try {
-            await axios.delete('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/delete-task', {
-                id: taskId,
-                frm: email,
+            const response = await fetch(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/delete-task`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: taskId, frm: email }),
             });
-            window.location.reload();
+            if (response.ok) {
+                alert('Task deleted successfully!');
+                window.location.reload();
+            } else {
+                console.error('Failed to delete task:', response.status);
+            }
         } catch (error) {
-            console.error("Error deleting task:", error);
+            console.error('Error deleting task:', error);
         }
     };
+
+    
+    
+
     const openEditPopup = (task) => {
         setEditingTask(task);
         setShowEditPopup(true);
@@ -176,46 +243,54 @@ const ManageTasksPage = () => {
                     <button onClick={() => handleAddTask()}>Add Task</button>
                 </div>
 
-                {/* Pending Tasks List */}
+               {/* Pending Tasks List */}
                 <div className={styles.taskList}>
                     <h3>Pending Tasks</h3>
-                    <ul>
-                        {pendingTasks.map((task) => (
-                            <li key={task.task_id} className={styles.taskItem}>
-                                <div className={styles.taskDetails}>
-                                    <span className={styles.taskName}>{task.task_description}</span>
-                                    <span className={styles.taskAssignee}>Assigned to: {task.asignee}</span>
-                                    <span className={styles.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
-                                </div>
-                                <div className={styles.taskActions}>
-                                    <input
-                                        type="checkbox"
-                                        onChange={() => toggleCompletion(task.task_id, task.complete, task)}
-                                        className={styles.checkbox}
-                                    />
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    {pendingTasks.length > 0 ? (
+                        <ul>
+                            {pendingTasks.map((task) => (
+                                <li key={task.task_id} className={styles.taskItem}>
+                                    <div className={styles.taskDetails}>
+                                        <span className={styles.taskName}>{task.task_description}</span>
+                                        <span className={styles.taskAssignee}>Assigned to: {task.asignee}</span>
+                                        <span className={styles.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className={styles.taskActions}>
+                                        <input
+                                            type="checkbox"
+                                            onChange={() => toggleCompletion(task.task_id, task.complete, task)}
+                                            className={styles.checkbox}
+                                        />
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No pending tasks. Good job!</p>
+                    )}
                 </div>
             </div>
 
             {/* Completed Tasks List */}
             <div className={styles.completedTasks}>
                 <h3>Completed Tasks</h3>
-                <ul>
-                    {completedTasks.map((task) => (
-                        <li key={task.task_id} className={styles.taskItem}>
-                            <div className={styles.taskDetails}>
-                                <span className={styles.taskName}>{task.task_description}</span>
-                            </div>
-                            <div className={styles.taskActions}>
-                                <button onClick={() => openEditPopup(task)} className={styles.iconButton}>♻️ Reuse</button>
-                                <button onClick={() => handleDeleteTask(task.task_id)} className={styles.iconButton}>🗑️</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
+                {completedTasks.length > 0 ? (
+                    <ul>
+                        {completedTasks.map((task) => (
+                            <li key={task.task_id} className={styles.taskItem}>
+                                <div className={styles.taskDetails}>
+                                    <span className={styles.taskName}>{task.task_description}</span>
+                                </div>
+                                <div className={styles.taskActions}>
+                                    <button onClick={() => openEditPopup(task)} className={styles.iconButton}>♻️ Reuse</button>
+                                    <button onClick={() => handleDeleteTask(task.task_id)} className={styles.iconButton}>🗑️</button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No completed tasks. Go get some work done!</p>
+                )}
             </div>
 
             {/* Edit Task Popup */}
