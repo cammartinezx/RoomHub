@@ -15,7 +15,8 @@ class TaskGrid extends StatefulWidget {
   final bool isPending;
   final bool reload;
   final VoidCallback? onCompletePressed;
-  const TaskGrid({super.key, required this.isPending, required this.userId, required this.reload, this.onCompletePressed});
+  final String roomId;
+  const TaskGrid({super.key, required this.isPending, required this.userId, required this.reload, this.onCompletePressed, required this.roomId});
 
   @override
   State<TaskGrid> createState() => _TaskGridState();
@@ -210,7 +211,7 @@ class _TaskGridState extends State<TaskGrid> {
   void reuseTaskPressed(String taskName, String assignedTo, String taskId, String dueDate) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => EditTaskForm(taskName: taskName, assignedTo: assignedTo, taskId: taskId, dueDate: dueDate, loggedInUser: widget.userId,),
+        builder: (context) => EditTaskForm(taskName: taskName, assignedTo: assignedTo, taskId: taskId, dueDate: dueDate, loggedInUser: widget.userId,roomId: widget.roomId,),
       ),
     ); // Pop the current screen
   }

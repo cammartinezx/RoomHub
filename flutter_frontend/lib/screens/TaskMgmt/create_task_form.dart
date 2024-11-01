@@ -14,7 +14,8 @@ import '../../utils/custom_exceptions.dart';
 
 class TaskForm extends StatefulWidget {
   final String email;
-  const TaskForm({super.key, required this.email});
+  final String roomId;
+  const TaskForm({super.key, required this.email, required this.roomId});
 
   @override
   State<TaskForm> createState() => _TaskFormState();
@@ -238,7 +239,7 @@ class _TaskFormState extends State<TaskForm> {
                               sendAnnouncementRequest(announcementMsg, widget.email);
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => AllTasks(email: widget.email),
+                                  builder: (context) => AllTasks(email: widget.email, roomId: widget.roomId,),
                                 ),
                               );
                             }

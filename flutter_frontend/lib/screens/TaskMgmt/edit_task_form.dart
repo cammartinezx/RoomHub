@@ -19,7 +19,8 @@ class EditTaskForm extends StatefulWidget {
   final String dueDate;
   final String taskId;
   final String loggedInUser;
-  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, required this.dueDate,required this.loggedInUser });
+  final String roomId;
+  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, required this.dueDate,required this.loggedInUser , required this.roomId});
 
   @override
   State<EditTaskForm> createState() => _EditTaskFormState();
@@ -246,7 +247,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                                 sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (context) => AllTasks(email: widget.loggedInUser),
+                                    builder: (context) => AllTasks(email: widget.loggedInUser, roomId: widget.roomId,),
                                   ),
                                 );
                               }

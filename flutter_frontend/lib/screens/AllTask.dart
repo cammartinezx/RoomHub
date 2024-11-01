@@ -1,12 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/TaskMgmt/create_task_form.dart';
+import 'package:flutter_frontend/screens/UserRoom.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'TaskGrid.dart';
 
 class AllTasks extends StatefulWidget {
   final String email;
-  const AllTasks({super.key, required this.email});
+  final String roomId;
+  const AllTasks({super.key, required this.email, required this.roomId});
 
   @override
   State<AllTasks> createState() => _AllTasksState();
@@ -22,7 +24,7 @@ class _AllTasksState extends State<AllTasks> {
     // Now you can use the roommates list
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => TaskForm(email: widget.email),
+        builder: (context) => TaskForm(email: widget.email, roomId: widget.roomId,),
       ),
     );
   }
@@ -65,7 +67,11 @@ class _AllTasksState extends State<AllTasks> {
                           children: [
                             Stack(
                               children: [
-                                Align(alignment: Alignment.topLeft, child: IconButton(iconSize:35, onPressed: () { debugPrint("copied");}, icon: Icon(Icons.arrow_back, color: theme.darkblue,size: 30,))),
+                                Align(alignment: Alignment.topLeft, child: IconButton(iconSize:35, onPressed: () { Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => UserRoom(email: widget.email, roomID: widget.roomId,),
+                                  ),
+                                );}, icon: Icon(Icons.arrow_back, color: theme.darkblue,size: 30,))),
                                 Center(
                                   child: Text("New Tasks",
                                   style: TextStyle(
@@ -76,10 +82,10 @@ class _AllTasksState extends State<AllTasks> {
                                 ),
                                 Align(alignment: Alignment.topRight,
                                     child: IconButton(iconSize:35,
-                                        onPressed: () { onPlusButtonPressed(context);}, icon: Icon(Icons.add_circle_outlined, color: theme.darkblue,size: 30,)))
+                                        onPressed: () { onPlusButtonPressed(context);}, icon: Icon(Icons.add_circle_outlined, color: theme.darkblue,size: 30)))
                               ],
                             ),
-                            Expanded(child: TaskGrid(isPending: true, userId: widget.email, onCompletePressed: onTaskUpdated, reload: newTaskReload,)),],
+                            Expanded(child: TaskGrid(isPending: true, userId: widget.email, onCompletePressed: onTaskUpdated, reload: newTaskReload, roomId:widget.roomId)),],
                         )
                       ),
                       Expanded(child: Column(
@@ -90,7 +96,7 @@ class _AllTasksState extends State<AllTasks> {
                                   fontSize: 30.0,
                                   fontWeight: FontWeight.bold,)
                             ),
-                            Expanded(child: TaskGrid(isPending: false, userId: widget.email, onCompletePressed: onTaskUpdated, reload: completedTaskReload,)),
+                            Expanded(child: TaskGrid(isPending: false, userId: widget.email, onCompletePressed: onTaskUpdated, reload: completedTaskReload, roomId: widget.roomId)),
                             ],
                           )
                         ),
