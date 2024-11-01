@@ -262,7 +262,7 @@ class UserInfoHandler {
                     let room_id = await this.#user_persistence.get_room_id(user_id);
                     // get the total number of users in the room
                     let users = await this.#room_persistence.get_room_users(room_id);
-                    let total_users = users.size;
+                    let total_users = users.length;
                     // the room only have 1 user
                     if (total_users === 1) {
                         response.status(200).json({ message: "You have no roommate" });
@@ -302,7 +302,7 @@ class UserInfoHandler {
             roommates = Array.from(roommates);
             console.log(roommates);
 
-            return response.status(200).json({ users: roommates });
+            return response.status(200).json({ roommates });
             // // Filter out the current user from the list
             // const roommates = users.filter((id) => id !== user_id);
             // if (roommates.length === 0) {
@@ -315,7 +315,6 @@ class UserInfoHandler {
             return response.status(500).json({ message: error.message });
         }
     }
-
     async get_roommates_helper(user_id) {
         let room_id = await this.#user_persistence.get_room_id(user_id);
         // get the total number of users in the room

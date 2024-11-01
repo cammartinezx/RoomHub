@@ -40,6 +40,7 @@ class TaskOrganizerHandler {
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.userHandler = userHandler;
+        this.userHandler = userHandler;
     }
 
     get_task_persistence() {
@@ -136,6 +137,7 @@ class TaskOrganizerHandler {
             // Generate a unique task ID
             const task_id = uuidv4();
             await this.#task_persistence.generate_new_task(task_id, task_name, user_to, due_date);
+            await this.#task_persistence.generate_new_task(task_id, task_name, user_to, due_date);
 
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
@@ -220,6 +222,7 @@ class TaskOrganizerHandler {
             }
 
             // Fetch the existing task by task_id
+            await this.#task_persistence.get_task_by_id(task_id);
             await this.#task_persistence.get_task_by_id(task_id);
 
             await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);

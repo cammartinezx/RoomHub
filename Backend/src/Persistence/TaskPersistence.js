@@ -97,7 +97,6 @@ class TaskPersistence {
         if (!response.Item) {
             return "FAILURE";
         }
-
         return response.Item;
     }
 
