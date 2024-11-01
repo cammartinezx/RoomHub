@@ -5,8 +5,9 @@
 const express = require("express");
 const router = express.Router();
 const RoomHandler = require("../Handler/RoomHandler");
+const userInfoHandler = require("../Handler/UserInfoHandler.js");
 
-const room_handler = new RoomHandler();
+const room_handler = new RoomHandler(new userInfoHandler());
 
 /**
  * @memberof Room

@@ -37,11 +37,11 @@ class RoomHandler {
      * Create a new RoomHandler object
      * @constructor
      */
-    constructor() {
+    constructor(userHandler) {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
-        this.userHandler = new UserInfoHandler();
+        this.userHandler = userHandler;
     }
 
     get_room_persistence() {
