@@ -177,6 +177,4 @@ class NotificationItem {
         'notificationid: $notificationid'
         '}';
   }
-
-  
 }
