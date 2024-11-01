@@ -34,6 +34,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
   List<dynamic> roomMates  = [];
   String? _taskNameError; // Error message for name field
   String? _assigneeError; // Error message for email field
+  String? _dueDateError; //Error message for due date
   bool isLoading = true; // Track loading state
 
 
@@ -231,6 +232,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                             "Due date",
                             style: TextStyle(color: theme.darkblue),
                           ),
+                          errorText: _dueDateError
                         ),
                       ),
                       const SizedBox(
@@ -238,15 +240,18 @@ class _EditTaskFormState extends State<EditTaskForm> {
                       ),
                       GradientButton(text: 'Save Task',
                           onTap: () async {
-                              await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
-                              String announcementMsg = generateAnnouncementMsg(selectedRoommate!);
-                              sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => AllTasks(email: widget.loggedInUser),
-                                ),
-                              );}
-                            ),
+                              bool taskSaved = await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
+                              if(taskSaved){
+                                String announcementMsg = generateAnnouncementMsg(selectedRoommate!);
+                                sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => AllTasks(email: widget.loggedInUser),
+                                  ),
+                                );
+                              }
+                            }
+                          ),
                     ],
                   ),
                 ),
@@ -259,17 +264,23 @@ class _EditTaskFormState extends State<EditTaskForm> {
   }
 
   bool _validateFields() {
-    print(_taskNameController.text);
-    print(selectedRoommate);
     setState(() {
       // Check if the name field is empty
       _taskNameError = _taskNameController.text.isEmpty ? 'This field is required' : null;
       // Check if the email field is empty
       _assigneeError = selectedRoommate == null ? 'This field is required' : null;
+    //   check that the due date is at least >= today
+      debugPrint(_dateController.text);
+      DateTime parsedDueDate = DateTime.parse(_dateController.text);
+      print(parsedDueDate.isBefore(DateTime.now()));
+      _dueDateError = parsedDueDate.isBefore(DateTime.now()) ? 'Due date cannot be in the past' : null;
     });
 
-    // If both fields are valid, you can proceed with your logic
-    if (_taskNameError == null && _assigneeError == null) {
+    print(_taskNameError);
+    print(_assigneeError);
+    print(_dueDateError);
+    // If three fields are valid, you can proceed with your logic
+    if (_taskNameError == null && _assigneeError == null && _dueDateError == null) {
       // Proceed with form submission
       print('Form is valid');
       // You can add your submission logic here
@@ -318,24 +329,35 @@ class _EditTaskFormState extends State<EditTaskForm> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
+      print(response.statusCode);
+      print(response.body);
       await handlePost(response, responseType: 'editTask');
       theme.buildToastMessage("Task created successfully");
       //   kick back to the notification page
     } on UserException catch(e) {
       theme.buildToastMessage(e.message);
+      rethrow;
+    } on RoomException catch(e) {
+      theme.buildToastMessage(e.message);
+      rethrow;
+    } on TaskException catch(e) {
+      theme.buildToastMessage(e.message);
+      rethrow;
     }
   }
 
-  Future<void> saveTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
+  Future<bool> saveTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
+    bool isSaved = false;
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to save an existing task");
         await editTask(currUserId, taskName, assignedTo, dueDate, taskId);
+        isSaved = true;
       }
-    }catch(e){
-      theme.buildToastMessage("Select a preset message or make a custom announcement!!");
+    } catch(e){
+      theme.buildToastMessage("Request could not be completed. Try again later.");
     }
-
+    return isSaved;
   }
 
   bool isValidAnnouncement(String msg) {
