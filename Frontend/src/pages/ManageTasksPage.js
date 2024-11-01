@@ -3,6 +3,8 @@ import axios from 'axios';
 import styles from '../styles/ManageTasksPage.module.css';
 import Header from '../Header';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { sendNotification } from '../services/notificationService';
+
 
 const ManageTasksPage = () => {
     const [roomMembers, setRoomMembers] = useState([]);
@@ -10,17 +12,21 @@ const ManageTasksPage = () => {
     const [completedTasks, setCompletedTasks] = useState([]);
     const [newTask, setNewTask] = useState({ task: '', assignee: '', dueDate: '' });
     const [editingTask, setEditingTask] = useState(null);
+    const [showEditPopup, setShowEditPopup] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
 
-        // Fetch roommates on component load
+     // Fetch roommates on component load
     useEffect(() => {
+        console.log("FETCHING ROOMMATES....")
         const fetchRoommates = async () => {
             try {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
+                console.log(response.data.users)
                 if (response.status === 200 && response.data.roommates) {
+                    console.log(response.data)
                     setRoomMembers(response.data.roommates); // Set roommates in the state
                 }
             } catch (error) {
@@ -68,6 +74,7 @@ const ManageTasksPage = () => {
                 });
                 if(response.status === 200){
                     alert(`Task assigned to ${newTask.assignee}`);
+                    sendNotification(email, `A new task "${newTask.task}" has been created and assigned to ${newTask.assignee}.`);
                     window.location.reload();
                 }
                 setNewTask({ task: '', assignee: '', dueDate: '' });
@@ -81,47 +88,50 @@ const ManageTasksPage = () => {
 
     // Delete a task
     const handleDeleteTask = async (taskId) => {
+        console.log('DELETING TASK...');
+        console.log(taskId)
         try {
             await axios.delete('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/delete-task', {
-                data: { id: taskId, frm: email }
+                id: taskId,
+                frm: email,
             });
-            setCompletedTasks(completedTasks.filter(task => task.task_id !== taskId));
+            window.location.reload();
         } catch (error) {
             console.error("Error deleting task:", error);
         }
     };
+    const openEditPopup = (task) => {
+        setEditingTask(task);
+        setShowEditPopup(true);
+    };
 
-    // Update an existing task
-    const handleUpdateTask = async () => {
+    const handleEditTaskSubmit = async () => {
         if (editingTask) {
             try {
                 await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/edit-task', {
                     id: editingTask.task_id,
-                    tn: editingTask.task,
+                    tn: editingTask.task_description,
                     frm: email,
                     to: editingTask.assignee,
-                    date: formatDateToBackend(editingTask.dueDate)
+                    date: editingTask.due_date
                 });
-                setCompletedTasks(completedTasks.map(task => task.task_id === editingTask.task_id ? editingTask : task));
-                setEditingTask(null);
+                alert('Task updated successfully!');
+                setShowEditPopup(false);
+                sendNotification(email, `A new task "${editingTask.task}" has been created and assigned to ${editingTask.assignee}.`);
+                window.location.reload();
             } catch (error) {
-                console.error("Error updating task:", error);
+                console.error('Error updating task:', error.message);
             }
         }
     };
 
     // Toggle task completion
-    const toggleCompletion = async (taskId, completed) => {
+    const toggleCompletion = async (taskId, completed, task) => {
         try {
             await axios.patch('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/mark-completed', { id: taskId, frm: email });
             if (completed) {
                 // Move from completed to pending
-                setPendingTasks([...pendingTasks, { ...completedTasks.find(task => task.task_id === taskId), complete: false }]);
-                setCompletedTasks(completedTasks.filter(task => task.task_id !== taskId));
-            } else {
-                // Move from pending to completed
-                setCompletedTasks([...completedTasks, { ...pendingTasks.find(task => task.task_id === taskId), complete: true }]);
-                setPendingTasks(pendingTasks.filter(task => task.task_id !== taskId));
+                sendNotification(email, `The task "${task.task_description}" has been marked as completed by ${email}.`);
             }
         } catch (error) {
             console.error("Error marking task as completed:", error);
@@ -136,8 +146,7 @@ const ManageTasksPage = () => {
         <div className={styles.container}>
             <Header email={email} hasRoom={hasRoom} />
             <h1>Manage Tasks</h1>
-    
-            {/* Flex container for form and pending tasks */}
+
             <div className={styles.flexContainer}>
                 {/* Task Creation Form */}
                 <div className={styles.taskForm}>
@@ -164,22 +173,25 @@ const ManageTasksPage = () => {
                         value={newTask.dueDate}
                         onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
                     />
-                    <button onClick={handleAddTask}>Add Task</button>
+                    <button onClick={() => handleAddTask()}>Add Task</button>
                 </div>
-    
+
                 {/* Pending Tasks List */}
                 <div className={styles.taskList}>
                     <h3>Pending Tasks</h3>
                     <ul>
                         {pendingTasks.map((task) => (
-                            <li key={task.task_id}>
-                                <div>
-                                    <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
-                                    <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                            <li key={task.task_id} className={styles.taskItem}>
+                                <div className={styles.taskDetails}>
+                                    <span className={styles.taskName}>{task.task_description}</span>
+                                    <span className={styles.taskAssignee}>Assigned to: {task.asignee}</span>
+                                    <span className={styles.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                                </div>
+                                <div className={styles.taskActions}>
                                     <input
                                         type="checkbox"
-                                        checked={task.complete}
-                                        onChange={() => toggleCompletion(task.task_id, task.complete)}
+                                        onChange={() => toggleCompletion(task.task_id, task.complete, task)}
+                                        className={styles.checkbox}
                                     />
                                 </div>
                             </li>
@@ -187,32 +199,60 @@ const ManageTasksPage = () => {
                     </ul>
                 </div>
             </div>
-    
+
             {/* Completed Tasks List */}
-            <div className={styles.taskList}>
+            <div className={styles.completedTasks}>
                 <h3>Completed Tasks</h3>
                 <ul>
                     {completedTasks.map((task) => (
-                        <li key={task.task_id}>
-                            <span>{task.task_description}</span> - <span>Assigned to: {task.asignee}</span> -{' '}
-                            <span>Due: {new Date(task.due_date).toLocaleDateString()}</span>
-                            <input
-                                type="checkbox"
-                                checked={task.complete}
-                                onChange={() => toggleCompletion(task.task_id, task.complete)}
-                            />
-                            <button onClick={() => setEditingTask(task)}>Edit</button>
-                            <button onClick={() => handleDeleteTask(task.task_id)}>Delete</button>
+                        <li key={task.task_id} className={styles.taskItem}>
+                            <div className={styles.taskDetails}>
+                                <span className={styles.taskName}>{task.task_description}</span>
+                            </div>
+                            <div className={styles.taskActions}>
+                                <button onClick={() => openEditPopup(task)} className={styles.iconButton}>♻️ Reuse</button>
+                                <button onClick={() => handleDeleteTask(task.task_id)} className={styles.iconButton}>🗑️</button>
+                            </div>
                         </li>
                     ))}
                 </ul>
             </div>
-    
+
+            {/* Edit Task Popup */}
+            {showEditPopup && (
+                <div className={styles.popup}>
+                    <h3>Edit Task</h3>
+                    <input
+                        type="text"
+                        value={editingTask.task_description}
+                        onChange={(e) => setEditingTask({ ...editingTask, task_description: e.target.value })}
+                    />
+                    <select
+                        value={editingTask.assignee}
+                        onChange={(e) => setEditingTask({ ...editingTask, assignee: e.target.value })}
+                    >
+                        <option value="">Assign to Roommate</option>
+                        {roomMembers.map((member, index) => (
+                            <option key={index} value={member}>
+                                {member}
+                            </option>
+                        ))}
+                    </select>
+                    <input
+                        type="date"
+                        value={editingTask.due_date}
+                        onChange={(e) => setEditingTask({ ...editingTask, due_date: e.target.value })}
+                    />
+                    <button onClick={handleEditTaskSubmit}>Save Changes</button>
+                    <button className={styles.cancelButton} onClick={() => setShowEditPopup(false)}>Cancel</button>
+                </div>
+            )}
+
             <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}>
                 Back to Virtual Room
             </button>
         </div>
     );
-}    
+};  
 
 export default ManageTasksPage;

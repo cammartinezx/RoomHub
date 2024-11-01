@@ -2,11 +2,14 @@ import React, {useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { getRoomByUser, getRoomName } from '../mockApi';
 import styles from '../styles/HomePage.module.css';
+import taskStyle from '../styles/ManageTasksPage.module.css'
 import roomStyles from '../styles/VirtualRoomPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 import axios from 'axios';
+import { sendNotification } from '../services/notificationService';
+
 
 const VirtualRoomPage = () => {
 
@@ -19,8 +22,7 @@ const VirtualRoomPage = () => {
     const [showLeavePopup, setShowLeavePopup] = useState(false);
     const [warningMessage, setWarningMessage] = useState('');
     const [error, setError] = useState('');
-    const [tasks, setTasks] = useState([{ task: "Clean the kitchen", completed: false },{ task: "Take out trash", completed: true }]);
-
+    const [pendingTasks, setPendingTasks] = useState([]);
     // const [showRoommates, setShowRoommates] = useState(false);  // State to toggle showing roommates
     
     // const toggleRoommates = () => {
@@ -46,7 +48,7 @@ const VirtualRoomPage = () => {
   
       if (email) {
         checkRoomStatus();
-        
+        fetchPendingTasks();
       }
     }, [email]);
 
@@ -76,6 +78,27 @@ const VirtualRoomPage = () => {
       }
     };
 
+      const fetchPendingTasks = async () => {
+        try {
+            const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks`, {
+                params: { frm: email }
+            });
+            setPendingTasks(response.data.pending_tasks || []);
+        } catch (error) {
+            console.error("Error fetching pending tasks:", error);
+        }
+    };
+
+    const toggleCompletion = async (taskId, completed, task) => {
+        try {
+            await axios.patch('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/mark-completed', { id: taskId, frm: email });
+            sendNotification(email, `The task "${task.task_description}" has been marked as completed.`);
+            fetchPendingTasks(); // Refresh the list after updating
+        } catch (error) {
+            console.error("Error marking task as completed:", error);
+        }
+    };
+
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -87,16 +110,27 @@ const VirtualRoomPage = () => {
 
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
-          <div className={roomStyles.tasksSection}>
-            <h3>Tasks</h3>
-            <ul>
-              {tasks.map((task, index) => (
-                <li key={index}>
-                  {task.task} - {task.completed ? "Completed" : "Not Completed"}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className={taskStyle.taskList}>
+                    <h3>Pending Tasks</h3>
+                    <ul>
+                        {pendingTasks.map((task) => (
+                            <li key={task.task_id} className={taskStyle.taskItem}>
+                                <div className={taskStyle.taskDetails}>
+                                    <span className={taskStyle.taskName}>{task.task_description}</span>
+                                    <span className={taskStyle.taskAssignee}>Assigned to: {task.asignee}</span>
+                                    <span className={taskStyle.taskDate}>Due: {new Date(task.due_date).toLocaleDateString()}</span>
+                                </div>
+                                <div className={taskStyle.taskActions}>
+                                    <input
+                                        type="checkbox"
+                                        onChange={() => toggleCompletion(task.task_id, task.complete, task)}
+                                        className={taskStyle.checkbox}
+                                    />
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
 
           {/* Right Side - Shared Expenses */}
           <div className={roomStyles.expensesSection}>
