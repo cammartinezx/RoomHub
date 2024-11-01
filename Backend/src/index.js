@@ -1,6 +1,7 @@
 const User = require("./router/User");
 const Room = require("./router/Room");
 const Notification = require("./router/Notification");
+const Task = require("./router/Task");
 
 const express = require("express");
 const cors = require("cors");
@@ -14,6 +15,7 @@ app.use(cors());
 app.use("/user", User);
 app.use("/room", Room);
 app.use("/notification", Notification);
+app.use("/task", Task);
 
 app.get("/", async (req, res) => {
     console.log(req.body);
@@ -23,9 +25,3 @@ app.get("/", async (req, res) => {
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
-
-/**
- * Student Name
- * @type {string}
- */
-const studentName = 1;
