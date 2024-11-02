@@ -243,7 +243,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                           onTap: () async {
                               bool taskSaved = await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
                               if(taskSaved){
-                                String announcementMsg = generateAnnouncementMsg(selectedRoommate!);
+                                String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
                                 sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
@@ -292,8 +292,8 @@ class _EditTaskFormState extends State<EditTaskForm> {
     }
   }
 
-  String generateAnnouncementMsg(String user){
-    return "A new task has been assigned to $user";
+  String generateAnnouncementMsg(String user, String task){
+    return 'The task "$task" has been assigned to $user';
   }
 
   void sendAnnouncementRequest(String announcement, String sender) async {

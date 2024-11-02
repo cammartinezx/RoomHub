@@ -235,7 +235,7 @@ class _TaskFormState extends State<TaskForm> {
                           onTap: () async{
                             bool isSaved = await saveTask(context);
                             if(isSaved){
-                              String announcementMsg = generateAnnouncementMsg(_taskNameController.text);
+                              String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
                               sendAnnouncementRequest(announcementMsg, widget.email);
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
@@ -291,8 +291,8 @@ class _TaskFormState extends State<TaskForm> {
     return isSaved;
   }
 
-  String generateAnnouncementMsg(String user){
-    return "A new task has been assigned to $user";
+  String generateAnnouncementMsg(String user, String task){
+    return 'The task "$task" has been assigned to $user';
   }
 
   // tn	String	The task name
