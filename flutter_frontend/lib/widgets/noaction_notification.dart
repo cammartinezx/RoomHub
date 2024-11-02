@@ -36,51 +36,39 @@ class _ActionNotificationState extends ConsumerState<NoActionNotification> {
     userEmail = ref.read(emailProvider);
     return Container(
         padding: const EdgeInsets.only(bottom: 10.0),
-        child: Row(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: SizedBox(
-                height: 70,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                            child: Wrap(
-                              spacing: 8.0, // Space between the widgets horizontally
-                              runSpacing: 4.0, // Space between the widgets vertically
-                              children: [Text(
-                                widget.message,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                ),
-                              ),]
-                            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Expanded(
+                    child: Wrap(
+                      spacing: 8.0, // Space between the widgets horizontally
+                      runSpacing: 4.0, // Space between the widgets vertically
+                      children: [Text(
+                        widget.message,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 10),
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.close),
-                          onPressed: () {debugPrint("delete pressed"); widget.onRemove(widget.id);},
-                        ),
-                      ],
+                      ),
+                      ]
                     ),
-                    Divider(
-                      color: theme.lightgrey, // Color of the divider
-                      thickness: 2, // Thickness of the line
-                    ),
-                  ],
                 ),
-              ),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: () {debugPrint("delete pressed"); widget.onRemove(widget.id);},
+                ),
+              ],
+            ),
+            Divider(
+              color: theme.lightgrey, // Color of the divider
+              thickness: 2, // Thickness of the line
             ),
           ],
-        ));
+        )
+    );
   }
 }
