@@ -136,7 +136,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          child: ChipSelection(disableChips: this.disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
+                          child: ChipSelection(disableChips: disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
                       ),
                       const SizedBox(height: 20.0),
                       Container(
@@ -172,7 +172,12 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                         height: 40.0,
                       ),
                       GradientButton(text: 'Send',
-                          onTap: () {sendAnnouncement();}),
+                          onTap: () async{
+                          bool announcementSent = await sendAnnouncement();
+                          if(announcementSent){
+                            Navigator.of(context).pop();
+                          }
+                      }),
                       const SizedBox(height: 50), // Spacer below button
                     ],
                   ),
@@ -188,7 +193,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
 
 
 
-  void sendAnnouncement() {
+  Future<bool> sendAnnouncement() async{
+    bool announcementSent = false;
     try{
       String announcement_msg;
       if(disableChips){
@@ -201,7 +207,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
       if(isValidAnnouncement(announcement_msg)){
         //   send announcement
         debugPrint("Sending announcement.......");
-        sendAnnouncementRequest(announcement_msg);
+        announcementSent = await sendAnnouncementRequest(announcement_msg);
       }
       else{
         //   Toast -- that they should select
@@ -210,7 +216,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     }catch(e){
       theme.buildToastMessage("Select a preset message or make a custom announcement!!");
     }
-
+    return announcementSent;
   }
 
   bool isValidAnnouncement(String msg) {
@@ -218,7 +224,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   }
 
 
-  void sendAnnouncementRequest(String msg) async{
+  Future<bool> sendAnnouncementRequest(String msg) async{
+    bool isSent = false;
     try {
       String announcementMsg = generateAnnouncement(msg, widget.email);
       var reqBody = {
@@ -232,11 +239,13 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
       await handlePost(response, responseType: 'sendAnnouncement');
+      isSent = true;
       theme.buildToastMessage("Announcement sent successfully");
       resetChips();
     } on NotificationException catch(e) {
       theme.buildToastMessage(e.message);
     }
+    return isSent;
   }
 
   void resetChips(){
