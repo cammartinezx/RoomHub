@@ -13,8 +13,11 @@ Tool Used for Regression Testing:
 
 **2. Link to regression testing script and snapshot of execution and result of regression testing**
  * [Regression Testing script](https://github.com/WilliamOdumah/RoomHub/blob/main/.github/workflows/BE-test.yml)
-
-
+ * Snapshot of execution:
+ ![Execution snapshot](./images/Execution_snapshot_1.png)
+ ![Execution snapshot](./images/Execution_snapshot_2.png)
+ * Regression Result:
+ ![Regression Result](./images/Result_regression.png)
 ## Testing slowdown
 
 
