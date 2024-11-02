@@ -15,6 +15,7 @@ app.use(express.json());
 app.use("/user", User);
 app.use("/room", Room);
 app.use("/notification", Notification);
+console.log("Hello world");
 
 app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });
