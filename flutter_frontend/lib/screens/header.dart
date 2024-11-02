@@ -40,19 +40,10 @@ class _ActionNotificationState extends ConsumerState<Header> {
         Uri.parse("${url}user/$email/get-notification"),
         headers: {"Content-Type": "application/json"},
       );
-      // var response = await http.get(
-      //     Uri.parse("${url}user/marti108@myumanitoba.ca/get-notification"),
-      //     headers: {"Content-Type": "application/json"},
-      // );
-      print("Response status: ${response.statusCode}");
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         List<NotificationItem> notifications =
             NotificationItem.parseNotificationList(jsonData);
-            for (var notification in notifications) {
-            print(notification); // This will call the toString method
-    } 
-        print("Navigating to notifications screen");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => Notifications(notificationItems: notifications, email: email),
