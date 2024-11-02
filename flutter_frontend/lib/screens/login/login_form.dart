@@ -186,7 +186,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => OurHome(roomID: roomName),
+            builder: (context) => OurHome(roomID: roomName ,email: emailController.text,),
           ),
         );
       }
