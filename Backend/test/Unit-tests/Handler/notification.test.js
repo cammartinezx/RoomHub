@@ -1,5 +1,4 @@
 const NotificationHandler = require("../../../src/Handler/NotificationHandler");
-const RoomHandler = require("../../../src/Handler/RoomHandler");
 const { mockRequest, mockResponse } = require("mock-req-res");
 const { get_user_persistence, get_notification_persistence, get_room_persistence } = require("../../../src/Utility/Services");
 
