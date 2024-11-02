@@ -330,7 +330,7 @@ class _TaskFormState extends State<TaskForm> {
         "type": 'announcement', // Request type
       };
       var response = await http.post(
-        Uri.parse(sendAnnouncement),
+        Uri.parse(sendAnnouncementPth),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );

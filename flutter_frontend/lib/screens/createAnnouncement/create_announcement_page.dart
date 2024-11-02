@@ -172,7 +172,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                         height: 40.0,
                       ),
                       GradientButton(text: 'Send',
-                          onTap: () {send_announcement();}),
+                          onTap: () {sendAnnouncement();}),
                       const SizedBox(height: 50), // Spacer below button
                     ],
                   ),
@@ -188,7 +188,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
 
 
 
-  void send_announcement() {
+  void sendAnnouncement() {
     try{
       String announcement_msg;
       if(disableChips){
@@ -217,15 +217,17 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
   }
 
+
   void sendAnnouncementRequest(String msg) async{
     try {
+      String announcementMsg = generateAnnouncement(msg, widget.email);
       var reqBody = {
         "from": widget.email, // User's email (sender)
-        "message": msg, // Roommate's email (recipient)
+        "message": announcementMsg, // Roommate's email (recipient)
         "type": 'announcement', // Request type
       };
       var response = await http.post(
-        Uri.parse(sendAnnouncement),
+        Uri.parse(sendAnnouncementPth),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
@@ -242,6 +244,10 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     isSelected = List.filled(announcements.length, false);
     activeAnnouncement = -1;
   }
+}
+
+ String generateAnnouncement(String msg, String from) {
+    return "$msg\n -$from";
 }
 
 

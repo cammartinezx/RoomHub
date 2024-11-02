@@ -304,7 +304,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
         "type": 'announcement', // Request type
       };
       var response = await http.post(
-        Uri.parse(sendAnnouncement),
+        Uri.parse(sendAnnouncementPth),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
