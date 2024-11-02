@@ -25,6 +25,7 @@ class TaskGrid extends StatefulWidget {
 class _TaskGridState extends State<TaskGrid> {
   late Future<List<Task>> futureTasks;
   late List<Task> tasks;
+  final theme = OurTheme();
 
   @override
   void initState() {
@@ -95,7 +96,13 @@ class _TaskGridState extends State<TaskGrid> {
                             const SizedBox(height: 10),
                             // is pending task type then return reuse and delete else return completed
                             widget.isPending ?
-                            ElevatedButton(onPressed: () { markCompleted(tasks[index].taskId, widget.userId, index);},
+                            ElevatedButton(onPressed: () async{
+                              bool markSuccess = await markCompleted(tasks[index].taskId, widget.userId, index);
+                              if(markSuccess){
+                                String msg = generateAnnouncementMsg(widget.userId, tasks[index].taskName);
+                                sendAnnouncementRequest(msg, widget.userId);
+                              }
+                            },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: theme.darkblue,
                                 fixedSize: const Size(200, 30), // Minimum width and height
@@ -175,7 +182,31 @@ class _TaskGridState extends State<TaskGrid> {
     return result;
   }
 
-  void markCompleted(String taskId, String userId, int taskIndex) async {
+  String generateAnnouncementMsg(String user, String task){
+    return '$user completed task: $task';
+  }
+
+  void sendAnnouncementRequest(String announcement, String sender) async {
+    try {
+      var reqBody = {
+        "from": sender, // User's email (sender)
+        "message": announcement, // New announcement.
+        "type": 'announcement', // Request type
+      };
+      var response = await http.post(
+        Uri.parse(sendAnnouncementPth),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'sendAnnouncement');
+      theme.buildToastMessage("Announcement sent successfully");
+    } on NotificationException catch(e) {
+      theme.buildToastMessage(e.message);
+    }
+  }
+
+  Future<bool> markCompleted(String taskId, String userId, int taskIndex) async {
+    bool markedSuccess = false;
     try {
       print(taskId);
       print(userId);
@@ -199,6 +230,7 @@ class _TaskGridState extends State<TaskGrid> {
       setState(() {
         tasks.removeAt(taskIndex);
       });
+      markedSuccess = true;
     } on TaskException catch (e) {
       print(e.toString());
       OurTheme().buildToastMessage(e.message);
@@ -206,6 +238,7 @@ class _TaskGridState extends State<TaskGrid> {
       print(e.toString());
       OurTheme().buildToastMessage(e.message);
     }
+    return markedSuccess;
   }
 
   void reuseTaskPressed(String taskName, String assignedTo, String taskId, String dueDate) {
