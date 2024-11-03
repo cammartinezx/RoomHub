@@ -263,10 +263,8 @@ class RoomPersistence {
         });
         try {
             const response = await this.#doc_client.send(get_command);
-
             // Retrieve task IDs or initialize to an empty array if tasks is undefined
             const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
-
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
                 const task_command = new GetCommand({
@@ -275,6 +273,7 @@ class RoomPersistence {
                         task_id: task_id, // Assuming task_id is the primary key in the "Task" table
                     },
                 });
+                console.log(task_id);
                 const task_response = await this.#doc_client.send(task_command);
                 // Only add the task if it is incomplete
                 if (task_response.Item && task_response.Item.complete === false) {
@@ -284,7 +283,8 @@ class RoomPersistence {
             return pending_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
             console.error("Error getting pending tasks:", error);
-            return [];
+            throw error;
+            //return [];
         }
     }
 
@@ -326,7 +326,8 @@ class RoomPersistence {
             return completed_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
             console.error("Error getting pending tasks:", error);
-            return [];
+            throw error;
+            //return [];
         }
     }
 
