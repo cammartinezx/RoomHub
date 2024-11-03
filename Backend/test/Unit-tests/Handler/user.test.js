@@ -414,6 +414,33 @@ describe("Testing get_user_warning", () => {
         });
     });
 
+    it("Send the user the room will be deleted if they leave successfully", async () => {
+        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return { user_id: "test@gmail.com" };
+        });
+        // mock get_user get_notification and get_msg_type
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
+        });
+        userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
+            return ["test@gmail.com"];
+        });
+        userInfoHandler.get_room_persistence().delete_room.mockImplementation(() => true);
+        userInfoHandler.get_user_persistence().remove_room_id.mockImplementation(() => true);
+
+        req = mockRequest({
+            params: { id: "test@gmail.com" },
+        });
+
+        await userInfoHandler.get_user_warning(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Warning: If you leave, the room will be deleted!"
+        });
+    });
+
+
     it("Should send error with invalid username", async () => {
         req = mockRequest({
             params: { id: " " },
@@ -644,6 +671,35 @@ describe("Testing get number of roommates", () => {
 
         const roommates = await userInfoHandler.get_roommates_helper(user_id);
         expect(roommates).toEqual(["test@gmail.com"]);
+    });
+});
+
+describe("Testing if valid user", () => {
+    let userInfoHandler;
+    let user_id;
+    let non_valid_user_id;
+    beforeAll(() => {
+        userInfoHandler = new UserInfoHandler();
+        user_id = "test@gmail.com";
+        non_valid_user_id = "";
+    });
+
+    it("Return true if valid user", async () => {
+        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return { user_id: "test@gmail.com" };
+        });
+
+        const result = await userInfoHandler.is_valid_user(user_id);
+        expect(result).toEqual(true);
+    });
+
+    it("Return false if non-valid user", async () => {
+        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return null;
+        });
+
+        const result = await userInfoHandler.is_valid_user(non_valid_user_id);
+        expect(result).toEqual(false);
     });
 });
 
