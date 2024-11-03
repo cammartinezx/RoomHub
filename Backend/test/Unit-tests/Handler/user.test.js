@@ -66,7 +66,7 @@ describe("Unit test for creating user", () => {
         // Mock save_new_user to return a success response object with status and message
         user_info_handler.get_user_persistence().save_new_user.mockImplementation(() => ({
             status: 200,
-            message: "User created successfully"
+            message: "User created successfully",
         }));
 
         // Call create_user
@@ -76,7 +76,6 @@ describe("Unit test for creating user", () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({ message: "User created successfully" });
     });
-
 
     it("should return 400 when user_id is invalid", async () => {
         // Setup invalid request body
@@ -93,7 +92,6 @@ describe("Unit test for creating user", () => {
     });
 
     it("should return 500 when an exception is thrown", async () => {
-
         await user_info_handler.create_user(req, res);
         // Verify the response
         expect(res.status).toHaveBeenCalledWith(500);
@@ -300,7 +298,8 @@ describe("Testing leave_user_room", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com", "test1@gmail.com"];
@@ -322,7 +321,8 @@ describe("Testing leave_user_room", () => {
             return { user_id: "test2@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test2@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test2@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test2@gmail.com"];
@@ -337,10 +337,11 @@ describe("Testing leave_user_room", () => {
         await userInfoHandler.leave_user_room(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({ message: "The room is being deleted and user leave the room successfully" });
+        expect(res.json).toHaveBeenCalledWith({
+            message: "The room is being deleted and user leave the room successfully",
+        });
     });
     it("Should send error with invalid username", async () => {
-
         req = mockRequest({
             params: { id: " " },
         });
@@ -392,7 +393,8 @@ describe("Testing get_user_warning", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com", "test1@gmail.com"];
@@ -408,7 +410,7 @@ describe("Testing get_user_warning", () => {
 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            message: "Warning: Are you sure want to leave this room!"
+            message: "Warning: Are you sure want to leave this room!",
         });
     });
 
@@ -417,7 +419,8 @@ describe("Testing get_user_warning", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com"];
@@ -433,7 +436,7 @@ describe("Testing get_user_warning", () => {
 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            message: "Warning: If you leave, the room will be deleted!"
+            message: "Warning: If you leave, the room will be deleted!",
         });
     });
 
@@ -491,7 +494,8 @@ describe("Testing get_user_roommates", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com", "test1@gmail.com"];
@@ -503,7 +507,7 @@ describe("Testing get_user_roommates", () => {
         await userInfoHandler.get_user_roommates(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith( {"roommates": ["test@gmail.com", "test1@gmail.com"]});
+        expect(res.json).toHaveBeenCalledWith({ roommates: ["test@gmail.com", "test1@gmail.com"] });
     });
 
     it("Should send You have no roommate", async () => {
@@ -512,7 +516,8 @@ describe("Testing get_user_roommates", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "room1" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "room1";
         });
         const roommates = userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com"];
@@ -525,7 +530,7 @@ describe("Testing get_user_roommates", () => {
         await userInfoHandler.get_user_roommates(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({"roommates": ["test@gmail.com"]});
+        expect(res.json).toHaveBeenCalledWith({ roommates: ["test@gmail.com"] });
     });
 
     it("Should send error status code with user that doesn't exist", async () => {
@@ -566,14 +571,14 @@ describe("Testing get_roommate", () => {
     });
 
     it("Send the user you have at least one roommate", async () => {
-
         userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
-       const roommates= userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
+        const roommates = userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com", "test1@gmail.com"];
         });
 
@@ -584,7 +589,7 @@ describe("Testing get_roommate", () => {
         await userInfoHandler.get_roommate(req, res);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-         message: "You have at least one roommate"
+            message: "You have at least one roommate",
         });
     });
 
@@ -593,7 +598,8 @@ describe("Testing get_roommate", () => {
             return { user_id: "test@gmail.com" };
         });
         // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com"];
@@ -606,7 +612,7 @@ describe("Testing get_roommate", () => {
 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            message: "You have no roommate"
+            message: "You have no roommate",
         });
     });
 
@@ -655,7 +661,8 @@ describe("Testing get number of roommates", () => {
     });
 
     it("Return a list of users in that room", async () => {
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
+            return "test@gmail.com";
         });
         userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
             return ["test@gmail.com"];
@@ -664,7 +671,7 @@ describe("Testing get number of roommates", () => {
         const roommates = await userInfoHandler.get_roommates_helper(user_id);
         expect(roommates).toEqual(["test@gmail.com"]);
     });
-}); 
+});
 
 describe("Testing delete a notification", () => {
     let userInfoHandler;
@@ -686,10 +693,10 @@ describe("Testing delete a notification", () => {
             return ["111-111", "222-222"];
         });
         userInfoHandler.get_notification_persistence().delete_notification.mockImplementation(() => true);
-        userInfoHandler.get_user_persistence().update_notification_set.mockImplementation(() =>true);
+        userInfoHandler.get_user_persistence().update_notification_set.mockImplementation(() => true);
 
         req = mockRequest({
-            params: { id: "test@gmail.com" ,notif_id: "111-111" },
+            params: { id: "test@gmail.com", notif_id: "111-111" },
         });
         await userInfoHandler.delete_notification(req, res);
 
@@ -699,7 +706,7 @@ describe("Testing delete a notification", () => {
 
     it("Should send error with invalid username", async () => {
         req = mockRequest({
-            params: { id: "" ,notif_id: "111-111" },
+            params: { id: "", notif_id: "111-111" },
         });
 
         await userInfoHandler.delete_notification(req, res);
@@ -709,7 +716,7 @@ describe("Testing delete a notification", () => {
     });
     it("Should send error with invalid notification", async () => {
         req = mockRequest({
-            params: { id: "test@gmail.com" ,notif_id: "" },
+            params: { id: "test@gmail.com", notif_id: "" },
         });
         userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
             return { user_id: "test@gmail.com" };
@@ -727,7 +734,7 @@ describe("Testing delete a notification", () => {
         });
 
         req = mockRequest({
-            params: { id: "fake_user@gmail.com" ,notif_id: "111-111" },
+            params: { id: "fake_user@gmail.com", notif_id: "111-111" },
         });
 
         await userInfoHandler.delete_notification(req, res);
@@ -743,10 +750,10 @@ describe("Testing delete a notification", () => {
             return ["333-333", "222-222"];
         });
         userInfoHandler.get_notification_persistence().delete_notification.mockImplementation(() => true);
-        userInfoHandler.get_user_persistence().update_notification_set.mockImplementation(() =>true);
+        userInfoHandler.get_user_persistence().update_notification_set.mockImplementation(() => true);
 
         req = mockRequest({
-            params: { id: "test@gmail.com" ,notif_id: "111-111" },
+            params: { id: "test@gmail.com", notif_id: "111-111" },
         });
         await userInfoHandler.delete_notification(req, res);
 
@@ -761,6 +768,3 @@ describe("Testing delete a notification", () => {
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
     });
 });
-
-
-

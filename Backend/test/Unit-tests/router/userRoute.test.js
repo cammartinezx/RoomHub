@@ -79,7 +79,7 @@ describe("User router tests", () => {
     it("POST /user/add-user should call create_user function", async () => {
         const query_params = { id: "test@gmail.com" };
 
-        user_info_handler.create_user = jest.fn((req, res) => 
+        user_info_handler.create_user = jest.fn((req, res) =>
             res.status(200).json({ message: "User Successfully created" }),
         );
 
@@ -131,9 +131,7 @@ describe("User router tests", () => {
     it("GET /user/:id/get-user-roommates should return list of people in room", async () => {
         const user_id = "test@gmail.com";
 
-        user_info_handler.get_roommate = jest.fn((req, res) =>
-            res.status(200).json({ roommates: ["test@gmail.com"] }),
-        );
+        user_info_handler.get_roommate = jest.fn((req, res) => res.status(200).json({ roommates: ["test@gmail.com"] }));
 
         const response = await request(app).get(`/user/${user_id}/get-user-roommates`);
 

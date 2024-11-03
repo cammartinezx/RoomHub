@@ -40,7 +40,6 @@ class TaskOrganizerHandler {
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.userHandler = userHandler;
-        this.userHandler = userHandler;
     }
 
     get_task_persistence() {
