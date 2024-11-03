@@ -436,10 +436,9 @@ describe("Testing get_user_warning", () => {
 
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
-            message: "Warning: If you leave, the room will be deleted!"
+            message: "Warning: If you leave, the room will be deleted!",
         });
     });
-
 
     it("Should send error with invalid username", async () => {
         req = mockRequest({
