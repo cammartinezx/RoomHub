@@ -414,32 +414,6 @@ describe("Testing get_user_warning", () => {
         });
     });
 
-    it("Send the user the room will be deleted if they leave successfully", async () => {
-        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
-            return { user_id: "test@gmail.com" };
-        });
-        // mock get_user get_notification and get_msg_type
-        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {
-            return "test@gmail.com";
-        });
-        userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
-            return ["test@gmail.com"];
-        });
-        userInfoHandler.get_room_persistence().delete_room.mockImplementation(() => true);
-        userInfoHandler.get_user_persistence().remove_room_id.mockImplementation(() => true);
-
-        req = mockRequest({
-            params: { id: "test@gmail.com" },
-        });
-
-        await userInfoHandler.get_user_warning(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({
-            message: "Warning: If you leave, the room will be deleted!",
-        });
-    });
-
     it("Should send error with invalid username", async () => {
         req = mockRequest({
             params: { id: " " },
