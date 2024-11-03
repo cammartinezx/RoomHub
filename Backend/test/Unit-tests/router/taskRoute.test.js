@@ -1,5 +1,7 @@
 const request = require("supertest");
 const app = require("../../../src/router/index");
+const taskRouter = require("../../../src/router/Task");
+const express = require("express");
 
 jest.mock("../../../src/Handler/TaskHandler", () => {
     return jest.fn().mockImplementation(() => ({
@@ -25,7 +27,7 @@ describe("Task router tests", () => {
     beforeEach(() => {
         jest.clearAllMocks();
         app.use(express.json());
-        app.use("/", taskRouter); // Hook up the router for testing
+        app.use("/task", taskRouter); // Hook up the router for testing
     });
 
     it("POST /create-task should create a new task", async () => {
@@ -35,7 +37,7 @@ describe("Task router tests", () => {
             to: "user2",
             date: "2024-12-31",
         };
-        const response = await request(app).post("/create-task").send(requestBody);
+        const response = await request(app).post("/task/create-task").send(requestBody);
 
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Task created successfully");
@@ -49,7 +51,7 @@ describe("Task router tests", () => {
             to: "user3",
             date: "2024-12-31",
         };
-        const response = await request(app).post("/edit-task").send(requestBody);
+        const response = await request(app).post("/task/edit-task").send(requestBody);
 
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Task updated successfully");
@@ -60,7 +62,7 @@ describe("Task router tests", () => {
             id: "task123",
             frm: "user1",
         };
-        const response = await request(app).delete("/delete-task").send(requestBody);
+        const response = await request(app).delete("/task/delete-task").send(requestBody);
 
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Task deleted successfully");
@@ -71,7 +73,7 @@ describe("Task router tests", () => {
             id: "task123",
             frm: "user1",
         };
-        const response = await request(app).patch("/mark-completed").send(requestBody);
+        const response = await request(app).patch("/task/mark-completed").send(requestBody);
 
         expect(response.status).toBe(200);
         expect(response.body.message).toBe("Task marked as completed");

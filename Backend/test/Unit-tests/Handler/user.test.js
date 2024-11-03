@@ -317,6 +317,28 @@ describe("Testing leave_user_room", () => {
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({ message: "User leave the room successfully" });
     });
+    it("Send the user a room is being deleted and leave the room successfully", async () => {
+        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return { user_id: "test2@gmail.com" };
+        });
+        // mock get_user get_notification and get_msg_type
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test2@gmail.com" ;
+        });
+        userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
+            return ["test2@gmail.com"];
+        });
+        userInfoHandler.get_room_persistence().delete_room.mockImplementation(() => true);
+        userInfoHandler.get_user_persistence().remove_room_id.mockImplementation(() => true);
+
+        req = mockRequest({
+            params: { id: "test2@gmail.com" },
+        });
+
+        await userInfoHandler.leave_user_room(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ message: "The room is being deleted and user leave the room successfully" });
+    });
     it("Should send error with invalid username", async () => {
 
         req = mockRequest({
@@ -390,6 +412,31 @@ describe("Testing get_user_warning", () => {
         });
     });
 
+    it("Send the user the room will be deleted if they leave successfully", async () => {
+        userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return { user_id: "test@gmail.com" };
+        });
+        // mock get_user get_notification and get_msg_type
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        });
+        userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
+            return ["test@gmail.com"];
+        });
+        userInfoHandler.get_room_persistence().delete_room.mockImplementation(() => true);
+        userInfoHandler.get_user_persistence().remove_room_id.mockImplementation(() => true);
+
+        req = mockRequest({
+            params: { id: "test@gmail.com" },
+        });
+
+        await userInfoHandler.get_user_warning(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Warning: If you leave, the room will be deleted!"
+        });
+    });
+
     it("Should send error with invalid username", async () => {
         req = mockRequest({
             params: { id: " " },
@@ -419,12 +466,13 @@ describe("Testing get_user_warning", () => {
 
     it("Send error from the backend", async () => {
         // mock get_user and get_room_name
-        await userInfoHandler.get_user_notification(req, res);
+        await userInfoHandler.get_user_warning(req, res);
 
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
     });
 });
+
 describe("Testing get_user_roommates", () => {
     let userInfoHandler;
     beforeEach(() => {
@@ -504,6 +552,7 @@ describe("Testing get_user_roommates", () => {
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
     });
 });
+
 describe("Testing get_roommate", () => {
     let userInfoHandler;
     beforeEach(() => {
@@ -561,6 +610,17 @@ describe("Testing get_roommate", () => {
         });
     });
 
+    it("Should send error status code that username is invalid", async () => {
+        req = mockRequest({
+            params: { id: "" },
+        });
+
+        await userInfoHandler.get_roommate(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ message: "This username is invalid" });
+    });
+
     it("Should send error status code with user that doesn't exist", async () => {
         // mock get_user and get_room_name
         userInfoHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
@@ -585,6 +645,27 @@ describe("Testing get_roommate", () => {
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
     });
 });
+
+describe("Testing get number of roommates", () => {
+    let userInfoHandler;
+    let user_id;
+    beforeAll(() => {
+        userInfoHandler = new UserInfoHandler();
+        user_id = "test@gmail.com";
+    });
+
+    it("Return a list of users in that room", async () => {
+        userInfoHandler.get_user_persistence().get_room_id.mockImplementation((user_id) => {return "test@gmail.com" ;
+        });
+        userInfoHandler.get_room_persistence().get_room_users.mockImplementation(() => {
+            return ["test@gmail.com"];
+        });
+
+        const roommates = await userInfoHandler.get_roommates_helper(user_id);
+        expect(roommates).toEqual(["test@gmail.com"]);
+    });
+}); 
+
 describe("Testing delete a notification", () => {
     let userInfoHandler;
     beforeEach(() => {
