@@ -57,7 +57,7 @@ describe("TaskPersistence Class-- Edit task", () => {
 });
 describe("TaskPersistence Class-- Generate tasks ", () => {
     let task_persistence;
-    let unique_id = "task4";
+    let unique_id = "task10";
     let bad_id = "task1";
     let task_description = "wash the car";
     let user_id = "test2@gmail.com";
@@ -68,7 +68,7 @@ describe("TaskPersistence Class-- Generate tasks ", () => {
         await populate_db();
     });
 
-    it("Should return values that signify that the user is created", async () => {
+    it("Should return values that signify that the task is created", async () => {
         result = await task_persistence.generate_new_task(unique_id, task_description, user_id, due_date);
         expect(result).toBe("SUCCESS");
     });
