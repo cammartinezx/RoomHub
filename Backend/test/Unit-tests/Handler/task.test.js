@@ -23,7 +23,7 @@ jest.mock("../../../src/Utility/Services", () => ({
         get_task_by_id: jest.fn(),
         update_task: jest.fn(),
         delete_task: jest.fn(),
-        mark_completed: jest.fn()
+        mark_completed: jest.fn(),
     }),
     get_notification_persistence: () => ({}),
 }));
@@ -496,7 +496,6 @@ describe("Unit test for marking as completed", () => {
 
     it("should return 403 when user is invalid", async () => {
         req.body = { id: "task1", frm: "" };
-
 
         await task_handler.mark_completed(req, res);
 
