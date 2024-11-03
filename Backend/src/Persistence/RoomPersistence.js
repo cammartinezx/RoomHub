@@ -267,7 +267,6 @@ class RoomPersistence {
             const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
-
                 const task_command = new GetCommand({
                     TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
                     Key: {

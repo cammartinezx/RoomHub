@@ -72,7 +72,8 @@ describe("RoomPersistence Class-- Adding a new roommmate", () => {
 
 describe("RoomPersistence Class -- Getting room users", () => {
     let room_persistence;
-    let room_id = "rm_11", room_fk ="rm_bad";
+    let room_id = "rm_11",
+        room_fk = "rm_bad";
 
     beforeAll(async () => {
         // initialize the userHandlerobject
@@ -106,7 +107,8 @@ describe("RoomPersistence Class-- Delete a room", () => {
 
 describe("RoomPersistence Class-- Delete a user from a room", () => {
     let room_persistence;
-    let room_id = "rm_3", user_id= "test@gmail.com";
+    let room_id = "rm_3",
+        user_id = "test@gmail.com";
     beforeAll(async () => {
         room_persistence = new RoomPersistence();
         await populate_db();
@@ -118,13 +120,14 @@ describe("RoomPersistence Class-- Delete a user from a room", () => {
 
 describe("RoomPersistence Class-- Adding a new task", () => {
     let room_persistence;
-    let room_id = "rm_11",task= {
-        task_id: "task3",
-        task_description: "test_task3",
-        due_date: "2024-11-19",
-        asignee: "test@gmail.com",
-        complete: false,
-    };
+    let room_id = "rm_11",
+        task = {
+            task_id: "task3",
+            task_description: "test_task3",
+            due_date: "2024-11-19",
+            asignee: "test@gmail.com",
+            complete: false,
+        };
 
     beforeAll(async () => {
         room_persistence = new RoomPersistence();
@@ -138,7 +141,8 @@ describe("RoomPersistence Class-- Adding a new task", () => {
 
 describe("RoomPersistence Class -- Getting pending tasks", () => {
     let room_persistence;
-    let room_id = "rm_11", room_fk="rm_3";
+    let room_id = "rm_11",
+        room_fk = "rm_3";
 
     beforeAll(async () => {
         // initialize the userHandlerobject
@@ -148,19 +152,22 @@ describe("RoomPersistence Class -- Getting pending tasks", () => {
 
     it("Should return a list of pending tasks", async () => {
         let result = await room_persistence.get_pending_tasks(room_id);
-        expect(result).toEqual([{
-            task_id: "task1",
-            task_description: "test_task1",
-            due_date: "2024-11-19",
-            asignee: "test@gmail.com",
-            complete: false,
-        }, {
-            task_id: "task4",
-            task_description: "test_task4",
-            due_date: "2024-11-19",
-            asignee: "test@gmail.com",
-            complete: false,
-        }]);
+        expect(result).toEqual([
+            {
+                task_id: "task1",
+                task_description: "test_task1",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: false,
+            },
+            {
+                task_id: "task4",
+                task_description: "test_task4",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: false,
+            },
+        ]);
     });
 
     it("Should return an error that user doesn't have pending tasks", async () => {
@@ -171,7 +178,8 @@ describe("RoomPersistence Class -- Getting pending tasks", () => {
 
 describe("RoomPersistence Class -- Getting complete tasks", () => {
     let room_persistence;
-    let room_id = "rm_11", room_fk="rm_3";
+    let room_id = "rm_11",
+        room_fk = "rm_3";
 
     beforeAll(async () => {
         // initialize the userHandlerobject
@@ -181,13 +189,15 @@ describe("RoomPersistence Class -- Getting complete tasks", () => {
 
     it("Should return a list of complete tasks", async () => {
         let result = await room_persistence.get_completed_tasks(room_id);
-        expect(result).toEqual([{
-            task_id: "task2",
-            task_description: "test_task2",
-            due_date: "2024-11-19",
-            asignee: "test@gmail.com",
-            complete: true,
-        }]);
+        expect(result).toEqual([
+            {
+                task_id: "task2",
+                task_description: "test_task2",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: true,
+            },
+        ]);
     });
 
     it("Should return an error that user doesn't have complete tasks", async () => {
@@ -198,7 +208,8 @@ describe("RoomPersistence Class -- Getting complete tasks", () => {
 
 describe("RoomPersistence Class-- Delete a task", () => {
     let room_persistence;
-    let room_id = "rm_11",task_id= "task1";
+    let room_id = "rm_11",
+        task_id = "task1";
     beforeAll(async () => {
         room_persistence = new RoomPersistence();
         await populate_db();
@@ -207,4 +218,3 @@ describe("RoomPersistence Class-- Delete a task", () => {
         await expect(room_persistence.delete_task_from_room(room_id, task_id)).resolves.not.toThrow();
     });
 });
-
