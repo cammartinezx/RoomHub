@@ -205,7 +205,6 @@ class TaskPersistence {
                 task_id: task_id,
             },
         });
-
         try {
             await this.#doc_client.send(delete_command);
             return "SUCCESS";

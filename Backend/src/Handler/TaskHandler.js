@@ -255,7 +255,7 @@ class TaskOrganizerHandler {
             }
 
             // Check if the task is in pending tasks in the room
-            if (!task_list.includes(task_id)) {
+            if (!task_list.some(task => task.task_id === task_id)) {
                 return response.status(404).json({ message: "Task not found" });
             }
 
@@ -266,8 +266,12 @@ class TaskOrganizerHandler {
             // }
 
             // Update task with new values
-            await this.#task_persistence.mark_completed(task_id);
-            return response.status(200).json({ message: "Task marked as completed" });
+            let mark_completed= await this.#task_persistence.mark_completed(task_id);
+            if(mark_completed==="SUCCESS") {
+                return response.status(200).json({message: "Task marked as completed"});
+            }else{
+                return response.status(500).json({ message: "An error occurred while updating the task" });
+            }
         } catch (error) {
             console.error("Error updating task:", error);
             return response.status(500).json({ message: "An error occurred while updating the task" });
