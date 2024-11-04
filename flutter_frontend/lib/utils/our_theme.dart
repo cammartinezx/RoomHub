@@ -9,6 +9,7 @@ class OurTheme {
   final Color darkblue = const Color.fromARGB(255, 29, 52, 83);
   final Color lightgrey = const Color.fromARGB(255, 213, 213, 206);
   final Color darkgrey = const Color.fromARGB(255, 89, 89, 94);
+  final Color red = const Color.fromARGB(255, 207, 21, 21);
 
   // Method to build and return the app's theme
   ThemeData buildTheme() {

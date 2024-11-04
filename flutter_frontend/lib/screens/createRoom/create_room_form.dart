@@ -92,53 +92,55 @@ class _CreateRoomFormState extends ConsumerState<CreateRoomForm> {
               height: double.infinity,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Instructions
-                    _buildInstruction("1", "Assign a name to your room"),
-                    const SizedBox(width: 50),
-                    _buildInstruction("2", "Tell your roommates to join"),
-                    const SizedBox(width: 50),
-                    _buildInstruction("3", "Accept their request"),
-                    const SizedBox(height: 30),
-
-                    // Text field for room name input
-                    TextField(
-                      controller: nameController,
-                      cursorColor: theme.darkblue,
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(
-                          Icons.house_outlined,
-                          color: Colors.grey,
-                        ),
-                        label: Text(
-                          ' Name',
-                          style: TextStyle(color: theme.darkblue),
+                padding: const EdgeInsets.only(left: 18.0, right: 10.0, top: 50.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Instructions
+                      _buildInstruction("1", "Assign a name to your room"),
+                      const SizedBox(width: 50),
+                      _buildInstruction("2", "Tell your roommates to join"),
+                      const SizedBox(width: 50),
+                      _buildInstruction("3", "Accept their request"),
+                      const SizedBox(height: 10),
+                  
+                      // Text field for room name input
+                      TextField(
+                        controller: nameController,
+                        cursorColor: theme.darkblue,
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(
+                            Icons.house_outlined,
+                            color: Colors.grey,
+                          ),
+                          label: Text(
+                            ' Name',
+                            style: TextStyle(color: theme.darkblue),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 50),
-
-                    // Create Room button
-                    GradientButton(
-                      text: 'Create Room',
-                      onTap: () async {
-                        if (await createRoomBE()) {
-                          theme.buildToastMessage("Room successfully created");
-                          Future.delayed(const Duration(seconds: 1), () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => OurHome(roomID: nameController.text),
-                              ),
-                            );
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 50),
-                  ],
+                      const SizedBox(height: 50),
+                  
+                      // Create Room button
+                      GradientButton(
+                        text: 'Create Room',
+                        onTap: () async {
+                          if (await createRoomBE()) {
+                            theme.buildToastMessage("Room successfully created");
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => OurHome(roomID: nameController.text ,email: userEmail),
+                                ),
+                              );
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 50),
+                    ],
+                  ),
                 ),
               ),
             ),

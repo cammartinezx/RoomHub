@@ -10,6 +10,48 @@ jest.mock("../../../src/Handler/RoomHandler", () => {
         add_roommate: jest.fn().mockImplementation((req, res) => {
             res.status(200).json({ message: "Test Successful" });
         }),
+
+        get_completed_tasks: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({
+                complete_tasks: [
+                    {
+                        complete: true,
+                        due_date: "2024-11-11",
+                        task_id: "2e047472",
+                        asignee: "user1@gmail.com",
+                        task_description: "washing dishes",
+                    },
+                    {
+                        complete: true,
+                        due_date: "2024-11-11",
+                        task_id: "55e10ce7",
+                        asignee: "user2@gmail.com",
+                        task_description: "throw trash",
+                    },
+                ],
+            });
+        }),
+
+        get_pending_tasks: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({
+                pending_tasks: [
+                    {
+                        complete: false,
+                        due_date: "2024-11-15",
+                        task_id: "7b23c541",
+                        asignee: "user1@gmail.com",
+                        task_description: "vacuum the floor",
+                    },
+                    {
+                        complete: false,
+                        due_date: "2024-11-18",
+                        task_id: "8f60df82",
+                        asignee: "user2@gmail.com",
+                        task_description: "grocery shopping",
+                    },
+                ],
+            });
+        }),
     }));
 });
 
@@ -41,5 +83,55 @@ describe("Room router tests", () => {
         const exp_msg = { message: "Test Successful" };
         expect(response.status).toBe(exp_stat);
         expect(response.body).toEqual(exp_msg);
+    });
+
+    it("Get room/get-completed-tasks should return a list of completed tasks", async () => {
+        const query_params = { frm: "test@gmail.com" };
+        const expectedResponse = {
+            complete_tasks: [
+                {
+                    complete: true,
+                    due_date: "2024-11-11",
+                    task_id: "2e047472",
+                    asignee: "user1@gmail.com",
+                    task_description: "washing dishes",
+                },
+                {
+                    complete: true,
+                    due_date: "2024-11-11",
+                    task_id: "55e10ce7",
+                    asignee: "user2@gmail.com",
+                    task_description: "throw trash",
+                },
+            ],
+        };
+        const response = await request(app).get("/room/get-completed-tasks").query(query_params);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(expectedResponse);
+    });
+
+    it("Get room/get-pending-tasks should return a list of pending tasks", async () => {
+        const query_params = { frm: "test@gmail.com" };
+        const expectedResponse = {
+            pending_tasks: [
+                {
+                    complete: false,
+                    due_date: "2024-11-15",
+                    task_id: "7b23c541",
+                    asignee: "user1@gmail.com",
+                    task_description: "vacuum the floor",
+                },
+                {
+                    complete: false,
+                    due_date: "2024-11-18",
+                    task_id: "8f60df82",
+                    asignee: "user2@gmail.com",
+                    task_description: "grocery shopping",
+                },
+            ],
+        };
+        const response = await request(app).get("/room/get-pending-tasks").query(query_params);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(expectedResponse);
     });
 });

@@ -11,7 +11,12 @@ import 'package:flutter_frontend/config.dart';
 import 'dart:convert';
 
 class Header extends ConsumerStatefulWidget {
-  const Header({super.key});
+  // this is used to detect whether or not the drawer will be displayed.
+  final String? roomId;
+
+  const Header({super.key, this.roomId});
+
+
 
   @override
   ConsumerState<Header> createState() => _ActionNotificationState();
@@ -20,6 +25,8 @@ class Header extends ConsumerStatefulWidget {
 class _ActionNotificationState extends ConsumerState<Header> {
   final theme = OurTheme();
   late String userEmail;
+
+
 
   @override
   void initState() {
@@ -33,18 +40,13 @@ class _ActionNotificationState extends ConsumerState<Header> {
         Uri.parse("${url}user/$email/get-notification"),
         headers: {"Content-Type": "application/json"},
       );
-      print("Response status: ${response.statusCode}");
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
         List<NotificationItem> notifications =
             NotificationItem.parseNotificationList(jsonData);
-            for (var notification in notifications) {
-            print(notification); // This will call the toString method
-    } 
-        print("Navigating to notifications screen");
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => Notifications(notificationItems: notifications),
+            builder: (context) => Notifications(notificationItems: notifications, email: email),
           ),
         );
         success = true;
@@ -61,56 +63,65 @@ class _ActionNotificationState extends ConsumerState<Header> {
   @override
   Widget build(BuildContext context) {
     userEmail = ref.read(emailProvider);
-    print(userEmail);
-    return Container(
-      color: Colors.grey[300],
-      height: 135,
-      child: Column(
-        children: [
-          Container(
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 50),
-                  child: Icon(
-                    Icons.menu,
-                    color: Colors.grey[300],
-                    size: 34.0,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Text(
-                    'RoomHub',
-                    style: TextStyle(
-                      color: theme.darkblue,
-                      fontSize: 28.0,
-                      fontWeight: FontWeight.bold,
+    String? currRoomId = widget.roomId;
+    return Builder(
+      builder: (context) {
+        return Container(
+          color: Colors.grey[300],
+          height: 135,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.transparent,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0, top: 50),
+                      child: currRoomId != null ? IconButton(
+                        icon: Icon(
+                          Icons.menu,
+                          color: theme.darkblue,
+                          size: 34.0,
+                        ),
+                        onPressed: () {
+                          Scaffold.of(context).openDrawer(); // Opens the drawer
+                        },
+                      ):null,
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 16.0, top: 50),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      color: theme.darkblue,
-                      size: 34.0,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Text(
+                        'RoomHub',
+                        style: TextStyle(
+                          color: theme.darkblue,
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    onPressed: () async {
-                      print("Notification button pressed");
-                      await getNotifications(userEmail);
-                    },
-                  ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 16.0, top: 50),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.notifications,
+                          color: theme.darkblue,
+                          size: 34.0,
+                        ),
+                        onPressed: () async {
+                          print("Notification button pressed");
+                          await getNotifications(userEmail);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
@@ -157,6 +168,4 @@ class NotificationItem {
         'notificationid: $notificationid'
         '}';
   }
-
-  
 }

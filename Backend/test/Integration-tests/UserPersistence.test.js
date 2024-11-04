@@ -164,3 +164,22 @@ describe("UserPersistence Class-- Deleting a notification from a users set of no
         await expect(user_persistence.update_notification_set(notif_id, user_id)).resolves.not.toThrow();
     });
 });
+
+describe("UserPersistence Class-- Delete a specific room for specific user", () => {
+    let user_persistence;
+    let user_id;
+    let room_id;
+
+    beforeAll(async () => {
+        // initialize the userPersistence
+        user_persistence = new UserPersistence();
+
+        user_id = "test@gmail.com";
+        room_id = "rm_11";
+        await populate_db();
+    });
+
+    it("Should not throw error - meaning successful delete the room_id from user", async () => {
+        await expect(user_persistence.remove_room_id(room_id, user_id)).resolves.not.toThrow();
+    });
+});

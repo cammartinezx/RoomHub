@@ -8,6 +8,11 @@ class RoomException implements Exception {
   RoomException(this.message);
 }
 
+class TaskException implements Exception {
+  final String message;
+  TaskException(this.message);
+}
+
 class NotificationException implements Exception {
   final String message;
   NotificationException(this.message);

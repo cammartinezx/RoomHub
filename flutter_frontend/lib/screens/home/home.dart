@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/UserRoom.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/widgets/button.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
@@ -13,7 +14,8 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class OurHome extends ConsumerStatefulWidget {
   final String roomID;
-  const OurHome({super.key, required this.roomID});
+  final String email;
+  const OurHome({super.key, required this.roomID, required this.email});
 
   @override
   ConsumerState<OurHome> createState() => _OurHomeState();
@@ -90,7 +92,11 @@ class _OurHomeState extends ConsumerState<OurHome> {
                             MyButton(
                               text: "Continue",
                               onTap: () {
-                                theme.buildToastMessage("coming soon");
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => UserRoom(roomID:widget.roomID, email: widget.email),
+                                  ),
+                                );
                               },
                             ),
                           ],

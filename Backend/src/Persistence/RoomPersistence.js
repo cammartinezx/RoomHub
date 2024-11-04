@@ -1,5 +1,11 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const {
+    DynamoDBDocumentClient,
+    PutCommand,
+    GetCommand,
+    UpdateCommand,
+    DeleteCommand,
+} = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
 /**
@@ -61,7 +67,9 @@ class RoomPersistence {
 
         // working_client = new DynamoDBClient(local_test_client);
 
-        this.#doc_client = DynamoDBDocumentClient.from(working_client);
+        this.#doc_client = DynamoDBDocumentClient.from(working_client, {
+            marshallOptions: { convertEmptyValues: true },
+        });
         this.#table_name = "room";
     }
 
@@ -74,7 +82,7 @@ class RoomPersistence {
     }
 
     /**
-     *
+     * Use Get command to get the room name from Room table
      * @param {String} room_id "The unique identifier for the room"
      * @returns {String} "The roomname associated with the room_id"
      */
@@ -95,7 +103,7 @@ class RoomPersistence {
     }
 
     /**
-     *
+     * Use Put command to create the new room into Room table
      * @param {String} unique_id "The unique identifier for the room"
      * @param {String} room_name "The room name as defined by user or function caller"
      * @param {String} user_id "Id of user belonging to the room."
@@ -110,6 +118,7 @@ class RoomPersistence {
                     room_id: unique_id,
                     name: room_name,
                     users: new Set([user_id]),
+                    tasks: [],
                 },
                 ConditionExpression: "attribute_not_exists(room_id)",
             });
@@ -145,6 +154,205 @@ class RoomPersistence {
             ReturnValues: "NONE",
         });
         await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Use Get command to get the list of users from the given room
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Set} "The list of users associated with the room_id"
+     */
+    async get_room_users(room_id) {
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+
+        let user_list = response.Item.users;
+        if (user_list === undefined) {
+            throw new Error("Room doesn't have an user--Service Unavailable");
+        }
+        return user_list;
+    }
+
+    /**
+     * Use Delete command to delete the specific room given room_id from Room table
+     * @param {String} room_id "The unique identifier for the room"
+     */
+    async delete_room(room_id) {
+        const delete_command = new DeleteCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+        });
+        await this.#doc_client.send(delete_command);
+    }
+
+    /**
+     * Use Update command to delete specific user from specific room
+     * @param {String} user_id "The unique identifier for the user"
+     * @param {String} room_id "The unique identifier for the room"
+     */
+    async remove_user_id(user_id, room_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "DELETE #users :user_id",
+            ExpressionAttributeNames: {
+                "#users": "users",
+            },
+            ExpressionAttributeValues: {
+                ":user_id": new Set([user_id]),
+            },
+            ConditionExpression: "attribute_exists(room_id)",
+            ReturnValues: "NONE",
+        });
+
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Use Update command to add a new task to the list of tasks for a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @param {Object} task "The task object to be added to the room"
+     */
+    async add_task_to_room(room_id, task) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "SET #tasks = list_append(#tasks, :new_task)",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks", // The attribute (field) you're updating
+            },
+            ExpressionAttributeValues: {
+                ":new_task": [task], // The new task to add as a single-element list
+            },
+            ConditionExpression: "attribute_exists(room_id)",
+        });
+
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Adding task to a room failed:", error);
+            return "FAILURE";
+        }
+    }
+
+    /**
+     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_pending_tasks(room_id) {
+        const pending_tasks = [];
+        // Step 1: Get the task IDs from the room
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+        });
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
+
+            // Step 4: Fetch each task's details
+            for (const task_id of task_ids) {
+                const task_command = new GetCommand({
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
+                    Key: {
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
+                    },
+                });
+                const task_response = await this.#doc_client.send(task_command);
+                // Only add the task if it is incomplete
+                if (task_response.Item && task_response.Item.complete === false) {
+                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
+                }
+            }
+            return pending_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
+        } catch (error) {
+            console.error("Error getting pending tasks:", error);
+            return [];
+        }
+    }
+
+    /**
+     * Use Get command to retrieve the list of complete tasks associated with a specific room.
+     * @param {String} room_id "The unique identifier for the room"
+     * @returns {Array} "The list of tasks where complete = false"
+     */
+    async get_completed_tasks(room_id) {
+        const completed_tasks = [];
+        // Step 1: Get the task IDs from the room
+        const get_command = new GetCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            ProjectionExpression: "tasks",
+        });
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
+
+            // Step 4: Fetch each task's details
+            for (const task_id of task_ids) {
+                const task_command = new GetCommand({
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
+                    Key: {
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
+                    },
+                });
+                const task_response = await this.#doc_client.send(task_command);
+                // Only add the task if it is incomplete
+                if (task_response.Item && task_response.Item.complete === true) {
+                    completed_tasks.push(task_response.Item); // Add to pending tasks if complete is false
+                }
+            }
+            return completed_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
+        } catch (error) {
+            console.error("Error getting pending tasks:", error);
+            return [];
+        }
+    }
+
+    async delete_task_from_room(room_id, task_id) {
+        const update_command = new UpdateCommand({
+            TableName: "Room",
+            Key: {
+                room_id: room_id,
+            },
+            UpdateExpression: "DELETE #tasks :taskToRemove",
+            ExpressionAttributeNames: {
+                "#tasks": "tasks",
+            },
+            ExpressionAttributeValues: {
+                ":taskToRemove": new Set([task_id]),
+            },
+            ConditionExpression: "attribute_exists(tasks)",
+        });
+
+        try {
+            await this.#doc_client.send(update_command);
+            return "SUCCESS";
+        } catch (error) {
+            console.error("Error deleting task from room:", error);
+            return "FAILURE";
+        }
     }
 }
 

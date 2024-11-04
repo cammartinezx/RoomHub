@@ -14,12 +14,15 @@ class ActionNotification extends ConsumerStatefulWidget {
   final String message;
   final String id;
   final String new_roommate;
+  final Function(String id)  onRemove;
 
   const ActionNotification(
       {super.key,
       required this.message,
       required this.id,
-      required this.new_roommate});
+      required this.new_roommate,
+      required this.onRemove
+      });
 
   @override
   ConsumerState<ActionNotification> createState() => _ActionNotificationState();
@@ -46,7 +49,7 @@ class _ActionNotificationState extends ConsumerState<ActionNotification> {
             Expanded(
               flex: 5,
               child: SizedBox(
-                height: 100,
+                height: 120,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,9 +80,16 @@ class _ActionNotificationState extends ConsumerState<ActionNotification> {
                         ),
                         Expanded(
                             child: ActionButton(
-                                text: "Reject", color: theme.darkgrey)),
+                                text: "Reject",
+                                color: theme.darkgrey,
+                                onTap: () {widget.onRemove(widget.id);},
+                            )),
                       ],
-                    )
+                    ),
+                    Divider(
+                      color: theme.lightgrey, // Color of the divider
+                      thickness: 2, // Thickness of the line
+                    ),
                   ],
                 ),
               ),

@@ -3,6 +3,7 @@ const express = require("express");
 const User = require("./User");
 const Room = require("./Room");
 const Notification = require("./Notification");
+const Task = require("./Task");
 const cors = require("cors");
 
 require("dotenv").config(); // Load environment variables
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use("/user", User);
 app.use("/room", Room);
 app.use("/notification", Notification);
-console.log("Hello world");
+app.use("/task", Task);
 
 app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });

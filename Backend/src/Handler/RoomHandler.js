@@ -1,5 +1,6 @@
 const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
+const UserInfoHandler = require("./UserInfoHandler");
 
 /**
  * @module Handler
@@ -30,14 +31,17 @@ class RoomHandler {
      */
     #notification_persistence;
 
+    userHandler;
+
     /**
      * Create a new RoomHandler object
      * @constructor
      */
-    constructor() {
+    constructor(userHandler) {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
+        this.userHandler = userHandler;
     }
 
     get_room_persistence() {
@@ -54,28 +58,8 @@ class RoomHandler {
      * @returns {Boolean} "True if valid room name and false otherwise"
      */
     #is_valid_room_name(room_name) {
-        if (typeof room_name === "string" && room_name.length > 0) {
-            return true;
-        }
-        return false;
+        return typeof room_name === "string" && room_name.length > 0;
     }
-
-    /**
-     * Validate a user id
-     * @async
-     * @param {String} user_id "The user_id to be validated"
-     * @returns {Boolean} "True if valid user_id and false otherwise"
-     */
-    async #is_valid_user(user_id) {
-        // call the services to get the user persistence. and ask it to get that user. if it returns something then good if not then bad.
-        let user_persistence = this.#user_persistence;
-        let user = await user_persistence.get_user(user_id);
-        if (user != null) {
-            return true;
-        }
-        return false;
-    }
-
     /**
      * Creates a new room in the persistence layer and updates user
      * @async
@@ -88,7 +72,7 @@ class RoomHandler {
             let room_name = request.body.rm.trim().toLowerCase();
             let user_id = request.body.id.trim().toLowerCase();
             const is_valid_room = this.#is_valid_room_name(room_name);
-            const is_valid_user = await this.#is_valid_user(user_id);
+            const is_valid_user = this.userHandler.is_valid_user(user_id);
             if (is_valid_room && is_valid_user) {
                 // generate room id
                 const room_id = uuidv4();
@@ -123,11 +107,7 @@ class RoomHandler {
      * @returns {Boolean} "True if both names are the same and false otherwise"
      */
     #is_valid_roomname(persist_room_name, room_name) {
-        if (persist_room_name.trim().toLowerCase() === room_name.trim().toLowerCase()) {
-            return true;
-        } else {
-            return false;
-        }
+        return persist_room_name.trim().toLowerCase() === room_name.trim().toLowerCase();
     }
 
     /**
@@ -176,6 +156,68 @@ class RoomHandler {
             }
         } catch (error) {
             response.status(500).json({ message: error.message });
+        }
+    }
+
+    async get_pending_tasks(request, response) {
+        try {
+            const { frm } = request.query;
+            const user_id = frm.trim().toLowerCase();
+
+            // Validate if the user is valid
+            const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
+            if (!is_valid_user) {
+                return response.status(403).json({ message: "Invalid user" });
+            }
+
+            // Get the room ID associated with the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            if (!room_id) {
+                return response.status(404).json({ message: "Room not found" });
+            }
+
+            // Fetch the pending tasks for the user's room
+            const pending_tasks = await this.#room_persistence.get_pending_tasks(room_id);
+            if (pending_tasks.length === 0) {
+                return response.status(404).json({ message: "No pending tasks found" });
+            }
+
+            // Return the pending tasks
+            return response.status(200).json({ pending_tasks });
+        } catch (error) {
+            console.error("Error fetching pending tasks:", error);
+            return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });
+        }
+    }
+
+    async get_completed_tasks(request, response) {
+        try {
+            const { frm } = request.query;
+            const user_id = frm.trim().toLowerCase();
+
+            // Validate if the user is valid
+            const is_valid_user = await this.userHandler.is_valid_user(user_id); // Await the async call
+            if (!is_valid_user) {
+                return response.status(403).json({ message: "Invalid user" });
+            }
+
+            // Get the room ID associated with the user
+            const room_id = await this.#user_persistence.get_room_id(user_id);
+            if (!room_id) {
+                return response.status(404).json({ message: "Room not found" });
+            }
+
+            // Fetch the pending tasks for the user's room
+            const completed_tasks = await this.#room_persistence.get_completed_tasks(room_id);
+            if (completed_tasks.length === 0) {
+                return response.status(404).json({ message: "No completed tasks found" });
+            }
+
+            // Return the pending tasks
+            return response.status(200).json({ completed_tasks });
+        } catch (error) {
+            console.error("Error fetching completed tasks:", error);
+            return response.status(500).json({ message: "An error occurred while retrieving pending tasks" });
         }
     }
 }
