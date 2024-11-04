@@ -115,23 +115,23 @@ class _TaskGridState extends State<TaskGrid> {
                             )
                                 :
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 ElevatedButton(onPressed: () { reuseTaskPressed(tasks[index].taskName, tasks[index].assignedTo, tasks[index].taskId, tasks[index].dueDate,);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
-                                    fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: const EdgeInsets.all(5.0), // Padding
+                                    // fixedSize: const Size(100, 30), // Minimum width and height
+                                    padding: const EdgeInsets.symmetric(horizontal: 40.0), // Padding
                                   ), child: const Text("Reuse",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                 ),
-                                const SizedBox(width: 15,),
+                                // const SizedBox(width: 15,),
                                 ElevatedButton(onPressed: () { deletePressed(tasks[index].taskId, widget.userId, index);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
-                                    fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: const EdgeInsets.all(5.0), // Padding
+                                    // fixedSize: const Size(100, 30), // Minimum width and height
+                                    padding: const EdgeInsets.symmetric(horizontal: 40.0), // Padding
                                   ), child: const Text("Delete",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
