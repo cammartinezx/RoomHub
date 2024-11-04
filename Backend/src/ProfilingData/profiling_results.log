@@ -1,4 +1,4 @@
-Endpoint: POST room/create-room took 1710.79 ms
+Endpoint: POST /create-room took 397.75 ms
 Endpoint: GET task/get-completed-tasks?frm=dan@gmail.com took 1593.91 ms
 Endpoint: GET task/get-pending-tasks?frm=dan@gmail.com took 253.41 ms
 Endpoint: GET user/dan@gmail.com/get-room took 242.12 ms
