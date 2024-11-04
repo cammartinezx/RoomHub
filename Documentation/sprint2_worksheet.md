@@ -16,8 +16,10 @@ Tool Used for Regression Testing:
  * Snapshot of execution:
  ![Execution snapshot](./images/Execution_snapshot_1.png)
  ![Execution snapshot](./images/Execution_snapshot_2.png)
+ ![Execution snapshot](./images/Execution_snapshot_3.png)
+ ![Execution snapshot](./images/Execution_snapshot_4.png)
  * Regression Result:
- ![Regression Result](./images/Result_regression.png)
+ ![Regression Result](./images/Regression_Result.png)
 ## Testing slowdown
 
 

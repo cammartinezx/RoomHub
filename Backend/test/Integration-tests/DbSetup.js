@@ -51,6 +51,7 @@ async function populate_db() {
                 room_id: "rm_11",
                 name: "test_room1",
                 users: new Set(["test@gmail.com"]),
+                tasks: ["task1", "task2", "task4"],
             },
         });
 
@@ -60,8 +61,20 @@ async function populate_db() {
                 room_id: "rm_bad",
             },
         });
+
+        const put_command_room3 = new PutCommand({
+            TableName: "Room",
+            Item: {
+                room_id: "rm_3",
+                name: "test_room1",
+                users: new Set(["test@gmail.com"]),
+                tasks: null,
+            },
+        });
+
         await doc_client.send(put_command_room);
         await doc_client.send(put_command_room2);
+        await doc_client.send(put_command_room3);
 
         // adding notifications
         const put_command_notification = new PutCommand({
@@ -98,6 +111,53 @@ async function populate_db() {
         await doc_client.send(put_command_notification);
         await doc_client.send(put_command_notification2);
         await doc_client.send(put_command_notification3);
+
+        const put_command_task = new PutCommand({
+            TableName: "Task",
+            Item: {
+                task_id: "task1",
+                task_description: "test_task1",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: false,
+            },
+        });
+
+        const put_command_task2 = new PutCommand({
+            TableName: "Task",
+            Item: {
+                task_id: "task2",
+                task_description: "test_task2",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: true,
+            },
+        });
+        const put_command_task3 = new PutCommand({
+            TableName: "Task",
+            Item: {
+                task_id: "task3",
+                task_description: "test_task3",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: false,
+            },
+        });
+        const put_command_task4 = new PutCommand({
+            TableName: "Task",
+            Item: {
+                task_id: "task4",
+                task_description: "test_task4",
+                due_date: "2024-11-19",
+                asignee: "test@gmail.com",
+                complete: false,
+            },
+        });
+
+        await doc_client.send(put_command_task);
+        await doc_client.send(put_command_task2);
+        await doc_client.send(put_command_task3);
+        await doc_client.send(put_command_task4);
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }

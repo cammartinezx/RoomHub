@@ -1,6 +1,10 @@
 const NotificationHandler = require("../../../src/Handler/NotificationHandler");
 const { mockRequest, mockResponse } = require("mock-req-res");
-const { get_user_persistence, get_notification_persistence, get_room_persistence } = require("../../../src/Utility/Services");
+const {
+    get_user_persistence,
+    get_notification_persistence,
+    get_room_persistence,
+} = require("../../../src/Utility/Services");
 
 jest.mock("../../../src/Utility/Services", () => ({
     get_user_persistence: () => ({
@@ -329,12 +333,12 @@ describe("Unit test for sending notification", () => {
             .generate_new_notification.mockImplementation((notif_id, msg, status, from, to, type, room_id) => {
                 return "FAILURE";
             });
-            req.body = { from: "test123@gmail.com", message: "Hello", type: "announcement" };
+        req.body = { from: "test123@gmail.com", message: "Hello", type: "announcement" };
 
-            await notificationHandler.send_announcement(req, res);
-    
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith({ message: "Retry creating the notification" });
+        await notificationHandler.send_announcement(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Retry creating the notification" });
     });
 
     it("Send a response verifying that a server error occured", async () => {

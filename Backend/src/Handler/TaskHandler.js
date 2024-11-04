@@ -40,7 +40,6 @@ class TaskOrganizerHandler {
         this.#task_persistence = Services.get_task_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.userHandler = userHandler;
-        this.userHandler = userHandler;
     }
 
     get_task_persistence() {
@@ -266,8 +265,12 @@ class TaskOrganizerHandler {
             // }
 
             // Update task with new values
-            await this.#task_persistence.mark_completed(task_id);
-            return response.status(200).json({ message: "Task marked as completed" });
+            let mark_completed = await this.#task_persistence.mark_completed(task_id);
+            if (mark_completed === "SUCCESS") {
+                return response.status(200).json({ message: "Task marked as completed" });
+            } else {
+                return response.status(500).json({ message: "An error occurred while updating the task" });
+            }
         } catch (error) {
             console.error("Error updating task:", error);
             return response.status(500).json({ message: "An error occurred while updating the task" });
