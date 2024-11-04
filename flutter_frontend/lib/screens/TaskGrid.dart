@@ -96,19 +96,21 @@ class _TaskGridState extends State<TaskGrid> {
                             const SizedBox(height: 10),
                             // is pending task type then return reuse and delete else return completed
                             widget.isPending ?
-                            ElevatedButton(onPressed: () async{
-                              bool markSuccess = await markCompleted(tasks[index].taskId, widget.userId, index);
-                              if(markSuccess){
-                                String msg = generateAnnouncementMsg(widget.userId, tasks[index].taskName);
-                                sendAnnouncementRequest(msg, widget.userId);
-                              }
-                            },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: theme.darkblue,
-                                fixedSize: const Size(200, 30), // Minimum width and height
-                                padding: const EdgeInsets.all(5.0), // Padding
-                              ), child: const Text("Completed",
-                                style: TextStyle(color: Colors.white, fontSize: 15),
+                            Center(
+                              child: ElevatedButton(onPressed: () async{
+                                bool markSuccess = await markCompleted(tasks[index].taskId, widget.userId, index);
+                                if(markSuccess){
+                                  String msg = generateAnnouncementMsg(widget.userId, tasks[index].taskName);
+                                  sendAnnouncementRequest(msg, widget.userId);
+                                }
+                              },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: theme.darkblue,
+                                  //fixedSize: const Size(200, 30), // Minimum width and height
+                                  padding: const EdgeInsets.symmetric(horizontal: 40.0), // Padding
+                                ), child: const Text("Completed",
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             )
                                 :
