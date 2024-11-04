@@ -4,6 +4,10 @@
 name: Running tests
 
 on:
+  push:
+    branches: [ "main", "dev" ]
+    paths:
+      - 'Backend/**'
   pull_request:
     branches: [ "main", "dev" ]
 

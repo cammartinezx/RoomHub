@@ -73,6 +73,8 @@ router.get("/:id/get-notification", (req, res) => {
     user_info_handler.get_user_notification(req, res);
 });
 
+console.log("Hello luke in lambda");
+
 router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });

@@ -15,6 +15,7 @@ app.use(express.json());
 app.use("/user", User);
 app.use("/room", Room);
 app.use("/notification", Notification);
+console.log("Hello world");
 
 app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });
@@ -22,10 +23,12 @@ app.use("/", async (req, res) => {
 
 const server = awsServerlessExpress.createServer(app);
 
-// AWS express
-exports.handler = (event, context) => {
-    awsServerlessExpress.proxy(server, event, context);
-};
-
-// useful for tests to treat backend like a regular express app.
-module.exports = app;
+if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
+    // AWS express
+    exports.handler = (event, context) => {
+        awsServerlessExpress.proxy(server, event, context);
+    };
+} else {
+    // useful for tests to treat backend like a regular express app.
+    module.exports = app;
+}
