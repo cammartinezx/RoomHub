@@ -179,7 +179,7 @@ const ManageTasksPage = () => {
                     id: editingTask.task_id,
                     tn: editingTask.task_description,
                     frm: email,
-                    to: editingTask.assignee,
+                    to: editingTask.asignee,
                     date: editingTask.due_date
                 });
                 alert('Task updated successfully!');
@@ -211,7 +211,7 @@ const ManageTasksPage = () => {
 
     return (
         <div className={styles.container}>
-            <Header email={email} hasRoom={hasRoom} />
+            <Header email={email} hasRoom={hasRoom}  />
             <h1>Manage Tasks</h1>
 
             <div className={styles.flexContainer}>

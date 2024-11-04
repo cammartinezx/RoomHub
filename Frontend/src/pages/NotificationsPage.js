@@ -3,11 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/NotificationsPage.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faCheck} from '@fortawesome/free-solid-svg-icons';
 
 const NotificationsPage = () => {
     const location = useLocation();
-    const email = location.state?.email;  // Get the email of the logged-in user
+    const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
     const roomName = location.state?.roomName;
     const [notifications, setNotifications] = useState([]);
@@ -38,7 +38,6 @@ const NotificationsPage = () => {
         const from =notification.from;
         const id = notification.notification_id
         try {
-            // Make the API call to add the new roommate
             const response = await axios.post(
                 'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/add-roommate',
                 {
@@ -107,35 +106,37 @@ const NotificationsPage = () => {
                 {notifications.length > 0 ? (
                     <ul>
                         {notifications.map((notification) => (
-                            <li 
-                                key={notification.notification_id} 
-                                className={notification.status === 'accepted' ? styles.accepted : ''}
-                            >
-                                {notification.msg} {notification.status}
-                                {notification.type === 'join-request' && notification.status !== 'accepted' && (
-                                    <FontAwesomeIcon
-                                        icon={faCheck}
-                                        className={styles.checkIcon}
-                                        onClick={() => handleAccept(notification)}
-                                    />
-                                )}
-                                <FontAwesomeIcon
-                                    icon={faTrash}
-                                    className={styles.deleteIcon}
-                                    onClick={() => handleDelete(notification)}
-                                />
+                            <li key={notification.notification_id} className={styles.notificationCard}>
+                                <div className={styles.notificationContent}>
+                                    <div className={styles.notificationDetails}>
+                                        <p className={styles.notificationType}>
+                                            {notification.type === 'join-request' ? 'Join Request' : 'General Notification'}
+                                        </p>
+                                        <p className={styles.notificationMessage}>{notification.msg}</p>
+                                    </div>
+                                </div>
+                                <div className={styles.notificationActions}>
+                                    {notification.type === 'join-request' && notification.status !== 'accepted' && (
+                                        <button onClick={() => handleAccept(notification)} className={styles.acceptButton}>
+                                            <FontAwesomeIcon icon={faCheck} /> Accept
+                                        </button>
+                                    )}
+                                    <button onClick={() => handleDelete(notification)} className={styles.deleteButton}>
+                                        <FontAwesomeIcon icon={faTrash} /> Delete
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p>No notifications available.</p>
+                    <p className={styles.noNotifications}>No notifications available.</p>
                 )}
 
-                <button 
-                    className={styles.backButton} 
-                    onClick={() => navigate('/home', { state: { email, hasRoom } })}
+                <button
+                    className={styles.backButton}
+                    onClick={() => navigate(-1)}
                 >
-                    Back to Home
+                    Back
                 </button>
             </div>
         </div>

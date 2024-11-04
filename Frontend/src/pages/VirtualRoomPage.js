@@ -1,11 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getRoomByUser, getRoomName } from '../mockApi';
 import styles from '../styles/HomePage.module.css';
 import taskStyle from '../styles/ManageTasksPage.module.css'
 import roomStyles from '../styles/VirtualRoomPage.module.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faUser } from '@fortawesome/free-solid-svg-icons';
 import Header from '../Header';
 import axios from 'axios';
 import { sendNotification } from '../services/notificationService';
@@ -105,7 +102,7 @@ const VirtualRoomPage = () => {
 
     return (
       <div className={styles.container}>
-        <Header email={email} hasRoom={hasRoom} />
+        <Header email={email} hasRoom={hasRoom}/>
         <h2 className={styles.title}>{roomName}</h2>
 
         <div className={roomStyles.mainContent}>
@@ -186,21 +183,6 @@ const VirtualRoomPage = () => {
         )}
 
         {error && <p className={styles.error}>{error}</p>}
-
-        {/* <button onClick={toggleRoommates} className={styles.action}>
-          {showRoommates ? 'Hide Roommates' : 'Show Roommates'}
-        </button>
-
-        {showRoommates && (
-          <div className={styles.roommatesList}>
-             <h2>Roommates:</h2>
-            <ul>
-              {room.members.map((member, index) => (
-                <li key={index}>{member}</li>
-              ))}
-            </ul>
-          </div>
-        )} */}
          
         <button className={styles.action} onClick={() => navigate('/home', { state: { hasRoom, email } })}>Back to Home</button>
       </div>

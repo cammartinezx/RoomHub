@@ -1,107 +1,125 @@
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-    background-color: #f0f4f8;
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .notificationsContainer {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-  }
-  
-  h1 {
-    color: #333;
-    font-size: 2rem;
-    margin-bottom: 20px;
-    justify-self: center;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  li {
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  li.accepted {
-    background-color: #dff0d8;
-  }
-  
-  p {
-    color: #777;
-    font-size: 1rem;
-    margin: 20px 0;
-  }
-  
-  button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f8f9fa;
+  font-family: 'Arial', sans-serif;
+}
 
-  .deleteIcon {
-    color: rgb(90, 90, 90);
-    cursor: pointer;
-    margin-left: 10px;
-    font-size: 0.9rem;
-   
-  }
+.notificationsContainer {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
 
-  .deleteIcon:hover {
-    color: darkred;
-    font-size: 1.5rem;
-  }
+h1 {
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
 
-  .checkIcon {
-    color: rgb(90, 90, 90);
-    cursor: pointer;
-    margin-left: 80px;
-    font-size: 1.2rem;
-  }
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  .checkIcon:hover {
-    color: darkgreen;
-    font-size: 1.8rem;
-  }
+.notificationCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f7f7f7;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
 
+.notificationCard:hover {
+  background-color: #eaeaea;
+}
 
-    
-  .backButton {
-    background-color: #f0f0f0;
-    color: #333;
-    padding: 12px 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-  }
-  
-  .backButton:hover {
-    background-color: #ddd;
-  }
+.notificationContent {
+  display: flex;
+  align-items: center;
+}
+
+.notificationIcon {
+  font-size: 24px;
+  margin-right: 15px;
+  color: #007bff;
+}
+
+.notificationDetails {
+  flex-grow: 1;
+}
+
+.notificationType {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.notificationMessage {
+  color: #555;
+}
+
+.notificationTimestamp {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.notificationActions {
+  display: flex;
+  align-items: center;
+}
+
+.acceptButton, .deleteButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.acceptButton {
+  color: green;
+  font-size: 1rem;
+}
+
+.deleteButton {
+  color: red;
+  font-size: 1rem;
+}
+
+.acceptButton:hover {
+  color: darkgreen;
+}
+
+.deleteButton:hover {
+  color: darkred;
+}
+
+.noNotifications {
+  color: #777;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.backButton {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.backButton:hover {
+  background-color: #0056b3;
+}

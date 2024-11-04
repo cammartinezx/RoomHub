@@ -20,8 +20,11 @@ const Header = ({ email, hasRoom, roomName }) => {
         
         // Check if any notifications have status 'unread'
         const notifications = response.data.All_Notifications; 
-        const hasUnread = notifications.length > 0;
-        setHasUnreadNotifications(hasUnread);
+        const unreadNotifications = notifications.filter(notification => notification.status === 'unread');
+        console.log(notifications)
+        console.log(unreadNotifications)
+        // Check if there are any unread notifications
+        setHasUnreadNotifications(unreadNotifications.length > 0);
 
       } catch (error) {
         console.error('Error fetching notifications:', error);
