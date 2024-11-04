@@ -59,7 +59,9 @@ The scope of these updates will require thorough testing across both the fronten
 Our best work:
 
 Aderemi-Fawoye, Daniel
- * [My best work]()
+ * [Selective state updates to different parts of the same page]
+ * [Parent Widget](https://github.com/WilliamOdumah/RoomHub/blob/Daniel-FE-SideBar/flutter_frontend/lib/screens/AllTask.dart)
+ * [Child Widget](https://github.com/WilliamOdumah/RoomHub/blob/Daniel-FE-SideBar/flutter_frontend/lib/screens/TaskGrid.dart)
 
 Dao, Hung Lu
  * [Deploy to Lambda](https://github.com/WilliamOdumah/RoomHub/blob/main/.github/workflows/main.yml)
