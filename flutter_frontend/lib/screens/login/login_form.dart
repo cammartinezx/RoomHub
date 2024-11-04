@@ -92,18 +92,18 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
             height: 25.0,
           ),
 
-          ElevatedButton(
-            onPressed: () async {
-              logOut();
-            },
-            child: const Text(
-              "Log Out",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 8.0),
-            ),
-          ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     logOut();
+          //   },
+          //   child: const Text(
+          //     "Log Out",
+          //     style: TextStyle(
+          //         color: Colors.white,
+          //         fontWeight: FontWeight.bold,
+          //         fontSize: 8.0),
+          //   ),
+          // ),
           const SizedBox(
             height: 10.0,
           ),
