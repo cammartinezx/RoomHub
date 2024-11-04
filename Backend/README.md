@@ -77,9 +77,9 @@ If docker doesn't work:
     - Open `EXTENSIONS` in Visual Studio Code and search for `Docker` and install this extension:
     ![Docker extension](../Documentation/images/Docker_extension.png)
     You should download the correct extension as shown above.
-    - Open `Terminal` in Visual Studio Code and enter this command: `sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`. You may need to replace `v2.21.0` with your current docker version by running command `docker -v` above. Then run this command: `sudo chmod +x /usr/local/bin/docker-compose` 
+    - Open `Terminal` in Visual Studio Code and enter this command: `sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`. You may need to replace `v2.21.0` with your current docker version by running command `docker -v` above. Then run this command: `sudo chmod +x /usr/local/bin/docker-compose`. 
     
-2. Build docker:
+2. Build docker: make sure you are opening Docker Desktop Application in your machine.
     ```
     $ docker compose up --build
     ```
