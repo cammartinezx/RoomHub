@@ -33,3 +33,16 @@ Tool Used for Regression Testing:
 
 
 ## Show off
+Our best work:
+
+Aderemi-Fawoye, Daniel
+ * [My best work]()
+
+Dao, Hung Lu
+ * [Deploy to Lambda](https://github.com/WilliamOdumah/RoomHub/blob/main/.github/workflows/main.yml)
+
+Martinez Ovando, Camila
+ * [My best work]()
+
+Odumah, William
+ * [Designing and implementing the functionality of the tasks page](https://github.com/WilliamOdumah/RoomHub/blob/main/Frontend/src/pages/ManageTasksPage.js)
