@@ -109,8 +109,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
                 color: Colors.white, // Background color for the input area
               ),
@@ -123,7 +123,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.only(top: 40),
                         child: Text("Select a preset announcement",
                             style: TextStyle(
                               color: theme.darkblue,
