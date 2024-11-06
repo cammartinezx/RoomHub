@@ -35,6 +35,7 @@ We perform full regression testing for release-specific testing before merging t
 ### What have you not tested? 
 In our integration tests, we couldn’t fully test some error-handling branches that depend on DynamoDB failures, these branches would trigger only if DynamoDB returned an error, which was difficult to simulate in our testing environment. For example:
 - **`delete_task(task_id)`**: Similarly, this method attempts to delete a task from DynamoDB, and its `catch` block would handle any errors during the deletion process by logging and returning "FAILURE".
+  
 Similarly, The `index.js` router file has lower branch coverage at 50% because the condition not tested checks if the code is running on AWS Lambda. If true, it sets up the Lambda handler with awsServerlessExpress.proxy(server, event, context). This code path is only executed in production on AWS and does not run in the local environment.
 
 ### Test coverage across each tier
