@@ -53,7 +53,7 @@ If lambda doesn't work:
     ```
 6. Run Integration tests.
    ```
-   $npm run integration-test
+   $ npm run integration-test
    ```
 
 ## Backend Documentation
