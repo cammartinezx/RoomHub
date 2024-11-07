@@ -279,3 +279,17 @@ The testplan for this sprint contains Unit tests and Integration tests
     4. Fail to Create a Room with Duplicate Room ID
         - Description: Attempt to create a room with an already existing room ID ("rm_12").
         - Expected Outcome: The method should return "FAILED" due to the ConditionExpression failure.
+### 3. Regression Testing
+
+#### 3.1 Execution
+
+Regression testing is automated through a GitHub Actions workflow:
+
+1. **Automation Workflow**: The `BE-test.yml` file in `.github/workflows` triggers regression tests whenever a change is pushed to key branches (`main` and `dev`) in the backend folder.
+2. **Testing Command**: Running `npm run test` executes all backend tests, including unit and integration tests.
+3. **Consistency in Environment**: The workflow specifies `Node.js 22.x` to ensure compatibility and minimize issues from environment differences.
+4. **Automation Objective**: The automated workflow confirms that new code does not break existing functionality by running the full suite of tests with each code update.
+
+#### 3.2 Tool and Environment
+- **Tool**: GitHub Actions handles continuous integration and regression testing.
+- **Environment**: Runs on `ubuntu-latest` with a standardized Node.js version, ensuring reliable results.
