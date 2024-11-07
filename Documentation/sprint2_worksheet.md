@@ -60,11 +60,6 @@ For our system, here's how the test coverage breaks down across each layer of ea
   - All routers (Notification, Room, Task, User, index) have high coverage, with each above 90% for statements and functions. 
   - The `index.js` router has lower branch coverage because the branch is entered only if the code is running on AWS Lambda, but still meets the criteria for "fully tested" in statements and function coverage.
 
-### Integration Tests Tier
-- **Fully Tested (80%+)**: 
-  - `DbSetup.js` in our integration tests is 97.1% covered.
-
-
 ## Profiler
 #### Which endpoint is the slowest?
 The slowest endpoint we have is GET task/get-completed-tasks?frm=dan@gmail.com, which took 1593.91 ms to complete.
@@ -76,7 +71,7 @@ One potential solution would be to modify our database structure. Instead of sto
 
 Ultimately, while optimizing this endpoint is possible, we may choose not to implement the change at this time. The current performance is acceptable, as the response time is still under two seconds, and the trade-off between speed and resource utilization may not warrant the structural changes to the database.
 
-[Profiler Log](C:\Users\DanielAF\Documents\GitHub\Comp4350\RoomHub\Backend\src\ProfilingData\profiling_results.log)
+[Profiler Log](https://github.com/WilliamOdumah/RoomHub/blob/dev/Backend/src/ProfilingData/profiling_results.log)
 
 ## Last dash
 In the final sprint, we aim to complete the Shared Expenses and Find Roommate features, which will require significant changes to our existing database schemas. Here are some anticipated challenges:
