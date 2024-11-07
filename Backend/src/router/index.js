@@ -22,6 +22,8 @@ app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });
 });
 
+
+
 const server = awsServerlessExpress.createServer(app);
 
 if (process.env.AWS_LAMBDA_FUNCTION_NAME) {
