@@ -188,10 +188,8 @@ class UserPersistence {
             ConditionExpression: "attribute_exists(user_id)", // Ensure the user exists
             ReturnValues: "NONE",
         });
-    
         await this.#doc_client.send(update_command);
     }
-    
 
     /**
      * Updates the users room_id field with the new room id
