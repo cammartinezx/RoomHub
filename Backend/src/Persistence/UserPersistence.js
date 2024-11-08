@@ -161,7 +161,7 @@ class UserPersistence {
         let notification = response.Item.notification;
         if (notification === undefined) {
             // throw new Error(`User ${user_id} doesn't have a notification yet`);
-            notification = new Set([]);
+            notification = [];
         }
         return notification;
     }
@@ -177,19 +177,21 @@ class UserPersistence {
             Key: {
                 user_id: user_id,
             },
-            UpdateExpression: "ADD #notif :notif_id",
+            UpdateExpression: "SET #notif = list_append(if_not_exists(#notif, :empty_list), :notif_id)",
             ExpressionAttributeNames: {
                 "#notif": "notification",
             },
             ExpressionAttributeValues: {
-                ":notif_id": new Set([notif_id]), // Convert notif_id into a String Set (SS)
+                ":notif_id": [notif_id], // Wrap notif_id in an array for appending to the list
+                ":empty_list": [], // Handle the case where the notification attribute doesn't exist
             },
-            ConditionExpression: "attribute_exists(user_id)",
+            ConditionExpression: "attribute_exists(user_id)", // Ensure the user exists
             ReturnValues: "NONE",
         });
-
+    
         await this.#doc_client.send(update_command);
     }
+    
 
     /**
      * Updates the users room_id field with the new room id
@@ -214,19 +216,42 @@ class UserPersistence {
     }
 
     /**
-     * Deletes a notification from a users set of notification
+     * Deletes a notification from a user's list of notifications
      * @param {String} notification_id "The unique identifier for the notification"
      * @param {String} user_id "The id for the user who now belongs to this room"
      */
     async update_notification_set(notification_id, user_id) {
+        // First, fetch the current notifications
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+
+        const response = await this.#doc_client.send(get_command);
+
+        let notifications = response.Item?.notification;
+
+        if (!notifications || !Array.isArray(notifications)) {
+            throw new Error(`User ${user_id} does not have notifications or the attribute is not a list.`);
+        }
+
+        // Filter out the notification to be deleted
+        const updated_notifications = notifications.filter((id) => id !== notification_id);
+
+        // Update the notifications list
         const update_command = new UpdateCommand({
             TableName: "User",
             Key: {
                 user_id: user_id,
             },
-            UpdateExpression: "DELETE notification :notification_id",
+            UpdateExpression: "SET #notif = :updated_notifications",
+            ExpressionAttributeNames: {
+                "#notif": "notification",
+            },
             ExpressionAttributeValues: {
-                ":notification_id": new Set([notification_id]),
+                ":updated_notifications": updated_notifications,
             },
             ConditionExpression: "attribute_exists(user_id)",
             ReturnValues: "NONE",
