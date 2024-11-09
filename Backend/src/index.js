@@ -2,6 +2,7 @@ const User = require("./router/User");
 const Room = require("./router/Room");
 const Notification = require("./router/Notification");
 const Task = require("./router/Task");
+const Transaction = require("./router/Transaction");
 
 const express = require("express");
 const cors = require("cors");
@@ -52,6 +53,7 @@ app.use("/user", User);
 app.use("/room", Room);
 app.use("/notification", Notification);
 app.use("/task", Task);
+app.use("/transaction", Transaction);
 
 app.get("/", async (req, res) => {
     console.log(req.body);
