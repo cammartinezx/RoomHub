@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Persistence/NotificationPersistence.js</title>
+    <title>JSDoc: Source: Persistence/TransactionPersistence.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Persistence/NotificationPersistence.js</h1>
+    <h1 class="page-title">Source: Persistence/TransactionPersistence.js</h1>
 
     
 
@@ -33,6 +33,8 @@ const {
     UpdateCommand,
     PutCommand,
     DeleteCommand,
+    QueryCommand,
+    ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const Services = require("../Utility/Services");
 require("dotenv").config();
@@ -46,7 +48,7 @@ require("dotenv").config();
  * @class
  */
 
-class NotificationPersistence {
+class TransactionPersistence {
     // document client to dynamo db and table name to reference the table.
     /**
      * The connection with the dynamodb client
@@ -94,7 +96,7 @@ class NotificationPersistence {
         }
 
         this.#doc_client = DynamoDBDocumentClient.from(working_client);
-        this.#table_name = "notifications";
+        this.#table_name = "Transaction";
     }
 
     get_doc_client() {
@@ -103,30 +105,6 @@ class NotificationPersistence {
 
     get_table_name() {
         return this.#table_name;
-    }
-
-    /**
-     * Uses dynamodb GetCommand to get message and type attribute from notification table from database
-     * @param {String} notif_id "New notification ID to be added to the database"
-     * @returns {JSON} "Returns a json object with message and type value or throw a error if a notification does not have message"
-     */
-    async get_msg_type(notif_id) {
-        const get_command = new GetCommand({
-            TableName: "Notification",
-            Key: {
-                id: notif_id,
-            },
-        });
-        const response = await this.#doc_client.send(get_command);
-
-        let message = response.Item.message;
-        let type = response.Item.type;
-        let from = response.Item.from;
-        if (message === undefined || message === "") {
-            throw new Error("Notification doesn't have a message");
-        }
-
-        return { notification_id: notif_id, msg: message, type: type, from: from };
     }
 
     /**
@@ -140,21 +118,19 @@ class NotificationPersistence {
      * @param {String} room_id "Room id from Sender to be added to the database"
      * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
      */
-    async generate_new_notification(notif_id, msg, status, from, to, type, room_id) {
+    async generate_new_transaction(trans_id, name, amount, room_id, date) {
         try {
             // add the new notification
             const put_command = new PutCommand({
-                TableName: "Notification",
+                TableName: "Transaction",
                 Item: {
-                    id: notif_id,
-                    message: msg,
-                    from: from,
+                    transaction_id: trans_id,
+                    transaction_name: name,
+                    transaction_amount: amount,
                     room_id: room_id,
-                    status: status,
-                    to: to,
-                    type: type,
+                    transaction_date: date,
                 },
-                ConditionExpression: "attribute_not_exists(id)",
+                ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
             });
 
             await this.#doc_client.send(put_command);
@@ -168,47 +144,107 @@ class NotificationPersistence {
         }
     }
 
-    /**
-     * Updates the notification status from "unread" to "read" if receiver see the notification
-     * @param {String} notif_id "The unique identifier for the notification"
-     */
-    async update_notification_status(notif_id) {
-        const update_command = new UpdateCommand({
-            TableName: "Notification",
+    async getBalanceRecord(debtor, creditor) {
+        const get_command = new GetCommand({
+            TableName: "Balance",
             Key: {
-                id: notif_id,
+                debtor: debtor,
+                creditor: creditor,
             },
-            UpdateExpression: "SET #status = :new_status",
-            ExpressionAttributeNames: {
-                "#status": "status",
+        });
+
+        const result = await this.#doc_client.send(get_command);
+        let balance;
+        if (result.Item != undefined) {
+            balance = result.Item;
+        } else {
+            balance = null;
+        }
+        return balance;
+    }
+
+    // read as user1 owes user2 amount dollars.
+    // this does a conditional insert if the item doesn't exist
+    async updateBalance(debtor, creditor, new_amount) {
+        const update_command = new UpdateCommand({
+            TableName: "Balance",
+            Key: {
+                debtor: debtor,
+                creditor: creditor,
             },
+            UpdateExpression: "SET amount = if_not_exists(amount, :start) + :newAmount",
             ExpressionAttributeValues: {
-                ":new_status": "read", // Update the status to 'read'
+                ":newAmount": new_amount,
+                ":start": 0, // Initial value if amount does not exist
             },
-            ConditionExpression: "attribute_exists(id)",
-            ReturnValues: "NONE",
         });
 
         await this.#doc_client.send(update_command);
     }
 
     /**
-     * Delete a notification with the notification id.
-     * @param {String} notification_id  "The unique identifier for the notification"
+     * Uses dynamoDB QueryCommand and ScanCommand to get a list of amount from debtor or creditor
+     * @param {String} user_id "New user's name to be added to the database"
+     * @param {String} role "role can be either debtor or creditor"
+     * @returns {Array} "An array of all debt or credit amount relate to user"
      */
-    async delete_notification(notification_id) {
-        const delete_command = new DeleteCommand({
-            TableName: "Notification",
-            Key: {
-                id: notification_id,
+    async get_amounts_by_role(user_id, role) {
+        if (role !== "debtor" &amp;&amp; role !== "creditor") {
+            throw new Error("Role must be either ");
+        }
+
+        let result;
+        if (role === "debtor") {
+            // Query based on debtor (primary key)
+            const queryCommand = new QueryCommand({
+                TableName: "Balance",
+                KeyConditionExpression: "debtor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+
+            result = await this.#doc_client.send(queryCommand);
+        } else if (role === "creditor") {
+            // scan based on creditor (not indexed)
+            const scanCommand = new ScanCommand({
+                TableName: "Balance",
+                FilterExpression: "creditor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+
+            result = await this.#doc_client.send(scanCommand);
+        }
+
+        // return amounts or an empty array if no results
+        const items = result.Items || [];
+        return items.map(item => item.amount);
+    }
+
+    /**
+     * Use dynamoDB QueryCommand to get all the transaction from specific room
+     * @param {String} room_id "Room is to be added to the database"
+     * @returns {Array} "Return a list of all transactions in room"
+     */
+    async get_transaction_details(room_id) {
+        const queryCommand = new QueryCommand({
+            TableName: "Transaction",
+            KeyConditionExpression: "room_id = :room_id",
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
             },
+            ProjectionExpression: "transaction_name, transaction_date, transaction_amount",
         });
 
-        await this.#doc_client.send(delete_command);
+        const result = await this.#doc_client.send(queryCommand);
+
+        return result.Items || [];
     }
 }
 
-module.exports = NotificationPersistence;
+module.exports = TransactionPersistence;
 </code></pre>
         </article>
     </section>

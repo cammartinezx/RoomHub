@@ -5,6 +5,8 @@ const {
     UpdateCommand,
     PutCommand,
     DeleteCommand,
+    QueryCommand,
+    ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 const Services = require("../Utility/Services");
 require("dotenv").config();
@@ -150,6 +152,67 @@ class TransactionPersistence {
         });
 
         await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Uses dynamoDB QueryCommand and ScanCommand to get a list of amount from debtor or creditor
+     * @param {String} user_id "New user's name to be added to the database"
+     * @param {String} role "role can be either debtor or creditor"
+     * @returns {Array} "An array of all debt or credit amount relate to user"
+     */
+    async get_amounts_by_role(user_id, role) {
+        if (role !== "debtor" && role !== "creditor") {
+            throw new Error("Role must be either ");
+        }
+
+        let result;
+        if (role === "debtor") {
+            // Query based on debtor (primary key)
+            const queryCommand = new QueryCommand({
+                TableName: "Balance",
+                KeyConditionExpression: "debtor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+
+            result = await this.#doc_client.send(queryCommand);
+        } else if (role === "creditor") {
+            // scan based on creditor (not indexed)
+            const scanCommand = new ScanCommand({
+                TableName: "Balance",
+                FilterExpression: "creditor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+
+            result = await this.#doc_client.send(scanCommand);
+        }
+
+        // return amounts or an empty array if no results
+        const items = result.Items || [];
+        return items.map((item) => item.amount);
+    }
+
+    /**
+     * Use dynamoDB QueryCommand to get all the transaction from specific room
+     * @param {String} room_id "Room is to be added to the database"
+     * @returns {Array} "Return a list of all transactions in room"
+     */
+    async get_transaction_details(room_id) {
+        const queryCommand = new QueryCommand({
+            TableName: "Transaction",
+            KeyConditionExpression: "room_id = :room_id",
+            ExpressionAttributeValues: {
+                ":room_id": room_id,
+            },
+            ProjectionExpression: "transaction_name, transaction_date, transaction_amount",
+        });
+
+        const result = await this.#doc_client.send(queryCommand);
+
+        return result.Items || [];
     }
 }
 

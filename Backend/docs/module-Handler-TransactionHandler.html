@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: NotificationPersistence</title>
+    <title>JSDoc: Class: TransactionHandler</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: NotificationPersistence</h1>
+    <h1 class="page-title">Class: TransactionHandler</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-Persistence.html">Persistence</a>~</span>NotificationPersistence<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-Handler.html">Handler</a>~</span>TransactionHandler<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Represents the notification persistence layer that is linked to the notification table in the database</p></div>
+            <div class="class-description"><p>Represents the notification handler</p></div>
         
     
 </header>
@@ -46,7 +46,7 @@
     
 
     
-    <h4 class="name" id="NotificationPersistence"><span class="type-signature"></span>new NotificationPersistence<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="TransactionHandler"><span class="type-signature"></span>new TransactionHandler<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
@@ -54,7 +54,7 @@
 
 
 <div class="description">
-    <p>Create a new NotificationPersistence object</p>
+    <p>Create a new NotificationHandler object</p>
 </div>
 
 
@@ -98,7 +98,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_NotificationPersistence.js.html">Persistence/NotificationPersistence.js</a>, <a href="Persistence_NotificationPersistence.js.html#line21">line 21</a>
+        <a href="Handler_TransactionHandler.js.html">Handler/TransactionHandler.js</a>, <a href="Handler_TransactionHandler.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
@@ -154,7 +154,7 @@
     
 
     
-    <h4 class="name" id="delete_notification"><span class="type-signature">(async) </span>delete_notification<span class="signature">(notification_id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="create_Expense"><span class="type-signature">(async) </span>create_Expense<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
     
 
     
@@ -162,7 +162,7 @@
 
 
 <div class="description">
-    <p>Delete a notification with the notification id.</p>
+    <p>Add a new expense to the persistence Layer</p>
 </div>
 
 
@@ -198,13 +198,13 @@
 
         <tr>
             
-                <td class="name"><code>notification_id</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Express.request</span>
 
 
             
@@ -214,7 +214,30 @@
 
             
 
-            <td class="description last"><p>&quot;The unique identifier for the notification&quot;</p></td>
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
         </tr>
 
     
@@ -255,7 +278,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_NotificationPersistence.js.html">Persistence/NotificationPersistence.js</a>, <a href="Persistence_NotificationPersistence.js.html#line171">line 171</a>
+        <a href="Handler_TransactionHandler.js.html">Handler/TransactionHandler.js</a>, <a href="Handler_TransactionHandler.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -291,7 +314,7 @@
     
 
     
-    <h4 class="name" id="generate_new_notification"><span class="type-signature">(async) </span>generate_new_notification<span class="signature">(notif_id, msg, status, from, to, type, room_id)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="get_summary"><span class="type-signature">(async) </span>get_summary<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {Express.response}</span></h4>
     
 
     
@@ -299,7 +322,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb PutCommand to add the new notification to the database</p>
+    <p>Get an amount of own and are owned of specific user.</p>
 </div>
 
 
@@ -335,13 +358,13 @@
 
         <tr>
             
-                <td class="name"><code>notif_id</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Express.request</span>
 
 
             
@@ -351,20 +374,20 @@
 
             
 
-            <td class="description last"><p>&quot;New notification ID to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;Request received by the router.&quot;</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>response</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Express.response</span>
 
 
             
@@ -374,122 +397,7 @@
 
             
 
-            <td class="description last"><p>&quot;New message to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>status</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;New status to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>from</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Notification Sender ID to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>to</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Notification Receiver ID to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;New type to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>room_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Room id from Sender to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request.&quot;</p></td>
         </tr>
 
     
@@ -530,7 +438,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_NotificationPersistence.js.html">Persistence/NotificationPersistence.js</a>, <a href="Persistence_NotificationPersistence.js.html#line115">line 115</a>
+        <a href="Handler_TransactionHandler.js.html">Handler/TransactionHandler.js</a>, <a href="Handler_TransactionHandler.js.html#line212">line 212</a>
     </li></ul></dd>
     
 
@@ -559,7 +467,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Returns SUCCESS or FAILED based on each values to be added to notification table&quot;</p>
+    <p>&quot;A response object which contains the response to the request.&quot;</p>
 </div>
 
 
@@ -570,7 +478,7 @@
     </dt>
     <dd>
         
-<span class="param-type">String</span>
+<span class="param-type">Express.response</span>
 
 
     </dd>
@@ -588,7 +496,7 @@
     
 
     
-    <h4 class="name" id="get_msg_type"><span class="type-signature">(async) </span>get_msg_type<span class="signature">(notif_id)</span><span class="type-signature"> &rarr; {JSON}</span></h4>
+    <h4 class="name" id="get_transaction"><span class="type-signature">(async) </span>get_transaction<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {Express.response}</span></h4>
     
 
     
@@ -596,7 +504,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb GetCommand to get message and type attribute from notification table from database</p>
+    <p>Get all of transactions in room of specific user.</p>
 </div>
 
 
@@ -632,13 +540,13 @@
 
         <tr>
             
-                <td class="name"><code>notif_id</code></td>
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Express.request</span>
 
 
             
@@ -648,7 +556,30 @@
 
             
 
-            <td class="description last"><p>&quot;New notification ID to be added to the database&quot;</p></td>
+            <td class="description last"><p>&quot;Request received by the router.&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request.&quot;</p></td>
         </tr>
 
     
@@ -689,7 +620,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_NotificationPersistence.js.html">Persistence/NotificationPersistence.js</a>, <a href="Persistence_NotificationPersistence.js.html#line85">line 85</a>
+        <a href="Handler_TransactionHandler.js.html">Handler/TransactionHandler.js</a>, <a href="Handler_TransactionHandler.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -718,7 +649,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Returns a json object with message and type value or throw a error if a notification does not have message&quot;</p>
+    <p>&quot;A response object which contains the response to the request.&quot;</p>
 </div>
 
 
@@ -729,7 +660,7 @@
     </dt>
     <dd>
         
-<span class="param-type">JSON</span>
+<span class="param-type">Express.response</span>
 
 
     </dd>
@@ -747,7 +678,7 @@
     
 
     
-    <h4 class="name" id="update_notification_status"><span class="type-signature">(async) </span>update_notification_status<span class="signature">(notif_id)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="sum_array"><span class="type-signature"></span>sum_array<span class="signature">(list)</span><span class="type-signature"> &rarr; {Double}</span></h4>
     
 
     
@@ -755,7 +686,7 @@
 
 
 <div class="description">
-    <p>Updates the notification status from &quot;unread&quot; to &quot;read&quot; if receiver see the notification</p>
+    <p>Return a sum of all elements in array.</p>
 </div>
 
 
@@ -791,13 +722,13 @@
 
         <tr>
             
-                <td class="name"><code>notif_id</code></td>
+                <td class="name"><code>list</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Array</span>
 
 
             
@@ -807,7 +738,7 @@
 
             
 
-            <td class="description last"><p>&quot;The unique identifier for the notification&quot;</p></td>
+            <td class="description last"><p>&quot;Array of all values.&quot;</p></td>
         </tr>
 
     
@@ -848,7 +779,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_NotificationPersistence.js.html">Persistence/NotificationPersistence.js</a>, <a href="Persistence_NotificationPersistence.js.html#line147">line 147</a>
+        <a href="Handler_TransactionHandler.js.html">Handler/TransactionHandler.js</a>, <a href="Handler_TransactionHandler.js.html#line253">line 253</a>
     </li></ul></dd>
     
 
@@ -873,6 +804,28 @@
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>&quot;Sum of all values.&quot;</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Double</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 

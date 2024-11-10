@@ -189,7 +189,7 @@ class UserPersistence {
         let notification = response.Item.notification;
         if (notification === undefined) {
             // throw new Error(`User ${user_id} doesn't have a notification yet`);
-            notification = new Set([]);
+            notification = [];
         }
         return notification;
     }
@@ -205,17 +205,17 @@ class UserPersistence {
             Key: {
                 user_id: user_id,
             },
-            UpdateExpression: "ADD #notif :notif_id",
+            UpdateExpression: "SET #notif = list_append(if_not_exists(#notif, :empty_list), :notif_id)",
             ExpressionAttributeNames: {
                 "#notif": "notification",
             },
             ExpressionAttributeValues: {
-                ":notif_id": new Set([notif_id]), // Convert notif_id into a String Set (SS)
+                ":notif_id": [notif_id], // Wrap notif_id in an array for appending to the list
+                ":empty_list": [], // Handle the case where the notification attribute doesn't exist
             },
-            ConditionExpression: "attribute_exists(user_id)",
+            ConditionExpression: "attribute_exists(user_id)", // Ensure the user exists
             ReturnValues: "NONE",
         });
-
         await this.#doc_client.send(update_command);
     }
 
@@ -242,19 +242,42 @@ class UserPersistence {
     }
 
     /**
-     * Deletes a notification from a users set of notification
+     * Deletes a notification from a user's list of notifications
      * @param {String} notification_id "The unique identifier for the notification"
      * @param {String} user_id "The id for the user who now belongs to this room"
      */
     async update_notification_set(notification_id, user_id) {
+        // First, fetch the current notifications
+        const get_command = new GetCommand({
+            TableName: "User",
+            Key: {
+                user_id: user_id,
+            },
+        });
+
+        const response = await this.#doc_client.send(get_command);
+
+        let notifications = response.Item?.notification;
+
+        if (!notifications || !Array.isArray(notifications)) {
+            throw new Error(`User ${user_id} does not have notifications or the attribute is not a list.`);
+        }
+
+        // Filter out the notification to be deleted
+        const updated_notifications = notifications.filter((id) => id !== notification_id);
+
+        // Update the notifications list
         const update_command = new UpdateCommand({
             TableName: "User",
             Key: {
                 user_id: user_id,
             },
-            UpdateExpression: "DELETE notification :notification_id",
+            UpdateExpression: "SET #notif = :updated_notifications",
+            ExpressionAttributeNames: {
+                "#notif": "notification",
+            },
             ExpressionAttributeValues: {
-                ":notification_id": new Set([notification_id]),
+                ":updated_notifications": updated_notifications,
             },
             ConditionExpression: "attribute_exists(user_id)",
             ReturnValues: "NONE",
@@ -297,13 +320,13 @@ module.exports = UserPersistence;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateDate">validateDate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Oct 30 2024 19:14:53 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Sun Nov 10 2024 17:09:30 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
