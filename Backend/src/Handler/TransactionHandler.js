@@ -98,6 +98,7 @@ class TransactionHandler {
                 validateDate(date);
             } catch (error) {
                 response.status(422).json({ message: error.message });
+                return;
             }
 
             // async errors check.
@@ -114,11 +115,12 @@ class TransactionHandler {
                 );
             } catch (error) {
                 response.status(404).json({ message: error.message });
+                return;
             }
 
             const transaction_id = uuidv4();
             // create expense.
-            this.#transaction_persistence.generate_new_transaction(
+            await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
                 transaction_nm,
                 transaction_price,
@@ -153,13 +155,14 @@ class TransactionHandler {
             const date = request.body.date.trim();
 
             // sync errors
-            const syncError =
-                validateString(debtor, "Debtors Name") ||
-                validateString(creditor, "Creditors Name") ||
-                validatePositiveInteger(amount, "Settle Up amount") ||
+            try {
+                validateString(debtor, "Debtors Name");
+                validateString(creditor, "Creditors Name");
+                validatePositiveInteger(amount, "Settle Up amount");
                 validateDate(date);
-            if (syncError) {
-                response.status(422).json({ message: syncError });
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
             }
 
             let debtor_room_id;
@@ -171,18 +174,20 @@ class TransactionHandler {
                 await validateUsersAreRoommates(this.#room_persistence, creditor, debtor_room_id);
             } catch (error) {
                 response.status(404).json({ message: error.message });
+                return;
             }
 
             try {
                 await validateOutstandingBalance(this.#transaction_persistence, creditor, debtor, amount);
             } catch (error) {
                 response.status(409).json({ message: error.message });
+                return;
             }
 
             const transaction_id = uuidv4();
             const transaction_nm = this.generate_settle_up_summary(creditor, debtor);
             // create expense.
-            this.#transaction_persistence.generate_new_transaction(
+            await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
                 transaction_nm,
                 amount,
