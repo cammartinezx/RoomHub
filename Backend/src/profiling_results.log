@@ -41,3 +41,4 @@ Endpoint: POST /create-expense took 463.19 ms
 Endpoint: POST /create-expense took 0.76 ms
 Endpoint: POST /create-expense took 458.43 ms
 Endpoint: POST /create-expense took 885.77 ms
+Endpoint: POST /create-expense took 7.76 ms

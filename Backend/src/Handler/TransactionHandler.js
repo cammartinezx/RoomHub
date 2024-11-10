@@ -6,6 +6,8 @@ const {
     validateDate,
     validateContributorsAreRoommates,
     validateUserExist,
+    validateUsersAreRoommates,
+    validateOutstandingBalance,
 } = require("../Utility/validator");
 
 /**
@@ -68,44 +70,6 @@ class TransactionHandler {
     get_user_persistence() {
         return this.#user_persistence;
     }
-
-    /**
-     * Check if the passed in message is valid
-     * @param {String} msg "A string representing the message to be validated"
-     * @returns {Boolean} "Returns true if valid message, return false if invalid"
-     */
-    #is_valid_msg(msg) {
-        if (msg === "") {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if user id is valid
-     * @param {String} user_string "A string representing user id to be validated"
-     * @returns {Boolean} "Returns true if valid user id, return false if invalid"
-     */
-    #is_valid_user_string(user_string) {
-        if (user_string.length <= 0 || user_string === undefined) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Check if notification type is valid
-     * @param {String} type "A string representing type to be validated"
-     * @returns {Boolean} "Returns true if valid type, return false if invalid"
-     */
-    #is_valid_type(type) {
-        // for now we just have 2 types of notification (join-request or announcement)
-        if (type === "join-request" || type === "announcement") {
-            return true;
-        }
-        return false;
-    }
-
     // async #balanceRecordExist(debtor, creditor) {
     //     const result = await this.#transaction_persistence.getBalanceRecord(debtor, creditor);
     //     if (result != null) return true;
@@ -120,30 +84,33 @@ class TransactionHandler {
      */
     async create_Expense(request, response) {
         try {
-            const transcation_nm = request.body.name.trim();
+            const transaction_nm = request.body.name.trim();
             const transaction_price = request.body.price;
             const payer = request.body.payer.trim();
             const contributors = request.body.contributors;
             const date = request.body.date.trim();
 
             // sync errors
-            const syncError =
-                validateString(transcation_nm, "Transaction Name") ||
-                validateString(payer, "Payer Name") ||
-                validatePositiveInteger(transaction_price, "Price") ||
+            try {
+                validateString(transaction_nm, "Transaction Name");
+                validateString(payer, "Payer Name");
+                validatePositiveInteger(transaction_price, "Price");
                 validateDate(date);
-            if (syncError) {
-                response.status(422).json({ message: syncError });
+            } catch (error) {
+                response.status(422).json({ message: error.message });
             }
 
+            // async errors check.
+            let room_id;
             try {
-                // async errors check.
                 await validateUserExist(this.#user_persistence, payer);
+                room_id = await this.#user_persistence.get_room_id(payer);
                 await validateContributorsAreRoommates(
                     this.#user_persistence,
                     this.#room_persistence,
                     contributors,
                     payer,
+                    room_id,
                 );
             } catch (error) {
                 response.status(404).json({ message: error.message });
@@ -151,10 +118,9 @@ class TransactionHandler {
 
             const transaction_id = uuidv4();
             // create expense.
-            const room_id = await this.#user_persistence.get_room_id(payer);
             this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
-                transcation_nm,
+                transaction_nm,
                 transaction_price,
                 room_id,
                 date,
@@ -175,110 +141,58 @@ class TransactionHandler {
         }
     }
 
-    /**
-     * Create a message based on sender, receiver and type
-     * @param {String} from "a sender ID"
-     * @param {String} to "a receiver ID"
-     * @param {String} type "a type of notification, for now we just have invite"
-     * @returns {String} "notification message"
-     */
-    generate_message(from, to, type) {
-        if (type == "join-request") {
-            return this.generate_room_request_message(from);
-        }
-        return "";
+    generate_settle_up_summary(creditor, debtor) {
+        return `${debtor} made a payement to ${creditor}`;
     }
 
-    /**
-     * Create an invite message based on sender, receiver
-     * @param {String} from "a sender ID"
-     * @param {String} to "a receiver ID"
-     * @returns {String} "notification invite message"
-     */
-    generate_invite_message(from, to) {
-        return `${from} invites ${to} to join their room`;
-    }
-
-    /**
-     * Create an invite message based on sender, receiver
-     * @param {String} from "a sender ID"
-     * @returns {String} "notification invite message"
-     */
-    generate_room_request_message(from) {
-        return `${from} requests to join your room`;
-    }
-
-    /**
-     * Add some new announcements to the persistence Layer
-     * @async
-     * @param {Express.request} request "Request received by the router"
-     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
-     */
-    async send_announcement(request, response) {
+    async settle_debt(request, response) {
         try {
-            const status = "unread";
-            const from = request.body.from;
-            const message = request.body.message;
-            const type = request.body.type;
+            const debtor = request.body.debtor.trim();
+            const creditor = request.body.creditor.trim();
+            const amount = request.body.amount;
+            const date = request.body.date.trim();
 
-            if (!this.#is_valid_user_string(from)) {
-                return response.status(404).json({ message: "User not found" });
+            // sync errors
+            const syncError =
+                validateString(debtor, "Debtors Name") ||
+                validateString(creditor, "Creditors Name") ||
+                validatePositiveInteger(amount, "Settle Up amount") ||
+                validateDate(date);
+            if (syncError) {
+                response.status(422).json({ message: syncError });
             }
 
-            // need to verify if sender and receiver exist in database and also sender have a room
-            let sender = await this.#user_persistence.get_user(from);
-
-            if (sender === null) {
-                return response.status(404).json({ message: "User not found" });
+            let debtor_room_id;
+            try {
+                // async errors check.
+                await validateUserExist(this.#user_persistence, debtor);
+                await validateUserExist(this.#user_persistence, creditor);
+                debtor_room_id = await this.#user_persistence.get_room_id(debtor);
+                await validateUsersAreRoommates(this.#room_persistence, creditor, debtor_room_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
             }
 
-            if (!this.#is_valid_msg(message)) {
-                return response.status(400).json({ message: "Message is empty" });
+            try {
+                await validateOutstandingBalance(this.#transaction_persistence, creditor, debtor, amount);
+            } catch (error) {
+                response.status(409).json({ message: error.message });
             }
 
-            if (!this.#is_valid_type(type)) {
-                return response.status(400).json({ message: "Notification type is invalid" });
-            }
+            const transaction_id = uuidv4();
+            const transaction_nm = this.generate_settle_up_summary(creditor, debtor);
+            // create expense.
+            this.#transaction_persistence.generate_new_transaction(
+                transaction_id,
+                transaction_nm,
+                amount,
+                debtor_room_id,
+                date,
+            );
 
-            let room_id = await this.#user_persistence.get_room_id(from);
-            // get the total number of users in the room
-            let users = await this.#room_persistence.get_room_users(room_id);
-            // remove the sender id
-            users.delete(from);
-            // the room only have one user which is sender
-            if (users.size === 0) {
-                return response.status(200).json({ message: "You are the only person in this room" });
-            } else {
-                // convert set into array
-                let user_list = [...users];
-                let success = true;
-                for (let item of user_list) {
-                    // generate a new id for each notification received of each users
-                    const notif_id = uuidv4();
-                    // create an annoucement for everone in the room except sender
-                    let notification_status = await this.#notification_persistence.generate_new_notification(
-                        notif_id,
-                        message,
-                        status,
-                        from,
-                        item,
-                        type,
-                        room_id,
-                    );
-                    if (notification_status === "SUCCESS") {
-                        // update the new notif into user table except sender
-                        await this.#user_persistence.update_user_notifications(notif_id, item);
-                    } else {
-                        success = false;
-                        break;
-                    }
-                }
-                if (success) {
-                    return response.status(200).json({ message: "Send announcement successfully" });
-                } else {
-                    return response.status(500).json({ message: "Retry creating the notification" });
-                }
-            }
+            // update balance table with expense relationship
+            await this.#transaction_persistence.updateBalance(debtor, creditor, -amount);
+            response.status(200).json({ message: "Transaction created successfully" });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }

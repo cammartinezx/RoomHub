@@ -26,6 +26,10 @@ router.post("/create-expense", (req, res) => {
     transaction_handler.create_Expense(req, res);
 });
 
+router.post("/settle-up", (req, res) => {
+    transaction_handler.settle_debt(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ message: "Welcome to the Transaction paths" });
 });

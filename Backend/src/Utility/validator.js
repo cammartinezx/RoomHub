@@ -41,8 +41,15 @@ async function validateUserExist(user_persistence, userId) {
     }
 }
 
-async function validateContributorsAreRoommates(user_persistence, room_persistence, contributors, payer) {
-    let room_id = await user_persistence.get_room_id(payer);
+async function validateUsersAreRoommates(room_persistence, user2, user1_room_id) {
+    let users_set = await room_persistence.get_room_users(user1_room_id);
+    const users = Array.from(users_set);
+    if (!users.map((str) => str.toLowerCase()).includes(user2.toLowerCase())) {
+        throw new Error("Users are not roommates");
+    }
+}
+
+async function validateContributorsAreRoommates(user_persistence, room_persistence, contributors, payer, room_id) {
     // get the users in the room
     let users_set = await room_persistence.get_room_users(room_id);
     const users = Array.from(users_set);
@@ -59,10 +66,24 @@ async function validateContributorsAreRoommates(user_persistence, room_persisten
     }
 }
 
+async function validateOutstandingBalance(transaction_persistence, creditor, debtor, settle_up_amnt) {
+    const result = await transaction_persistence.getBalanceRecord(debtor, creditor);
+    if (result != null) {
+        const currOutstanding = result.amount;
+        if (currOutstanding < settle_up_amnt) {
+            throw new Error("Settle up amount must be less than or equal to outstanding balance");
+        }
+    } else {
+        throw new Error("No outstanding balance to be settled");
+    }
+}
+
 module.exports = {
     validateString,
     validatePositiveInteger,
     validateDate,
     validateUserExist,
     validateContributorsAreRoommates,
+    validateOutstandingBalance,
+    validateUsersAreRoommates,
 };
