@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/NotificationsPage.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCheck} from '@fortawesome/free-solid-svg-icons';
 
 const NotificationsPage = () => {
     const location = useLocation();
-    const email = location.state?.email;  // Get the email of the logged-in user
+    const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
     const roomName = location.state?.roomName;
     const [notifications, setNotifications] = useState([]);
@@ -36,7 +38,6 @@ const NotificationsPage = () => {
         const from =notification.from;
         const id = notification.notification_id
         try {
-            // Make the API call to add the new roommate
             const response = await axios.post(
                 'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/add-roommate',
                 {
@@ -53,7 +54,7 @@ const NotificationsPage = () => {
                     n.notification_id === id ? { ...n, status: 'accepted' } : n
                 );              
                 setNotifications(updatedNotifications);
-                alert('User successfully to your room!');
+                alert('User successfully added to your room!');
             } else {
                 setError('Error: ' + response.data.message);
             }
@@ -75,6 +76,27 @@ const NotificationsPage = () => {
         }
     };
 
+    // Function to delete a notification
+    const handleDelete = async (notification) => {
+        const id = notification.notification_id;
+        const confirmDelete = window.confirm("Are you sure you want to delete this notification?");
+        if (confirmDelete) {
+            try {
+                const response = await axios.delete(
+                    `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/notification/${id}`
+                );
+                if (response.status === 200) {
+                    setNotifications(notifications.filter((n) => n.notification_id !== id));
+                    alert('Notification successfully deleted.');
+                } else {
+                    setError('Error: Could not delete the notification.');
+                }
+            } catch (error) {
+                setError('Error deleting notification.');
+            }
+        }
+    };
+
 
     return (
         <div className={styles.container}>
@@ -84,28 +106,37 @@ const NotificationsPage = () => {
                 {notifications.length > 0 ? (
                     <ul>
                         {notifications.map((notification) => (
-                            <li 
-                                key={notification.notification_id} 
-                                className={notification.status === 'accepted' ? styles.accepted : ''}
-                            >
-                                {notification.msg} - {notification.status}
-                                {notification.type === 'join-request' && notification.status !== 'accepted' && (
-                                    <button onClick={() => handleAccept(notification)}>
-                                        Accept
+                            <li key={notification.notification_id} className={styles.notificationCard}>
+                                <div className={styles.notificationContent}>
+                                    <div className={styles.notificationDetails}>
+                                        <p className={styles.notificationType}>
+                                            {notification.type === 'join-request' ? 'Join Request' : 'General Notification'}
+                                        </p>
+                                        <p className={styles.notificationMessage}>{notification.msg}</p>
+                                    </div>
+                                </div>
+                                <div className={styles.notificationActions}>
+                                    {notification.type === 'join-request' && notification.status !== 'accepted' && (
+                                        <button onClick={() => handleAccept(notification)} className={styles.acceptButton}>
+                                            <FontAwesomeIcon icon={faCheck} /> Accept
+                                        </button>
+                                    )}
+                                    <button onClick={() => handleDelete(notification)} className={styles.deleteButton}>
+                                        <FontAwesomeIcon icon={faTrash} /> Delete
                                     </button>
-                                )}
+                                </div>
                             </li>
                         ))}
                     </ul>
                 ) : (
-                    <p>No notifications available.</p>
+                    <p className={styles.noNotifications}>No notifications available.</p>
                 )}
 
-                <button 
-                    className={styles.backButton} 
-                    onClick={() => navigate('/home', { state: { email, hasRoom } })}
+                <button
+                    className={styles.backButton}
+                    onClick={() => navigate(-1)}
                 >
-                    Back to Home
+                    Back
                 </button>
             </div>
         </div>

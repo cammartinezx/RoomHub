@@ -31,7 +31,7 @@ const CreateRoomPage = () => {
             setError('Failed to create the room. Please try again.');
           }
         } catch (error) {
-          setError('An error occurred while creating the room.');
+          setError('An error occurred while creating the room. Please try again later');
           console.error('Room creation error:', error);
         }
       };

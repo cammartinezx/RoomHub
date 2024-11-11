@@ -1,0 +1,61 @@
+/* AnnouncementsPage.module.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+  }
+
+.presetContainer {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 60px;
+
+}
+
+.presetBtn {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid #ccc;
+    background-color: #bbbbbb;
+    cursor: pointer;
+    border-radius: 80px;
+}
+
+.presetBtn:hover {
+    background-color: #ddd;
+}
+
+.selected {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #007bff;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 80px;
+}
+
+.customMessage input {
+    padding: 10px;
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.sendBtn {
+    width: 20%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+

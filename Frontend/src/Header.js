@@ -8,6 +8,7 @@ import styles from './styles/Header.module.css';
 const Header = ({ email, hasRoom, roomName }) => {
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(false);
   const navigate = useNavigate();
+  
 
   //Fetch notifications to check if there are unread ones
   useEffect(() => {
@@ -19,8 +20,11 @@ const Header = ({ email, hasRoom, roomName }) => {
         
         // Check if any notifications have status 'unread'
         const notifications = response.data.All_Notifications; 
-        const hasUnread = notifications.length > 0;
-        setHasUnreadNotifications(hasUnread);
+        const unreadNotifications = notifications.filter(notification => notification.status === 'unread');
+        console.log(notifications)
+        console.log(unreadNotifications)
+        // Check if there are any unread notifications
+        setHasUnreadNotifications(unreadNotifications.length > 0);
 
       } catch (error) {
         console.error('Error fetching notifications:', error);
@@ -35,7 +39,7 @@ const Header = ({ email, hasRoom, roomName }) => {
   return (
     <header className={styles.header}>
       <div className={styles.logo}>
-        <img src="/logo2.png" alt="RoomHub Logo" />
+        <img src="/logo2.png" alt="RoomHub Logo" onClick={() => navigate('/home', { state: { hasRoom, email } })}/>
       </div>
       <div className={styles.icons}>
         <div className={styles.notificationWrapper}>
