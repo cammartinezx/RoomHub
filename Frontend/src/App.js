@@ -16,6 +16,8 @@ import axios from 'axios'
 import UserProfile from './pages/UserProfile';
 import ScrollToTop from './ScrollToTop';
 import AnnouncementsPage from './pages/AnnouncementsPage';
+import ReviewRoommatePage from './pages/ReviewRoommatePage';
+import FindRoommatePage from './pages/FindRoommatePage';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -165,6 +167,28 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <ManageTasksPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/review-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ReviewRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/find-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <FindRoommatePage user={user} />;
                 }}
               </Authenticator>
             }

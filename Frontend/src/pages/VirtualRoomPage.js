@@ -105,6 +105,12 @@ const VirtualRoomPage = () => {
         <Header email={email} hasRoom={hasRoom}/>
         <h2 className={styles.title}>{roomName}</h2>
 
+        <div className={styles.reviewRoommateContainer}>
+          <button className={styles.reviewRoommateButton} onClick={() => navigate('/review-roommate', { state: { email, hasRoom } })}>
+              Review Roommate
+          </button>
+        </div>
+
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
           <div className={taskStyle.taskList}>
@@ -139,6 +145,7 @@ const VirtualRoomPage = () => {
             <p>No expenses recorded yet.</p>
           </div>
         </div>
+
 
         <div className={styles.cardGrid}>
 
