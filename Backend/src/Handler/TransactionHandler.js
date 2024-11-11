@@ -8,6 +8,7 @@ const {
     validateUserExist,
     validateUsersAreRoommates,
     validateOutstandingBalance,
+    validateNonEmptyList,
 } = require("../Utility/validator");
 
 /**
@@ -96,6 +97,7 @@ class TransactionHandler {
                 validateString(payer, "Payer Name");
                 validatePositiveInteger(transaction_price, "Price");
                 validateDate(date);
+                validateNonEmptyList(contributors, "Contributors");
             } catch (error) {
                 response.status(422).json({ message: error.message });
                 return;

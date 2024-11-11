@@ -8,6 +8,11 @@ function validatePositiveInteger(value, type) {
     if (typeof value !== "number" || value <= 0) throw new Error(`Invalid ${type}- ${type} must be a positive number`);
 }
 
+function validateNonEmptyList(input_list, type) {
+    if (!Array.isArray(input_list) || input_list.length <= 0)
+        throw new Error(`Invalid ${type}- ${type} must be a non empty list`);
+}
+
 /**
  * Validate a date string.
  * @param {String} dateString "The date string to be validated in yyyy-MM-dd format"
@@ -86,4 +91,5 @@ module.exports = {
     validateContributorsAreRoommates,
     validateOutstandingBalance,
     validateUsersAreRoommates,
+    validateNonEmptyList,
 };
