@@ -18,6 +18,7 @@ import ScrollToTop from './ScrollToTop';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import ReviewRoommatePage from './pages/ReviewRoommatePage';
 import FindRoommatePage from './pages/FindRoommatePage';
+import SharedExpensesPage from './pages/SharedExpensesPage';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -189,6 +190,17 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <FindRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/shared-expenses"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <SharedExpensesPage user={user} />;
                 }}
               </Authenticator>
             }

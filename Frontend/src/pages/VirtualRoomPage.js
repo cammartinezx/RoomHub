@@ -163,6 +163,15 @@ const VirtualRoomPage = () => {
             <button onClick={() => navigate('/tasks', { state: { hasRoom, email }})}>Go to Tasks</button>
           </div>
 
+          <div className={styles.card} onClick={() => navigate('/shared-expenses', { state: { hasRoom, email } })}>
+            <img src="shared_expense.png" alt="Shared Expenses" className={styles.cardImage} />
+            <h2>Shared Expenses</h2>
+            <p>Track, split, and settle expenses with your roommates</p>
+            <button onClick={() => navigate('/shared-expenses', { state: { hasRoom, email } })}>
+              Go to Shared Expenses
+            </button>
+          </div>
+
 
           <div className={styles.card} onClick={fetchLeaveWarning}>
             <img src="leave.png" alt="Room" className={styles.cardImage}/>
