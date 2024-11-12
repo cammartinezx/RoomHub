@@ -90,20 +90,52 @@ class TransactionPersistence {
      * @param {String} room_id "Room id from Sender to be added to the database"
      * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
      */
-    async generate_new_transaction(trans_id, name, amount, room_id, date) {
+    async generate_new_transaction(
+        trans_id,
+        name,
+        amount,
+        room_id,
+        date,
+        creator,
+        paid_by_creator,
+        owed_to_creator,
+        type,
+    ) {
         try {
-            // add the new notification
-            const put_command = new PutCommand({
-                TableName: "Transaction",
-                Item: {
-                    transaction_id: trans_id,
-                    transaction_name: name,
-                    transaction_amount: amount,
-                    room_id: room_id,
-                    transaction_date: date,
-                },
-                ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
-            });
+            let put_command;
+            if (type === "expense") {
+                // add the new notification
+                put_command = new PutCommand({
+                    TableName: "Transaction",
+                    Item: {
+                        transaction_id: trans_id,
+                        transaction_name: name,
+                        transaction_amount: amount,
+                        room_id: room_id,
+                        transaction_date: date,
+                        creator: creator,
+                        paid_by_creator: paid_by_creator,
+                        owed_to_creator: owed_to_creator,
+                        type: type,
+                    },
+                    ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
+                });
+            } else {
+                // add the new notification
+                put_command = new PutCommand({
+                    TableName: "Transaction",
+                    Item: {
+                        transaction_id: trans_id,
+                        transaction_name: name,
+                        transaction_amount: amount,
+                        room_id: room_id,
+                        transaction_date: date,
+                        creator: creator,
+                        type: type,
+                    },
+                    ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
+                });
+            }
 
             await this.#doc_client.send(put_command);
             return "SUCCESS";

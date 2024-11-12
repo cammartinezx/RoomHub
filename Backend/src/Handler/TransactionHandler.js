@@ -121,6 +121,8 @@ class TransactionHandler {
             }
 
             const transaction_id = uuidv4();
+            const amount_split = transaction_price / (contributors.length + 1);
+            const owed_to_creator = Math.round((transaction_price - amount_split) * 100) / 100;
             // create expense.
             await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
@@ -128,15 +130,22 @@ class TransactionHandler {
                 transaction_price,
                 room_id,
                 date,
+                payer,
+                Math.round(amount_split * 100) / 100,
+                owed_to_creator,
+                "expense",
             );
 
             // update balance table with all expense relationships.
-            const amount_split = transaction_price / (contributors.length + 1);
             const creditor = payer;
             for (let i = 0; i < contributors.length; i++) {
                 const debtor = contributors[i];
                 if (creditor.toLowerCase().localeCompare(debtor.toLowerCase()) != 0) {
-                    await this.#transaction_persistence.updateBalance(debtor, creditor, amount_split);
+                    await this.#transaction_persistence.updateBalance(
+                        debtor,
+                        creditor,
+                        Math.round(amount_split * 100) / 100,
+                    );
                 }
             }
             response.status(200).json({ message: "Expense created successfully" });
@@ -145,8 +154,8 @@ class TransactionHandler {
         }
     }
 
-    generate_settle_up_summary(creditor, debtor) {
-        return `${debtor} made a payement to ${creditor}`;
+    generate_settle_up_summary(creditor, debtor, amount) {
+        return `${debtor} paid ${creditor} CAD ${amount.toFixed(2)}`;
     }
 
     async settle_debt(request, response) {
@@ -187,7 +196,7 @@ class TransactionHandler {
             }
 
             const transaction_id = uuidv4();
-            const transaction_nm = this.generate_settle_up_summary(creditor, debtor);
+            const transaction_nm = this.generate_settle_up_summary(creditor, debtor, amount);
             // create expense.
             await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
@@ -195,6 +204,10 @@ class TransactionHandler {
                 amount,
                 debtor_room_id,
                 date,
+                debtor,
+                "",
+                "",
+                "settle-up",
             );
 
             // update balance table with expense relationship
