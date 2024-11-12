@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/createRoom/create_room.dart';
-import 'package:flutter_frontend/screens/header.dart';
+import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
