@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/config.dart';
-import 'package:flutter_frontend/screens/TaskMgmt/edit_task_form.dart';
+import 'package:flutter_frontend/screens/taskManagement/edit_task_form.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/custom_exceptions.dart';
-import '../utils/our_theme.dart';
-import '../utils/response_handler.dart';
+import '../../utils/custom_exceptions.dart';
+import '../../utils/our_theme.dart';
+import '../../utils/response_handler.dart';
 
 class TaskGrid extends StatefulWidget {
   // Sample data array

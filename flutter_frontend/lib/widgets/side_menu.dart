@@ -13,7 +13,7 @@ import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_frontend/providers.dart';
 
-import 'login/login.dart';
+import '../screens/login/login.dart';
 
 class Navbar extends ConsumerWidget {
   final String roomId;
