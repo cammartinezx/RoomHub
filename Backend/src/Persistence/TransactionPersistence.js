@@ -208,7 +208,7 @@ class TransactionPersistence {
      */
     async get_amounts_by_role(user_id, role) {
         if (role !== "debtor" && role !== "creditor") {
-            throw new Error("Role must be either ");
+            throw new Error("Role must be either debtor or creditor");
         }
 
         let result;
@@ -253,7 +253,11 @@ class TransactionPersistence {
             ExpressionAttributeValues: {
                 ":room_id": room_id,
             },
-            ProjectionExpression: "transaction_name, transaction_date, transaction_amount",
+            ProjectionExpression:
+                "#type, creator, transaction_name, transaction_date, transaction_amount, owed_to_creator, paid_by_creator",
+            ExpressionAttributeNames: {
+                "#type": "type",
+            },
         });
 
         const result = await this.#doc_client.send(queryCommand);

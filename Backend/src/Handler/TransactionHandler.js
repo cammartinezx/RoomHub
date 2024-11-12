@@ -299,7 +299,18 @@ class TransactionHandler {
             }
 
             let details = await this.#transaction_persistence.get_transaction_details(room_id);
-
+            // Add summary for transactions of type "expense"
+            details = details.map((transaction) => {
+                if (transaction.type === "expense") {
+                    const creator = transaction.creator;
+                    if (creator === user_id) {
+                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                    } else {
+                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                    }
+                }
+                return transaction;
+            });
             return response.status(200).json({ All_Transactions: details });
         } catch (error) {
             return response.status(500).json({ message: error.message });
