@@ -60,49 +60,28 @@ router.get("/get-summary", (req, res) => {
  * {
     "All_Transactions": [
         {
-            "transaction_date": "202-23",
             "transaction_amount": 10,
-            "transaction_name": "Toilet Cleaner"
+            "transaction_name": "Toilet Cleaner",
+            "creator": "daohl@myumanitoba.ca",
+            "paid_by_creator": 3.33,
+            "transaction_date": "2024-11-14",
+            "owed_to_creator": 6.67,
+            "type": "expense",
+            "summary": "You paid CAD 3.33 and lent CAD 6.67 for Toilet Cleaner"
         },
         {
-            "transaction_date": "2024-11-10",
-            "transaction_amount": 13,
-            "transaction_name": "Dish soap"
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 2,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
         },
         {
-            "transaction_date": "2024-11-23",
-            "transaction_amount": 16,
-            "transaction_name": "Toilet Brush"
-        },
-        {
-            "transaction_date": "2024-11-24",
-            "transaction_amount": 10,
-            "transaction_name": "dan@gmail.com made a payement to daohl@myumanitoba.ca"
-        },
-        {
-            "transaction_date": "2024-11-30",
-            "transaction_amount": 4,
-            "transaction_name": "dan@gmail.com made a payement to dan@gmail.com"
-        },
-        {
-            "transaction_date": "2024-11-30",
-            "transaction_amount": 4,
-            "transaction_name": "dan@gmail.com made a payement to daohl@myumanitoba.ca"
-        },
-        {
-            "transaction_date": "2024-11-23",
-            "transaction_amount": 10,
-            "transaction_name": "Toilet Cleaner"
-        },
-        {
-            "transaction_date": "2024-11-10",
-            "transaction_amount": 30,
-            "transaction_name": "Dish soap"
-        },
-        {
-            "transaction_date": "2024-11-20",
-            "transaction_amount": 16,
-            "transaction_name": "Trash bags"
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 0.33,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
         }
     ]
 }
