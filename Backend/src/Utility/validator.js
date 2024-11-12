@@ -1,6 +1,6 @@
 function validateString(name, type) {
     if (!name || typeof name !== "string" || name.length < 1) {
-        throw new Error(`Invalid ${type} name`);
+        throw new Error(`Invalid ${type}`);
     }
 }
 

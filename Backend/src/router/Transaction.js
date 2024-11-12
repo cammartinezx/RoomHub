@@ -9,19 +9,26 @@ const TransactionHandler = require("../Handler/TransactionHandler");
 const transaction_handler = new TransactionHandler();
 
 /**
- * @memberof Notification
- * @name Create some new announcement notifications
- * @path {POST} notification/send-announcement
- * @body {String} from The sender user ID
- * @body {String} message The message of announcement
- * @body {String} type The type of notification: must be announcement
- * @code {200} Notify you are the only person in this room
- * @code {200} Announcement Successfully sent
- * @code {404} Error Sending Announcement - User not found
- * @code {400} Error Sending Announcement - Message is empty
+ * @memberof Transaction
+ * @name Create an expense
+ * @path {POST} transaction/create-expense
+ * @body {String} name The transaction name
+ * @body {int} price The cost of the expense
+ * @body {String} payer The user that created the transaction
+ * @body {list} contributors The list of people that contributed to the transaction
+ * @body {String} date Date representing the date the transaction was created. (yyyy-mm-dd)
+ * @code {200} Expense created successfully
+ * @code {404} One or more contributors no longer belongs to this room
+ * @code {404} User does not exist
+ * @code {422} Invalid Transaction Name
+ * @code {422} Invalid Payer Name
+ * @code {422} Invalid Price- Price must be a positive number
+ * @code {422} Invalid Date
+ * @code {422} Invalid Contributors - Contributors must be a non empty list
  * @code {500} Backend error from the database
  * @response {String} message See description of the different status codes
  */
+
 router.post("/create-expense", (req, res) => {
     transaction_handler.create_Expense(req, res);
 });
@@ -110,6 +117,27 @@ router.get("/get-summary", (req, res) => {
 router.get("/get-transaction", (req, res) => {
     transaction_handler.get_transaction(req, res);
 });
+
+/**
+ * @memberof Transaction
+ * @name Settle up debt
+ * @path {POST} transaction/settle-up
+ * @body {String} debtor The user paying off debt
+ * @body {int} amount The amount paid by debtor to creditor
+ * @body {String} creditor The user owed money
+ * @body {String} date Date representing the date the transaction was created. (yyyy-mm-dd)
+ * @code {200} Transaction created successfully
+ * @code {404} Users are not roommates
+ * @code {404} User does not exist
+ * @code {409} Settle up amount must be less than or equal to outstanding balance
+ * @code {409} No outstanding balance to be settled
+ * @code {422} Invalid Debtors Name
+ * @code {422} Invalid Creditors Name
+ * @code {422} Invalid Settle Up amount- Settle Up amount must be a positive number
+ * @code {422} Invalid Date
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ */
 
 router.post("/settle-up", (req, res) => {
     transaction_handler.settle_debt(req, res);
