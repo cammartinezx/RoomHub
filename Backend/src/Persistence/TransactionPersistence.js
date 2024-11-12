@@ -90,7 +90,7 @@ class TransactionPersistence {
      * @param {int} paid_by_creator "The amount paid by the creator"
      * @param {int} paid_by_creator "The amount paid by the creator"
      * @param {String} type "The type of transaction"
-     * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
+     * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to transaction table"
      */
     async generate_new_transaction(
         trans_id,
@@ -154,7 +154,7 @@ class TransactionPersistence {
      * Use dyanmodb getcommand to retrieve the record with debtor and creditor
      * @param {String} debtor "Id of the user owing"
      * @param {String} creditor "Id of the user owed"
-     * @returns
+     * @returns {Object} balance "Object representing debtor, creditor and amount owed"
      */
     async getBalanceRecord(debtor, creditor) {
         const get_command = new GetCommand({
@@ -182,7 +182,6 @@ class TransactionPersistence {
      * @param {String} debtor "Id of the user owing"
      * @param {String} creditor "Id of the user owed"
      * @param {int} new_amount "The amount to be paid"
-     * @returns
      */
     async updateBalance(debtor, creditor, new_amount) {
         const update_command = new UpdateCommand({
