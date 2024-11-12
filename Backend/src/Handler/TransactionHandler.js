@@ -108,19 +108,14 @@ class TransactionHandler {
             try {
                 await validateUserExist(this.#user_persistence, payer);
                 room_id = await this.#user_persistence.get_room_id(payer);
-                await validateContributorsAreRoommates(
-                    this.#user_persistence,
-                    this.#room_persistence,
-                    contributors,
-                    payer,
-                    room_id,
-                );
+                await validateContributorsAreRoommates(this.#room_persistence, contributors, payer, room_id);
             } catch (error) {
                 response.status(404).json({ message: error.message });
                 return;
             }
 
             const transaction_id = uuidv4();
+            // amount split per person
             const amount_split = transaction_price / (contributors.length + 1);
             const owed_to_creator = Math.round((transaction_price - amount_split) * 100) / 100;
             // create expense.
@@ -158,6 +153,12 @@ class TransactionHandler {
         return `${debtor} paid ${creditor} CAD ${amount.toFixed(2)}`;
     }
 
+    /**
+     * Settle up a users debt.
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
     async settle_debt(request, response) {
         try {
             const debtor = request.body.debtor.trim();
@@ -188,6 +189,7 @@ class TransactionHandler {
                 return;
             }
 
+            // async error check
             try {
                 await validateOutstandingBalance(this.#transaction_persistence, creditor, debtor, amount);
             } catch (error) {

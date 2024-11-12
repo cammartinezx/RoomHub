@@ -80,14 +80,16 @@ class TransactionPersistence {
     }
 
     /**
-     * Uses dynamodb PutCommand to add the new notification to the database
-     * @param {String} notif_id "New notification ID to be added to the database"
-     * @param {String} msg "New message to be added to the database"
-     * @param {String} status "New status to be added to the database"
-     * @param {String} from "Notification Sender ID to be added to the database"
-     * @param {String} to "Notification Receiver ID to be added to the database"
-     * @param {String} type "New type to be added to the database"
-     * @param {String} room_id "Room id from Sender to be added to the database"
+     * Uses dynamodb PutCommand to create a new transactio
+     * @param {String} trans_id "Transaction Id of the new transaction"
+     * @param {String} name "Name of the transaction"
+     * @param {int} amount "The cost of the transaction"
+     * @param {String} room_id "Room id of user involved in the transaction"
+     * @param {String} date "Date the transaction was created"
+     * @param {String} creator "User id that created the transaction"
+     * @param {int} paid_by_creator "The amount paid by the creator"
+     * @param {int} paid_by_creator "The amount paid by the creator"
+     * @param {String} type "The type of transaction"
      * @returns {String} "Returns SUCCESS or FAILED based on each values to be added to notification table"
      */
     async generate_new_transaction(
@@ -104,7 +106,7 @@ class TransactionPersistence {
         try {
             let put_command;
             if (type === "expense") {
-                // add the new notification
+                // add the expense transaction
                 put_command = new PutCommand({
                     TableName: "Transaction",
                     Item: {
@@ -121,7 +123,7 @@ class TransactionPersistence {
                     ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
                 });
             } else {
-                // add the new notification
+                // add the settle up transaction
                 put_command = new PutCommand({
                     TableName: "Transaction",
                     Item: {
@@ -148,6 +150,12 @@ class TransactionPersistence {
         }
     }
 
+    /**
+     * Use dyanmodb getcommand to retrieve the record with debtor and creditor
+     * @param {String} debtor "Id of the user owing"
+     * @param {String} creditor "Id of the user owed"
+     * @returns
+     */
     async getBalanceRecord(debtor, creditor) {
         const get_command = new GetCommand({
             TableName: "Balance",
@@ -169,6 +177,13 @@ class TransactionPersistence {
 
     // read as user1 owes user2 amount dollars.
     // this does a conditional insert if the item doesn't exist
+    /**
+     * Use dyanmodb updatecommand to update the debtors debt with new amount.
+     * @param {String} debtor "Id of the user owing"
+     * @param {String} creditor "Id of the user owed"
+     * @param {int} new_amount "The amount to be paid"
+     * @returns
+     */
     async updateBalance(debtor, creditor, new_amount) {
         const update_command = new UpdateCommand({
             TableName: "Balance",

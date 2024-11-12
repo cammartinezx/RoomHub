@@ -1,13 +1,28 @@
+/**
+ * Validate a value is a valid stringr. If not throw an error
+ * @param {int} name "The value to be validated"
+ * @param {String} type "The type that the string represents"
+ */
 function validateString(name, type) {
     if (!name || typeof name !== "string" || name.length < 1) {
         throw new Error(`Invalid ${type}`);
     }
 }
 
+/**
+ * Validate a value is positive integer. If not throw an error
+ * @param {int} value "The value to be validated"
+ * @param {String} type "The type that the value represents"
+ */
 function validatePositiveInteger(value, type) {
     if (typeof value !== "number" || value <= 0) throw new Error(`Invalid ${type}- ${type} must be a positive number`);
 }
 
+/**
+ * Validate a list is non empty if empty throw error
+ * @param {list} input_list "Input list of string"
+ * @param {String} type "The type of the list- useful for error message"
+ */
 function validateNonEmptyList(input_list, type) {
     if (!Array.isArray(input_list) || input_list.length <= 0)
         throw new Error(`Invalid ${type}- ${type} must be a non empty list`);
@@ -39,6 +54,11 @@ function validateDate(date) {
     if (inputDate < today) throw new Error(`Invalid Date`); // Returns false if inputDate is in the past
 }
 
+/**
+ * Throw an error if user does not exist.
+ * @param {Object} user_persistence "User persistence object"
+ * @param {String} userId "User id to be validated"
+ */
 async function validateUserExist(user_persistence, userId) {
     let user = await user_persistence.get_user(userId);
     if (user === null) {
@@ -46,6 +66,12 @@ async function validateUserExist(user_persistence, userId) {
     }
 }
 
+/**
+ * Throw error if user2 isn't a member of user1's room
+ * @param {Object} room_persistence "Room persistence object"
+ * @param {String} user2 "String representing the second user"
+ * @param {String} user1_room_id "String representing the users room"
+ */
 async function validateUsersAreRoommates(room_persistence, user2, user1_room_id) {
     let users_set = await room_persistence.get_room_users(user1_room_id);
     const users = Array.from(users_set);
@@ -54,7 +80,14 @@ async function validateUsersAreRoommates(room_persistence, user2, user1_room_id)
     }
 }
 
-async function validateContributorsAreRoommates(user_persistence, room_persistence, contributors, payer, room_id) {
+/**
+ * Throw error if a users in contributors don't belong to the payers room
+ * @param {Object} room_persistence "Room persistence object"
+ * @param {list} contributors "A list of userid's"
+ * @param {String} payer "A user id"
+ * @param {String} room_id "String representing the users room id"
+ */
+async function validateContributorsAreRoommates(room_persistence, contributors, payer, room_id) {
     // get the users in the room
     let users_set = await room_persistence.get_room_users(room_id);
     const users = Array.from(users_set);
@@ -71,6 +104,13 @@ async function validateContributorsAreRoommates(user_persistence, room_persisten
     }
 }
 
+/**
+ * Throw error if the outstanding balance is invalid.
+ * @param {Object} transaction_persistence "Transaction persistence object"
+ * @param {String} creditor "Creditors user Id"
+ * @param {String} debtor "debtors user id"
+ * @param {int} settle_up_amnt "The amount to be settled"
+ */
 async function validateOutstandingBalance(transaction_persistence, creditor, debtor, settle_up_amnt) {
     const result = await transaction_persistence.getBalanceRecord(debtor, creditor);
     if (result != null) {
