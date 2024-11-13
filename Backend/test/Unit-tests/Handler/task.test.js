@@ -93,7 +93,7 @@ describe("Unit test for creating a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
         user_info_handler.is_valid_user.mockImplementation(() => true);
         user_info_handler.areRoommates.mockImplementation(() => true);
@@ -108,7 +108,7 @@ describe("Unit test for creating a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
 
         user_info_handler.is_valid_user.mockImplementation(() => false);
@@ -127,7 +127,7 @@ describe("Unit test for creating a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
 
         user_info_handler.is_valid_user.mockImplementation(() => true);
@@ -166,7 +166,7 @@ describe("Unit test for creating a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
 
         user_info_handler.is_valid_user.mockImplementation(() => true);
@@ -232,7 +232,7 @@ describe("Unit test for editing a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
         user_info_handler.is_valid_user.mockImplementation(() => true);
         user_info_handler.areRoommates.mockImplementation(() => true);
@@ -350,7 +350,7 @@ describe("Unit test for editing a task", () => {
             tn: "washing dishes",
             frm: "user1@gmail.com",
             to: "user2@gmail.com",
-            date: "2024-11-11",
+            date: "2030-11-11",
         };
 
         user_info_handler.is_valid_user.mockImplementation(() => true);
