@@ -6,94 +6,191 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { sendNotification } from '../services/notificationService';
 
 const SharedExpensesPage = () => {
-    const [summary, setSummary] = useState({ owed: 0, owns: 0 });
+    const [summary, setSummary] = useState({ owed: 15, owns: 20 });
     const [transactions, setTransactions] = useState([]);
-    const [newExpense, setNewExpense] = useState({ expense: '', amount: '', split: [] });
+    const [newExpense, setNewExpense] = useState({ name: '', price: '', contributors: [], date: '' });
     const [roomMembers, setRoomMembers] = useState([]);
-    const [newSettle, setNewSettle] = useState({ assignee: '', amount: '' });
+    const [newSettle, setNewSettle] = useState({ creditor: '', amount: '', date: '' });
 
     const navigate = useNavigate();
     const location = useLocation();
     const email = location.state?.email;
     const hasRoom = location.state?.hasRoom;
 
+    // Fetch roommates on component load
     useEffect(() => {
-        const fetchSummary = async () => {
-            const data = { owed: 15, owns: 20 };
-            setSummary(data);
-        };
-
-        const fetchTransactions = async () => {
-            const data = [{ date: "11-03-2024", amount: 20, name: "toilet paper" }];
-            setTransactions(data);
-        };
-
         const fetchRoommates = async () => {
             try {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
                 if (response.status === 200 && response.data.roommates) {
-                    setRoomMembers(response.data.roommates);
+                    const filteredRoommates = response.data.roommates.filter((roommate) => roommate !== email);
+                    setRoomMembers(filteredRoommates);
                 }
             } catch (error) {
                 console.error("Error fetching roommates:", error.message);
             }
         };
-
-        fetchSummary();
-        fetchTransactions();
         fetchRoommates();
     }, [email]);
 
+    // Fetch summary on component load
+    useEffect(() => {
+        const fetchSummary = async () => {
+            try {
+                // Fetch summary
+                const summaryResponse = await axios.get(
+                    'http://localhost:3001/transaction/get-summary',
+                    {
+                        params: { id: email },
+                    }
+                );
+                setSummary(summaryResponse.data.summary);
+            } catch (error) {
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 422:
+                            console.error('Error: Invalid user.');
+                            break;
+                        case 404:
+                            console.error('Error: No user found.');
+                            break;
+                        case 500:
+                            console.error('Error: Backend error while fetching summary.');
+                            break;
+                        default:
+                            console.error('An unexpected error occurred while fetching summary.');
+                    }
+                } else if (error.request) {
+                    console.error('Error: No response from the server while fetching summary.');
+                } else {
+                    console.error('Error: Failed to fetch summary.');
+                }
+            }
+        };
+        fetchSummary();
+    }, [email]);
+
+    // Fetch transactions on component load
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            try {
+                // Fetch transaction
+                const transactionsResponse = await axios.get(
+                    'http://localhost:3001/transaction/get-transaction',
+                    {
+                        params: { id: email },
+                    }
+                );
+                setTransactions(transactionsResponse.data.transactions);
+            } catch (error) {
+                if (error.response) {
+                    switch (error.response.status) {
+                        case 422:
+                            console.error('Error: Invalid user.');
+                            break;
+                        case 404:
+                            console.error('Error: No user found.');
+                            break;
+                        case 500:
+                            console.error('Error: Backend error while fetching transactions.');
+                            break;
+                        default:
+                            console.error('An unexpected error occurred while fetching transactions.');
+                    }
+                } else if (error.request) {
+                    console.error('Error: No response from the server while fetching transactions.');
+                } else {
+                    console.error('Error: Failed to fetch transactions.');
+                }
+            }
+        };
+        fetchTransactions();
+    }, [email]);
+
     const handleRoommateSelection = (roommateEmail) => {
-        setNewExpense((prevExpense) => ({
-            ...prevExpense,
-            split: prevExpense.split.includes(roommateEmail)
-                ? prevExpense.split.filter((email) => email !== roommateEmail)
-                : [...prevExpense.split, roommateEmail],
-        }));
+        setNewExpense((prevExpense) => {
+            console.log("Previous Expense:", prevExpense);
+            return {
+                ...prevExpense,
+                contributors: prevExpense.contributors.includes(roommateEmail)
+                    ? prevExpense.contributors.filter((email) => email !== roommateEmail)
+                    : [...prevExpense.contributors, roommateEmail],
+            };
+        });
     };
-
     const handleCreateExpense = async () => {
-        const { expense, amount, split } = newExpense;
-        if (!expense || !amount || split.length === 0) {
-            alert('Please provide all details and select roommates to split with.');
+        const { name, price, contributors, date } = newExpense;
+        if (!name) {
+            alert('Please enter an expense name.');
             return;
-        }
-
-        try {
-            await axios.post('/create-expense', {
-                email,
-                expenseName: expense,
-                amount: parseFloat(amount),
-                splitWithRoommates: split,
-            });
-            alert('Expense created successfully!');
-            sendNotification(email, `A new expense ${expense} has been created and split to ${split}.`);
-            setNewExpense({ expense: '', amount: '', split: [] });
-        } catch (error) {
-            alert('Error creating expense.');
+        } else if (!price) {
+            alert('Please enter a valid amount.');
+            return;
+        } else if (contributors.length === 0) {
+            alert('Please select roommates you want to split with.');
+            return;
+        } else if (date.length === 0) {
+            alert('Please enter a valid date.');
+            return;
+        } else {
+            try {
+                const formattedDate = formatDateToBackend(newExpense.date);
+                const response = await axios.post('http://localhost:3001/transaction/create-expense', {
+                    name: newExpense.name,
+                    price: parseFloat(newExpense.price),
+                    payer: email,
+                    contributors: newExpense.contributors,
+                    date: formattedDate,
+                });
+                if(response.status === 200) {
+                    alert('Expense created successfully!');
+                    sendNotification(email, `A new expense ${newExpense.name} has been created and split to ${newExpense.contributors}.`);
+                    window.location.reload();
+                }
+                setNewExpense({ name: '', price: '', contributors: [], date: '' });
+            } catch (error) {
+                alert('Error creating expense.');
+                console.error("Error creating expense:", error);
+            }
         }
     };
 
     const handleSettleUp = async () => {
-        const { assignee, amount } = newSettle;
-        if (!assignee || !amount) {
-            alert('Please select a roommate and enter an amount.');
+        const { creditor, amount , date } = newSettle;
+        if (!creditor) {
+            alert('Please select a roommate.');
             return;
-        }
-
-        try {
-            await axios.post('/settle-up', {
-                email,
-                roommateEmail: assignee,
-                amount: parseFloat(amount),
-            });
-            alert('Settlement completed!');
-            setNewSettle({ assignee: '', amount: '' });
-        } catch (error) {
-            alert('Error settling up.');
+        } else if (!amount) {
+            alert('Please enter a valid amount.');
+            return;
+        } else if (date.length === 0) {
+            alert('Please enter a valid date.');
+            return;
+        } else {
+            try {
+                const formattedDate = formatDateToBackend(newSettle.date);
+                const response = await axios.post('http://localhost:3001/transaction/create-expense', {
+                    debtor: email,
+                    creditor: newSettle.creditor,
+                    amount: parseFloat(newSettle.amount),
+                    date: formattedDate,
+                });
+                if (response.status === 200) {
+                    alert('Settlement completed!');
+                    sendNotification(email, `${email} settle a payment of CAD ${newSettle.amount} to ${newSettle.creditor}`);
+                    window.location.reload();
+                }
+                setNewSettle({ creditor: '', amount: '', date: '' });
+            } catch (error) {
+                alert('Error settling up.');
+                console.error("Error settling up:", error);
+            }
         }
     };
+
+    function formatDateToBackend(dateString) {
+        return dateString.split('T')[0];
+    }
 
     return (
         <div className={styles.container}>
@@ -107,13 +204,18 @@ const SharedExpensesPage = () => {
                         type="text"
                         placeholder="Expense Name"
                         value={newExpense.expense}
-                        onChange={(e) => setNewExpense({ ...newExpense, expense: e.target.value })}
+                        onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
                     />
                     <input
                         type="number"
                         placeholder="Amount"
-                        value={newExpense.amount}
-                        onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
+                        value={newExpense.price}
+                        onChange={(e) => setNewExpense({ ...newExpense, price: e.target.value })}
+                    />
+                    <input
+                        type="date"
+                        value={newExpense.date}
+                        onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
                     />
                     <div className={styles.checkboxGroup}>
                         <p>Select roommates to split with:</p>
@@ -122,7 +224,7 @@ const SharedExpensesPage = () => {
                                 <input
                                     type="checkbox"
                                     id={roommate}
-                                    checked={newExpense.split.includes(roommate)}
+                                    checked={newExpense.contributors.includes(roommate)}
                                     onChange={() => handleRoommateSelection(roommate)}
                                 />
                                 <label htmlFor={roommate}>{roommate}</label>
@@ -135,8 +237,8 @@ const SharedExpensesPage = () => {
                 <div className={styles.card}>
                     <h3>Settle Up</h3>
                     <select
-                        value={newSettle.assignee}
-                        onChange={(e) => setNewSettle({ ...newSettle, assignee: e.target.value })}
+                        value={newSettle.creditor}
+                        onChange={(e) => setNewSettle({ ...newSettle, creditor: e.target.value })}
                     >
                         <option value="">Select Roommate</option>
                         {roomMembers.map((member, index) => (
@@ -150,6 +252,11 @@ const SharedExpensesPage = () => {
                         placeholder="Amount"
                         value={newSettle.amount}
                         onChange={(e) => setNewSettle({ ...newSettle, amount: e.target.value })}
+                    />
+                    <input
+                        type="date"
+                        value={newSettle.date}
+                        onChange={(e) => setNewSettle({ ...newSettle, date: e.target.value })}
                     />
                     <button onClick={handleSettleUp}>Settle Up</button>
                 </div>
