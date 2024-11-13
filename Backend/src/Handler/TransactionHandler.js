@@ -302,9 +302,9 @@ class TransactionHandler {
                 if (transaction.type === "expense") {
                     const creator = transaction.creator;
                     if (creator === user_id) {
-                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
                     } else {
-                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
                     }
                 }
                 return transaction;
