@@ -252,8 +252,8 @@ class TransactionHandler {
             const total_borrow = this.sum_array(borrow_list);
 
             return response.status(200).json({
-                Own: total_debt,
-                Are_owned: total_borrow,
+                owed: total_debt,
+                owns: total_borrow,
             });
         } catch (error) {
             return response.status(500).json({ message: error.message });
