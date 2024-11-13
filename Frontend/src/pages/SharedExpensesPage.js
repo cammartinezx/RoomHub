@@ -5,36 +5,9 @@ import Header from '../Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sendNotification } from '../services/notificationService';
 
-const initialTransactions = [
-    {
-        transaction_amount: 10,
-        transaction_name: "Toilet Cleaner",
-        creator: "daohl@myumanitoba.ca",
-        paid_by_creator: 3.33,
-        transaction_date: "2024-11-14",
-        owed_to_creator: 6.67,
-        type: "expense",
-        summary: "You paid CAD 3.33 and lent CAD 6.67"
-    },
-    {
-        transaction_date: "2024-11-12",
-        transaction_amount: 2,
-        transaction_name: "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
-        creator: "dan@gmail.com",
-        type: "settle-up"
-    },
-    {
-        transaction_date: "2024-11-12",
-        transaction_amount: 0.33,
-        transaction_name: "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
-        creator: "dan@gmail.com",
-        type: "settle-up"
-    }
-];
-
 const SharedExpensesPage = () => {
-    const [summary, setSummary] = useState({ owed: 15, owns: 20 });
-    const [transactions, setTransactions] = useState(initialTransactions);
+    const [summary, setSummary] = useState({ owed: 0, owns: 0 });
+    const [transactions, setTransactions] = useState([]);
     const [newExpense, setNewExpense] = useState({ name: '', price: '', contributors: [], date: '' });
     const [roomMembers, setRoomMembers] = useState([]);
     const [newSettle, setNewSettle] = useState({ creditor: '', amount: '', date: '' });
@@ -66,12 +39,13 @@ const SharedExpensesPage = () => {
             try {
                 // Fetch summary
                 const summaryResponse = await axios.get(
-                    'http://localhost:3001/transaction/get-summary',
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary',
                     {
                         params: { id: email },
                     }
                 );
-                setSummary(summaryResponse.data.summary);
+                // Update state with the response data
+                setSummary(summaryResponse.data);
             } catch (error) {
                 if (error.response) {
                     switch (error.response.status) {
@@ -97,18 +71,18 @@ const SharedExpensesPage = () => {
         fetchSummary();
     }, [email]);
 
-    // Fetch transactions on component load
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                // Fetch transaction
+                // Fetch transactions
                 const transactionsResponse = await axios.get(
-                    'http://localhost:3001/transaction/get-transaction',
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction',
                     {
                         params: { id: email },
                     }
                 );
-                setTransactions(transactionsResponse.data.transactions || []);
+                // Set the transactions state with the response data
+                setTransactions(transactionsResponse.data.All_Transactions || []);
             } catch (error) {
                 if (error.response) {
                     switch (error.response.status) {
@@ -145,12 +119,13 @@ const SharedExpensesPage = () => {
             };
         });
     };
+
     const handleCreateExpense = async () => {
         const { name, price, contributors, date } = newExpense;
         if (!name) {
             alert('Please enter an expense name.');
             return;
-        } else if (!price) {
+        } else if (!price || isNaN(price) || parseFloat(price) <= 0) {
             alert('Please enter a valid amount.');
             return;
         } else if (contributors.length === 0) {
@@ -161,23 +136,32 @@ const SharedExpensesPage = () => {
             return;
         } else {
             try {
-                const formattedDate = formatDateToBackend(newExpense.date);
-                const response = await axios.post('http://localhost:3001/transaction/create-expense', {
-                    name: newExpense.name,
-                    price: parseFloat(newExpense.price),
-                    payer: email,
-                    contributors: newExpense.contributors,
-                    date: formattedDate,
-                });
-                if(response.status === 200) {
+                const formattedDate = formatDateToBackend(date);
+                const response = await axios.post(
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense',
+                    {
+                        name: name.trim(),
+                        price: parseFloat(price),
+                        payer: email,
+                        contributors: contributors,
+                        date: formattedDate,
+                    }
+                );
+    
+                if (response.status === 200) {
                     alert('Expense created successfully!');
-                    sendNotification(email, `A new expense ${newExpense.name} has been created and split to ${newExpense.contributors}.`);
-                    window.location.reload();
+                    sendNotification(
+                        email,
+                        `A new expense "${name}" has been created and split with: ${contributors.join(', ')}.`
+                    );
+                    window.location.reload(); // Reload page to reflect changes
+                    setNewExpense({ name: '', price: '', contributors: [], date: '' });
+                } else {
+                    alert('Failed to create expense. Please try again.');
                 }
-                setNewExpense({ name: '', price: '', contributors: [], date: '' });
             } catch (error) {
-                alert('Error creating expense.');
-                console.error("Error creating expense:", error);
+                console.error('Error creating expense:', error);
+                alert('Error creating expense. Please check the details and try again.');
             }
         }
     };
@@ -187,7 +171,7 @@ const SharedExpensesPage = () => {
         if (!creditor) {
             alert('Please select a roommate.');
             return;
-        } else if (!amount) {
+        } else if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
             alert('Please enter a valid amount.');
             return;
         } else if (date.length === 0) {
@@ -195,22 +179,31 @@ const SharedExpensesPage = () => {
             return;
         } else {
             try {
-                const formattedDate = formatDateToBackend(newSettle.date);
-                const response = await axios.post('http://localhost:3001/transaction/create-expense', {
-                    debtor: email,
-                    creditor: newSettle.creditor,
-                    amount: parseFloat(newSettle.amount),
-                    date: formattedDate,
-                });
+                const formattedDate = formatDateToBackend(date);
+                const response = await axios.post(
+                    'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/settle-up',
+                    {
+                        debtor: email,
+                        creditor: creditor,
+                        amount: parseFloat(amount),
+                        date: formattedDate,
+                    }
+                );
+    
                 if (response.status === 200) {
                     alert('Settlement completed!');
-                    sendNotification(email, `${email} settle a payment of CAD ${newSettle.amount} to ${newSettle.creditor}`);
-                    window.location.reload();
+                    sendNotification(
+                        email,
+                        `${email} settled a payment of CAD ${amount} to ${creditor}.`
+                    );
+                    window.location.reload(); // Reload the page to reflect changes
+                    setNewSettle({ creditor: '', amount: '', date: '' }); // Reset the form
+                } else {
+                    alert('Failed to complete settlement. Please try again.');
                 }
-                setNewSettle({ creditor: '', amount: '', date: '' });
             } catch (error) {
-                alert('Error settling up.');
-                console.error("Error settling up:", error);
+                console.error('Error settling up:', error);
+                alert('Error settling up. Please check the details and try again.');
             }
         }
     };
@@ -230,7 +223,7 @@ const SharedExpensesPage = () => {
                     <input
                         type="text"
                         placeholder="Expense Name"
-                        value={newExpense.expense}
+                        value={newExpense.name}
                         onChange={(e) => setNewExpense({ ...newExpense, name: e.target.value })}
                     />
                     <input
@@ -290,8 +283,8 @@ const SharedExpensesPage = () => {
 
                 <div className={styles.card}>
                     <h3>Summary</h3>
-                    <p><strong>You Owe:</strong> ${summary?.owed || 0}</p>
-                    <p><strong>You Are Owed:</strong> ${summary?.owns || 0}</p>
+                    <p>You Owe: <strong>${summary?.owed || 0}</strong></p>
+                    <p>You Are Owed: <strong>${summary?.owns || 0}</strong></p>
                 </div>
             </div>
 
@@ -309,7 +302,7 @@ const SharedExpensesPage = () => {
                                 ${transaction.transaction_amount}
                             </div>
                         </li>
-                    ))}
+                    )) || 'No transaction available'}
                 </ul>
             </div>
 
