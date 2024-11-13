@@ -22,7 +22,7 @@ class MultiSelectFormField extends FormField<List<String>> {
             // padding: const EdgeInsets.all(8.0),
             child: DropDownMultiSelect(
               decoration: InputDecoration(
-                labelText: hint,
+                labelText: options.isEmpty? "No $hint" : hint,
                 labelStyle: TextStyle(
                   color: OurTheme().darkblue // Normal state color
                 ),

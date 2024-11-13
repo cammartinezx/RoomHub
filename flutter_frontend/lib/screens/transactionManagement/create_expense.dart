@@ -60,7 +60,6 @@ class _ExpenseFormState extends State<ExpenseForm> {
       }
     }
 
-    // contributors = [];
 
     // Update the loading state and rebuild the UI
     setState(() {
@@ -218,7 +217,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      MultiSelectFormField(options: contributors, errorState: _contributorError,updateChoices: updateContributors, hint: 'Select Contributors',),
+                      MultiSelectFormField(options: contributors, errorState: _contributorError,updateChoices: updateContributors, hint: 'Contributors',),
                       const SizedBox(
                         height: 20.0,
                       ),
