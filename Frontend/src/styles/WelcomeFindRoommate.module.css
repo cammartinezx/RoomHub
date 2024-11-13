@@ -1,0 +1,91 @@
+/* WelcomeFindRoommate.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(360deg, #ffffff, #4CAF50);
+    color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .formStep h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+  
+  .formStep p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #e0e0e0;
+    max-width: 500px;
+    line-height: 1.6;
+  }
+  
+  .formStep {
+    padding: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 800px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+  }
+  
+  label {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #cccccc;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin-top: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus {
+    border-color: #6b73ff;
+    background-color: #ffffff;
+  }
+  
+  .nextButton {
+    background-color: #ffffff;
+    color: #4CAF50;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .nextButton:hover {
+    background-color: #4CAF50;
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+  
+  .nextButton:active {
+    transform: translateY(1px);
+  }
+  
+  

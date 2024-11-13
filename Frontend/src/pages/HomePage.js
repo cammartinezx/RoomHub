@@ -11,9 +11,6 @@ const HomePage = ({ user, signOut }) => {
   const email = user?.signInDetails?.loginId;
   const navigate = useNavigate();
 
-  const handleFindRoommate = () => {
-    navigate('/find-roommate', { state: { hasRoom, email } })
-  };
 
   useEffect(() => {
     if (email) {
@@ -35,6 +32,27 @@ const HomePage = ({ user, signOut }) => {
         });
     }
   }, [email]);
+
+  const handleFindRoommate = async () => {
+    const isProfileComplete = true
+    // try {
+    //   // Mocked API call to check if user's profile is set up
+    //   const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/profile-status`);
+    //   const isProfileComplete = response.data.isProfileComplete;
+
+      if (isProfileComplete) {
+        // If profile is complete, navigate directly to find roommate
+        navigate('/find-roommate', { state: { hasRoom, email } });
+      } else {
+        // If profile is incomplete, navigate to welcome/setup page
+        navigate('/welcome-find-roommate', { state: { hasRoom, email } });
+      }
+    // } catch (error) {
+    //   console.error("Error checking profile status:", error);
+    //   // Handle error (e.g., display an error message to the user)
+    // }
+  };
+
 
 
   if (loading) {
