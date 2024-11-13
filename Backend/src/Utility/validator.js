@@ -54,22 +54,21 @@ async function validateUsersAreRoommates(room_persistence, user2, user1_room_id)
     }
 }
 
-async function validateContributorsAreRoommates(user_persistence, room_persistence, contributors, payer, room_id) {
-    // get the users in the room
-    let users_set = await room_persistence.get_room_users(room_id);
-    const users = Array.from(users_set);
-    const contributorsCopy = [...contributors];
-    contributorsCopy.push(payer);
-    // sort users
-    users.sort();
-    // sort contributors and payer
-    contributorsCopy.sort();
-    for (let i = 0; i < contributorsCopy.length; i++) {
-        if (users[i].toLowerCase().localeCompare(contributorsCopy[i].toLowerCase()) != 0) {
-            throw new Error("One or more contributors no longer belongs to this room");
-        }
+async function validateContributorsAreRoommates(room_persistence, contributors, payer, room_id) {
+    // Get the users in the room
+    const users_set = await room_persistence.get_room_users(room_id);
+    const users = Array.from(users_set).map(user => user.toLowerCase());
+
+    // Prepare the list of contributors including the payer
+    const contributorsWithPayer = [...contributors.map(contributor => contributor.toLowerCase()), payer.toLowerCase()];
+
+    // Check if every contributor and the payer exist in the users set
+    const invalidContributors = contributorsWithPayer.filter(contributor => !users.includes(contributor));
+    if (invalidContributors.length > 0) {
+        throw new Error(`One or more contributors do not belong to this room: ${invalidContributors.join(', ')}`);
     }
 }
+
 
 async function validateOutstandingBalance(transaction_persistence, creditor, debtor, settle_up_amnt) {
     const result = await transaction_persistence.getBalanceRecord(debtor, creditor);
