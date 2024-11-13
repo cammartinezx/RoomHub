@@ -5,9 +5,36 @@ import Header from '../Header';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { sendNotification } from '../services/notificationService';
 
+const initialTransactions = [
+    {
+        transaction_amount: 10,
+        transaction_name: "Toilet Cleaner",
+        creator: "daohl@myumanitoba.ca",
+        paid_by_creator: 3.33,
+        transaction_date: "2024-11-14",
+        owed_to_creator: 6.67,
+        type: "expense",
+        summary: "You paid CAD 3.33 and lent CAD 6.67"
+    },
+    {
+        transaction_date: "2024-11-12",
+        transaction_amount: 2,
+        transaction_name: "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
+        creator: "dan@gmail.com",
+        type: "settle-up"
+    },
+    {
+        transaction_date: "2024-11-12",
+        transaction_amount: 0.33,
+        transaction_name: "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
+        creator: "dan@gmail.com",
+        type: "settle-up"
+    }
+];
+
 const SharedExpensesPage = () => {
     const [summary, setSummary] = useState({ owed: 15, owns: 20 });
-    const [transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState(initialTransactions);
     const [newExpense, setNewExpense] = useState({ name: '', price: '', contributors: [], date: '' });
     const [roomMembers, setRoomMembers] = useState([]);
     const [newSettle, setNewSettle] = useState({ creditor: '', amount: '', date: '' });
@@ -81,7 +108,7 @@ const SharedExpensesPage = () => {
                         params: { id: email },
                     }
                 );
-                setTransactions(transactionsResponse.data.transactions);
+                setTransactions(transactionsResponse.data.transactions || []);
             } catch (error) {
                 if (error.response) {
                     switch (error.response.status) {
@@ -274,10 +301,13 @@ const SharedExpensesPage = () => {
                     {transactions.map((transaction, index) => (
                         <li key={index}>
                             <div className={styles.taskDetails}>
-                                <span className={styles.taskName}>{transaction.name}</span>
-                                <span className={styles.taskDate}>on {transaction.date}</span>
+                                <span className={styles.taskName}>{transaction.transaction_name}</span>
+                                <span className={styles.taskSummary}>{transaction.summary}</span>
+                                <span className={styles.taskDate}>on {transaction.transaction_date}</span>
                             </div>
-                            <div className={styles.taskAmount}>${transaction.amount}</div>
+                            <div className={styles.taskAmount}>
+                                ${transaction.transaction_amount}
+                            </div>
                         </li>
                     ))}
                 </ul>

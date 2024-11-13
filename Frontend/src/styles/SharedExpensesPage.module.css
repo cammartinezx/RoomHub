@@ -159,3 +159,8 @@ button:hover {
     font-size: 1rem;
     color: #333;
 }
+
+.taskSummary {
+    font-size: 0.9rem;
+    color: #555;
+}
