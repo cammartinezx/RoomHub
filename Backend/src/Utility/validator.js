@@ -88,19 +88,20 @@ async function validateUsersAreRoommates(room_persistence, user2, user1_room_id)
  * @param {String} room_id "String representing the users room id"
  */
 async function validateContributorsAreRoommates(room_persistence, contributors, payer, room_id) {
-    // get the users in the room
-    let users_set = await room_persistence.get_room_users(room_id);
-    const users = Array.from(users_set);
-    const contributorsCopy = [...contributors];
-    contributorsCopy.push(payer);
-    // sort users
-    users.sort();
-    // sort contributors and payer
-    contributorsCopy.sort();
-    for (let i = 0; i < contributorsCopy.length; i++) {
-        if (users[i].toLowerCase().localeCompare(contributorsCopy[i].toLowerCase()) != 0) {
-            throw new Error("One or more contributors no longer belongs to this room");
-        }
+    // Get the users in the room
+    const users_set = await room_persistence.get_room_users(room_id);
+    const users = Array.from(users_set).map((user) => user.toLowerCase());
+
+    // Prepare the list of contributors including the payer
+    const contributorsWithPayer = [
+        ...contributors.map((contributor) => contributor.toLowerCase()),
+        payer.toLowerCase(),
+    ];
+
+    // Check if every contributor and the payer exist in the users set
+    const invalidContributors = contributorsWithPayer.filter((contributor) => !users.includes(contributor));
+    if (invalidContributors.length > 0) {
+        throw new Error(`One or more contributors do not belong to this room: ${invalidContributors.join(", ")}`);
     }
 }
 
