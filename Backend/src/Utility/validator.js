@@ -57,18 +57,20 @@ async function validateUsersAreRoommates(room_persistence, user2, user1_room_id)
 async function validateContributorsAreRoommates(room_persistence, contributors, payer, room_id) {
     // Get the users in the room
     const users_set = await room_persistence.get_room_users(room_id);
-    const users = Array.from(users_set).map(user => user.toLowerCase());
+    const users = Array.from(users_set).map((user) => user.toLowerCase());
 
     // Prepare the list of contributors including the payer
-    const contributorsWithPayer = [...contributors.map(contributor => contributor.toLowerCase()), payer.toLowerCase()];
+    const contributorsWithPayer = [
+        ...contributors.map((contributor) => contributor.toLowerCase()),
+        payer.toLowerCase(),
+    ];
 
     // Check if every contributor and the payer exist in the users set
-    const invalidContributors = contributorsWithPayer.filter(contributor => !users.includes(contributor));
+    const invalidContributors = contributorsWithPayer.filter((contributor) => !users.includes(contributor));
     if (invalidContributors.length > 0) {
-        throw new Error(`One or more contributors do not belong to this room: ${invalidContributors.join(', ')}`);
+        throw new Error(`One or more contributors do not belong to this room: ${invalidContributors.join(", ")}`);
     }
 }
-
 
 async function validateOutstandingBalance(transaction_persistence, creditor, debtor, settle_up_amnt) {
     const result = await transaction_persistence.getBalanceRecord(debtor, creditor);
