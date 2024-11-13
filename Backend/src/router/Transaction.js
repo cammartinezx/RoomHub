@@ -45,8 +45,8 @@ router.post("/create-expense", (req, res) => {
  * @response {JSON} summary amount own and areOwn amount
  * @example Response:
  * {
- * "Own": 5.333333333333332,
- * "Are_owned": 24.666666666666664
+ * "owed": 5.333333333333332,
+ * "owns": 24.666666666666664
  * }
  */
 router.get("/get-summary", (req, res) => {

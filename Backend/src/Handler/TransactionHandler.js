@@ -254,8 +254,8 @@ class TransactionHandler {
             const total_borrow = this.sum_array(borrow_list);
 
             return response.status(200).json({
-                Own: total_debt,
-                Are_owned: total_borrow,
+                owed: total_debt,
+                owns: total_borrow,
             });
         } catch (error) {
             return response.status(500).json({ message: error.message });
@@ -304,9 +304,9 @@ class TransactionHandler {
                 if (transaction.type === "expense") {
                     const creator = transaction.creator;
                     if (creator === user_id) {
-                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
                     } else {
-                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)} for ${transaction.transaction_name}`;
+                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
                     }
                 }
                 return transaction;
