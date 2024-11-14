@@ -27,13 +27,14 @@
 
 .card p {
   color: #666;
+  margin-bottom: 20px;
 }
 
 .tags {
   display: flex;
   justify-content: center;
   gap: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .tag {
@@ -81,9 +82,10 @@
 .buttons {
   display: flex;
   gap: 10px;
+  margin-top: 40px;
 }
 
-button {
+.actionButton {
   font-size: 1.2rem;
   padding: 10px 15px;
   border: none;

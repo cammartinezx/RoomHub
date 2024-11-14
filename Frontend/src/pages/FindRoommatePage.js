@@ -89,8 +89,8 @@ const FindRoommatePage = () => {
             </div>
           </div>
           <div className={styles.buttons}>
-            <button onClick={handleDislike}>❌ Dislike</button>
-            <button onClick={handleLike}>✅ Like</button>
+            <button className={styles.actionButton} onClick={handleDislike}>❌ Dislike</button>
+            <button className={styles.actionButton} onClick={handleLike}>✅ Like</button>
           </div>
         </div>
       )}
