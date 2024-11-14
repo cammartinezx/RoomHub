@@ -259,7 +259,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                       ),
                       GradientButton(text: 'Save',
                           onTap: () async{
-                            bool isSaved = await saveTask(context);
+                            bool isSaved = await saveExpense(context);
                             if(isSaved){
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
@@ -300,7 +300,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
     }
   }
 
-  Future<bool> saveTask(BuildContext context) async{
+  Future<bool> saveExpense(BuildContext context) async{
     bool isSaved = false;
     try{
       if(_validateFields()){

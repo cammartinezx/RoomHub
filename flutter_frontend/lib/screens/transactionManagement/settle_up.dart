@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
-import 'package:flutter_frontend/screens/taskManagement/all_task.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -11,6 +10,7 @@ import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
+import 'all_transactions.dart';
 
 
 class SettleUp extends StatefulWidget {
@@ -24,9 +24,9 @@ class SettleUp extends StatefulWidget {
 
 class _SettleUpState extends State<SettleUp> {
   final theme = OurTheme();
-  TextEditingController _taskNameController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
   String? selectedRoommate;
-  // final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
+
   DateTime? selectedDate;
   TextEditingController _dateController = TextEditingController();
 
@@ -89,8 +89,19 @@ class _SettleUpState extends State<SettleUp> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
+        firstDate: DateTime(2000),
+        lastDate: DateTime.now(),
+        builder: (BuildContext context, Widget? child){
+          return Theme(data: Theme.of(context).copyWith(
+              colorScheme: ColorScheme.light(
+                  primary: OurTheme().darkblue,
+                  onPrimary: Colors.white,
+                  onSurface: OurTheme().darkblue
+              ),
+              dialogBackgroundColor: Colors.white
+            ), child: child!
+          );
+        }
     );
 
     if (pickedDate != null && pickedDate != selectedDate) {
@@ -186,7 +197,7 @@ class _SettleUpState extends State<SettleUp> {
                         height: 20.0,
                       ),
                       TextFormField(
-                        controller: _taskNameController,
+                        controller: _amountController,
                         cursorColor: theme.darkblue,
                         keyboardType: TextInputType.number,
                         inputFormatters: [
@@ -249,13 +260,11 @@ class _SettleUpState extends State<SettleUp> {
                       ),
                       GradientButton(text: 'Settle',
                           onTap: () async{
-                            bool isSaved = await saveTask(context);
+                            bool isSaved = await settleDebt(context);
                             if(isSaved){
-                              String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
-                              sendAnnouncementRequest(announcementMsg, widget.email);
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => AllTasks(email: widget.email, roomId: widget.roomId,),
+                                  builder: (context) => SharedExpensesPage(),
                                 ),
                               );
                             }
@@ -274,7 +283,7 @@ class _SettleUpState extends State<SettleUp> {
   bool _validateFields() {
     setState(() {
       // Check if the name field is empty
-      _amountError = _taskNameController.text.isEmpty ? 'This field is required' : null;
+      _amountError = _amountController.text.isEmpty ? 'This field is required' : null;
       // Check if the email field is empty
       _assigneeError = selectedRoommate == null ? 'This field is required' : null;
       _dateError = _dateController.text.isEmpty ? 'This field is required' : null;
@@ -292,12 +301,12 @@ class _SettleUpState extends State<SettleUp> {
     }
   }
 
-  Future<bool> saveTask(BuildContext context) async{
+  Future<bool> settleDebt(BuildContext context) async{
     bool isSaved = false;
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to create a new task");
-        await createNewTask(widget.email, _taskNameController.text, selectedRoommate!, _dateController.text);
+        await createSettleUpTransaction(widget.email, selectedRoommate!, _amountController.text, _dateController.text);
         isSaved = true;
       }
     } catch (e){
@@ -307,49 +316,58 @@ class _SettleUpState extends State<SettleUp> {
     return isSaved;
   }
 
-  String generateAnnouncementMsg(String user, String task){
-    return 'The task "$task" has been assigned to $user';
+  void _showDialog(context, warning){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Align(
+              alignment: Alignment.center,
+              child: Text("Warning" ,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            content: Text(warning),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    // dismiss the alert dialog
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Close")),
+            ],
+
+          );
+        });
   }
 
-  Future<void> createNewTask(String currUserId, String taskName, String assignedTo, String dueDate) async {
+  Future<void> createSettleUpTransaction(String creditor, String debtor, String amount, String dueDate) async {
     try {
       var reqBody = {
-        "frm": currUserId, // The user creating the task
-        "tn": taskName, // The task name
-        "to": assignedTo, // The user assigned the task
-        "date": dueDate // The due date for the task
+        "creditor": creditor, // The person owed money
+        "amount": double.parse(amount), // The amount paid back
+        "debtor": debtor, // The user paying back
+        "date": dueDate // The date the payment was made
       };
-      print(reqBody);
       var response = await http.post(
-        Uri.parse(createTaskPth),
+        Uri.parse(settleUpPth),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
-      await handlePost(response, responseType: 'createTask');
-      theme.buildToastMessage("Task created successfully");
+      print(response.statusCode);
+      print(response.body);
+      await handlePost(response, responseType: 'createSettleUpTransaction');
+      theme.buildToastMessage("Transaction created successfully");
       //   kick back to the notification page
     } on UserException catch(e) {
       theme.buildToastMessage(e.message);
       rethrow;
-    }
-  }
-
-  void sendAnnouncementRequest(String announcement, String sender) async {
-    try {
-      var reqBody = {
-        "from": sender, // User's email (sender)
-        "message": announcement, // New announcement.
-        "type": 'announcement', // Request type
-      };
-      var response = await http.post(
-        Uri.parse(sendAnnouncementPth),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody), // Encode the request body as JSON
-      );
-      await handlePost(response, responseType: 'sendAnnouncement');
-      theme.buildToastMessage("Announcement sent successfully");
-    } on NotificationException catch(e) {
-      theme.buildToastMessage(e.message);
+    } on ExpenseException catch(e) {
+      _showDialog(context, e.message);
+      rethrow;
     }
   }
 }

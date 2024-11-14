@@ -32,3 +32,4 @@ const markComplete = "$task/mark-completed";
 const deleteTask = "$task/delete-task";
 const editTaskPth = "$task/edit-task";
 const createExpensePth = "$transaction/create-expense";
+const settleUpPth = "$transaction/settle-up";

@@ -172,6 +172,31 @@ Future<void> handlePost(http.Response response,
           throw UserException("Something went wrong. Try again later");
       }
       break;
+
+    case 'createSettleUpTransaction':
+      switch (response.statusCode) {
+        case 200:
+        // valid case
+          break;
+        case 404:
+          if(response.body.contains("User does not exist")){
+            throw ExpenseException("This user no longer exists");
+          }else{
+            throw ExpenseException("The users are not roommates");
+          }
+        case 409:
+          if(response.body.contains("No outstanding balance to be settled")){
+            throw ExpenseException("No outstanding balance to be settled");
+          }
+          throw ExpenseException("Amount must be less than or equal to outstanding balance.");
+        case 422:
+        // Check for specific error messages in the response body
+          throw UserException("Something went wrong. Request Error");
+        case 500:
+        // Server error during room creation
+          throw UserException("Something went wrong. Try again later");
+      }
+      break;
   }
 }
 
