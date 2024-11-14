@@ -6,6 +6,7 @@ const user = "${url}user"; // Base endpoint for user
 const room = "${url}room"; // Base endpoint for room
 const notification = "${url}notification";// Base endpoint for notification
 const task = "${url}task";
+const transaction = "${url}transaction";
 // GET requests
 // Endpoint to get user notifications
 // final getNotification = user/:id/get-notification
@@ -30,3 +31,4 @@ const getRoommatesList = "get-user-roommates";
 const markComplete = "$task/mark-completed";
 const deleteTask = "$task/delete-task";
 const editTaskPth = "$task/edit-task";
+const createExpensePth = "$transaction/create-expense";

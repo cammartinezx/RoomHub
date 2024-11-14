@@ -152,6 +152,26 @@ Future<void> handlePost(http.Response response,
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
+
+    case 'createExpense':
+      switch (response.statusCode) {
+        case 200:
+          // valid case
+          break;
+        case 404:
+          if(response.body.contains("User does not exist")){
+            throw ExpenseException("This user no longer exists");
+          }else{
+            throw ExpenseException("One or more contributors no longer belong to the room");
+          }
+        case 422:
+        // Check for specific error messages in the response body
+            throw UserException("Something went wrong. Request Error");
+        case 500:
+        // Server error during room creation
+          throw UserException("Something went wrong. Try again later");
+      }
+      break;
   }
 }
 
