@@ -241,6 +241,42 @@ class TransactionPersistence {
         return items.map((item) => item.amount);
     }
 
+    async get_relationships_by_role(user_id, role) {
+        if (role !== "debtor" && role !== "creditor") {
+            throw new Error("Role must be either debtor or creditor");
+        }
+        const relationships = [];
+        let result;
+        if (role === "debtor") {
+            // Query based on debtor (primary key)
+            const queryCommand = new QueryCommand({
+                TableName: "Balance",
+                KeyConditionExpression: "debtor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+            result = await this.#doc_client.send(queryCommand);
+            result.Items.forEach((item) => {
+                relationships.push(`You owe ${item.creditor} CAD ${item.amount}`);
+            });
+        } else if (role === "creditor") {
+            // Scan based on creditor (not indexed)
+            const scanCommand = new ScanCommand({
+                TableName: "Balance",
+                FilterExpression: "creditor = :user",
+                ExpressionAttributeValues: {
+                    ":user": user_id,
+                },
+            });
+            result = await this.#doc_client.send(scanCommand);
+            result.Items.forEach((item) => {
+                relationships.push(`${item.debtor} owes you CAD ${item.amount}`);
+            });
+        }
+        return relationships;
+    }
+
     /**
      * Use dynamoDB QueryCommand to get all the transaction from specific room
      * @param {String} room_id "Room is to be added to the database"
@@ -262,7 +298,12 @@ class TransactionPersistence {
 
         const result = await this.#doc_client.send(queryCommand);
 
-        return result.Items || [];
+        // Sort by transaction_date in descending order
+        const sortedItems = (result.Items || []).sort(
+            (a, b) => new Date(b.transaction_date) - new Date(a.transaction_date),
+        );
+
+        return sortedItems;
     }
 }
 

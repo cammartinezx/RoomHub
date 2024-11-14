@@ -253,9 +253,18 @@ class TransactionHandler {
             let borrow_list = await this.#transaction_persistence.get_amounts_by_role(user_id, "creditor");
             const total_borrow = this.sum_array(borrow_list);
 
+            const relationships = [];
+            const relationships_debt = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
+            const relationships_borrow = await this.#transaction_persistence.get_relationships_by_role(
+                user_id,
+                "creditor",
+            );
+            relationships.push(...relationships_debt, ...relationships_borrow);
+
             return response.status(200).json({
                 owed: total_debt,
                 owns: total_borrow,
+                relationships: relationships,
             });
         } catch (error) {
             return response.status(500).json({ message: error.message });
