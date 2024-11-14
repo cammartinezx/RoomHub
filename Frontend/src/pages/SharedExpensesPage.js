@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { sendNotification } from '../services/notificationService';
 
 const SharedExpensesPage = () => {
-    const [summary, setSummary] = useState({ owed: 0, owns: 0 });
+    const [summary, setSummary] = useState({ owed: 0, owns: 0, relationships: [] });
     const [transactions, setTransactions] = useState([]);
     const [newExpense, setNewExpense] = useState({ name: '', price: '', contributors: [], date: '' });
     const [roomMembers, setRoomMembers] = useState([]);
@@ -285,6 +285,14 @@ const SharedExpensesPage = () => {
                     <h3>Summary</h3>
                     <p>You Owe: <strong>${summary?.owed || 0}</strong></p>
                     <p>You Are Owed: <strong>${summary?.owns || 0}</strong></p>
+                    <div className={styles.relationships}>
+                        <h4>Relationships:</h4>
+                        <ul>
+                            {summary?.relationships?.map((relationship, index) => (
+                                <li key={index}>{relationship}</li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </div>
 

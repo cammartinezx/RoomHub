@@ -164,3 +164,25 @@ button:hover {
     font-size: 0.9rem;
     color: #555;
 }
+
+.relationships {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.relationships h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.relationships ul {
+    list-style: none;
+    padding: 0;
+}
+
+.relationships li {
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+    text-align: center;
+}
+  
