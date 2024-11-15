@@ -46,6 +46,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   amplify_flutter: ^2.4.1
   amplify_auth_cognito: ^2.4.1
+  flutter_card_swiper: ^7.0.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
     - assets/find_roommate.png
     - assets/find_room.png
     - assets/bed.png
+    - assets/user_profile.png
     - assets/Lottie/Animation - 1728432144812.json
 
 
