@@ -52,7 +52,7 @@ class _UserRoomState extends State<UserRoom> {
                 width: 300,
                 height: 150,
                 child: GestureDetector(
-                  onTap: () { Navigator.of(context).pushReplacement(
+                  onTap: () { Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => AllTasks(email: widget.email, roomId: widget.roomID,),
                     ),
@@ -94,7 +94,7 @@ class _UserRoomState extends State<UserRoom> {
                 width: 300,
                 height: 150,
                 child: GestureDetector(
-                  onTap: () { Navigator.of(context).pushReplacement(
+                  onTap: () { Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => SharedExpensesPage(userId: widget.email, roomId: widget.roomID, summary: summaryData!),
                     ),

@@ -80,7 +80,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
               ),
               Center(
                 child: Text(
-                  "The Bois",
+                  widget.roomId,
                   style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
