@@ -231,8 +231,10 @@ class UserPersistence {
 
         let notifications = response.Item?.notification;
 
-        if (!notifications || !Array.isArray(notifications)) {
-            throw new Error(`User ${user_id} does not have notifications or the attribute is not a list.`);
+        if (!notifications) {
+            notifications = [];
+        } else if (!Array.isArray(notifications)) {
+            throw new Error(`User ${user_id} has a non-list notification attribute.`);
         }
 
         // Filter out the notification to be deleted

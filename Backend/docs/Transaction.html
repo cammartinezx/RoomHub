@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: Task</title>
+    <title>JSDoc: Namespace: Transaction</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: Task</h1>
+    <h1 class="page-title">Namespace: Transaction</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>Task</h2>
+        <h2>Transaction</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Routes related to tasks</p></div>
+            <div class="description"><p>Routes related to transactions</p></div>
         
 
         
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line1">line 1</a>
+        <a href="router_Transaction.js.html">router/Transaction.js</a>, <a href="router_Transaction.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -105,7 +105,7 @@
 
         
             
-<h4 class="name" id="AddanewTask"><span class="type-signature">(route) </span>Add a new Task<span class="type-signature"></span></h4>
+<h4 class="name" id="Createanexpense"><span class="type-signature">(route) </span>Create an expense<span class="type-signature"></span></h4>
 
 
 
@@ -116,7 +116,7 @@
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">POST</td>
-                            <td class="name last">/create-task</td>
+                            <td class="name last">transaction/create-expense</td>
                             </tr>
                             </table>
                             
@@ -132,29 +132,35 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">tn</td>
+            <td class="name">name</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The task name</td>
+            <td class="description last">The transaction name</td>
           </tr><tr>
-            <td class="name">frm</td>
-            <td class="type">String</td>
+            <td class="name">price</td>
+            <td class="type">int</td>
             
             
-            <td class="description last">The user creating the task</td>
+            <td class="description last">The cost of the expense</td>
           </tr><tr>
-            <td class="name">to</td>
+            <td class="name">payer</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The user assigned the task</td>
+            <td class="description last">The user that created the transaction</td>
+          </tr><tr>
+            <td class="name">contributors</td>
+            <td class="type">list</td>
+            
+            
+            <td class="description last">The list of people that contributed to the transaction</td>
           </tr><tr>
             <td class="name">date</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The due date for the task(yyyy-mm-dd)</td>
+            <td class="description last">Date representing the date the transaction was created. (yyyy-mm-dd)</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -192,31 +198,55 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Task created successfully</td>
+            <td class="description last">Expense created successfully</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">404</td>
             
             
-            <td class="description last">Invalid users involved</td>
+            <td class="description last">One or more contributors no longer belongs to this room</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">404</td>
             
             
-            <td class="description last">Users are not roommates</td>
+            <td class="description last">User does not exist</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">422</td>
             
             
-            <td class="description last">Invalid task name or due date</td>
+            <td class="description last">Invalid Transaction Name</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Payer Name</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Price- Price must be a positive number</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Date</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Contributors - Contributors must be a non empty list</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Error message from backend</td>
+            <td class="description last">Backend error from the database</td>
           </tr>
           </table>
 </div>
@@ -256,7 +286,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line13">line 13</a>
+        <a href="router_Transaction.js.html">router/Transaction.js</a>, <a href="router_Transaction.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -274,7 +304,7 @@
 
         
             
-<h4 class="name" id="DeleteanexistingTask"><span class="type-signature">(route) </span>Delete an existing Task<span class="type-signature"></span></h4>
+<h4 class="name" id="Getalltransactiondetailsintheroomofspecificuser"><span class="type-signature">(route) </span>Get all transaction details in the room of specific user<span class="type-signature"></span></h4>
 
 
 
@@ -284,12 +314,12 @@
                             <table class="params">
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
-                            <td class="type">DELETE</td>
-                            <td class="name last">/delete-task</td>
+                            <td class="type">GET</td>
+                            <td class="name last">transaction/get-transaction?id</td>
                             </tr>
                             </table>
                             
-                            <h5>Body Parameters:</h5>
+                            <h5>Query Parameters:</h5>
           <table class="params">
             <thead>
               <tr>
@@ -305,13 +335,7 @@
             <td class="type">String</td>
             
             
-            <td class="description last">The task ID</td>
-          </tr><tr>
-            <td class="name">frm</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The user requesting the deletion</td>
+            <td class="description last">User requesting to get the summary</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -326,11 +350,11 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">message</td>
-            <td class="type">String</td>
+            <td class="name">transaction</td>
+            <td class="type">JSON</td>
             
             
-            <td class="description last">See description of the different status codes</td>
+            <td class="description last">details</td>
           </tr>
           </table>
                             <h5>Response Code:</h5>
@@ -349,19 +373,19 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Task deleted successfully</td>
+            <td class="description last">Successfully retrieved all transaction details</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">422</td>
             
             
-            <td class="description last">Invalid user</td>
+            <td class="description last">Invalid User</td>
           </tr><tr>
             
             <td class="type">404</td>
             
             
-            <td class="description last">Task not found</td>
+            <td class="description last">User not found</td>
           </tr><tr>
             
             <td class="type">500</td>
@@ -407,7 +431,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line57">line 57</a>
+        <a href="router_Transaction.js.html">router/Transaction.js</a>, <a href="router_Transaction.js.html#line61">line 61</a>
     </li></ul></dd>
     
 
@@ -422,10 +446,202 @@
 
 
 
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Response: 
+{
+    "All_Transactions": [
+        {
+            "transaction_amount": 10,
+            "transaction_name": "Toilet Cleaner",
+            "creator": "daohl@myumanitoba.ca",
+            "paid_by_creator": 3.33,
+            "transaction_date": "2024-11-14",
+            "owed_to_creator": 6.67,
+            "type": "expense",
+            "summary": "You paid CAD 3.33 and lent CAD 6.67 for Toilet Cleaner"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 2,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 0.33,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        }
+    ]
+}</code></pre>
+
+
 
         
             
-<h4 class="name" id="EditanexistingTask"><span class="type-signature">(route) </span>Edit an existing Task<span class="type-signature"></span></h4>
+<h4 class="name" id="Getanuseramountsummary"><span class="type-signature">(route) </span>Get an user amount summary<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">transaction/get-summary?id</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Query Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">User requesting to get the summary</td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">summary</td>
+            <td class="type">JSON</td>
+            
+            
+            <td class="description last">amount own and areOwn amount</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Successfully retrieved amount summary</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid User</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Transaction.js.html">router/Transaction.js</a>, <a href="router_Transaction.js.html#line36">line 36</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Response:
+{
+"owed": 5.333333333333332,
+"owns": 24.666666666666664,
+"relationships": [
+    "You owe daohl@myumanitoba.ca CAD 10",
+    "dan@gmail.com owes you CAD 54.67",
+    "daohl@myumanitoba.ca owes you CAD 45.67"
+  ]
+}</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="Settleupdebt"><span class="type-signature">(route) </span>Settle up debt<span class="type-signature"></span></h4>
 
 
 
@@ -436,7 +652,7 @@
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">POST</td>
-                            <td class="name last">/edit-task</td>
+                            <td class="name last">transaction/settle-up</td>
                             </tr>
                             </table>
                             
@@ -452,35 +668,29 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">id</td>
+            <td class="name">debtor</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The task ID</td>
+            <td class="description last">The user paying off debt</td>
           </tr><tr>
-            <td class="name">tn</td>
-            <td class="type">String</td>
+            <td class="name">amount</td>
+            <td class="type">int</td>
             
             
-            <td class="description last">The updated task name</td>
+            <td class="description last">The amount paid by debtor to creditor</td>
           </tr><tr>
-            <td class="name">frm</td>
+            <td class="name">creditor</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The user modifying the task</td>
-          </tr><tr>
-            <td class="name">to</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The new user assigned to the task</td>
+            <td class="description last">The user owed money</td>
           </tr><tr>
             <td class="name">date</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The updated due date for the task</td>
+            <td class="description last">Date representing the date the transaction was created. (yyyy-mm-dd)</td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -518,37 +728,61 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Task updated successfully</td>
-          </tr><tr>
-            
-            <td class="type">403</td>
-            
-            
-            <td class="description last">Invalid users involved</td>
-          </tr><tr>
-            
-            <td class="type">403</td>
-            
-            
-            <td class="description last">Users are not roommates</td>
-          </tr><tr>
-            
-            <td class="type">403</td>
-            
-            
-            <td class="description last">Invalid task name or due date</td>
+            <td class="description last">Transaction created successfully</td>
           </tr><tr>
             
             <td class="type">404</td>
             
             
-            <td class="description last">Task not found</td>
+            <td class="description last">Users are not roommates</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User does not exist</td>
+          </tr><tr>
+            
+            <td class="type">409</td>
+            
+            
+            <td class="description last">Settle up amount must be less than or equal to outstanding balance</td>
+          </tr><tr>
+            
+            <td class="type">409</td>
+            
+            
+            <td class="description last">No outstanding balance to be settled</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Debtors Name</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Creditors Name</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Settle Up amount- Settle Up amount must be a positive number</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid Date</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Error message from backend</td>
+            <td class="description last">Backend error from the database</td>
           </tr>
           </table>
 </div>
@@ -588,158 +822,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line34">line 34</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="MarkTaskasCompleted"><span class="type-signature">(route) </span>Mark Task as Completed<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">PATCH</td>
-                            <td class="name last">/mark-completed</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Body Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The task ID</td>
-          </tr><tr>
-            <td class="name">frm</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The user marking the task as completed</td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">message</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">Task marked as completed</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">Invalid user</td>
-          </tr><tr>
-            
-            <td class="type">403</td>
-            
-            
-            <td class="description last">Task not found</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Error message from backend</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Task.js.html">router/Task.js</a>, <a href="router_Task.js.html#line75">line 75</a>
+        <a href="router_Transaction.js.html">router/Transaction.js</a>, <a href="router_Transaction.js.html#line105">line 105</a>
     </li></ul></dd>
     
 

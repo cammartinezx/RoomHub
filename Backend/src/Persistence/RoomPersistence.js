@@ -172,7 +172,7 @@ class RoomPersistence {
 
         let user_list = response.Item.users;
         if (user_list === undefined) {
-            throw new Error("Room doesn't have an user--Service Unavailable");
+            throw new Error("Room doesn't have a user--Service Unavailable");
         }
         return user_list;
     }

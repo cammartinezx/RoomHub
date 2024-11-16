@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: NotificationHandler</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: NotificationHandler</h1>
+    <h1 class="page-title">Global</h1>
 
     
 
@@ -28,10 +28,7 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-Handler.html">Handler</a>~</span>NotificationHandler<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>Represents the notification handler</p></div>
+        <h2></h2>
         
     
 </header>
@@ -41,32 +38,7 @@
     
         
 
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="NotificationHandler"><span class="type-signature"></span>new NotificationHandler<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Create a new NotificationHandler object</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
+        
 
 
 <dl class="details">
@@ -96,11 +68,6 @@
     
 
     
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line12">line 12</a>
-    </li></ul></dd>
-    
 
     
 
@@ -110,24 +77,7 @@
 </dl>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
     
     </div>
 
@@ -154,7 +104,7 @@
     
 
     
-    <h4 class="name" id=""><span class="type-signature"></span><span class="signature">(msg)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id="validateContributorsAreRoommates"><span class="type-signature">(async) </span>validateContributorsAreRoommates<span class="signature">(room_persistence, contributors, payer, room_id)</span><span class="type-signature"></span></h4>
     
 
     
@@ -162,7 +112,7 @@
 
 
 <div class="description">
-    <p>Check if the passed in message is valid</p>
+    <p>Throw error if a users in contributors don't belong to the payers room</p>
 </div>
 
 
@@ -198,7 +148,53 @@
 
         <tr>
             
-                <td class="name"><code>msg</code></td>
+                <td class="name"><code>room_persistence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Room persistence object&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>contributors</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">list</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;A list of userid's&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>payer</code></td>
             
 
             <td class="type">
@@ -214,7 +210,30 @@
 
             
 
-            <td class="description last"><p>&quot;A string representing the message to be validated&quot;</p></td>
+            <td class="description last"><p>&quot;A user id&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>room_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;String representing the users room id&quot;</p></td>
         </tr>
 
     
@@ -255,7 +274,144 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line59">line 59</a>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line90">line 90</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateDate"><span class="type-signature"></span>validateDate<span class="signature">(dateString)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Validate a date string.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>dateString</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;The date string to be validated in yyyy-MM-dd format&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line36">line 36</a>
     </li></ul></dd>
     
 
@@ -284,7 +440,7 @@
 
         
 <div class="param-desc">
-    <p>&quot;Returns true if valid message, return false if invalid&quot;</p>
+    <p>&quot;True if valid date format and date is today or in the future, false otherwise&quot;</p>
 </div>
 
 
@@ -313,7 +469,7 @@
     
 
     
-    <h4 class="name" id=""><span class="type-signature"></span><span class="signature">(user_string)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+    <h4 class="name" id="validateNonEmptyList"><span class="type-signature"></span>validateNonEmptyList<span class="signature">(input_list, type)</span><span class="type-signature"></span></h4>
     
 
     
@@ -321,7 +477,7 @@
 
 
 <div class="description">
-    <p>Check if user id is valid</p>
+    <p>Validate a list is non empty if empty throw error</p>
 </div>
 
 
@@ -357,13 +513,13 @@
 
         <tr>
             
-                <td class="name"><code>user_string</code></td>
+                <td class="name"><code>input_list</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">list</span>
 
 
             
@@ -373,690 +529,7 @@
 
             
 
-            <td class="description last"><p>&quot;A string representing user id to be validated&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line71">line 71</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;Returns true if valid user id, return false if invalid&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=""><span class="type-signature"></span><span class="signature">(type)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Check if notification type is valid</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>type</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;A string representing type to be validated&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line83">line 83</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;Returns true if valid type, return false if invalid&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Boolean</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="create_notification"><span class="type-signature">(async) </span>create_notification<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Add a new notification to the persistence Layer</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>request</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Express.request</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>response</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Express.response</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line97">line 97</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="generate_invite_message"><span class="type-signature"></span>generate_invite_message<span class="signature">(from, to)</span><span class="type-signature"> &rarr; {String}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Create an invite message based on sender, receiver</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>from</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>to</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;a receiver ID&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line166">line 166</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;notification invite message&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="generate_message"><span class="type-signature"></span>generate_message<span class="signature">(from, to, type)</span><span class="type-signature"> &rarr; {String}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Create a message based on sender, receiver and type</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>from</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>to</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;a receiver ID&quot;</p></td>
+            <td class="description last"><p>&quot;Input list of string&quot;</p></td>
         </tr>
 
     
@@ -1079,7 +552,7 @@
 
             
 
-            <td class="description last"><p>&quot;a type of notification, for now we just have invite&quot;</p></td>
+            <td class="description last"><p>&quot;The type of the list- useful for error message&quot;</p></td>
         </tr>
 
     
@@ -1120,7 +593,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line153">line 153</a>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -1145,28 +618,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;notification message&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1178,7 +629,7 @@
     
 
     
-    <h4 class="name" id="generate_room_request_message"><span class="type-signature"></span>generate_room_request_message<span class="signature">(from)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="validateOutstandingBalance"><span class="type-signature">(async) </span>validateOutstandingBalance<span class="signature">(transaction_persistence, creditor, debtor, settle_up_amnt)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1186,7 +637,7 @@
 
 
 <div class="description">
-    <p>Create an invite message based on sender, receiver</p>
+    <p>Throw error if the outstanding balance is invalid.</p>
 </div>
 
 
@@ -1222,7 +673,30 @@
 
         <tr>
             
-                <td class="name"><code>from</code></td>
+                <td class="name"><code>transaction_persistence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Transaction persistence object&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>creditor</code></td>
             
 
             <td class="type">
@@ -1238,7 +712,53 @@
 
             
 
-            <td class="description last"><p>&quot;a sender ID&quot;</p></td>
+            <td class="description last"><p>&quot;Creditors user Id&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>debtor</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;debtors user id&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>settle_up_amnt</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;The amount to be settled&quot;</p></td>
         </tr>
 
     
@@ -1279,7 +799,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line175">line 175</a>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -1304,28 +824,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;notification invite message&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -1337,7 +835,7 @@
     
 
     
-    <h4 class="name" id="send_announcement"><span class="type-signature">(async) </span>send_announcement<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="validatePositiveInteger"><span class="type-signature"></span>validatePositiveInteger<span class="signature">(value, type)</span><span class="type-signature"></span></h4>
     
 
     
@@ -1345,7 +843,7 @@
 
 
 <div class="description">
-    <p>Add some new announcements to the persistence Layer</p>
+    <p>Validate a value is positive integer. If not throw an error</p>
 </div>
 
 
@@ -1381,13 +879,13 @@
 
         <tr>
             
-                <td class="name"><code>request</code></td>
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Express.request</span>
+<span class="param-type">int</span>
 
 
             
@@ -1397,20 +895,20 @@
 
             
 
-            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+            <td class="description last"><p>&quot;The value to be validated&quot;</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>response</code></td>
+                <td class="name"><code>type</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Express.response</span>
+<span class="param-type">String</span>
 
 
             
@@ -1420,7 +918,7 @@
 
             
 
-            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
+            <td class="description last"><p>&quot;The type that the value represents&quot;</p></td>
         </tr>
 
     
@@ -1461,7 +959,510 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_NotificationHandler.js.html">Handler/NotificationHandler.js</a>, <a href="Handler_NotificationHandler.js.html#line185">line 185</a>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateString"><span class="type-signature"></span>validateString<span class="signature">(name, type)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Validate a value is a valid stringr. If not throw an error</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">int</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;The value to be validated&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;The type that the string represents&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line6">line 6</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateUserExist"><span class="type-signature">(async) </span>validateUserExist<span class="signature">(user_persistence, userId)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Throw an error if user does not exist.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>user_persistence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;User persistence object&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>userId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;User id to be validated&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line62">line 62</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="validateUsersAreRoommates"><span class="type-signature">(async) </span>validateUsersAreRoommates<span class="signature">(room_persistence, user2, user1_room_id)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Throw error if user2 isn't a member of user1's room</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>room_persistence</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Room persistence object&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>user2</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;String representing the second user&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>user1_room_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;String representing the users room&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Utility_validator.js.html">Utility/validator.js</a>, <a href="Utility_validator.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
