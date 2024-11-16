@@ -12,7 +12,9 @@ import '../../utils/response_handler.dart';
 class SharedExpensesPage extends StatefulWidget {
 
   final String userId;
-  const SharedExpensesPage({super.key, required this.userId});
+  final String roomId;
+  final Map<String,dynamic> summary;
+  const SharedExpensesPage({super.key, required this.userId, required this.roomId, required this.summary});
 
   @override
   _SharedExpensesPageState createState() => _SharedExpensesPageState();
@@ -25,18 +27,29 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
   void initState() {
     super.initState();
     getTransactions(widget.userId); // async function here
+    extractSummaryInfo(widget.summary);
   }
 
   List<Transaction>? allTransactions;
   // Sample transaction data
 
+  late double owe;
+  late double owed;
+
+  late List<dynamic> summaryMessages;
   // List of dynamic text boxes for the summary section
-  final List<String> summaryMessages = [
-    "Bobby owes you \$20",
-    "Bobby owes you \$20",
-    "You owes Bobby \$20",
-    // Add more summary messages as needed
-  ];
+  // final List<String> summaryMessages = [
+  //   "Bobby owes you \$20",
+  //   "Bobby owes you \$20",
+  //   "You owes Bobby \$20",
+  //   // Add more summary messages as needed
+  // ];
+
+  // double amountUserOwes = (summary["owed"] as num).toDouble();
+  // double amountUserIsOwed = (jsonData["owns"] as num).toDouble();
+
+  // double owe = double.parse(amountUserOwes.toStringAsFixed(2));
+  // double owed = double.parse(amountUserIsOwed.toStringAsFixed(2));
 
   final theme = OurTheme();
 
@@ -90,20 +103,20 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       // crossAxisAligment: CrossAxisAlignment.
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
                           children: [
                             Text(
-                              "\$100", // e.g., "29"
-                              style: TextStyle(
+                              "\$$owe", // e.g., "29"
+                              style: const TextStyle(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            Text(
+                            const Text(
                               "You owe", // e.g., "Aug"
                               style: TextStyle(
                                   fontSize: 15,
@@ -112,11 +125,11 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                             ),
                           ],
                         ),
-                        SizedBox(width: 50),
+                        const SizedBox(width: 50),
                         Column(
                           children: [
                             Text(
-                              "\$5000", // e.g., "29"
+                              "\$$owed", // e.g., "29"
                               style: TextStyle(
                                   fontSize: 40,
                                   fontWeight: FontWeight.bold,
@@ -348,12 +361,19 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
       print(e.toString());
       OurTheme().buildToastMessage(e.message);
     }
-
   }
 
   String capitalize(String input) {
     if (input.isEmpty) return input;
     return input[0].toUpperCase() + input.substring(1).toLowerCase();
+  }
+
+  void extractSummaryInfo(Map<String, dynamic> summary) {
+    double amountUserOwes = (summary["owed"] as num).toDouble();
+    double amountUserIsOwed = (summary["owns"] as num).toDouble();
+    owe = double.parse(amountUserOwes.toStringAsFixed(2));
+    owed = double.parse(amountUserIsOwed.toStringAsFixed(2));
+    summaryMessages = summary["relationships"];
   }
 }
 

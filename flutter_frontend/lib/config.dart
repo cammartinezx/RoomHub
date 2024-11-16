@@ -34,3 +34,4 @@ const editTaskPth = "$task/edit-task";
 const createExpensePth = "$transaction/create-expense";
 const settleUpPth = "$transaction/settle-up";
 const getTransactionPth = "$transaction/get-transaction";
+const getSummaryPth = "$transaction/get-summary";

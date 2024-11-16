@@ -298,6 +298,21 @@ Future<String> getResponse(http.Response response,
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
 
+    case 'getSummary':
+      switch (response.statusCode) {
+        case 404:
+          throw UserException("This user does not exist.");
+        case 422:
+        // Handle invalid username error
+          throw UserException("Something went wrong. Request error");
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+
     case 'getRoommateList':
       switch (response.statusCode) {
         case 400:
