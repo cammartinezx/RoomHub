@@ -46,7 +46,12 @@ router.post("/create-expense", (req, res) => {
  * @example Response:
  * {
  * "owed": 5.333333333333332,
- * "owns": 24.666666666666664
+ * "owns": 24.666666666666664,
+ * "relationships": [
+    "You owe daohl@myumanitoba.ca CAD 10",
+    "dan@gmail.com owes you CAD 54.67",
+    "daohl@myumanitoba.ca owes you CAD 45.67"
+  ]
  * }
  */
 router.get("/get-summary", (req, res) => {
