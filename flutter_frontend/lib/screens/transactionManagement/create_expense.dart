@@ -263,7 +263,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                             if(isSaved){
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => SharedExpensesPage(),
+                                  builder: (context) => SharedExpensesPage(userId: widget.email,),
                                 ),
                               );
                             }

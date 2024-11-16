@@ -264,7 +264,7 @@ class _SettleUpState extends State<SettleUp> {
                             if(isSaved){
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => SharedExpensesPage(),
+                                  builder: (context) => SharedExpensesPage(userId:widget.email),
                                 ),
                               );
                             }

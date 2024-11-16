@@ -1,88 +1,34 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
+import 'package:http/http.dart' as http;
+
+import '../../utils/custom_exceptions.dart';
+import '../../utils/response_handler.dart';
+
 
 class SharedExpensesPage extends StatefulWidget {
+
+  final String userId;
+  const SharedExpensesPage({super.key, required this.userId});
+
   @override
   _SharedExpensesPageState createState() => _SharedExpensesPageState();
 }
 
 class _SharedExpensesPageState extends State<SharedExpensesPage> {
+
+
+  @override
+  void initState() {
+    super.initState();
+    getTransactions(widget.userId); // async function here
+  }
+
+  List<Transaction>? allTransactions;
   // Sample transaction data
-  final List<Map<String, String>> transactions = [
-    {
-      'dateMonth': 'Aug',
-      'dateDay': '29',
-      'description': 'Groceries',
-      'amount': '\$40'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '03',
-      'description': 'Utilities',
-      'amount': '\$75'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '12',
-      'description': 'Internet Bill',
-      'amount': '\$30'
-    },
-    {
-      'dateMonth': 'Aug',
-      'dateDay': '29',
-      'description': 'Groceries',
-      'amount': '\$40'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '03',
-      'description': 'Utilities',
-      'amount': '\$75'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '12',
-      'description': 'Internet Bill',
-      'amount': '\$30'
-    },
-    {
-      'dateMonth': 'Aug',
-      'dateDay': '29',
-      'description': 'Groceries',
-      'amount': '\$40'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '03',
-      'description': 'Utilities',
-      'amount': '\$75'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '12',
-      'description': 'Internet Bill',
-      'amount': '\$30'
-    },
-    {
-      'dateMonth': 'Aug',
-      'dateDay': '29',
-      'description': 'Groceries',
-      'amount': '\$40'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '03',
-      'description': 'Utilities',
-      'amount': '\$75'
-    },
-    {
-      'dateMonth': 'Sep',
-      'dateDay': '12',
-      'description': 'Internet Bill',
-      'amount': '\$30'
-    }
-    // Add more transactions as needed
-  ];
 
   // List of dynamic text boxes for the summary section
   final List<String> summaryMessages = [
@@ -144,7 +90,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       // crossAxisAligment: CrossAxisAlignment.
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -194,7 +140,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                           child: Center(
                             child: Text(
                               message,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
@@ -222,7 +168,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                   TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
                           ElevatedButton(
@@ -247,32 +193,6 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
               ),
             ),
           ),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       ElevatedButton(onPressed: () {debugPrint("Settle up clicked");},
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: theme.darkblue,
-          //           // fixedSize: const Size(100, 30), // Minimum width and height
-          //           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 2.0), // Padding
-          //         ), child: const Text("Settle Up",
-          //           style: TextStyle(color: Colors.white, fontSize: 15),
-          //         ),
-          //       ),
-          //       SizedBox(width: 20,),
-          //       ElevatedButton(onPressed: () {debugPrint("Settle up clicked");},
-          //         style: ElevatedButton.styleFrom(
-          //           backgroundColor: theme.darkblue,
-          //           // fixedSize: const Size(100, 30), // Minimum width and height
-          //           padding: const EdgeInsets.symmetric(horizontal: 10.0), // Padding
-          //         ), child: const Text("Add",
-          //           style: TextStyle(color: Colors.white, fontSize: 15),
-          //         ),
-          //       ),
-          //     ]
-          // ),
           // Title Text Box
           const Padding(
             padding:
@@ -286,148 +206,184 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
           ),
           // Transactions List
           Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.zero, // Removes default padding
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                final transaction = transactions[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 2.0, vertical: 2.0),
-                  child: Card(
-                    elevation: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(7.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // Date Display (Month and Day)
-                          Column(
-                            children: [
-                              Text(
-                                transaction['dateMonth']!, // e.g., "Aug"
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
+            child:
+            allTransactions == null ?
+              const Center(child: SizedBox( width:40, height:40, child: CircularProgressIndicator()))
+                :
+            allTransactions!.isEmpty ?
+              const Center(child: Text("No Transactions at the moment"))
+                :
+              ListView.builder(
+                padding: EdgeInsets.zero, // Removes default padding
+                itemCount: allTransactions!.length,
+                itemBuilder: (context, index) {
+                  final transaction = allTransactions![index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 2.0, vertical: 2.0),
+                    child: Card(
+                      elevation: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.all(7.0),
+                        child: transaction.transactionType == "expense" ?
+                          Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Date Display (Month and Day)
+                            Column(
+                              children: [
+                                Text(
+                                  transaction.getMonth(), // e.g., "Aug"
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold, color: theme.darkblue),
+                                ),
+                                Text(
+                                  transaction.getDay(), // e.g., "29"
+                                  style: TextStyle(fontSize: 14, color: theme.darkblue),
+                                ),
+                              ],
+                            ),
+
+                            const SizedBox(width:50), // Spacer between details and lending info
+
+                            // Transaction Details
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    capitalize(transaction.transactionName), // e.g., "Groceries"
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: theme.darkblue),
+                                    overflow: TextOverflow.ellipsis, // Prevents overflow for long names
+                                  ),
+                                  Text(
+                                    transaction.paidToString(),
+                                    style:  TextStyle(fontSize: 16, color: theme.darkblue),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                transaction['dateDay']!, // e.g., "29"
-                                style: TextStyle(fontSize: 14),
+                            ),
+                            const SizedBox(width: 16), // Spacer between details and lending info
+
+                            // Lending Details
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    transaction.lentToString(), // e.g., "You lent CAD 50"
+                                    style: TextStyle(fontSize: 16, color: theme.darkblue),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          // Transaction Details
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                transaction[
-                                    'description']!, // e.g., "Groceries"
-                                style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        )
+                            :
+                          Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Date Display (Month and Day)
+                            Padding(
+                              padding: const EdgeInsets.only(right:50),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    transaction.getMonth(), // e.g., "Aug"
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold, color: theme.darkblue),
+                                  ),
+                                  Text(
+                                    transaction.getDay(), // e.g., "29"
+                                    style: TextStyle(fontSize: 14, color: theme.darkblue),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "Amount: ${transaction['amount']!}",
-                                style:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
+                            ),
+                            // Transaction Details
+                            Flexible(
+                              child: Text(
+                              transaction.transactionName, // e.g., "Groceries"
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: theme.darkblue),
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
                               ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                transaction[
-                                    'description']!, // e.g., "Groceries"
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              Text(
-                                "Amount: ${transaction['amount']!}",
-                                style:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
-                              ),
-                            ],
-                          )
-                        ],
+                            ),
+                          ],
+                        )
+                        ,
                       ),
                     ),
-                  ),
-                );
-              },
-            ),
+                  );
+                },
+              ),
           ),
         ],
       ),
     );
   }
 
-  Future<List<Task>> getTransactions(bool isPendingTask, String userId) async {
-    List<Task> result = [];
+  void getTransactions(String userId) async {
     try {
       var response = await http.get(
-        isPendingTask
-            ? Uri.parse("$getPendingTasks?frm=$userId")
-            : Uri.parse("$getCompletedTasks?frm=$userId"),
+        Uri.parse("$getTransactionPth?id=$userId"),
         headers: {"Content-Type": "application/json"},
       );
       print(response.statusCode);
       print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        List<Task> tasks = Task.parseTaskList(jsonData, isPendingTask);
-        // for (var task in tasks) {
-        //   print(task); // This will call the toString method
-        // }
-        result = tasks;
-        if (isPendingTask == false) {
-          print(result);
+        List<Transaction> transactions = Transaction.parseTransaction(jsonData);
+        for (var transaction in transactions) {
+          print(transaction); // This will call the toString method
         }
+        setState(() {
+          allTransactions = transactions;
+        });
+        // result = transactions;
       } else {
-        await getResponse(response, responseType: 'getTasks');
+        await getResponse(response, responseType: 'getTransactions');
       }
     } on UserException catch (e) {
       print(e.toString());
       OurTheme().buildToastMessage(e.message);
     }
-    if (isPendingTask == false) {
-      print(result);
-    }
-    return result;
+
+  }
+
+  String capitalize(String input) {
+    if (input.isEmpty) return input;
+    return input[0].toUpperCase() + input.substring(1).toLowerCase();
   }
 }
 
-
-        {
-            "transaction_amount": 10,
-            "transaction_name": "Toilet Cleaner",
-            "creator": "daohl@myumanitoba.ca",
-            "paid_by_creator": 3.33,
-            "transaction_date": "2024-11-14",
-            "owed_to_creator": 6.67,
-            "type": "expense",
-            "summary": "You paid CAD 3.33 and lent CAD 6.67 for Toilet Cleaner"
-        },
-        {
-            "transaction_date": "2024-11-12",
-            "transaction_amount": 2,
-            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
-            "creator": "dan@gmail.com",
-            "type": "settle-up"
-        },
-        {
-            "transaction_date": "2024-11-12",
-            "transaction_amount": 0.33,
-            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
-            "creator": "dan@gmail.com",
-            "type": "settle-up"
-        }
 class Transaction {
   final String transactionFullDate;
   final String transactionName;
   final String transactionType;
-  final double amountPaid;
-  final double amountLent;
+  double? amountPaid;
+  double? amountLent;
 
-  Tranasaction(
-      required this.transactionFullDate,
+  // List of month names
+  List<String> monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+
+  Transaction(
+      {
+      required this.transactionFullDate,// date format yyyy-mm-dd
       required this.transactionName,
       required this.transactionType,
       this.amountPaid,
@@ -437,38 +393,77 @@ class Transaction {
 
   // Factory constructor to create a NotificationItem from JSON
   factory Transaction.fromJson(Map<String, dynamic> json) {
+    print(json);
+    // based on the transaction type paid by creator and owed to creator exists.
+    String transactionType=  json['type'];
+
+    double? amountPaid;
+    double? amountLent;
+    if (transactionType == "expense"){
+      amountPaid =  (json["paid_by_creator"] as num).toDouble();
+      amountLent =  (json["owed_to_creator"] as num).toDouble();
+    }
+
     return Transaction(
       transactionFullDate: json['transaction_date'],
       transactionName: json['transaction_name'],
-      transactionType: json['type'],
-      amountPaid: json['task_description'],
-      assignedTo: json['asignee'],
+      transactionType: transactionType,
+      amountPaid: amountPaid,
+      amountLent: amountLent
     );
   }
 
-  static List<Task> parseTaskList(Map<String, dynamic> json, bool isPending) {
+  static List<Transaction> parseTransaction(Map<String, dynamic> json) {
     // Access the 'pending/complete tasks' array
-    List<dynamic> tasks;
-    if (isPending) {
-      tasks = json['pending_tasks'] as List<dynamic>;
-    } else {
-      tasks = json['completed_tasks'] as List<dynamic>;
-    }
+    List<dynamic> transactions = json["All_Transactions"];
 
     // Map the list of JSON objects to Task objects
-    return tasks.map((item) {
-      return Task.fromJson(item as Map<String, dynamic>);
+    List<Transaction> all_transactions =  transactions.map((item) {
+      return Transaction.fromJson(item as Map<String, dynamic>);
     }).toList();
+
+    return all_transactions;
   }
 
-  // Override toString method to provide a string representation
+  String lentToString(){
+    if(amountLent == null){
+      return "";
+    }
+    return "You lent \$$amountLent";
+  }
+
+  String paidToString(){
+    if(amountPaid == null){
+      return "";
+    }
+    return "You paid \$$amountPaid";
+  }
+
+  String getMonth(){
+    List<String> dateAsList = transactionFullDate.split("-");
+    int? monthIndex = int.tryParse(dateAsList[1]);
+    // Ensure the number is between 1 and 12
+    if (monthIndex == null  || monthIndex < 1 || monthIndex > 12) {
+      return "Invalid month";
+    }
+
+    // Get the month name using DateTime
+    return monthNames[monthIndex-1].substring(0,3);
+  }
+
+  String getDay(){
+    List<String> dateAsList = transactionFullDate.split("-");
+    return dateAsList[2];
+  }
+
+
+  // Override toString method to provide a string representation for the transaction
   @override
   String toString() {
     return 'Task{'
-        'taskId: $taskId'
-        'dueDate:$dueDate'
-        'taskName: $taskName'
-        'assignedTo: $assignedTo'
+        'Transaction Name: $transactionName'
+        'Transaction type:$transactionType'
+        'Transaction date: $transactionFullDate'
         '}';
   }
 }
