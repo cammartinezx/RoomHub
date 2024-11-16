@@ -358,4 +358,117 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
       ),
     );
   }
+
+  Future<List<Task>> getTransactions(bool isPendingTask, String userId) async {
+    List<Task> result = [];
+    try {
+      var response = await http.get(
+        isPendingTask
+            ? Uri.parse("$getPendingTasks?frm=$userId")
+            : Uri.parse("$getCompletedTasks?frm=$userId"),
+        headers: {"Content-Type": "application/json"},
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        List<Task> tasks = Task.parseTaskList(jsonData, isPendingTask);
+        // for (var task in tasks) {
+        //   print(task); // This will call the toString method
+        // }
+        result = tasks;
+        if (isPendingTask == false) {
+          print(result);
+        }
+      } else {
+        await getResponse(response, responseType: 'getTasks');
+      }
+    } on UserException catch (e) {
+      print(e.toString());
+      OurTheme().buildToastMessage(e.message);
+    }
+    if (isPendingTask == false) {
+      print(result);
+    }
+    return result;
+  }
+}
+
+
+        {
+            "transaction_amount": 10,
+            "transaction_name": "Toilet Cleaner",
+            "creator": "daohl@myumanitoba.ca",
+            "paid_by_creator": 3.33,
+            "transaction_date": "2024-11-14",
+            "owed_to_creator": 6.67,
+            "type": "expense",
+            "summary": "You paid CAD 3.33 and lent CAD 6.67 for Toilet Cleaner"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 2,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 0.33,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        }
+class Transaction {
+  final String transactionFullDate;
+  final String transactionName;
+  final String transactionType;
+  final double amountPaid;
+  final double amountLent;
+
+  Tranasaction(
+      required this.transactionFullDate,
+      required this.transactionName,
+      required this.transactionType,
+      this.amountPaid,
+      this.amountLent,
+      }
+    );
+
+  // Factory constructor to create a NotificationItem from JSON
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    return Transaction(
+      transactionFullDate: json['transaction_date'],
+      transactionName: json['transaction_name'],
+      transactionType: json['type'],
+      amountPaid: json['task_description'],
+      assignedTo: json['asignee'],
+    );
+  }
+
+  static List<Task> parseTaskList(Map<String, dynamic> json, bool isPending) {
+    // Access the 'pending/complete tasks' array
+    List<dynamic> tasks;
+    if (isPending) {
+      tasks = json['pending_tasks'] as List<dynamic>;
+    } else {
+      tasks = json['completed_tasks'] as List<dynamic>;
+    }
+
+    // Map the list of JSON objects to Task objects
+    return tasks.map((item) {
+      return Task.fromJson(item as Map<String, dynamic>);
+    }).toList();
+  }
+
+  // Override toString method to provide a string representation
+  @override
+  String toString() {
+    return 'Task{'
+        'taskId: $taskId'
+        'dueDate:$dueDate'
+        'taskName: $taskName'
+        'assignedTo: $assignedTo'
+        '}';
+  }
 }
