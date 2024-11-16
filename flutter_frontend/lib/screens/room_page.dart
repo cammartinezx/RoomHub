@@ -33,6 +33,7 @@ class _UserRoomState extends State<UserRoom> {
   @override
   void initState() {
     super.initState();
+    print("Getting to this page");
     getSummary(widget.email); // async function here
   }
 

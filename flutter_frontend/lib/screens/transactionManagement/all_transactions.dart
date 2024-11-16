@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/config.dart';
+import 'package:flutter_frontend/screens/transactionManagement/create_expense.dart';
+import 'package:flutter_frontend/screens/transactionManagement/settle_up.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:http/http.dart' as http;
 
@@ -72,6 +74,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                   size: 30,
                 ),
                 onPressed: () {
+                  print("popping transaction page");
                   Navigator.of(context).pop(); // Pop the current screen
                 },
               ),
@@ -167,6 +170,12 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                         children: [
                           ElevatedButton(
                             onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => SettleUp(email: widget.userId,roomId:widget.roomId , summaryData: widget.summary,)
+                                  ,
+                                ),
+                              );
                               debugPrint("Settle up clicked");
                             },
                             style: ElevatedButton.styleFrom(
@@ -186,7 +195,11 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                           ),
                           ElevatedButton(
                             onPressed: () {
-                              debugPrint("Settle up clicked");
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => ExpenseForm(email: widget.userId,roomId:widget.roomId , summaryData: widget.summary,)
+                                ),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: theme.darkblue,

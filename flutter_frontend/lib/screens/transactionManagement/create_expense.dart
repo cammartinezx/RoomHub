@@ -17,7 +17,8 @@ import '../../widgets/multi_select_checkbox.dart';
 class ExpenseForm extends StatefulWidget {
   final String email;
   final String roomId;
-  const ExpenseForm({super.key, required this.email, required this.roomId});
+  final Map<String, dynamic> summaryData;
+  const ExpenseForm({super.key, required this.email, required this.roomId, required this.summaryData});
 
   @override
   State<ExpenseForm> createState() => _ExpenseFormState();
@@ -263,7 +264,7 @@ class _ExpenseFormState extends State<ExpenseForm> {
                             if(isSaved){
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => SharedExpensesPage(userId: widget.email,),
+                                  builder: (context) => SharedExpensesPage(userId: widget.email, roomId: widget.roomId, summary: widget.summaryData,),
                                 ),
                               );
                             }

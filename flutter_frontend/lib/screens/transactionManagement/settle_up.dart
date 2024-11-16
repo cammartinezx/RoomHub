@@ -16,7 +16,8 @@ import 'all_transactions.dart';
 class SettleUp extends StatefulWidget {
   final String email;
   final String roomId;
-  const SettleUp({super.key, required this.email, required this.roomId});
+  final Map<String, dynamic> summaryData;
+  const SettleUp({super.key, required this.email, required this.roomId, required this.summaryData});
 
   @override
   State<SettleUp> createState() => _SettleUpState();
@@ -264,7 +265,7 @@ class _SettleUpState extends State<SettleUp> {
                             if(isSaved){
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => SharedExpensesPage(userId:widget.email),
+                                  builder: (context) => SharedExpensesPage(userId:widget.email, roomId: widget.roomId, summary: widget.summaryData,),
                                 ),
                               );
                             }
