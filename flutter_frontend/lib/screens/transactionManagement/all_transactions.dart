@@ -283,8 +283,8 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                     overflow: TextOverflow.ellipsis, // Prevents overflow for long names
                                   ),
                                   Text(
-                                    transaction.paidToString(),
-                                    style:  TextStyle(fontSize: 16, color: theme.darkblue),
+                                    transaction.paidToString(widget.userId),
+                                    style:  TextStyle(fontSize: 14, color: theme.darkblue),
                                   ),
                                 ],
                               ),
@@ -297,8 +297,8 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    transaction.lentToString(), // e.g., "You lent CAD 50"
-                                    style: TextStyle(fontSize: 16, color: theme.darkblue),
+                                    transaction.lentToString(widget.userId), // e.g., "You lent CAD 50"
+                                    style: TextStyle(fontSize: 14, color: theme.darkblue),
                                   ),
                                 ],
                               ),
@@ -394,6 +394,7 @@ class Transaction {
   final String transactionFullDate;
   final String transactionName;
   final String transactionType;
+  final String payer;
   double? amountPaid;
   double? amountLent;
 
@@ -419,6 +420,7 @@ class Transaction {
       required this.transactionFullDate,// date format yyyy-mm-dd
       required this.transactionName,
       required this.transactionType,
+      required this.payer,
       this.amountPaid,
       this.amountLent,
       }
@@ -441,6 +443,7 @@ class Transaction {
       transactionFullDate: json['transaction_date'],
       transactionName: json['transaction_name'],
       transactionType: transactionType,
+      payer: json['creator'].toLowerCase(),
       amountPaid: amountPaid,
       amountLent: amountLent
     );
@@ -458,18 +461,34 @@ class Transaction {
     return all_transactions;
   }
 
-  String lentToString(){
+  String lentToString(String currUser){
+    String result = "";
     if(amountLent == null){
       return "";
     }
-    return "You lent \$$amountLent";
+
+    if(currUser.toLowerCase() == payer.toLowerCase()){
+      result = "You lent \$$amountLent";
+    }
+    else{
+      result = "${payer.toLowerCase()} lent \$$amountLent";
+    }
+    return result;
   }
 
-  String paidToString(){
+  String paidToString(String currUser){
+    String result = "";
     if(amountPaid == null){
-      return "";
+      return result;
     }
-    return "You paid \$$amountPaid";
+
+    if(currUser.toLowerCase() == payer.toLowerCase()){
+      result = "You paid \$$amountPaid";
+    }
+    else{
+      result = "${payer.toLowerCase()} paid \$$amountPaid";
+    }
+    return result;
   }
 
   String getMonth(){
