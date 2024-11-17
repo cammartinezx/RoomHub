@@ -42,6 +42,10 @@
     flex-direction: column;
     gap: 20px;
   }
+
+  .editForm label{
+    color: black;
+  }
   
   .description {
     font-size: 1.2rem;

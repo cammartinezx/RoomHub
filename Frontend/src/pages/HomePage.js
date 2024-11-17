@@ -34,7 +34,7 @@ const HomePage = ({ user, signOut }) => {
   }, [email]);
 
   const handleFindRoommate = async () => {
-    const isProfileComplete = true
+    const isProfileComplete = false
     // try {
     //   // Mocked API call to check if user's profile is set up
     //   const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/profile-status`);

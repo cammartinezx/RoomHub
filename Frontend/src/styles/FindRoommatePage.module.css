@@ -94,7 +94,7 @@
   background-color: #ddd;
 }
 
-button:hover {
+.actionButton:hover {
   background-color: #ccc;
 }
 
