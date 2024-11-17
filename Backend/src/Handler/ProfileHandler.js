@@ -1,6 +1,14 @@
 const Services = require("../Utility/Services");
-const { v4: uuidv4 } = require("uuid");
-const UserInfoHandler = require("./UserInfoHandler");
+const {
+    validateString,
+    validatePositiveInteger,
+    validateDate,
+    validateContributorsAreRoommates,
+    validateUserExist,
+    validateUsersAreRoommates,
+    validateOutstandingBalance,
+    validateNonEmptyList,
+} = require("../Utility/validator");
 
 /**
  * @module Handler
@@ -52,7 +60,6 @@ class ProfileHandler {
         return this.#profile_persistence;
     }
 
-
     get_user_persistence() {
         return this.#user_persistence;
     }
@@ -65,16 +72,54 @@ class ProfileHandler {
         return this.#notification_persistence;
     }
 
-
     async create_profile(request, response) {
+        //userId, location, name, gender, dob, bio, tags[], likes[], matches[], contact type, contact, reviews[]
         try {
-            
-            const user_id = request.body.id.trim().toLowerCase();
-            if (!this.#is_valid_id(user_id)) {
-                // give a certain type of response
-                return response.status(400).json({ message: "Error Creating User- User id is invalid" });
+            let user_id = request.params.id.trim().toLowerCase();
+            let location = request.body.location.trim().toLowerCase();
+            let name = request.body.name.trim().toLowerCase();
+            let gender = request.body.gender.trim().toLowerCase();
+            let dob = request.body.dob.trim().toLowerCase();
+            let bio = request.body.bio.trim().toLowerCase();
+            let contact_type = request.body.contact_type.trim().toLowerCase();
+            let contact = request.body.contact.trim().toLowerCase();
+            // let tags = request.body.tags.trim().toLowerCase();
+            // let likes = request.body.likes.trim().toLowerCase();
+            // let matches = request.body.matches.trim().toLowerCase();
+            //let reviews = request.body.reviews.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "user");
+                validateString(name, "name");
+                validateString(location, "location");
+                validateString(gender, "gender");
+                validateString(contact_type, "contact type");
+                validateDate(dob);
+                validateString(bio, "bio");
+                validateString(contact, "contact");
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
             }
-            let result = await this.#user_persistence.save_new_user(user_id);
+
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
+                return;
+            }
+
+            let result = await this.#profile_persistence.create_profile(
+                user_id,
+                name,
+                location,
+                gender,
+                contact_type,
+                dob,
+                bio,
+                contact,
+            );
             return response.status(result.status).json({ message: result.message });
         } catch (error) {
             return response.status(500).json({ message: error.message });
@@ -83,14 +128,48 @@ class ProfileHandler {
 
     async update_profile(request, response) {
         try {
-            /*
-            const user_id = request.body.id.trim().toLowerCase();
-            if (!this.#is_valid_id(user_id)) {
-                // give a certain type of response
-                return response.status(400).json({ message: "Error Creating User- User id is invalid" });
+            let user_id = request.params.id.trim().toLowerCase();
+            let location = request.body.location.trim().toLowerCase();
+            let name = request.body.name.trim().toLowerCase();
+            let gender = request.body.gender.trim().toLowerCase();
+            let dob = request.body.dob.trim().toLowerCase();
+            let bio = request.body.bio.trim().toLowerCase();
+            let contact_type = request.body.contact_type.trim().toLowerCase();
+            let contact = request.body.contact.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "user");
+                validateString(name, "name");
+                validateString(location, "location");
+                validateString(gender, "gender");
+                validateString(contact_type, "contact type");
+                validateDate(dob);
+                validateString(bio, "bio");
+                validateString(contact, "contact");
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
             }
-            let result = await this.#user_persistence.save_new_user(user_id);
-            return response.status(result.status).json({ message: result.message });*/
+
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
+                return;
+            }
+
+            let result = await this.#profile_persistence.update_profile(
+                user_id,
+                name,
+                location,
+                gender,
+                contact_type,
+                dob,
+                bio,
+                contact,
+            );
+            return response.status(result.status).json({ message: result.message });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
@@ -98,6 +177,24 @@ class ProfileHandler {
 
     async get_profile(request, response) {
         try {
+            let user_id = request.params.id.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "user");
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
+            }
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
+                return;
+            }
+
+            let result = await this.#profile_persistence.get_profile(user_id);
+            return response.status(result.status).json({ message: result.message });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
