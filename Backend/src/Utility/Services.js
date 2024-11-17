@@ -8,6 +8,7 @@ const UserPersistence = require("../Persistence/UserPersistence");
 const RoomPersistence = require("../Persistence/RoomPersistence");
 const NotificationPersistence = require("../Persistence/NotificationPersistence");
 const TaskPersistence = require("../Persistence/TaskPersistence");
+const TransactionPersistence = require("../Persistence/TransactionPersistence");
 const ProfilePersistence = require("../Persistence/ProfilePersistence");
 
 /**
@@ -20,6 +21,7 @@ class Services {
     static #room_persistence = null;
     static #notification_persistence = null;
     static #task_persistence = null;
+    static #transaction_persistence = null;
     static #profile_persistence = null;
 
     static get_user_persistence() {
@@ -51,6 +53,14 @@ class Services {
             this.#task_persistence = new TaskPersistence();
         }
         return this.#task_persistence;
+    }
+
+    static get_transaction_persistence() {
+        if (this.#transaction_persistence === null) {
+            this.#transaction_persistence = new TransactionPersistence();
+        }
+
+        return this.#transaction_persistence;
     }
     static get_profile_persistence() {
         if (this.#profile_persistence === null) {

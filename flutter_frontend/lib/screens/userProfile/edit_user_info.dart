@@ -1,0 +1,384 @@
+import 'dart:convert';
+
+import "package:flutter/material.dart";
+import 'package:flutter_frontend/screens/home/home.dart';
+import 'package:flutter_frontend/utils/our_theme.dart';
+import "package:flutter_frontend/widgets/gradient_button.dart";
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/config.dart';
+
+import '../../utils/custom_exceptions.dart';
+
+class UserInfoForm extends StatefulWidget {
+  final String email, roomID;
+  const UserInfoForm({super.key, required this.email, required this.roomID});
+
+  @override
+  State<UserInfoForm> createState() => _UserInfoFormState();
+}
+
+class _UserInfoFormState extends State<UserInfoForm> {
+  final theme = OurTheme();
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
+  String? selectedGender, selectedEthnicity;
+  DateTime? selectedDate;
+
+  String? _firstNameError,
+      _lastNameError,
+      _genderError,
+      _ethnicityError,
+      _dateError;
+
+  final List<String> gender = ["Male", "Female", "Non-binary"];
+  final List<String> ethnicity = [
+    "Black",
+    "Asian",
+    "Caucasian / White",
+    "Hispanic / Latino",
+    "Middle Eastern",
+    "Native American / Indigenous",
+    "Pacific Islander",
+    "Mixed / Multiple Ethnicities",
+    "Other / Prefer Not to Say"
+  ];
+  bool isLoading = true; // Track loading state
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  // date selection
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(1940),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: OurTheme().darkblue, // header background color
+              onPrimary: Colors.white, // header text color
+              onSurface: OurTheme().darkblue, // body text color
+            ),
+            dialogBackgroundColor: Colors.white, // background color
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (pickedDate != null && pickedDate != selectedDate) {
+      setState(() {
+        selectedDate = pickedDate;
+        _dateController.text = _formatDate(pickedDate);
+      });
+    }
+  }
+
+  String _formatDate(DateTime date) {
+    return "${date.toLocal()}".split(' ')[0];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          // Background gradient container
+          Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                theme.mintgreen, // Gradient starting color
+                theme.darkblue, // Gradient ending color
+              ]),
+            ),
+          ),
+          // Positioned header with back button and title
+          Positioned(
+            top: 20.0,
+            left: 20.0,
+            right: 20.0,
+            child: Padding(
+              padding: EdgeInsets.only(top: 50),
+              child: Stack(
+                children: [
+                  // Back button to return to the previous screen
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Pop the current screen
+                    },
+                  ),
+                  // Title text indicating the purpose of the screen
+                  const Center(
+                    heightFactor: 2.0,
+                    child: Text(
+                      'Edit my profile',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Main content container for instructions and email input
+          Padding(
+            padding: const EdgeInsets.only(top: 150.0),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
+                color: Colors.white, // Background color for the input area
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 18.0, right: 18),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 40.0,
+                      ),
+                      //F I R S T  N A M E
+                      TextFormField(
+                        controller: _firstNameController,
+                        cursorColor: theme.darkblue,
+                        decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person_outline),
+                            label: Text(
+                              "First Name",
+                              style: TextStyle(color: theme.darkblue),
+                            ),
+                            errorText: _firstNameError),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      //L A S T  N A M E
+                      TextFormField(
+                        controller: _lastNameController,
+                        cursorColor: theme.darkblue,
+                        decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person_outline),
+                            label: Text(
+                              "Last Name",
+                              style: TextStyle(color: theme.darkblue),
+                            ),
+                            errorText: _lastNameError),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+
+                      // B I R T H  D A T E
+                      TextFormField(
+                        controller: _dateController,
+                        cursorColor: theme.darkblue,
+                        readOnly: true,
+                        onTap: () =>
+                            _selectDate(context), // Show date picker on tap
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.calendar_today),
+                          label: Text(
+                            "Birth date",
+                            style: TextStyle(color: theme.darkblue),
+                          ),
+                          errorText: _dateError,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      //G E N D E R
+                      DropdownButtonFormField<String>(
+                          value: selectedGender,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          decoration: InputDecoration(
+                              label: Text(
+                                "Gender",
+                                style: TextStyle(color: theme.darkblue),
+                              ),
+                              errorText: _genderError),
+                          dropdownColor: Colors
+                              .white, // Background color of dropdown items
+                          style: TextStyle(color: theme.darkblue),
+                          items: gender
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedGender = newValue;
+                            });
+                          }),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      // E T H N I C I T Y
+                      DropdownButtonFormField<String>(
+                          value: selectedEthnicity,
+                          icon: const Icon(Icons.arrow_drop_down),
+                          decoration: InputDecoration(
+                              label: Text(
+                                "Ethnicity",
+                                style: TextStyle(color: theme.darkblue),
+                              ),
+                              errorText: _ethnicityError),
+                          dropdownColor: Colors
+                              .white, // Background color of dropdown items
+                          style: TextStyle(color: theme.darkblue),
+                          items: ethnicity
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedEthnicity = newValue;
+                            });
+                          }),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                       //F I R S T  N A M E
+                       // Adjust the height as needed
+                        TextFormField(
+                          controller: _descriptionController,
+                          cursorColor: theme.darkblue,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person_outline ),
+                            label: Text(
+                              "Description",
+                              style: TextStyle(color: theme.darkblue),
+                            ),
+                            hintText: "Use this space for what would you like people to know about you!",  // Adding hint text
+                            hintStyle: TextStyle(color: Colors.grey),  // Customize hint text color if needed
+                            errorText: _firstNameError,
+                            floatingLabelBehavior: FloatingLabelBehavior.always
+                          ),
+                          maxLines: null,  // Allows the text field to expand vertically with content
+                        ),
+                  
+
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      //S A V E    B U T T O N
+                      GradientButton(
+                          text: 'Continue',
+                          onTap: () async {
+                            bool isSaved = await saveTask(context);
+                            if (isSaved) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => OurHome(
+                                      roomID: widget.roomID,
+                                      email: widget.email),
+                                ),
+                              );
+                            }
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  bool _validateFields() {
+    setState(() {
+      // Check if any field is empty
+      _firstNameError =
+          _firstNameController.text.isEmpty ? 'This field is required' : null;
+      _lastNameError =
+          _lastNameController.text.isEmpty ? 'This field is required' : null;
+
+      _genderError = selectedGender == null ? 'This field is required' : null;
+      _ethnicityError =
+          selectedEthnicity == null ? 'This field is required' : null;
+      _dateError =
+          _dateController.text.isEmpty ? 'This field is required' : null;
+    });
+
+    // If both fields are valid, you can proceed with your logic
+    if (_firstNameError == null && _genderError == null) {
+      print('Form is valid');
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> saveTask(BuildContext context) async {
+    bool isSaved = false;
+    try {
+      if (_validateFields()) {
+        debugPrint("Add backend stuff to create a new task");
+        //await createNewTask(widget.email, _firstNameController.text, selectedGender!, _dateController.text);
+        isSaved = true;
+      }
+    } catch (e) {
+      theme.buildToastMessage("Something went wrong. Please try again later");
+      isSaved = false;
+    }
+    return isSaved;
+  }
+
+// tn	String	The task name
+// frm	String	The user creating the task
+// to	String	The user assigned the task
+// date	String	The due date for the task
+  Future<void> createNewTask(String currUserId, String taskName,
+      String assignedTo, String dueDate) async {
+    try {
+      var reqBody = {
+        "frm": currUserId, // The user creating the task
+        "tn": taskName, // The task name
+        "to": assignedTo, // The user assigned the task
+        "date": dueDate // The due date for the task
+      };
+      print(reqBody);
+      var response = await http.post(
+        Uri.parse(createTaskPth),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody), // Encode the request body as JSON
+      );
+      await handlePost(response, responseType: 'createTask');
+      theme.buildToastMessage("Task created successfully");
+      //   kick back to the notification page
+    } on UserException catch (e) {
+      theme.buildToastMessage(e.message);
+      rethrow;
+    }
+  }
+}

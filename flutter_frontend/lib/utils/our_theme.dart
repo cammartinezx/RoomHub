@@ -7,7 +7,7 @@ class OurTheme {
   final Color yellow = const Color.fromARGB(255, 253, 193, 87);
   final Color mintgreen = const Color.fromARGB(255, 139, 191, 187);
   final Color darkblue = const Color.fromARGB(255, 29, 52, 83);
-  final Color lightgrey = const Color.fromARGB(255, 213, 213, 206);
+  final Color lightgrey = const Color.fromRGBO(189, 189, 189, 1);
   final Color darkgrey = const Color.fromARGB(255, 89, 89, 94);
   final Color red = const Color.fromARGB(255, 207, 21, 21);
 

@@ -48,7 +48,7 @@ describe("UserPersistence Class-- Getting a user", () => {
 
         expect(result).toEqual({
             user_id: "test@gmail.com",
-            notification: new Set(["123", "456", "delete_req"]),
+            notification: ["123", "456", "delete_req"],
             room_id: "rm_11",
         });
     });
@@ -119,12 +119,12 @@ describe("UserPersistence Class -- Getting notifications", () => {
 
     it("Should return notification", async () => {
         result = await user_persistence.get_notification(user_id);
-        expect(result).toEqual(new Set(["123", "456", "delete_req"]));
+        expect(result).toEqual(["123", "456", "delete_req"]);
     });
 
     it("Should return an error that user doesn't have a notification yet", async () => {
         let response = await user_persistence.get_notification(no_notif_user_id);
-        expect(response).toEqual(new Set([]));
+        expect(response).toEqual([]);
     });
 });
 

@@ -146,7 +146,7 @@ class RoomPersistence {
                     room_id: unique_id,
                     name: room_name,
                     users: new Set([user_id]),
-                    tasks: new Set(),
+                    tasks: [],
                 },
                 ConditionExpression: "attribute_not_exists(room_id)",
             });
@@ -200,7 +200,7 @@ class RoomPersistence {
 
         let user_list = response.Item.users;
         if (user_list === undefined) {
-            throw new Error("Room doesn't have an user--Service Unavailable");
+            throw new Error("Room doesn't have a user--Service Unavailable");
         }
         return user_list;
     }
@@ -255,12 +255,12 @@ class RoomPersistence {
             Key: {
                 room_id: room_id,
             },
-            UpdateExpression: "ADD #tasks :newTask",
+            UpdateExpression: "SET #tasks = list_append(#tasks, :new_task)",
             ExpressionAttributeNames: {
                 "#tasks": "tasks", // The attribute (field) you're updating
             },
             ExpressionAttributeValues: {
-                ":newTask": new Set([task]), // The new task to add to the set
+                ":new_task": [task], // The new task to add as a single-element list
             },
             ConditionExpression: "attribute_exists(room_id)",
         });
@@ -275,57 +275,12 @@ class RoomPersistence {
     }
 
     /**
-     * Use Get command to retrieve the list of tasks associated with a specific room.
-     * @param {String} room_id "The unique identifier for the room"
-     * @returns {Set} "The list of tasks associated with the room_id"
-     */
-    async get_room_tasks(room_id) {
-        // Step 1: Get the task IDs from the room
-        const get_command = new GetCommand({
-            TableName: "Room",
-            Key: {
-                room_id: room_id,
-            },
-            ProjectionExpression: "tasks",
-        });
-
-        try {
-            const response = await this.#doc_client.send(get_command);
-
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
-
-            // Step 4: Fetch each task's details
-            for (const task_id of task_ids) {
-                const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
-                    Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
-                    },
-                });
-                const task_response = await this.#doc_client.send(task_command);
-
-                if (task_response.Item) {
-                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    //console.log(pending_tasks);
-                }
-            }
-            return pending_tasks; // Return the list of pending tasks
-        } catch (error) {
-            console.error("Error getting all room tasks:", error);
-            return [];
-        }
-    }
-
-    /**
      * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
      * @param {String} room_id "The unique identifier for the room"
      * @returns {Array} "The list of tasks where complete = false"
      */
     async get_pending_tasks(room_id) {
+        const pending_tasks = [];
         // Step 1: Get the task IDs from the room
         const get_command = new GetCommand({
             TableName: "Room",
@@ -334,44 +289,40 @@ class RoomPersistence {
             },
             ProjectionExpression: "tasks",
         });
-
         try {
             const response = await this.#doc_client.send(get_command);
-
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
-
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
                 const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
                     Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
                     },
                 });
+                console.log(task_id);
                 const task_response = await this.#doc_client.send(task_command);
-
+                // Only add the task if it is incomplete
                 if (task_response.Item &amp;&amp; task_response.Item.complete === false) {
                     pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    console.log(pending_tasks);
                 }
             }
-            return pending_tasks; // Return the list of pending tasks
+            return pending_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
             console.error("Error getting pending tasks:", error);
-            return [];
+            throw error;
+            //return [];
         }
     }
 
     /**
-     * Use Get command to retrieve the list of pending (incomplete) tasks associated with a specific room.
+     * Use Get command to retrieve the list of complete tasks associated with a specific room.
      * @param {String} room_id "The unique identifier for the room"
      * @returns {Array} "The list of tasks where complete = false"
      */
     async get_completed_tasks(room_id) {
+        const completed_tasks = [];
         // Step 1: Get the task IDs from the room
         const get_command = new GetCommand({
             TableName: "Room",
@@ -380,35 +331,31 @@ class RoomPersistence {
             },
             ProjectionExpression: "tasks",
         });
-
         try {
             const response = await this.#doc_client.send(get_command);
 
-            // Step 2: Check if tasks exist
-            const task_ids = response.Item?.tasks || new Set(); // Get the tasks or initialize an empty Set
-
-            // Step 3: Prepare to collect pending tasks
-            const pending_tasks = [];
+            // Retrieve task IDs or initialize to an empty array if tasks is undefined
+            const task_ids = response.Item?.tasks ? [...response.Item.tasks] : [];
 
             // Step 4: Fetch each task's details
             for (const task_id of task_ids) {
                 const task_command = new GetCommand({
-                    TableName: "Task", // Assuming your tasks are stored in a separate table named "Tasks"
+                    TableName: "Task", // Assuming tasks are stored in a separate table named "Task"
                     Key: {
-                        task_id: task_id, // Assuming task_id is the primary key in the "Tasks" table
+                        task_id: task_id, // Assuming task_id is the primary key in the "Task" table
                     },
                 });
                 const task_response = await this.#doc_client.send(task_command);
-
+                // Only add the task if it is incomplete
                 if (task_response.Item &amp;&amp; task_response.Item.complete === true) {
-                    pending_tasks.push(task_response.Item); // Add to pending tasks if complete is false
-                    //console.log(pending_tasks);
+                    completed_tasks.push(task_response.Item); // Add to pending tasks if complete is false
                 }
             }
-            return pending_tasks; // Return the list of pending tasks
+            return completed_tasks.sort((a, b) => a.due_date.localeCompare(b.due_date)); // Return the list of sorted pending tasks
         } catch (error) {
-            console.error("Error getting complete tasks:", error);
-            return [];
+            console.error("Error getting pending tasks:", error);
+            throw error;
+            //return [];
         }
     }
 
@@ -449,13 +396,13 @@ module.exports = RoomPersistence;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Oct 30 2024 19:14:53 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Nov 15 2024 23:02:45 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
