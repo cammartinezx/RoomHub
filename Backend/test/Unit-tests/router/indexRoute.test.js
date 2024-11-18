@@ -33,4 +33,12 @@ describe("Testing base routes-- Making sure all routes are mounted properly", ()
         expect(response.status).toBe(exp_stat);
         expect(response.body).toEqual(exp_msg);
     });
+
+    it("Should return welcome to the transaction paths", async () => {
+        const exp_stat = 200;
+        const exp_msg = { message: "Welcome to the Transaction paths" };
+        const response = await request(app).get("/transaction");
+        expect(response.status).toBe(exp_stat);
+        expect(response.body).toEqual(exp_msg);
+    });
 });
