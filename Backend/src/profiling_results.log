@@ -1,0 +1,13 @@
+Endpoint: GET /odumahw@myumanitoba.ca/get-roommate took 98.01 ms
+Endpoint: GET /odumahw@myumanitoba.ca/get-roommate/ took 5.35 ms
+Endpoint: GET /dev/user/odumahw@myumanitoba.ca/get-roommate took 33.38 ms
+Endpoint: GET /dev/user/odumahw@myumanitoba.ca/get-roommate took 15.27 ms
+Endpoint: GET /odumahw@myumanitoba.ca/get-roommate took 933.85 ms
+Endpoint: POST /odumahw@myumanitoba.ca/review-roommate/williamodumah@gmail.com took 12.06 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 10.01 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 2.39 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 3.23 ms
+Endpoint: GET /odumahw@myumanitoba.ca/get-roommate took 696.04 ms
+Endpoint: GET /odumahw@myumanitoba.ca/get-user-roommates took 417.49 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page took 1.47 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-pa took 1.80 ms

@@ -8,6 +8,8 @@ const UserPersistence = require("../Persistence/UserPersistence");
 const RoomPersistence = require("../Persistence/RoomPersistence");
 const NotificationPersistence = require("../Persistence/NotificationPersistence");
 const TaskPersistence = require("../Persistence/TaskPersistence");
+const ProfilePersistence = require("../Persistence/ProfilePersistence");
+const ReviewPersistence = require("../Persistence/ReviewPersistence");
 
 /**
  * Services to make sure only one instance of different persistence exist.
@@ -19,6 +21,8 @@ class Services {
     static #room_persistence = null;
     static #notification_persistence = null;
     static #task_persistence = null;
+    static #profile_persistence = null;
+    static #review_persistence = null;
 
     static get_user_persistence() {
         if (this.#user_persistence === null) {
@@ -49,6 +53,20 @@ class Services {
             this.#task_persistence = new TaskPersistence();
         }
         return this.#task_persistence;
+    }
+
+    static get_profile_persistence() {
+        if (this.#profile_persistence === null) {
+            this.#profile_persistence = new ProfilePersistence();
+        }
+        return this.#profile_persistence;
+    }
+
+    static get_review_persistence() {
+        if (this.#review_persistence === null) {
+            this.#review_persistence = new ReviewPersistence();
+        }
+        return this.#review_persistence;
     }
 }
 

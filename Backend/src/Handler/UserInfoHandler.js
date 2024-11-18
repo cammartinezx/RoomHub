@@ -31,6 +31,20 @@ class UserInfoHandler {
     #notification_persistence;
 
     /**
+     * The notificaion persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #profile_persistence;
+
+    /**
+     * The notificaion persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #review_persistence;
+
+    /**
      * Create a new UserInfoHandler object
      * @constructor
      */
@@ -38,6 +52,8 @@ class UserInfoHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
+        this.#profile_persistence = Services.get_profile_persistence();
+        this.#review_persistence = Services.get_review_persistence();
     }
 
     get_user_persistence() {
@@ -50,6 +66,13 @@ class UserInfoHandler {
 
     get_notification_persistence() {
         return this.#notification_persistence;
+    }
+
+    get_profile_persistence() {
+        return this.#profile_persistence;
+    }
+    get_review_persistence() {
+        return this.#review_persistence;
     }
     /**
      *Check if the passed in user_id is valid
@@ -384,6 +407,110 @@ class UserInfoHandler {
             }
         } catch (error) {
             response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get the review page of a roommate (id2).
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
+    async get_review_page(request, response) {
+        console.log("called");
+        try {
+            const id2 = request.params.id2.trim().toLowerCase();
+            // Check if id2 exists in the Profile table
+            const profile = await this.#profile_persistence.get_profile(id2);
+            if (profile) {
+                return response.status(200).json({ message: "User public profile exists" });
+            } else {
+                return response.status(400).json({ message: "User public profile does not exist" });
+            }
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Send a review for a user.
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
+    async send_review(request, response) {
+        try {
+            const reviewed_by = request.params.id.trim().toLowerCase();
+            const { reviewed, overall, cleanliness, noise_levels, respect, communication, paying_rent, chores } =
+                request.body;
+
+            // Check if reviewed_by has already reviewed the user
+            const existingReviews = await this.#review_persistence.get_reviews_for_user(reviewed_by, reviewed);
+            const existingReview = existingReviews.find((review) => review.reviewed_by === reviewed_by);
+
+            if (existingReview) {
+                // Overwrite the existing review
+                await this.#review_persistence.update_review(
+                    reviewed_by,
+                    reviewed,
+                    overall,
+                    cleanliness,
+                    noise_levels,
+                    respect,
+                    communication,
+                    paying_rent,
+                    chores,
+                );
+            } else {
+                // Add a new review
+                await this.#review_persistence.add_review(
+                    reviewed_by,
+                    reviewed,
+                    overall,
+                    cleanliness,
+                    noise_levels,
+                    respect,
+                    communication,
+                    paying_rent,
+                    chores,
+                );
+            }
+
+            // Calculate averages
+            const allReviews = await this.#review_persistence.get_reviews_for_user(reviewed);
+
+            const reviewCount = allReviews.length;
+            const averages = {
+                overall: 0,
+                cleanliness: 0,
+                noise_levels: 0,
+                respect: 0,
+                communication: 0,
+                paying_rent: 0,
+                chores: 0,
+            };
+
+            for (const review of allReviews) {
+                averages.overall += review.overall;
+                averages.cleanliness += review.cleanliness;
+                averages.noise_levels += review.noise_levels;
+                averages.respect += review.respect;
+                averages.communication += review.communication;
+                averages.paying_rent += review.paying_rent;
+                averages.chores += review.chores;
+            }
+
+            // Calculate final averages
+            Object.keys(averages).forEach((key) => {
+                averages[key] = (averages[key] / reviewCount).toFixed(2);
+            });
+
+            // Update the averages in the Profile table
+            await this.#profile_persistence.update_profile_averages(reviewed, averages);
+
+            return response.status(200).json({ message: "Review successfully submitted", averages });
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
         }
     }
 }

@@ -177,4 +177,29 @@ router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });
 
+/**
+ * @memberof User
+ * @name Get Review Page
+ * @path {GET} user/:id/review-page/:id2
+ * @params {String} :id2 The user ID to check for a profile
+ * @code {200} Profile exists
+ * @code {400} Profile does not exist
+ * @code {500} Error message from backend
+ */
+router.get("/:id/review-page/:id2", (req, res) => {
+    user_info_handler.get_review_page(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Send Review
+ * @path {POST} user/:id/send-review
+ * @body {Object} Review details (reviewed, overall, cleanliness, etc.)
+ * @code {200} Review successfully submitted
+ * @code {500} Error message from backend
+ */
+router.post("/:id/send-review", (req, res) => {
+    user_info_handler.send_review(req, res);
+});
+
 module.exports = router;
