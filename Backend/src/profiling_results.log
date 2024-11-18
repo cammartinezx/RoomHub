@@ -11,3 +11,7 @@ Endpoint: GET /odumahw@myumanitoba.ca/get-roommate took 696.04 ms
 Endpoint: GET /odumahw@myumanitoba.ca/get-user-roommates took 417.49 ms
 Endpoint: GET /odumahw@myumanitoba.ca/review-page took 1.47 ms
 Endpoint: GET /odumahw@myumanitoba.ca/review-pa took 1.80 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 13.65 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodum@gmail.com took 3.21 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 2.22 ms
+Endpoint: GET /odumahw@myumanitoba.ca/review-page/williamodumah@gmail.com took 3.57 ms

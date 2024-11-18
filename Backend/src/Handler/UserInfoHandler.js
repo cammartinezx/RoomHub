@@ -417,7 +417,6 @@ class UserInfoHandler {
      * @param {Express.response} response "Response to be sent back to the service that sent the original request"
      */
     async get_review_page(request, response) {
-        console.log("called");
         try {
             const id2 = request.params.id2.trim().toLowerCase();
             // Check if id2 exists in the Profile table

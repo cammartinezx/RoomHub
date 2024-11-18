@@ -173,10 +173,6 @@ router.delete("/:id/notification/:notif_id", (req, res) => {
     user_info_handler.delete_notification(req, res);
 });
 
-router.use("/", (req, res) => {
-    res.status(200).json({ Message: "Welcome to the User paths" });
-});
-
 /**
  * @memberof User
  * @name Get Review Page
@@ -200,6 +196,10 @@ router.get("/:id/review-page/:id2", (req, res) => {
  */
 router.post("/:id/send-review", (req, res) => {
     user_info_handler.send_review(req, res);
+});
+
+router.use("/", (req, res) => {
+    res.status(200).json({ Message: "Welcome to the User paths" });
 });
 
 module.exports = router;
