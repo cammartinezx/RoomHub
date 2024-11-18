@@ -176,13 +176,13 @@ router.delete("/:id/notification/:notif_id", (req, res) => {
 /**
  * @memberof User
  * @name Get Review Page
- * @path {GET} user/:id/review-page/:id2
+ * @path {GET} user/:id/review-page/:roommate_id
  * @params {String} :id2 The user ID to check for a profile
  * @code {200} Profile exists
  * @code {400} Profile does not exist
  * @code {500} Error message from backend
  */
-router.get("/:id/review-page/:id2", (req, res) => {
+router.get("/:id/review-page/:roommate_id", (req, res) => {
     user_info_handler.get_review_page(req, res);
 });
 
@@ -194,7 +194,7 @@ router.get("/:id/review-page/:id2", (req, res) => {
  * @code {200} Review successfully submitted
  * @code {500} Error message from backend
  */
-router.post("/:id/send-review", (req, res) => {
+router.post("/send-review", (req, res) => {
     user_info_handler.send_review(req, res);
 });
 

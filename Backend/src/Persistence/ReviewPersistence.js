@@ -41,6 +41,7 @@ class ReviewPersistence {
      * @param {Number} chores - The chores participation rating.
      */
     async add_review(
+        review_id,
         reviewed_by,
         reviewed,
         overall,
@@ -54,15 +55,16 @@ class ReviewPersistence {
         const put_command = new PutCommand({
             TableName: this.#table_name,
             Item: {
-                reviewed_by,
-                reviewed,
-                overall,
-                cleanliness,
-                noise_levels,
-                respect,
-                communication,
-                paying_rent,
-                chores,
+                review_id: review_id,
+                reviewed_by: reviewed_by,
+                reviewed: reviewed,
+                overall: overall,
+                cleanliness: cleanliness,
+                noise_levels: noise_levels,
+                respect: respect,
+                communication: communication,
+                paying_rent: paying_rent,
+                chores: chores,
             },
         });
         await this.#doc_client.send(put_command);

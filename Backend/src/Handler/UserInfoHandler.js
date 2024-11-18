@@ -1,4 +1,5 @@
 const Services = require("../Utility/Services");
+const { v4: uuidv4 } = require("uuid");
 
 /**
  * @module Handler
@@ -418,7 +419,7 @@ class UserInfoHandler {
      */
     async get_review_page(request, response) {
         try {
-            const id2 = request.params.id2.trim().toLowerCase();
+            const id2 = request.params.roommate_id.trim().toLowerCase();
             // Check if id2 exists in the Profile table
             const profile = await this.#profile_persistence.get_profile(id2);
             if (profile) {
@@ -439,9 +440,18 @@ class UserInfoHandler {
      */
     async send_review(request, response) {
         try {
-            const reviewed_by = request.params.id.trim().toLowerCase();
-            const { reviewed, overall, cleanliness, noise_levels, respect, communication, paying_rent, chores } =
-                request.body;
+            const review_id = uuidv4();
+            const {
+                reviewed_by,
+                reviewed,
+                overall,
+                cleanliness,
+                noise_levels,
+                respect,
+                communication,
+                paying_rent,
+                chores,
+            } = request.body;
 
             // Check if reviewed_by has already reviewed the user
             const existingReviews = await this.#review_persistence.get_reviews_for_user(reviewed_by, reviewed);
@@ -463,6 +473,7 @@ class UserInfoHandler {
             } else {
                 // Add a new review
                 await this.#review_persistence.add_review(
+                    review_id,
                     reviewed_by,
                     reviewed,
                     overall,
