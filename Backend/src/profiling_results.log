@@ -45,3 +45,13 @@ Endpoint: POST /send-review took 68.57 ms
 Endpoint: POST /send-review took 233.62 ms
 Endpoint: POST /send-review took 56.59 ms
 Endpoint: POST /send-review took 559.39 ms
+Endpoint: GET /odumahw@myumanitoba.ca/find-roommate-page took 492.01 ms
+Endpoint: GET /williamodumah@gmail.com/find-roommate-page took 57.01 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 286.32 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 312.22 ms
+Endpoint: GET / took 16.14 ms
+Endpoint: GET /favicon.ico took 4.28 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 373.82 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 294.63 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 402.26 ms
+Endpoint: GET /williamodumah@gmail.com/get-new-matches took 349.88 ms

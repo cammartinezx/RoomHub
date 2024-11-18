@@ -198,6 +198,34 @@ router.post("/send-review", (req, res) => {
     user_info_handler.send_review(req, res);
 });
 
+/**
+ * @memberof User
+ * @name Find Roommate Page
+ * @path {GET} user/:id/find-roommate-page
+ * @params {String} :id The user ID to check for a profile
+ * @code {200} User has a profile
+ * @code {400} User does not have a profile
+ * @code {500} Error message from backend
+ */
+router.get("/:id/find-roommate-page", (req, res) => {
+    user_info_handler.find_roommate_page(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Get New Matches
+ * @path {GET} user/:id/get-new-matches
+ * @params {String} :id The user ID for whom matches are to be fetched
+ * @code {200} List of matching profiles
+ * @code {400} User does not have a profile
+ * @code {400} User profile incomplete - missing location
+ * @code {500} Error message from backend
+ * @response {JSON} Matches A list of matching profiles based on location
+ */
+router.get("/:id/get-new-matches", (req, res) => {
+    user_info_handler.get_new_matches(req, res);
+});
+
 router.use("/", (req, res) => {
     res.status(200).json({ Message: "Welcome to the User paths" });
 });

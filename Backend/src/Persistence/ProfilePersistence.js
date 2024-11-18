@@ -5,6 +5,7 @@ const {
     GetCommand,
     UpdateCommand,
     DeleteCommand,
+    ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
@@ -260,6 +261,32 @@ class ProfilePersistence {
             },
         });
         await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Get all profiles from the database with the specified location
+     * @param {String} location - The location to filter profiles
+     * @returns {Array} - An array of profiles with the same location
+     */
+    async get_profiles_by_location(location) {
+        try {
+            const scan_command = new ScanCommand({
+                TableName: this.#table_name,
+                FilterExpression: "#loc = :location",
+                ExpressionAttributeNames: {
+                    "#loc": "location",
+                },
+                ExpressionAttributeValues: {
+                    ":location": location,
+                },
+            });
+
+            const response = await this.#doc_client.send(scan_command);
+            return response.Items || [];
+        } catch (error) {
+            console.error("Error in get_profiles_by_location:", error);
+            throw error;
+        }
     }
 }
 

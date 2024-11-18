@@ -523,6 +523,85 @@ class UserInfoHandler {
             return response.status(500).json({ message: error.message });
         }
     }
+
+    /**
+     * Check if the user has a profile and return a 200 or 400 status
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object with status 200 or 400
+     */
+    async find_roommate_page(request, response) {
+        try {
+            const user_id = request.params.id?.trim().toLowerCase();
+
+            if (!user_id) {
+                return response.status(400).json({ message: "Invalid user ID" });
+            }
+
+            // Fetch the user's profile from the Profiles table
+            const user_profile = await this.#profile_persistence.get_profile(user_id);
+
+            if (!user_profile) {
+                // User does not have a profile
+                return response.status(400).json({ message: "User does not have a profile" });
+            }
+
+            // User has a profile, return a 200 status
+            return response.status(200).json({ message: "User has a profile" });
+        } catch (error) {
+            console.error("Error in find_roommate_page:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get new matches for the user based on location
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object containing profiles or an error message
+     */
+    async get_new_matches(request, response) {
+        try {
+            const user_id = request.params.id.trim().toLowerCase();
+
+            // Fetch the user's profile from the Profiles table
+            const user_profile = await this.#profile_persistence.get_profile(user_id);
+
+            if (!user_profile) {
+                // User does not have a profile
+                return response.status(400).json({ message: "User does not have a profile" });
+            }
+
+            const user_location = user_profile.location;
+
+            if (!user_location) {
+                // User's profile is missing location
+                return response.status(400).json({ message: "User's profile is incomplete: missing location" });
+            }
+
+            const potential_matches = user_profile.potential_matches || [];
+            const matches = user_profile.matches || [];
+
+            // Fetch all profiles with the same location
+            const profiles_in_location = await this.#profile_persistence.get_profiles_by_location(user_location);
+
+            // Filter out the user's profile, matches, and potential matches
+            const filtered_profiles = profiles_in_location.filter((profile) => {
+                return (
+                    profile.user_id !== user_id &&
+                    !potential_matches.includes(profile.user_id) &&
+                    !matches.includes(profile.user_id)
+                );
+            });
+
+            return response.status(200).json({ profiles: filtered_profiles });
+        } catch (error) {
+            console.error("Error in get_new_matches:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
 }
 
 module.exports = UserInfoHandler;
