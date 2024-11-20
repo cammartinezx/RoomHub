@@ -228,7 +228,7 @@ router.get("/:id/find-roommate-page", (req, res) => {
  * @code {400} User does not have a profile
  * @code {400} User profile incomplete - missing location
  * @code {500} Error message from backend
- * @response {JSON} Matches A list of matching profiles based on location
+ * @response {JSON} profiles A list of matching profiles based on location
  */
 router.get("/:id/get-new-matches", (req, res) => {
     user_info_handler.get_new_matches(req, res);
