@@ -189,8 +189,16 @@ router.get("/:id/review-page/:roommate_id", (req, res) => {
 /**
  * @memberof User
  * @name Send Review
- * @path {POST} user/:id/send-review
- * @body {Object} Review details (reviewed, overall, cleanliness, etc.)
+ * @path {POST} user/send-review
+ * @body {String} reviewed_by The ID of the user submitting the review.
+ * @body {String} reviewed The ID of the user being reviewed.
+ * @body {Number} overall The overall score given to the roommate (1 to 5).
+ * @body {Number} cleanliness Rating for cleanliness (1 to 5).
+ * @body {Number} noise_levels Rating for respect for noise levels (1 to 5).
+ * @body {Number} respect Rating for respect for personal space (1 to 5).
+ * @body {Number} communication Rating for communication and conflict resolution (1 to 5).
+ * @body {Number} paying_rent Rating for paying rent/utilities on time (1 to 5).
+ * @body {Number} chores Rating for participation in chores/tasks (1 to 5).
  * @code {200} Review successfully submitted
  * @code {500} Error message from backend
  */
