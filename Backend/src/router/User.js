@@ -189,8 +189,8 @@ router.get("/:id/review-page/:roommate_id", (req, res) => {
 /**
  * @memberof User
  * @name Send Review
- * @path {POST} user/:id/send-review
- * @body {Object} Review details (reviewed, overall, cleanliness, etc.)
+ * @path {POST} user/send-review
+ * @body {Object} Review details (reviewed_by, reviewed, overall, cleanliness, etc.)
  * @code {200} Review successfully submitted
  * @code {500} Error message from backend
  */
