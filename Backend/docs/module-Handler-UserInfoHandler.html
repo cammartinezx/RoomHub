@@ -98,7 +98,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line12">line 12</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -255,7 +255,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line59">line 59</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line83">line 83</a>
     </li></ul></dd>
     
 
@@ -437,7 +437,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line73">line 73</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line97">line 97</a>
     </li></ul></dd>
     
 
@@ -619,7 +619,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line355">line 355</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line378">line 378</a>
     </li></ul></dd>
     
 
@@ -666,6 +666,534 @@
 </dl>
 
     
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="find_roommate_page"><span class="type-signature">(async) </span>find_roommate_page<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {Express.response}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Check if the user has a profile and return a 200 or 400 status</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Request received by the router</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Response to be sent back to the service that sent the original request</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line534">line 534</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A response object with status 200 or 400</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Express.response</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get_new_matches"><span class="type-signature">(async) </span>get_new_matches<span class="signature">(request, response)</span><span class="type-signature"> &rarr; {Express.response}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get new matches for the user based on location</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Request received by the router</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Response to be sent back to the service that sent the original request</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line565">line 565</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>A response object containing profiles or an error message</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Express.response</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get_review_page"><span class="type-signature">(async) </span>get_review_page<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get the review page of a roommate (id2).</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line420">line 420</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -801,7 +1329,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line249">line 249</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line273">line 273</a>
     </li></ul></dd>
     
 
@@ -983,7 +1511,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line126">line 126</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -1143,7 +1671,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line94">line 94</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -1325,7 +1853,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line286">line 286</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line310">line 310</a>
     </li></ul></dd>
     
 
@@ -1509,7 +2037,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line211">line 211</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line235">line 235</a>
     </li></ul></dd>
     
 
@@ -1668,7 +2196,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line339">line 339</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line362">line 362</a>
     </li></ul></dd>
     
 
@@ -1850,7 +2378,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line163">line 163</a>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line187">line 187</a>
     </li></ul></dd>
     
 
@@ -1903,6 +2431,166 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="send_review"><span class="type-signature">(async) </span>send_review<span class="signature">(request, response)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Send a review for a user.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.request</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Request received by the router&quot;</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Express.response</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>&quot;Response to be sent back to the service that sent the original request&quot;</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_UserInfoHandler.js.html">Handler/UserInfoHandler.js</a>, <a href="Handler_UserInfoHandler.js.html#line441">line 441</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     
@@ -1918,13 +2606,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-ProfilePersistence.html">ProfilePersistence</a></li><li><a href="module-Persistence-ReviewPersistence.html">ReviewPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Wed Oct 30 2024 19:14:53 GMT-0500 (Central Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Nov 19 2024 19:47:14 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
