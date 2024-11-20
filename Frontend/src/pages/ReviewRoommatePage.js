@@ -6,53 +6,87 @@ import axios from 'axios';
 const ReviewRoommatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const hasRoom = location.state?.hasRoom;
   const email = location.state?.email;
   const roommate = location.state?.selectedRoommate;
+
   const [review, setReview] = useState({
-    cleanliness: 0,
-    noise_levels: 0,
-    respect: 0,
-    communication: 0,
-    paying_rent: 0,
-    chores: 0,
-    overall: 0,
+    overall: '',
+    cleanliness: '',
+    noise_levels: '',
+    respect: '',
+    communication: '',
+    paying_rent: '',
+    chores: '',
   });
 
+  const [error, setError] = useState('');
+
   const handleInputChange = (field, value) => {
-    setReview((prevReview) => ({ ...prevReview, [field]: value }));
+    if (value >= 1 && value <= 5) {
+      setReview((prevReview) => ({ ...prevReview, [field]: value }));
+      setError(''); // Clear error if input is valid
+    } else {
+      setError('Ratings must be between 1 and 5.');
+    }
   };
 
   const handleSubmit = async () => {
+    // Check if all fields are filled
+    const isValidReview = Object.values(review).every((val) => val >= 1 && val <= 5);
+
+    if (!isValidReview) {
+      setError('All ratings must be filled in and between 1 and 5.');
+      return;
+    }
+
     try {
       await axios.post(
-        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/send-review`,
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/send-review`,
         {
+          reviewed_by: email,
           reviewed: roommate,
-          ...review,
+          overall: review.overall,
+          cleanliness: review.cleanliness,
+          noise_levels: review.noise_levels,
+          respect: review.respect,
+          communication: review.communication,
+          paying_rent: review.paying_rent,
+          chores: review.chores,
         }
       );
 
-      navigate('/review-success', { state: { email } });
+      // Navigate to success page after submission
+      navigate('/review-success', { state: { hasRoom, email } });
     } catch (error) {
-      alert('Error submitting review.');
+      setError('Error submitting review. Please try again later.');
+      console.error('Error submitting review:', error);
     }
   };
 
   return (
     <div className={styles.container}>
       <h2>Review Roommate</h2>
-      {Object.keys(review).map((key) => (
+      {roommate && <p>You're reviewing: <strong>{roommate}</strong></p>}
+
+      {/* Render review inputs */}
+      {Object.entries(review).map(([key, value]) => (
         <div key={key} className={styles.ratingGroup}>
-          <label>{key.replace('_', ' ')}:</label>
+          <label>{key.replace('_', ' ').toUpperCase()}:</label>
           <input
             type="number"
             min="1"
             max="5"
-            value={review[key]}
+            value={value}
             onChange={(e) => handleInputChange(key, parseInt(e.target.value, 10))}
+            required
           />
         </div>
       ))}
+
+      {/* Display error message if any */}
+      {error && <p className={styles.error}>{error}</p>}
+
       <button onClick={handleSubmit} className={styles.submitButton}>
         Submit Review
       </button>

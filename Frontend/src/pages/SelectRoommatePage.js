@@ -7,6 +7,7 @@ const SelectRoommatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const roommates = location.state?.roommates || [];
+  const hasRoom = location.state?.hasRoom;
   const email = location.state?.email;
   const [selectedRoommate, setSelectedRoommate] = useState('');
 
@@ -17,7 +18,7 @@ const SelectRoommatePage = () => {
       );
 
       if (response.status === 200) {
-        navigate('/review-roommate', { state: { selectedRoommate, email } });
+        navigate('/review-roommate', { state: { hasRoom, selectedRoommate, email } });
       } else {
         alert('This roommate does not have a Find My Roommate profile.');
       }

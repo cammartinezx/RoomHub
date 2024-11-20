@@ -103,7 +103,10 @@ const VirtualRoomPage = () => {
         );
     
         if (response.status === 200 && response.data.roommates?.length > 0) {
-          navigate('/select-roommate', { state: { hasRoom, roommates: response.data.roommates, email } });
+          const filteredRoommates = response.data.roommates.filter(
+            (roommate) => roommate !== email
+          );
+          navigate('/select-roommate', { state: { hasRoom, roommates: filteredRoommates, email } });
         } else {
           navigate('/no-roommate', { state: { hasRoom, email } });
         }
