@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../styles/HomePage.module.css'; 
 import Header from '../Header';
+import { checkUserProfile } from '../services/profileService';
 
 const HomePage = ({ user, signOut }) => {
   const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
@@ -34,24 +35,22 @@ const HomePage = ({ user, signOut }) => {
   }, [email]);
 
   const handleFindRoommate = async () => {
-    const isProfileComplete = false
-    // try {
-    //   // Mocked API call to check if user's profile is set up
-    //   const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/profile-status`);
-    //   const isProfileComplete = response.data.isProfileComplete;
+    try {
+      const isProfileComplete = await checkUserProfile(email);
 
       if (isProfileComplete) {
-        // If profile is complete, navigate directly to find roommate
-        navigate('/find-roommate', { state: { hasRoom, email } });
+          // If the profile is complete, navigate to the find roommate page
+          navigate('/find-roommate', { state: { hasRoom, email } });
       } else {
-        // If profile is incomplete, navigate to welcome/setup page
-        navigate('/welcome-find-roommate', { state: { hasRoom, email } });
+          // If the profile is incomplete, navigate to the welcome-find-roommate page
+          navigate('/welcome-find-roommate', { state: { hasRoom, email } });
       }
-    // } catch (error) {
-    //   console.error("Error checking profile status:", error);
-    //   // Handle error (e.g., display an error message to the user)
-    // }
+    } catch (error) {
+        console.error("Error in handleFindRoommate:", error);
+        alert("An error occurred. Please try again.");
+    }
   };
+
 
 
 

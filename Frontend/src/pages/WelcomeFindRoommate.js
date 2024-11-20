@@ -37,6 +37,7 @@ const WelcomeFindRoommate = () => {
             <input
               type="text"
               value={firstName}
+              className={styles.findRoommateLabel}
               onChange={(e) => setFirstName(e.target.value)}
               placeholder="Enter your first name"
               required
@@ -47,6 +48,7 @@ const WelcomeFindRoommate = () => {
             <input
               type="text"
               value={lastName}
+              className={styles.findRoommateLabel}
               onChange={(e) => setLastName(e.target.value)}
               placeholder="Enter your last name"
               required
@@ -65,6 +67,7 @@ const WelcomeFindRoommate = () => {
             <input
               type="number"
               value={age}
+              className={styles.findRoommateLabel}
               onChange={(e) => setAge(e.target.value)}
               placeholder="Enter your age"
               required

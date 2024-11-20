@@ -102,7 +102,7 @@ const VirtualRoomPage = () => {
           `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`
         );
     
-        if (response.status === 200 && response.data.roommates?.length > 0) {
+        if (response.status === 200 && response.data.roommates?.length > 1) {
           const filteredRoommates = response.data.roommates.filter(
             (roommate) => roommate !== email
           );

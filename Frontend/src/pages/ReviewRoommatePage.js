@@ -65,29 +65,36 @@ const ReviewRoommatePage = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2>Review Roommate</h2>
-      {roommate && <p>You're reviewing: <strong>{roommate}</strong></p>}
-
+    <div className={styles.reviewRoommateContainer}>
+      <h2 className={styles.reviewRoommateHeader}>Review Roommate</h2>
+      {roommate && (
+        <p className={styles.reviewRoommateParagraph}>
+          You're reviewing: <strong>{roommate}</strong>
+        </p>
+      )}
+  
       {/* Render review inputs */}
       {Object.entries(review).map(([key, value]) => (
-        <div key={key} className={styles.ratingGroup}>
-          <label>{key.replace('_', ' ').toUpperCase()}:</label>
+        <div key={key} className={styles.reviewRoommateRatingGroup}>
+          <label className={styles.reviewRoommateLabel}>
+            {key.replace('_', ' ').toUpperCase()}:
+          </label>
           <input
             type="number"
             min="1"
             max="5"
             value={value}
             onChange={(e) => handleInputChange(key, parseInt(e.target.value, 10))}
+            className={styles.reviewRoommateInput}
             required
           />
         </div>
       ))}
-
+  
       {/* Display error message if any */}
-      {error && <p className={styles.error}>{error}</p>}
-
-      <button onClick={handleSubmit} className={styles.submitButton}>
+      {error && <p className={styles.reviewRoommateError}>{error}</p>}
+  
+      <button onClick={handleSubmit} className={styles.reviewRoommateSubmitButton}>
         Submit Review
       </button>
     </div>

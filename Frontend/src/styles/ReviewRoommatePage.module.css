@@ -1,6 +1,6 @@
 /* ReviewRoommatePage.module.css */
 
-.container {
+.reviewRoommateContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,19 +13,19 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.reviewRoommateHeader {
   font-size: 24px;
   color: #333;
   margin-bottom: 20px;
 }
 
-p {
+.reviewRoommateParagraph {
   font-size: 16px;
   color: #666;
   margin-bottom: 10px;
 }
 
-.ratingGroup {
+.reviewRoommateRatingGroup {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +33,7 @@ p {
   margin-bottom: 15px;
 }
 
-label {
+.reviewRoommateLabel {
   font-size: 16px;
   color: #555;
   flex: 1;
@@ -41,7 +41,7 @@ label {
   margin-right: 10px;
 }
 
-input {
+.reviewRoommateInput {
   width: 50px;
   padding: 5px;
   font-size: 14px;
@@ -51,12 +51,12 @@ input {
   outline: none;
 }
 
-input:focus {
+.reviewRoommateInput:focus {
   border-color: #007bff;
   box-shadow: 0 0 3px rgba(0, 123, 255, 0.5);
 }
 
-.submitButton {
+.reviewRoommateSubmitButton {
   width: 100%;
   padding: 10px 15px;
   font-size: 16px;
@@ -69,11 +69,11 @@ input:focus {
   margin-top: 20px;
 }
 
-.submitButton:hover {
+.reviewRoommateSubmitButton:hover {
   background-color: #0056b3;
 }
 
-.error {
+.reviewRoommateError {
   font-size: 14px;
   color: #ff0000;
   margin-top: 10px;
