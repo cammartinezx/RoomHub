@@ -23,7 +23,7 @@ async function populate_db() {
             TableName: "User",
             Item: {
                 user_id: "test@gmail.com",
-                notification: new Set(["123", "456", "delete_req"]),
+                notification: ["123", "456", "delete_req"],
                 room_id: "rm_11",
             },
         });

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: router/Transaction.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: router/Transaction.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace Transaction
+ * @description Routes related to transactions
+ */
+const express = require("express");
+const router = express.Router();
+const TransactionHandler = require("../Handler/TransactionHandler");
+
+const transaction_handler = new TransactionHandler();
+
+/**
+ * @memberof Transaction
+ * @name Create an expense
+ * @path {POST} transaction/create-expense
+ * @body {String} name The transaction name
+ * @body {int} price The cost of the expense
+ * @body {String} payer The user that created the transaction
+ * @body {list} contributors The list of people that contributed to the transaction
+ * @body {String} date Date representing the date the transaction was created. (yyyy-mm-dd)
+ * @code {200} Expense created successfully
+ * @code {404} One or more contributors no longer belongs to this room
+ * @code {404} User does not exist
+ * @code {422} Invalid Transaction Name
+ * @code {422} Invalid Payer Name
+ * @code {422} Invalid Price- Price must be a positive number
+ * @code {422} Invalid Date
+ * @code {422} Invalid Contributors - Contributors must be a non empty list
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ */
+
+router.post("/create-expense", (req, res) => {
+    transaction_handler.create_Expense(req, res);
+});
+
+/**
+ * @memberof Transaction
+ * @name Get an user amount summary
+ * @path {GET} transaction/get-summary?id=userid
+ * @query {String} id User requesting to get the summary
+ * @code {200} Successfully retrieved amount summary
+ * @code {422} Invalid User
+ * @code {404} User not found
+ * @code {500} Error message from backend
+ * @response {JSON} summary amount own and areOwn amount
+ * @example Response:
+ * {
+ * "owed": 5.333333333333332,
+ * "owns": 24.666666666666664,
+ * "relationships": [
+    "You owe daohl@myumanitoba.ca CAD 10",
+    "dan@gmail.com owes you CAD 54.67",
+    "daohl@myumanitoba.ca owes you CAD 45.67"
+  ]
+ * }
+ */
+router.get("/get-summary", (req, res) => {
+    transaction_handler.get_summary(req, res);
+});
+
+/**
+ * @memberof Transaction
+ * @name Get all transaction details in the room of specific user
+ * @path {GET} transaction/get-transaction?id=userid
+ * @query {String} id User requesting to get the summary
+ * @code {200} Successfully retrieved all transaction details
+ * @code {422} Invalid User
+ * @code {404} User not found
+ * @code {500} Error message from backend
+ * @response {JSON} transaction details
+ * @example Response: 
+ * {
+    "All_Transactions": [
+        {
+            "transaction_amount": 10,
+            "transaction_name": "Toilet Cleaner",
+            "creator": "daohl@myumanitoba.ca",
+            "paid_by_creator": 3.33,
+            "transaction_date": "2024-11-14",
+            "owed_to_creator": 6.67,
+            "type": "expense",
+            "summary": "You paid CAD 3.33 and lent CAD 6.67 for Toilet Cleaner"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 2,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD2",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        },
+        {
+            "transaction_date": "2024-11-12",
+            "transaction_amount": 0.33,
+            "transaction_name": "dan@gmail.com paid daohl@myumanitoba.ca CAD 0.33",
+            "creator": "dan@gmail.com",
+            "type": "settle-up"
+        }
+    ]
+}
+ */
+router.get("/get-transaction", (req, res) => {
+    transaction_handler.get_transaction(req, res);
+});
+
+/**
+ * @memberof Transaction
+ * @name Settle up debt
+ * @path {POST} transaction/settle-up
+ * @body {String} debtor The user paying off debt
+ * @body {int} amount The amount paid by debtor to creditor
+ * @body {String} creditor The user owed money
+ * @body {String} date Date representing the date the transaction was created. (yyyy-mm-dd)
+ * @code {200} Transaction created successfully
+ * @code {404} Users are not roommates
+ * @code {404} User does not exist
+ * @code {409} Settle up amount must be less than or equal to outstanding balance
+ * @code {409} No outstanding balance to be settled
+ * @code {422} Invalid Debtors Name
+ * @code {422} Invalid Creditors Name
+ * @code {422} Invalid Settle Up amount- Settle Up amount must be a positive number
+ * @code {422} Invalid Date
+ * @code {500} Backend error from the database
+ * @response {String} message See description of the different status codes
+ */
+
+router.post("/settle-up", (req, res) => {
+    transaction_handler.settle_debt(req, res);
+});
+
+router.use("/", (req, res) => {
+    res.status(200).json({ message: "Welcome to the Transaction paths" });
+});
+
+module.exports = router;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Nov 15 2024 23:02:45 GMT-0600 (Central Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

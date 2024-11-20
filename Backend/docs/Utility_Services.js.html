@@ -36,8 +36,12 @@ const UserPersistence = require("../Persistence/UserPersistence");
 const RoomPersistence = require("../Persistence/RoomPersistence");
 const NotificationPersistence = require("../Persistence/NotificationPersistence");
 const TaskPersistence = require("../Persistence/TaskPersistence");
+<<<<<<< HEAD
 const ProfilePersistence = require("../Persistence/ProfilePersistence");
 const ReviewPersistence = require("../Persistence/ReviewPersistence");
+=======
+const TransactionPersistence = require("../Persistence/TransactionPersistence");
+>>>>>>> e1e2872fa98981ab6991d309e40f37ea84d962ee
 
 /**
  * Services to make sure only one instance of different persistence exist.
@@ -49,8 +53,12 @@ class Services {
     static #room_persistence = null;
     static #notification_persistence = null;
     static #task_persistence = null;
+<<<<<<< HEAD
     static #profile_persistence = null;
     static #review_persistence = null;
+=======
+    static #transaction_persistence = null;
+>>>>>>> e1e2872fa98981ab6991d309e40f37ea84d962ee
 
     static get_user_persistence() {
         if (this.#user_persistence === null) {
@@ -83,6 +91,7 @@ class Services {
         return this.#task_persistence;
     }
 
+<<<<<<< HEAD
     static get_profile_persistence() {
         if (this.#profile_persistence === null) {
             this.#profile_persistence = new ProfilePersistence();
@@ -95,6 +104,14 @@ class Services {
             this.#review_persistence = new ReviewPersistence();
         }
         return this.#review_persistence;
+=======
+    static get_transaction_persistence() {
+        if (this.#transaction_persistence === null) {
+            this.#transaction_persistence = new TransactionPersistence();
+        }
+
+        return this.#transaction_persistence;
+>>>>>>> e1e2872fa98981ab6991d309e40f37ea84d962ee
     }
 }
 
@@ -109,13 +126,21 @@ module.exports = Services;
 </div>
 
 <nav>
+<<<<<<< HEAD
     <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-ProfilePersistence.html">ProfilePersistence</a></li><li><a href="module-Persistence-ReviewPersistence.html">ReviewPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul>
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
+>>>>>>> e1e2872fa98981ab6991d309e40f37ea84d962ee
 </nav>
 
 <br class="clear">
 
 <footer>
+<<<<<<< HEAD
     Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Nov 19 2024 19:47:14 GMT-0600 (Central Standard Time)
+=======
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Nov 15 2024 23:02:45 GMT-0600 (Central Standard Time)
+>>>>>>> e1e2872fa98981ab6991d309e40f37ea84d962ee
 </footer>
 
 <script> prettyPrint(); </script>

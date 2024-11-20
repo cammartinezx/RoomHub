@@ -1,0 +1,102 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.form {
+    width: 100%;
+}
+
+.sliderContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.sliderContainer label {
+    font-size: 1rem;
+    color: #555;
+    flex-basis: 30%;
+}
+
+.sliderContainer input[type="range"] {
+    width: 50%;
+    margin: 0 10px;
+}
+
+.sliderContainer span {
+    font-size: 1rem;
+    color: #333;
+    flex-basis: 10%;
+}
+
+.textareaContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.textareaContainer label {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.textareaContainer textarea {
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    resize: none;
+}
+
+.submitButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.submitButton:hover {
+    background-color: #45a049;
+}
+
+.selectContainer {
+    margin-bottom: 15px;
+}
+
+.selectContainer label {
+    font-size: 1rem;
+    color: #555;
+    margin-right: 10px;
+}
+
+.selectContainer select {
+    padding: 8px;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 5px;
+}

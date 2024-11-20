@@ -1,0 +1,60 @@
+/* FindRoommatePage.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f0f0f0;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  .card {
+    width: 400px;
+    height: 700px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  button {
+    font-size: 1.2rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ddd;
+  }
+  
+  button:hover {
+    background-color: #ccc;
+  }
+  
+  .endMessage {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .endMessage button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .endMessage button:hover {
+    background-color: #45a049;
+  }
+  

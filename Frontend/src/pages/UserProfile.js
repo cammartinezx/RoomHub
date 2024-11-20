@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/HomePage.module.css'; 
 
-const UserProfile = ({ user, signOut }) => {
+const UserProfile = ({ user, signOut}) => {
   const location = useLocation();
   const email = user?.signInDetails?.loginId;
   const navigate = useNavigate();
@@ -12,7 +11,7 @@ const UserProfile = ({ user, signOut }) => {
     <div className={styles.container}>
       <header className={styles.header}>
         <div className={styles.logo}>
-          <img src="/logo2.png" alt="RoomHub Logo" />
+          <img src="/logo2.png" alt="RoomHub Logo"  onClick={() => navigate('/home', { state: { hasRoom, email } })}/>
         </div>
       </header>
 
@@ -21,7 +20,9 @@ const UserProfile = ({ user, signOut }) => {
           signOut(); // This will log the user out of Cognito
           navigate('/'); // Then redirect to the landing page
         }}>Log Out</button>
+        <button className={styles.logout} onClick={() => navigate(-1, { state: { email, hasRoom } })}>Back to Previous Page</button>
         <button className={styles.logout} onClick={() => navigate('/home', { state: { email, hasRoom } })}>Back to Home</button>
+
     </div>
   );
 };

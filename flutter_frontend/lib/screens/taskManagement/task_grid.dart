@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/config.dart';
-import 'package:flutter_frontend/screens/TaskMgmt/edit_task_form.dart';
+import 'package:flutter_frontend/screens/taskManagement/edit_task_form.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/custom_exceptions.dart';
-import '../utils/our_theme.dart';
-import '../utils/response_handler.dart';
+import '../../utils/custom_exceptions.dart';
+import '../../utils/our_theme.dart';
+import '../../utils/response_handler.dart';
 
 class TaskGrid extends StatefulWidget {
   // Sample data array
@@ -93,43 +93,43 @@ class _TaskGridState extends State<TaskGrid> {
                               tasks[index].dueDate,
                               style: TextStyle(color: theme.darkgrey, fontSize: 15),
                             ),
-                            const SizedBox(height: 10),
                             // is pending task type then return reuse and delete else return completed
                             widget.isPending ?
-                            ElevatedButton(onPressed: () async{
-                              bool markSuccess = await markCompleted(tasks[index].taskId, widget.userId, index);
-                              if(markSuccess){
-                                String msg = generateAnnouncementMsg(widget.userId, tasks[index].taskName);
-                                sendAnnouncementRequest(msg, widget.userId);
-                              }
-                            },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: theme.darkblue,
-                                fixedSize: const Size(200, 30), // Minimum width and height
-                                padding: const EdgeInsets.all(5.0), // Padding
-                              ), child: const Text("Completed",
-                                style: TextStyle(color: Colors.white, fontSize: 15),
+                            Center(
+                              child: ElevatedButton(onPressed: () async{
+                                bool markSuccess = await markCompleted(tasks[index].taskId, widget.userId, index);
+                                if(markSuccess){
+                                  String msg = generateAnnouncementMsg(widget.userId, tasks[index].taskName);
+                                  sendAnnouncementRequest(msg, widget.userId);
+                                }
+                              },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: theme.darkblue,
+                                  //fixedSize: const Size(200, 30), // Minimum width and height
+                                  padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical:10), // Padding
+                                ), child: const Text("Completed",
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             )
                                 :
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 ElevatedButton(onPressed: () { reuseTaskPressed(tasks[index].taskName, tasks[index].assignedTo, tasks[index].taskId, tasks[index].dueDate,);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
-                                    fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: const EdgeInsets.all(5.0), // Padding
+                                    // fixedSize: const Size(100, 30), // Minimum width and height
+                                    padding: const EdgeInsets.symmetric(horizontal: 40.0), // Padding
                                   ), child: const Text("Reuse",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),
                                 ),
-                                const SizedBox(width: 15,),
                                 ElevatedButton(onPressed: () { deletePressed(tasks[index].taskId, widget.userId, index);},
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: theme.darkblue,
-                                    fixedSize: const Size(100, 30), // Minimum width and height
-                                    padding: const EdgeInsets.all(5.0), // Padding
+                                    // fixedSize: const Size(100, 30), // Minimum width and height
+                                    padding: const EdgeInsets.symmetric(horizontal: 40.0), // Padding
                                   ), child: const Text("Delete",
                                     style: TextStyle(color: Colors.white, fontSize: 15),
                                   ),

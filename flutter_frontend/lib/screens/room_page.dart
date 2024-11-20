@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/NavBar.dart';
-import 'package:flutter_frontend/screens/header.dart';
+import 'package:flutter_frontend/widgets/side_menu.dart';
+import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
-import 'AllTask.dart';
+import 'taskManagement/all_task.dart';
 
 class UserRoom extends StatelessWidget {
   final String roomID;

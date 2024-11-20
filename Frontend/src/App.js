@@ -6,6 +6,7 @@ import JoinRoomPage from './pages/JoinRoomPage';
 import VirtualRoomPage from './pages/VirtualRoomPage';
 import AddRoommatePage from './pages/AddRoommatePage';
 import NotificationsPage from './pages/NotificationsPage';
+import ManageTasksPage from './pages/ManageTasksPage';
 
 // Amplify UI components
 import { Authenticator } from '@aws-amplify/ui-react';
@@ -14,6 +15,10 @@ import '@aws-amplify/ui-react/styles.css';
 import axios from 'axios'
 import UserProfile from './pages/UserProfile';
 import ScrollToTop from './ScrollToTop';
+import AnnouncementsPage from './pages/AnnouncementsPage';
+import ReviewRoommatePage from './pages/ReviewRoommatePage';
+import FindRoommatePage from './pages/FindRoommatePage';
+import SharedExpensesPage from './pages/SharedExpensesPage';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -141,6 +146,61 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <NotificationsPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/announcements"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <AnnouncementsPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/tasks"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ManageTasksPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/review-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ReviewRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/find-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <FindRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/shared-expenses"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <SharedExpensesPage user={user} />;
                 }}
               </Authenticator>
             }

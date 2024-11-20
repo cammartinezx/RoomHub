@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
-import "package:flutter_frontend/screens/createAnnouncement/ChipSelection.dart";
+import "package:flutter_frontend/utils/chip_selection.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -47,14 +47,13 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   }
 
   // handle chip selection
-  void handleChipSelected(int index){
+   void handleChipSelected(List<int> selectedIndices) {
     // update the index of the active announcement.
-    activeAnnouncement = index;
     setState(() {
-      for(int i =0; i< isSelected.length; i++){
-        isSelected[i] = (i == index);
-      }
-    });
+    for (int i = 0; i < isSelected.length; i++) {
+      isSelected[i] = selectedIndices.contains(i);
+    }
+  });
   }
   @override
   Widget build(BuildContext context) {
@@ -109,8 +108,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
             child: Container(
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
                 ),
                 color: Colors.white, // Background color for the input area
               ),
@@ -123,7 +122,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 30),
+                        padding: const EdgeInsets.only(top: 40),
                         child: Text("Select a preset announcement",
                             style: TextStyle(
                               color: theme.darkblue,
@@ -136,7 +135,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                       ),
                       Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          child: ChipSelection(disableChips: disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements)
+                          
+                          child: ChipSelection(disableChips: disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements, maxSelections: 1)
                       ),
                       const SizedBox(height: 20.0),
                       Container(
