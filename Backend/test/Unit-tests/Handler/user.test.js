@@ -27,6 +27,10 @@ jest.mock("../../../src/Utility/Services", () => ({
         update_notification_status: jest.fn(),
         delete_notification: jest.fn(),
     }),
+
+    get_profile_persistence: () => ({}),
+
+    get_review_persistence: () => ({}),
 }));
 
 describe("Unit test for GET /", () => {
