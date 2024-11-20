@@ -440,7 +440,6 @@ class UserInfoHandler {
      */
     async send_review(request, response) {
         try {
-            const review_id = uuidv4();
             const {
                 reviewed_by,
                 reviewed,
@@ -454,12 +453,14 @@ class UserInfoHandler {
             } = request.body;
 
             // Check if reviewed_by has already reviewed the user
-            const existingReviews = await this.#review_persistence.get_reviews_for_user(reviewed_by, reviewed);
+            const existingReviews = await this.#review_persistence.get_reviews_for_user(reviewed);
             const existingReview = existingReviews.find((review) => review.reviewed_by === reviewed_by);
 
             if (existingReview) {
+                const review_id = existingReview.review_id; // Extract the review_id
                 // Overwrite the existing review
                 await this.#review_persistence.update_review(
+                    review_id, // Pass the review_id for the update
                     reviewed_by,
                     reviewed,
                     overall,
@@ -471,6 +472,7 @@ class UserInfoHandler {
                     chores,
                 );
             } else {
+                const review_id = uuidv4();
                 // Add a new review
                 await this.#review_persistence.add_review(
                     review_id,

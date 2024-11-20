@@ -84,6 +84,7 @@ class ReviewPersistence {
      * @param {Number} chores - The chores participation rating.
      */
     async update_review(
+        review_id,
         reviewed_by,
         reviewed,
         overall,
@@ -96,10 +97,7 @@ class ReviewPersistence {
     ) {
         const update_command = new UpdateCommand({
             TableName: this.#table_name,
-            Key: {
-                reviewed_by,
-                reviewed,
-            },
+            Key: { review_id },
             UpdateExpression:
                 "SET overall = :overall, cleanliness = :cleanliness, noise_levels = :noise_levels, " +
                 "respect = :respect, communication = :communication, paying_rent = :paying_rent, chores = :chores",
