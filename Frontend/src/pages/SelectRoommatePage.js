@@ -19,11 +19,15 @@ const SelectRoommatePage = () => {
 
       if (response.status === 200) {
         navigate('/review-roommate', { state: { hasRoom, selectedRoommate, email } });
-      } else {
-        alert('This roommate does not have a Find My Roommate profile.');
       }
     } catch (error) {
-      alert('Error checking roommate profile status.');
+        if (error.response && error.response.status === 400) {
+          alert('This roommate does not have a Find My Roommate profile.');
+        } 
+        else {
+            console.error("Error checking roommate profile status:", error);
+            alert('Error checking roommate profile status. Please try again.');
+        }
     }
   };
 

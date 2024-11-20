@@ -112,7 +112,7 @@ const VirtualRoomPage = () => {
         }
       } catch (error) {
         console.error('Error fetching roommates:', error);
-        navigate('/no-roommate', { state: { email } });
+        navigate('/no-roommate', { state: { hasRoom, email } });
       }
     };
     
@@ -125,13 +125,6 @@ const VirtualRoomPage = () => {
       <div className={styles.container}>
         <Header email={email} hasRoom={hasRoom}/>
         <h2 className={styles.title}>{roomName}</h2>
-
-        <div className={styles.reviewRoommateContainer}>
-          <button className={styles.reviewRoommateButton} onClick= {checkRoommates}>
-              Review Roommate
-          </button>
-        </div>
-
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
           <div className={taskStyle.taskList}>
@@ -184,6 +177,14 @@ const VirtualRoomPage = () => {
             <button onClick={() => navigate('/tasks', { state: { hasRoom, email }})}>Go to Tasks</button>
           </div>
 
+          <div className={styles.card} onClick= {checkRoommates}>
+            <img src="review.png" alt="Review Roommate" className={styles.cardImage} />
+            <h2>Review Roommate</h2>
+            <p>Rate your roommate based on shared living experiences.</p>
+            <button onClick= {checkRoommates}>
+              Review Roommate
+            </button>
+          </div>
 
           <div className={styles.card} onClick={fetchLeaveWarning}>
             <img src="leave.png" alt="Room" className={styles.cardImage}/>
@@ -192,12 +193,6 @@ const VirtualRoomPage = () => {
             <button onClick={fetchLeaveWarning}>Leave Room</button>
           </div>
 
-          <div className={styles.card} onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email } })}>
-            <img src="find_roommate.png" alt="Room" className={styles.cardImage}/>
-            <h2>Add new roomate</h2>
-            <p>Add someone to your room</p>
-            <button onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email }})}>Add Roommate</button>
-          </div>
 
         </div>
 
