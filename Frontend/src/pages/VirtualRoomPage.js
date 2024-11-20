@@ -96,6 +96,24 @@ const VirtualRoomPage = () => {
         }
     };
 
+    const checkRoommates = async () => {
+      try {
+        const response = await axios.get(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`
+        );
+    
+        if (response.status === 200 && response.data.roommates?.length > 0) {
+          navigate('/select-roommate', { state: { hasRoom, roommates: response.data.roommates, email } });
+        } else {
+          navigate('/no-roommate', { state: { hasRoom, email } });
+        }
+      } catch (error) {
+        console.error('Error fetching roommates:', error);
+        navigate('/no-roommate', { state: { email } });
+      }
+    };
+    
+
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -106,7 +124,7 @@ const VirtualRoomPage = () => {
         <h2 className={styles.title}>{roomName}</h2>
 
         <div className={styles.reviewRoommateContainer}>
-          <button className={styles.reviewRoommateButton} onClick={() => navigate('/review-roommate', { state: { email, hasRoom } })}>
+          <button className={styles.reviewRoommateButton} onClick= {checkRoommates}>
               Review Roommate
           </button>
         </div>

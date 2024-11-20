@@ -19,6 +19,9 @@ import AnnouncementsPage from './pages/AnnouncementsPage';
 import ReviewRoommatePage from './pages/ReviewRoommatePage';
 import FindRoommatePage from './pages/FindRoommatePage';
 import WelcomeFindRoommate from './pages/WelcomeFindRoommate';
+import NoRoommatePage from './pages/NoRoommatePage';
+import SelectRoommatePage from './pages/SelectRoommatePage';
+import ReviewSuccessPage from './pages/ReviewSuccessPage';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -194,13 +197,46 @@ function App() {
               </Authenticator>
             }
           />
-                    <Route
+          <Route
             path="/welcome-find-roommate"
             element={
               <Authenticator>
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <WelcomeFindRoommate user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/no-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <NoRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/select-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <SelectRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/review-success"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ReviewSuccessPage user={user} />;
                 }}
               </Authenticator>
             }
