@@ -11,7 +11,6 @@ const TaskPersistence = require("../Persistence/TaskPersistence");
 const ProfilePersistence = require("../Persistence/ProfilePersistence");
 const ReviewPersistence = require("../Persistence/ReviewPersistence");
 const TransactionPersistence = require("../Persistence/TransactionPersistence");
-const ProfilePersistence = require("../Persistence/ProfilePersistence");
 
 /**
  * Services to make sure only one instance of different persistence exist.
@@ -26,7 +25,6 @@ class Services {
     static #profile_persistence = null;
     static #review_persistence = null;
     static #transaction_persistence = null;
-    static #profile_persistence = null;
 
     static get_user_persistence() {
         if (this.#user_persistence === null) {
@@ -78,12 +76,6 @@ class Services {
         }
 
         return this.#transaction_persistence;
-    }
-    static get_profile_persistence() {
-        if (this.#profile_persistence === null) {
-            this.#profile_persistence = new ProfilePersistence();
-        }
-        return this.#profile_persistence;
     }
 }
 
