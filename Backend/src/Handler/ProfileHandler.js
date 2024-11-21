@@ -1,13 +1,11 @@
 const Services = require("../Utility/Services");
+const { v4: uuidv4 } = require("uuid");
 const {
     validateString,
-    validatePositiveInteger,
     validateDate,
-    validateContributorsAreRoommates,
     validateUserExist,
-    validateUsersAreRoommates,
-    validateOutstandingBalance,
     validateNonEmptyList,
+    validateProfileExist,
 } = require("../Utility/validator");
 
 /**
@@ -112,13 +110,13 @@ class ProfileHandler {
 
             let result = await this.#profile_persistence.create_profile(
                 user_id,
-                name,
                 location,
+                name,
                 gender,
-                contact_type,
                 dob,
                 bio,
                 contact,
+                contact_type,
             );
             return response.status(result.status).json({ message: result.message });
         } catch (error) {
@@ -154,6 +152,7 @@ class ProfileHandler {
 
             try {
                 await validateUserExist(this.#user_persistence, user_id);
+                await validateProfileExist(this.#profile_persistence, user_id);
             } catch (error) {
                 response.status(404).json({ message: error.message });
                 return;
@@ -161,14 +160,43 @@ class ProfileHandler {
 
             let result = await this.#profile_persistence.update_profile(
                 user_id,
-                name,
                 location,
+                name,
                 gender,
-                contact_type,
                 dob,
                 bio,
                 contact,
+                contact_type,
             );
+            return response.status(result.status).json({ message: result.message });
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    async update_tags(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            let tags = request.body.tags;
+
+            // sync errors
+            try {
+                validateString(user_id, "user");
+                validateNonEmptyList(tags, "tags");
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
+            }
+
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
+                return;
+            }
+
+            const tagSet = new Set(tags);
+            let result = await this.#profile_persistence.update_tags(user_id, tagSet);
             return response.status(result.status).json({ message: result.message });
         } catch (error) {
             return response.status(500).json({ message: error.message });
@@ -193,10 +221,82 @@ class ProfileHandler {
                 return;
             }
 
-            let result = await this.#profile_persistence.get_profile(user_id);
-            return response.status(result.status).json({ message: result.message });
+            let profile = await this.#profile_persistence.get_profile(user_id);
+            return response.status(200).json({ profile });
         } catch (error) {
             return response.status(500).json({ message: error.message });
+        }
+    }
+
+    async check_match(request, response) {
+        try {
+            let user_id = request.params.id.trim().toLowerCase();
+            let liked_id = request.body.id.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "user");
+                validateString(liked_id, "user");
+            } catch (error) {
+                response.status(422).json({ message: error.message });
+                return;
+            }
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+                await validateUserExist(this.#user_persistence, liked_id);
+            } catch (error) {
+                response.status(404).json({ message: error.message });
+                return;
+            }
+
+            let result = await this.#profile_persistence.is_user_liked_by(user_id, liked_id);
+            console.log(result);
+            if (result.message === "true") {
+                await this.#profile_persistence.add_match(user_id, liked_id);
+                await this.#profile_persistence.delete_like(liked_id, user_id);
+                await this.#profile_persistence.add_match(liked_id, user_id);
+                await this.notify_match_helper(user_id, liked_id);
+
+                return response.status(200).json({ message: "users are a match. Added to each matches list" });
+            } else {
+                await this.#profile_persistence.add_like(user_id, liked_id);
+                return response.status(200).json({ message: "user succesfully added to likes" });
+            }
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     *
+     * @param {String} user_id
+     * @param {String} liked_id
+     * Helper method to send notification for matches
+     * user should have been validated already
+     */
+
+    async notify_match_helper(user_id, user_id2) {
+        try {
+            const msg = "You have a new match!";
+            const notif_id = uuidv4();
+            const status = "unread";
+            const type = "match";
+            const room_id = "not aplicable";
+
+            await this.#notification_persistence.generate_new_notification(
+                notif_id,
+                msg,
+                status,
+                user_id,
+                user_id2,
+                type,
+                room_id,
+            );
+            // assign new notification to both sender and receiver
+            await this.#user_persistence.update_user_notifications(notif_id, user_id);
+            await this.#user_persistence.update_user_notifications(notif_id, user_id2);
+        } catch (error) {
+            return error.message;
         }
     }
 }
