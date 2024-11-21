@@ -47,7 +47,7 @@ router.get("/:id/get-room", (req, res) => {
  * @memberof User
  * @name Get an user notification
  * @path {GET} user/:id/get-notification
- * @params {String} :id is the id of the user whose room we are trying to get.
+ * @params {String} :id is the id of the user who we are trying to get.
  * @code {200} A valid notification
  * @code {400} Invalid username
  * @code {500} Backend error from the database
@@ -232,6 +232,51 @@ router.get("/:id/find-roommate-page", (req, res) => {
  */
 router.get("/:id/get-new-matches", (req, res) => {
     user_info_handler.get_new_matches(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Get an user unread notification
+ * @path {GET} user/:id/get-unread-notification
+ * @params {String} :id is the id of the user who we are trying to get.
+ * @code {200} A valid notification
+ * @code {422} Invalid username
+ * @code {404} User not found
+ * @code {500} Backend error from the database
+ * @response {JSON} Unread_Notification list of unread notifications from specific user
+ * @example 
+ * If there exist unread notification for specific user
+    * Response: {
+    * "Unread_Notification": [
+        {
+        "msg": "water leak",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Lost keys",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Maintenance required",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+        "type": "announcement",
+        "status": "unread"
+        }
+    ]
+ * }
+ * If there is no unread notification for specific user
+ * Response: {
+* "Unread_Notification": []
+ * }
+ */
+router.get("/:id/get-unread-notification", (req, res) => {
+    user_info_handler.get_unread_notifs(req, res);
 });
 
 router.use("/", (req, res) => {
