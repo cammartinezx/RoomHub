@@ -165,8 +165,8 @@ async function populate_db() {
 
 async function populate_balance() {
     try {
-        // adding users
-        const put_balance_user = new PutCommand({
+        // adding balance
+        const put_balance = new PutCommand({
             TableName: "Balance",
             Item: {
                 debtor: "testUser1",
@@ -175,7 +175,8 @@ async function populate_balance() {
             },
         });
 
-        await doc_client.send(put_balance_user);
+
+        await doc_client.send(put_balance);
 
     }catch (e) {
         throw new Error("Something went wrong " + error.message);

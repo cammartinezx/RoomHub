@@ -77,3 +77,20 @@ describe("Transaction Persistence- Test getting balance record between 2 users."
         expect(result).toEqual(expected_result);
     });
 });
+
+describe("Transaction Persistence- Test updating balance record between 2 users", () => {
+    let transaction_persistence;
+
+    beforeAll(async () => {
+        transaction_persistence = new TransactionPersistence();
+        await populate_balance();
+    });
+
+    it("Should not throw an error-- Signify that an already existing balance record was updated", async () => {
+        await expect(transaction_persistence.updateBalance("testUser1", "testUser2", 100)).resolves.not.toThrow();
+    });
+
+    it("Should not throw an error-- Signify that a new balance record was created", async () => {
+        await expect(transaction_persistence.updateBalance("testUser3", "testUser4", 100)).resolves.not.toThrow();
+    });
+});
