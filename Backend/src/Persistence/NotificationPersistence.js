@@ -178,6 +178,43 @@ class NotificationPersistence {
 
         await this.#doc_client.send(delete_command);
     }
+
+    /**
+     * Get notification message, type with unread status
+     * @param {String} notif_id "The unique identifier for the notification"
+     * @returns {JSON} Return a JSON object with message, type and unread status
+     */
+    async get_unread_details(notif_id) {
+        const get_command = new GetCommand({
+            TableName: "Notification",
+            Key: {
+                id: notif_id,
+            },
+        });
+
+        try {
+            const response = await this.#doc_client.send(get_command);
+
+            // check if the item exists
+            if (!response.Item) {
+                throw new Error("Notification not found");
+            }
+
+            // extract the fields
+            const message = response.Item.message;
+            const type = response.Item.type;
+            const status = response.Item.status;
+
+            // Ensure it's unread
+            if (status !== "unread") {
+                return "ok";
+            } else {
+                return { msg: message, type: type, status: status };
+            }
+        } catch (error) {
+            throw new Error(`Failed to get notification details: ${error.message}`);
+        }
+    }
 }
 
 module.exports = NotificationPersistence;

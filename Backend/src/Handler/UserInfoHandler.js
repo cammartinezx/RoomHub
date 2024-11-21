@@ -1,5 +1,6 @@
 const Services = require("../Utility/Services");
 const { v4: uuidv4 } = require("uuid");
+const { validateString, validateUserExist } = require("../Utility/validator");
 
 /**
  * @module Handler
@@ -601,6 +602,44 @@ class UserInfoHandler {
             return response.status(200).json({ profiles: filtered_profiles });
         } catch (error) {
             console.error("Error in get_new_matches:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get a list of unread notifications
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object with status 200, 422, 404 and 500
+     */
+    async get_unread_notifs(request, response) {
+        try {
+            const user_id = request.params.id.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "User ID");
+            } catch (error) {
+                return response.status(422).json({ message: error.message });
+            }
+
+            // async errors check
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                return response.status(404).json({ message: error.message });
+            }
+
+            let notification = await this.#user_persistence.get_notification(user_id);
+            let result = [];
+            for (let item of notification) {
+                let notif_detail = await this.#notification_persistence.get_unread_details(item);
+                result.push(notif_detail);
+            }
+            const filterResults = result.filter((item) => item !== "ok");
+            return response.status(200).json({ Unread_Notification: filterResults });
+        } catch (error) {
             return response.status(500).json({ message: error.message });
         }
     }
