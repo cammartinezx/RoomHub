@@ -73,14 +73,15 @@ router.post("/create-expense", (req, res) => {
  * @response {JSON} summary amount own and areOwn amount
  * @example Response:
  * {
- * "owed": 5.333333333333332,
- * "owns": 24.666666666666664,
- * "relationships": [
-    "You owe daohl@myumanitoba.ca CAD 10",
-    "dan@gmail.com owes you CAD 54.67",
-    "daohl@myumanitoba.ca owes you CAD 45.67"
+  "owed": 55.67,
+  "owns": 4.33,
+  "relationships": [
+    "You owe hungludao@gmail.com CAD 45.67",
+    "You owe josephdoan15@outlook.com CAD 10",
+    "dan@gmail.com owes you CAD 1",
+    "hungludao@gmail.com owes you CAD 3.33"
   ]
- * }
+}
  */
 router.get("/get-summary", (req, res) => {
     transaction_handler.get_summary(req, res);
@@ -170,13 +171,13 @@ module.exports = router;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-ProfilePersistence.html">ProfilePersistence</a></li><li><a href="module-Persistence-ReviewPersistence.html">ReviewPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-ProfileHandler.html">ProfileHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-ProfilePersistence.html">ProfilePersistence</a></li><li><a href="module-Persistence-ReviewPersistence.html">ReviewPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateProfileExist">validateProfileExist</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Nov 21 2024 16:20:04 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Nov 21 2024 16:57:52 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

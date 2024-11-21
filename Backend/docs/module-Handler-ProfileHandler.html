@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Class: ProfileHandler</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,101 +17,303 @@
 
 <div id="main">
 
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    <h1 class="page-title">Class: ProfileHandler</h1>
 
     
 
 
 
 
-    <section>
-        <article><h1>RoomHub</h1>
-<h2>Backend Quickstart</h2>
-<p>No need to host the backend manually. It is hosted on aws lambda.
-If lambda doesn't work:</p>
-<ol>
-<li>Make sure <code>node</code> , <code>npm</code> and <code>java</code> are installed.To check:<pre class="prettyprint source"><code>$ node -v
-$ npm -v
-$ java -version
-</code></pre>
-<ul>
-<li>Go to <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a> to download the installer.</li>
-<li>Go to <a href="https://www.youtube.com/watch?app=desktop&amp;v=jPwrWjEwtrw">Java windows installation guide</a> , <a href="https://www.youtube.com/watch?v=PQk9O03cukQ">Java Mac installation guide</a> to install java</li>
-</ul>
-</li>
-<li>Go to the backend directory.<pre class="prettyprint source"><code>$ cd Backend
-</code></pre>
-</li>
-<li>Install dependencies.<pre class="prettyprint source"><code>$ npm install
-</code></pre>
-<ul>
-<li>Update <code>npm</code> if necessary.</li>
-</ul>
-</li>
-<li>Run the server.<pre class="prettyprint source"><code>$ node src/index.js
-</code></pre>
-</li>
-</ol>
-<h2>Backend Testing</h2>
-<ol>
-<li>Make sure <code>node</code> , <code>npm</code> and <code>java</code> are installed. To check:<pre class="prettyprint source"><code>$ node -v
-$ npm -v
-$ java -version
-</code></pre>
-<ul>
-<li>Go to <a href="https://nodejs.org/en/download/">https://nodejs.org/en/download/</a> to download the installer.</li>
-<li>Go to <a href="https://www.youtube.com/watch?app=desktop&amp;v=jPwrWjEwtrw">Java windows installation guide</a> , <a href="https://www.youtube.com/watch?v=PQk9O03cukQ">Java Mac installation guide</a> to install java</li>
-</ul>
-</li>
-<li>Go to the backend directory.<pre class="prettyprint source"><code>$ cd Backend
-</code></pre>
-</li>
-<li>Install dependencies.<pre class="prettyprint source"><code>$ npm install
-</code></pre>
-<ul>
-<li>Update <code>npm</code> if necessary.</li>
-</ul>
-</li>
-<li>Run all tests.<pre class="prettyprint source"><code>$ npm run test
-</code></pre>
-</li>
-<li>Run Unit tests.<pre class="prettyprint source"><code>$ npm run unit-test
-</code></pre>
-</li>
-<li>Run Integration tests.<pre class="prettyprint source"><code>$ npm run integration-test
-</code></pre>
-</li>
-</ol>
-<h2>Backend Documentation</h2>
-<ol>
-<li>Go to the backend directory.<pre class="prettyprint source"><code>$ cd Backend/docs/index.html
-</code></pre>
-</li>
-<li>Open the index.html file in Browser</li>
-<li>API specification under the Namespaces group. User,Room and Notification are the current base paths we have.</li>
-<li>Other documentation for classes in Modules and Classes</li>
-</ol></article>
-    </section>
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-Handler.html">Handler</a>~</span>ProfileHandler<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Represents the Room handler</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    
+    <h4 class="name" id="ProfileHandler"><span class="type-signature"></span>new ProfileHandler<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
 
 
+
+<div class="description">
+    <p>Create a new UserInfoHandler object</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_ProfileHandler.js.html">Handler/ProfileHandler.js</a>, <a href="Handler_ProfileHandler.js.html#line20">line 20</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="notify_match_helper"><span class="type-signature">(async) </span>notify_match_helper<span class="signature">(user_id, liked_id)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>user_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>liked_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Helper method to send notification for matches
+user should have been validated already</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Handler_ProfileHandler.js.html">Handler/ProfileHandler.js</a>, <a href="Handler_ProfileHandler.js.html#line278">line 278</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
