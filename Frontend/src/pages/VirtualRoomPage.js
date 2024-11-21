@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/HomePage.module.css';
-import taskStyle from '../styles/ManageTasksPage.module.css'
+import taskStyle from '../styles/ManageTasksPage.module.css';
+import expenseStyle from '../styles/SharedExpensesPage.module.css';
 import roomStyles from '../styles/VirtualRoomPage.module.css';
 import Header from '../Header';
 import axios from 'axios';
@@ -20,6 +21,7 @@ const VirtualRoomPage = () => {
     const [warningMessage, setWarningMessage] = useState('');
     const [error, setError] = useState('');
     const [pendingTasks, setPendingTasks] = useState([]);
+    const [summary, setSummary] = useState({ owed: 0, owns: 0, relationships: [] });
     // const [showRoommates, setShowRoommates] = useState(false);  // State to toggle showing roommates
     
     // const toggleRoommates = () => {
@@ -86,6 +88,44 @@ const VirtualRoomPage = () => {
         }
     };
 
+    // Fetch summary on component load
+    useEffect(() => {
+      const fetchSummary = async () => {
+          try {
+              // Fetch summary
+              const summaryResponse = await axios.get(
+                  'https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary',
+                  {
+                      params: { id: email },
+                  }
+              );
+              // Update state with the response data
+              setSummary(summaryResponse.data);
+          } catch (error) {
+              if (error.response) {
+                  switch (error.response.status) {
+                      case 422:
+                          console.error('Error: Invalid user.');
+                          break;
+                      case 404:
+                          console.error('Error: No user found.');
+                          break;
+                      case 500:
+                          console.error('Error: Backend error while fetching summary.');
+                          break;
+                      default:
+                          console.error('An unexpected error occurred while fetching summary.');
+                  }
+              } else if (error.request) {
+                  console.error('Error: No response from the server while fetching summary.');
+              } else {
+                  console.error('Error: Failed to fetch summary.');
+              }
+          }
+      };
+      fetchSummary();
+  }, [email]);
+
     const toggleCompletion = async (taskId, completed, task) => {
         try {
             await axios.patch('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/mark-completed', { id: taskId, frm: email });
@@ -104,6 +144,12 @@ const VirtualRoomPage = () => {
       <div className={styles.container}>
         <Header email={email} hasRoom={hasRoom}/>
         <h2 className={styles.title}>{roomName}</h2>
+
+        <div className={styles.reviewRoommateContainer}>
+          <button className={styles.reviewRoommateButton} onClick={() => navigate('/review-roommate', { state: { email, hasRoom } })}>
+              Review Roommate
+          </button>
+        </div>
 
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
@@ -136,9 +182,21 @@ const VirtualRoomPage = () => {
           {/* Right Side - Shared Expenses */}
           <div className={roomStyles.expensesSection}>
             <h3>Shared Expenses</h3>
-            <p>No expenses recorded yet.</p>
+            <div className={expenseStyle.card}>
+                    <p>You Owe: <strong>${summary?.owed || 0}</strong></p>
+                    <p>You Are Owed: <strong>${summary?.owns || 0}</strong></p>
+                    <div className={expenseStyle.relationships}>
+                        <h4>Relationships:</h4>
+                        <ul>
+                            {summary?.relationships?.map((relationship, index) => (
+                                <li key={index}>{relationship}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
           </div>
         </div>
+
 
         <div className={styles.cardGrid}>
 
@@ -154,6 +212,15 @@ const VirtualRoomPage = () => {
             <h2>Manage Tasks</h2>
             <p>View and create tasks for your room</p>
             <button onClick={() => navigate('/tasks', { state: { hasRoom, email }})}>Go to Tasks</button>
+          </div>
+
+          <div className={styles.card} onClick={() => navigate('/shared-expenses', { state: { hasRoom, email } })}>
+            <img src="shared_expense.png" alt="Shared Expenses" className={styles.cardImage} />
+            <h2>Shared Expenses</h2>
+            <p>Track, split, and settle expenses with your roommates</p>
+            <button onClick={() => navigate('/shared-expenses', { state: { hasRoom, email } })}>
+              Go to Shared Expenses
+            </button>
           </div>
 
 

@@ -12,7 +12,7 @@ const HomePage = ({ user, signOut }) => {
   const navigate = useNavigate();
 
   const handleFindRoommate = () => {
-    alert('Feature currently unavailable');
+    navigate('/find-roommate', { state: { hasRoom, email } })
   };
 
   useEffect(() => {
@@ -56,8 +56,8 @@ const HomePage = ({ user, signOut }) => {
             <div className={styles.card} onClick={handleFindRoommate}>
               <img src="find_roommate.png" alt="Find Roommate" className={styles.cardImage}/>
               <h2>Find Roommate</h2>
-              <p>Looking for the perfect roommate? Let us help you match with someone who fits your lifestyle and preferences.</p>
-              <button style={{ backgroundColor: "gray" }}>Continue →</button>
+              <p>Looking for the perfect roommate? Let us help you match with someone who fits your vibe.</p>
+              <button>Continue →</button>
             </div>
           </div>
           </>
@@ -79,8 +79,8 @@ const HomePage = ({ user, signOut }) => {
             <div className={styles.card} onClick={handleFindRoommate}>
               <img src="find_roommate.png" alt="Find Roommate" className={styles.cardImage}/>
               <h2>Find Roommate</h2>
-              <p>Looking for the perfect roommate? Let us help you match with someone who fits your lifestyle and preferences.</p>
-              <button style={{ backgroundColor: "gray" }}>Continue →</button>
+              <p>Looking for the perfect roommate? Let us help you match with someone who fits your vibe.</p>
+              <button>Continue →</button>
             </div>
           </div>
           </>

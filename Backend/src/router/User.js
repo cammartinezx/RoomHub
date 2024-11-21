@@ -47,7 +47,7 @@ router.get("/:id/get-room", (req, res) => {
  * @memberof User
  * @name Get an user notification
  * @path {GET} user/:id/get-notification
- * @params {String} :id is the id of the user whose room we are trying to get.
+ * @params {String} :id is the id of the user who we are trying to get.
  * @code {200} A valid notification
  * @code {400} Invalid username
  * @code {500} Backend error from the database
@@ -171,6 +171,112 @@ If notification no longer or never exist for user
  */
 router.delete("/:id/notification/:notif_id", (req, res) => {
     user_info_handler.delete_notification(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Get Review Page
+ * @path {GET} user/:id/review-page/:roommate_id
+ * @params {String} :id2 The user ID to check for a profile
+ * @code {200} Profile exists
+ * @code {400} Profile does not exist
+ * @code {500} Error message from backend
+ */
+router.get("/:id/review-page/:roommate_id", (req, res) => {
+    user_info_handler.get_review_page(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Send Review
+ * @path {POST} user/send-review
+ * @body {String} reviewed_by The ID of the user submitting the review.
+ * @body {String} reviewed The ID of the user being reviewed.
+ * @body {Number} overall The overall score given to the roommate (1 to 5).
+ * @body {Number} cleanliness Rating for cleanliness (1 to 5).
+ * @body {Number} noise_levels Rating for respect for noise levels (1 to 5).
+ * @body {Number} respect Rating for respect for personal space (1 to 5).
+ * @body {Number} communication Rating for communication and conflict resolution (1 to 5).
+ * @body {Number} paying_rent Rating for paying rent/utilities on time (1 to 5).
+ * @body {Number} chores Rating for participation in chores/tasks (1 to 5).
+ * @code {200} Review successfully submitted
+ * @code {500} Error message from backend
+ */
+router.post("/send-review", (req, res) => {
+    user_info_handler.send_review(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Find Roommate Page
+ * @path {GET} user/:id/find-roommate-page
+ * @params {String} :id The user ID to check for a profile
+ * @code {200} User has a profile
+ * @code {400} User does not have a profile
+ * @code {500} Error message from backend
+ */
+router.get("/:id/find-roommate-page", (req, res) => {
+    user_info_handler.find_roommate_page(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Get New Matches
+ * @path {GET} user/:id/get-new-matches
+ * @params {String} :id The user ID for whom matches are to be fetched
+ * @code {200} List of matching profiles
+ * @code {400} User does not have a profile
+ * @code {400} User profile incomplete - missing location
+ * @code {500} Error message from backend
+ * @response {JSON} profiles A list of matching profiles based on location
+ */
+router.get("/:id/get-new-matches", (req, res) => {
+    user_info_handler.get_new_matches(req, res);
+});
+
+/**
+ * @memberof User
+ * @name Get an user unread notification
+ * @path {GET} user/:id/get-unread-notification
+ * @params {String} :id is the id of the user who we are trying to get.
+ * @code {200} A valid notification
+ * @code {422} Invalid username
+ * @code {404} User not found
+ * @code {500} Backend error from the database
+ * @response {JSON} Unread_Notification list of unread notifications from specific user
+ * @example 
+ * If there exist unread notification for specific user
+    * Response: {
+    * "Unread_Notification": [
+        {
+        "msg": "water leak",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Lost keys",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Maintenance required",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+        "type": "announcement",
+        "status": "unread"
+        }
+    ]
+ * }
+ * If there is no unread notification for specific user
+ * Response: {
+* "Unread_Notification": []
+ * }
+ */
+router.get("/:id/get-unread-notification", (req, res) => {
+    user_info_handler.get_unread_notifs(req, res);
 });
 
 router.use("/", (req, res) => {

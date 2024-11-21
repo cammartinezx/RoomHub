@@ -421,6 +421,391 @@ If notification no longer or never exist for user
 
         
             
+<h4 class="name" id="FindRoommatePage"><span class="type-signature">(route) </span>Find Roommate Page<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">user/:id/find-roommate-page</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>The user ID to check for a profile</p></td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">User has a profile</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">User does not have a profile</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line209">line 209</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GetNewMatches"><span class="type-signature">(route) </span>Get New Matches<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">user/:id/get-new-matches</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>The user ID for whom matches are to be fetched</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">profiles</td>
+            <td class="type">JSON</td>
+            
+            
+            <td class="description last">A list of matching profiles based on location</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">List of matching profiles</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">User does not have a profile</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">User profile incomplete - missing location</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line222">line 222</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="GetReviewPage"><span class="type-signature">(route) </span>Get Review Page<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">user/:id/review-page/:roommate_id</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id2</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>The user ID to check for a profile</p></td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Profile exists</td>
+          </tr><tr>
+            
+            <td class="type">400</td>
+            
+            
+            <td class="description last">Profile does not exist</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
 <h4 class="name" id="Getamessagenotifyifyouhaveroommateornot"><span class="type-signature">(route) </span>Get a message notify if you have roommate or not<span class="type-signature"></span></h4>
 
 
@@ -1208,7 +1593,7 @@ If there is more than one user in the room
             <td class="type">String</td>
             
             
-            <td class="description last"><p>is the id of the user whose room we are trying to get.</p></td>
+            <td class="description last"><p>is the id of the user who we are trying to get.</p></td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -1335,6 +1720,346 @@ If there is more than one user in the room
 
 
         
+            
+<h4 class="name" id="Getanuserunreadnotification"><span class="type-signature">(route) </span>Get an user unread notification<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">GET</td>
+                            <td class="name last">user/:id/get-unread-notification</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>is the id of the user who we are trying to get.</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">Unread_Notification</td>
+            <td class="type">JSON</td>
+            
+            
+            <td class="description last">list of unread notifications from specific user</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">A valid notification</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Invalid username</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Backend error from the database</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line237">line 237</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>If there exist unread notification for specific user
+Response: {
+"Unread_Notification": [
+        {
+        "msg": "water leak",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Lost keys",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "Maintenance required",
+        "type": "announcement",
+        "status": "unread"
+        },
+        {
+        "msg": "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+        "type": "announcement",
+        "status": "unread"
+        }
+    ]
+}
+If there is no unread notification for specific user
+Response: {
+"Unread_Notification": []
+}</code></pre>
+
+
+
+        
+            
+<h4 class="name" id="SendReview"><span class="type-signature">(route) </span>Send Review<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">POST</td>
+                            <td class="name last">user/send-review</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Body Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">reviewed_by</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The ID of the user submitting the review.</td>
+          </tr><tr>
+            <td class="name">reviewed</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last">The ID of the user being reviewed.</td>
+          </tr><tr>
+            <td class="name">overall</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">The overall score given to the roommate (1 to 5).</td>
+          </tr><tr>
+            <td class="name">cleanliness</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for cleanliness (1 to 5).</td>
+          </tr><tr>
+            <td class="name">noise_levels</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for respect for noise levels (1 to 5).</td>
+          </tr><tr>
+            <td class="name">respect</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for respect for personal space (1 to 5).</td>
+          </tr><tr>
+            <td class="name">communication</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for communication and conflict resolution (1 to 5).</td>
+          </tr><tr>
+            <td class="name">paying_rent</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for paying rent/utilities on time (1 to 5).</td>
+          </tr><tr>
+            <td class="name">chores</td>
+            <td class="type">Number</td>
+            
+            
+            <td class="description last">Rating for participation in chores/tasks (1 to 5).</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Review successfully submitted</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Error message from backend</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_User.js.html">router/User.js</a>, <a href="router_User.js.html#line189">line 189</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
     
 
     
@@ -1352,13 +2077,13 @@ If there is more than one user in the room
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Handler.html">Handler</a></li><li><a href="module-Persistence.html">Persistence</a></li><li><a href="module-Services.html">Services</a></li></ul><h3>Namespaces</h3><ul><li><a href="Notification.html">Notification</a></li><li><a href="Room.html">Room</a></li><li><a href="Task.html">Task</a></li><li><a href="Transaction.html">Transaction</a></li><li><a href="User.html">User</a></li></ul><h3>Classes</h3><ul><li><a href="module-Handler-NotificationHandler.html">NotificationHandler</a></li><li><a href="module-Handler-RoomHandler.html">RoomHandler</a></li><li><a href="module-Handler-TaskOrganizerHandler.html">TaskOrganizerHandler</a></li><li><a href="module-Handler-TransactionHandler.html">TransactionHandler</a></li><li><a href="module-Handler-UserInfoHandler.html">UserInfoHandler</a></li><li><a href="module-Persistence-NotificationPersistence.html">NotificationPersistence</a></li><li><a href="module-Persistence-ProfilePersistence.html">ProfilePersistence</a></li><li><a href="module-Persistence-ReviewPersistence.html">ReviewPersistence</a></li><li><a href="module-Persistence-RoomPersistence.html">RoomPersistence</a></li><li><a href="module-Persistence-TaskPersistence.html">TaskPersistence</a></li><li><a href="module-Persistence-TransactionPersistence.html">TransactionPersistence</a></li><li><a href="module-Persistence-UserPersistence.html">UserPersistence</a></li><li><a href="module-Services-Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#validateContributorsAreRoommates">validateContributorsAreRoommates</a></li><li><a href="global.html#validateDate">validateDate</a></li><li><a href="global.html#validateNonEmptyList">validateNonEmptyList</a></li><li><a href="global.html#validateOutstandingBalance">validateOutstandingBalance</a></li><li><a href="global.html#validatePositiveInteger">validatePositiveInteger</a></li><li><a href="global.html#validateString">validateString</a></li><li><a href="global.html#validateUserExist">validateUserExist</a></li><li><a href="global.html#validateUsersAreRoommates">validateUsersAreRoommates</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Fri Nov 15 2024 23:02:45 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Thu Nov 21 2024 16:20:04 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

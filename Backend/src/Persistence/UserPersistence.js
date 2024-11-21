@@ -281,6 +281,115 @@ class UserPersistence {
 
         await this.#doc_client.send(update_command);
     }
+
+    /**
+     * Add a new review to the Reviews table.
+     * @param {String} reviewed_by
+     * @param {String} reviewed
+     * @param {Number} overall
+     * @param {Number} cleanliness
+     * @param {Number} noise_levels
+     * @param {Number} respect
+     * @param {Number} communication
+     * @param {Number} paying_rent
+     * @param {Number} chores
+     */
+    async add_review(
+        reviewed_by,
+        reviewed,
+        overall,
+        cleanliness,
+        noise_levels,
+        respect,
+        communication,
+        paying_rent,
+        chores,
+    ) {
+        const put_command = new PutCommand({
+            TableName: "Reviews",
+            Item: {
+                reviewed_by,
+                reviewed,
+                overall,
+                cleanliness,
+                noise_levels,
+                respect,
+                communication,
+                paying_rent,
+                chores,
+            },
+        });
+        await this.#doc_client.send(put_command);
+    }
+
+    /**
+     * Update an existing review in the Reviews table.
+     */
+    async update_review(
+        reviewed_by,
+        reviewed,
+        overall,
+        cleanliness,
+        noise_levels,
+        respect,
+        communication,
+        paying_rent,
+        chores,
+    ) {
+        const update_command = new UpdateCommand({
+            TableName: "Reviews",
+            Key: {
+                reviewed_by,
+                reviewed,
+            },
+            UpdateExpression:
+                "SET overall = :overall, cleanliness = :cleanliness, noise_levels = :noise_levels, " +
+                "respect = :respect, communication = :communication, paying_rent = :paying_rent, chores = :chores",
+            ExpressionAttributeValues: {
+                ":overall": overall,
+                ":cleanliness": cleanliness,
+                ":noise_levels": noise_levels,
+                ":respect": respect,
+                ":communication": communication,
+                ":paying_rent": paying_rent,
+                ":chores": chores,
+            },
+        });
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Get a review for a specific reviewer and reviewee.
+     * @param {String} reviewed_by
+     * @param {String} reviewed
+     */
+    async get_review(reviewed_by, reviewed) {
+        const get_command = new GetCommand({
+            TableName: "Reviews",
+            Key: {
+                reviewed_by,
+                reviewed,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+        return response.Item || null;
+    }
+
+    /**
+     * Get all reviews for a specific user.
+     * @param {String} reviewed
+     */
+    async get_reviews_for_user(reviewed) {
+        const scan_command = new ScanCommand({
+            TableName: "Reviews",
+            FilterExpression: "reviewed = :reviewed",
+            ExpressionAttributeValues: {
+                ":reviewed": reviewed,
+            },
+        });
+        const response = await this.#doc_client.send(scan_command);
+        return response.Items || [];
+    }
 }
 
 module.exports = UserPersistence;

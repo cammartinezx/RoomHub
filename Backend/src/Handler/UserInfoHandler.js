@@ -1,4 +1,6 @@
 const Services = require("../Utility/Services");
+const { v4: uuidv4 } = require("uuid");
+const { validateString, validateUserExist } = require("../Utility/validator");
 
 /**
  * @module Handler
@@ -31,6 +33,20 @@ class UserInfoHandler {
     #notification_persistence;
 
     /**
+     * The notificaion persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #profile_persistence;
+
+    /**
+     * The notificaion persistence object used by the info handler.
+     * @type {string}
+     * @private
+     */
+    #review_persistence;
+
+    /**
      * Create a new UserInfoHandler object
      * @constructor
      */
@@ -38,6 +54,8 @@ class UserInfoHandler {
         this.#user_persistence = Services.get_user_persistence();
         this.#room_persistence = Services.get_room_persistence();
         this.#notification_persistence = Services.get_notification_persistence();
+        this.#profile_persistence = Services.get_profile_persistence();
+        this.#review_persistence = Services.get_review_persistence();
     }
 
     get_user_persistence() {
@@ -50,6 +68,13 @@ class UserInfoHandler {
 
     get_notification_persistence() {
         return this.#notification_persistence;
+    }
+
+    get_profile_persistence() {
+        return this.#profile_persistence;
+    }
+    get_review_persistence() {
+        return this.#review_persistence;
     }
     /**
      *Check if the passed in user_id is valid
@@ -384,6 +409,238 @@ class UserInfoHandler {
             }
         } catch (error) {
             response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get the review page of a roommate (id2).
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
+    async get_review_page(request, response) {
+        try {
+            const id2 = request.params.roommate_id.trim().toLowerCase();
+            // Check if id2 exists in the Profile table
+            const profile = await this.#profile_persistence.get_profile(id2);
+            if (profile) {
+                return response.status(200).json({ message: "User public profile exists" });
+            } else {
+                return response.status(400).json({ message: "User public profile does not exist" });
+            }
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Send a review for a user.
+     * @async
+     * @param {Express.request} request "Request received by the router"
+     * @param {Express.response} response "Response to be sent back to the service that sent the original request"
+     */
+    async send_review(request, response) {
+        try {
+            const {
+                reviewed_by,
+                reviewed,
+                overall,
+                cleanliness,
+                noise_levels,
+                respect,
+                communication,
+                paying_rent,
+                chores,
+            } = request.body;
+
+            // Check if reviewed_by has already reviewed the user
+            const existingReviews = await this.#review_persistence.get_reviews_for_user(reviewed);
+            const existingReview = existingReviews.find((review) => review.reviewed_by === reviewed_by);
+
+            if (existingReview) {
+                const review_id = existingReview.review_id; // Extract the review_id
+                // Overwrite the existing review
+                await this.#review_persistence.update_review(
+                    review_id, // Pass the review_id for the update
+                    reviewed_by,
+                    reviewed,
+                    overall,
+                    cleanliness,
+                    noise_levels,
+                    respect,
+                    communication,
+                    paying_rent,
+                    chores,
+                );
+            } else {
+                const review_id = uuidv4();
+                // Add a new review
+                await this.#review_persistence.add_review(
+                    review_id,
+                    reviewed_by,
+                    reviewed,
+                    overall,
+                    cleanliness,
+                    noise_levels,
+                    respect,
+                    communication,
+                    paying_rent,
+                    chores,
+                );
+            }
+
+            // Calculate averages
+            const allReviews = await this.#review_persistence.get_reviews_for_user(reviewed);
+
+            const reviewCount = allReviews.length;
+            const averages = {
+                overall: 0,
+                cleanliness: 0,
+                noise_levels: 0,
+                respect: 0,
+                communication: 0,
+                paying_rent: 0,
+                chores: 0,
+            };
+
+            for (const review of allReviews) {
+                averages.overall += review.overall;
+                averages.cleanliness += review.cleanliness;
+                averages.noise_levels += review.noise_levels;
+                averages.respect += review.respect;
+                averages.communication += review.communication;
+                averages.paying_rent += review.paying_rent;
+                averages.chores += review.chores;
+            }
+
+            // Calculate final averages
+            Object.keys(averages).forEach((key) => {
+                averages[key] = (averages[key] / reviewCount).toFixed(2);
+            });
+
+            // Update the averages in the Profile table
+            await this.#profile_persistence.update_profile_averages(reviewed, averages);
+
+            return response.status(200).json({ message: "Review successfully submitted", averages });
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Check if the user has a profile and return a 200 or 400 status
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object with status 200 or 400
+     */
+    async find_roommate_page(request, response) {
+        try {
+            const user_id = request.params.id?.trim().toLowerCase();
+
+            if (!user_id) {
+                return response.status(400).json({ message: "Invalid user ID" });
+            }
+
+            // Fetch the user's profile from the Profiles table
+            const user_profile = await this.#profile_persistence.get_profile(user_id);
+
+            if (!user_profile) {
+                // User does not have a profile
+                return response.status(400).json({ message: "User does not have a profile" });
+            }
+
+            // User has a profile, return a 200 status
+            return response.status(200).json({ message: "User has a profile" });
+        } catch (error) {
+            console.error("Error in find_roommate_page:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get new matches for the user based on location
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object containing profiles or an error message
+     */
+    async get_new_matches(request, response) {
+        try {
+            const user_id = request.params.id.trim().toLowerCase();
+
+            // Fetch the user's profile from the Profiles table
+            const user_profile = await this.#profile_persistence.get_profile(user_id);
+
+            if (!user_profile) {
+                // User does not have a profile
+                return response.status(400).json({ message: "User does not have a profile" });
+            }
+
+            const user_location = user_profile.location;
+
+            if (!user_location) {
+                // User's profile is missing location
+                return response.status(400).json({ message: "User's profile is incomplete: missing location" });
+            }
+
+            const potential_matches = user_profile.potential_matches || [];
+            const matches = user_profile.matches || [];
+
+            // Fetch all profiles with the same location
+            const profiles_in_location = await this.#profile_persistence.get_profiles_by_location(user_location);
+
+            // Filter out the user's profile, matches, and potential matches
+            const filtered_profiles = profiles_in_location.filter((profile) => {
+                return (
+                    profile.user_id !== user_id &&
+                    !potential_matches.includes(profile.user_id) &&
+                    !matches.includes(profile.user_id)
+                );
+            });
+
+            return response.status(200).json({ profiles: filtered_profiles });
+        } catch (error) {
+            console.error("Error in get_new_matches:", error);
+            return response.status(500).json({ message: error.message });
+        }
+    }
+
+    /**
+     * Get a list of unread notifications
+     * @async
+     * @param {Express.request} request - Request received by the router
+     * @param {Express.response} response - Response to be sent back to the service that sent the original request
+     * @returns {Express.response} - A response object with status 200, 422, 404 and 500
+     */
+    async get_unread_notifs(request, response) {
+        try {
+            const user_id = request.params.id.trim().toLowerCase();
+
+            // sync errors
+            try {
+                validateString(user_id, "User ID");
+            } catch (error) {
+                return response.status(422).json({ message: error.message });
+            }
+
+            // async errors check
+            try {
+                await validateUserExist(this.#user_persistence, user_id);
+            } catch (error) {
+                return response.status(404).json({ message: error.message });
+            }
+
+            let notification = await this.#user_persistence.get_notification(user_id);
+            let result = [];
+            for (let item of notification) {
+                let notif_detail = await this.#notification_persistence.get_unread_details(item);
+                result.push(notif_detail);
+            }
+            const filterResults = result.filter((item) => item !== "ok");
+            return response.status(200).json({ Unread_Notification: filterResults });
+        } catch (error) {
+            return response.status(500).json({ message: error.message });
         }
     }
 }

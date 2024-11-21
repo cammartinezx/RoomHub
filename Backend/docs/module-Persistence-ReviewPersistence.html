@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: TransactionPersistence</title>
+    <title>JSDoc: Class: ReviewPersistence</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: TransactionPersistence</h1>
+    <h1 class="page-title">Class: ReviewPersistence</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-Persistence.html">Persistence</a>~</span>TransactionPersistence<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-Persistence.html">Persistence</a>~</span>ReviewPersistence<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Represents the notification persistence layer that is linked to the notification table in the database</p></div>
+            <div class="class-description"><p>Represents the review persistence layer linked to the Reviews table in the database.</p></div>
         
     
 </header>
@@ -46,16 +46,12 @@
     
 
     
-    <h4 class="name" id="TransactionPersistence"><span class="type-signature"></span>new TransactionPersistence<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ReviewPersistence"><span class="type-signature"></span>new ReviewPersistence<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
-
-<div class="description">
-    <p>Create a new NotificationPersistence object</p>
-</div>
 
 
 
@@ -98,7 +94,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line23">line 23</a>
+        <a href="Persistence_ReviewPersistence.js.html">Persistence/ReviewPersistence.js</a>, <a href="Persistence_ReviewPersistence.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -154,7 +150,7 @@
     
 
     
-    <h4 class="name" id="generate_new_transaction"><span class="type-signature">(async) </span>generate_new_transaction<span class="signature">(trans_id, name, amount, room_id, date, creator, paid_by_creator, paid_by_creator, type)</span><span class="type-signature"> &rarr; {String}</span></h4>
+    <h4 class="name" id="add_review"><span class="type-signature">(async) </span>add_review<span class="signature">(reviewed_by, reviewed, overall, cleanliness, noise_levels, respect, communication, paying_rent, chores)</span><span class="type-signature"></span></h4>
     
 
     
@@ -162,7 +158,7 @@
 
 
 <div class="description">
-    <p>Uses dynamodb PutCommand to create a new transactio</p>
+    <p>Adds a new review to the Reviews table.</p>
 </div>
 
 
@@ -198,7 +194,7 @@
 
         <tr>
             
-                <td class="name"><code>trans_id</code></td>
+                <td class="name"><code>reviewed_by</code></td>
             
 
             <td class="type">
@@ -214,14 +210,14 @@
 
             
 
-            <td class="description last"><p>&quot;Transaction Id of the new transaction&quot;</p></td>
+            <td class="description last"><p>The ID of the reviewer.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>name</code></td>
+                <td class="name"><code>reviewed</code></td>
             
 
             <td class="type">
@@ -237,20 +233,20 @@
 
             
 
-            <td class="description last"><p>&quot;Name of the transaction&quot;</p></td>
+            <td class="description last"><p>The ID of the person being reviewed.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>amount</code></td>
+                <td class="name"><code>overall</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">Number</span>
 
 
             
@@ -260,20 +256,20 @@
 
             
 
-            <td class="description last"><p>&quot;The cost of the transaction&quot;</p></td>
+            <td class="description last"><p>The overall rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>room_id</code></td>
+                <td class="name"><code>cleanliness</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Number</span>
 
 
             
@@ -283,20 +279,20 @@
 
             
 
-            <td class="description last"><p>&quot;Room id of user involved in the transaction&quot;</p></td>
+            <td class="description last"><p>The cleanliness rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>date</code></td>
+                <td class="name"><code>noise_levels</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Number</span>
 
 
             
@@ -306,20 +302,20 @@
 
             
 
-            <td class="description last"><p>&quot;Date the transaction was created&quot;</p></td>
+            <td class="description last"><p>The noise levels rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>creator</code></td>
+                <td class="name"><code>respect</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Number</span>
 
 
             
@@ -329,20 +325,20 @@
 
             
 
-            <td class="description last"><p>&quot;User id that created the transaction&quot;</p></td>
+            <td class="description last"><p>The respect rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>paid_by_creator</code></td>
+                <td class="name"><code>communication</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">Number</span>
 
 
             
@@ -352,20 +348,20 @@
 
             
 
-            <td class="description last"><p>&quot;The amount paid by the creator&quot;</p></td>
+            <td class="description last"><p>The communication rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>paid_by_creator</code></td>
+                <td class="name"><code>paying_rent</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">int</span>
+<span class="param-type">Number</span>
 
 
             
@@ -375,20 +371,20 @@
 
             
 
-            <td class="description last"><p>&quot;The amount paid by the creator&quot;</p></td>
+            <td class="description last"><p>The rent payment rating.</p></td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>type</code></td>
+                <td class="name"><code>chores</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Number</span>
 
 
             
@@ -398,7 +394,7 @@
 
             
 
-            <td class="description last"><p>&quot;The type of transaction&quot;</p></td>
+            <td class="description last"><p>The chores participation rating.</p></td>
         </tr>
 
     
@@ -439,7 +435,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line95">line 95</a>
+        <a href="Persistence_ReviewPersistence.js.html">Persistence/ReviewPersistence.js</a>, <a href="Persistence_ReviewPersistence.js.html#line43">line 43</a>
     </li></ul></dd>
     
 
@@ -464,28 +460,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;Returns SUCCESS or FAILED based on each values to be added to transaction table&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -497,7 +471,7 @@
     
 
     
-    <h4 class="name" id="getBalanceRecord"><span class="type-signature">(async) </span>getBalanceRecord<span class="signature">(debtor, creditor)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="get_reviews_for_user"><span class="type-signature">(async) </span>get_reviews_for_user<span class="signature">(reviewed)</span><span class="type-signature"> &rarr; {Array}</span></h4>
     
 
     
@@ -505,7 +479,7 @@
 
 
 <div class="description">
-    <p>Use dyanmodb getcommand to retrieve the record with debtor and creditor</p>
+    <p>Retrieves all reviews for a specific user.</p>
 </div>
 
 
@@ -541,7 +515,7 @@
 
         <tr>
             
-                <td class="name"><code>debtor</code></td>
+                <td class="name"><code>reviewed</code></td>
             
 
             <td class="type">
@@ -557,30 +531,7 @@
 
             
 
-            <td class="description last"><p>&quot;Id of the user owing&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>creditor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Id of the user owed&quot;</p></td>
+            <td class="description last"><p>The ID of the person being reviewed.</p></td>
         </tr>
 
     
@@ -621,7 +572,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line159">line 159</a>
+        <a href="Persistence_ReviewPersistence.js.html">Persistence/ReviewPersistence.js</a>, <a href="Persistence_ReviewPersistence.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -650,189 +601,9 @@
 
         
 <div class="param-desc">
-    <p>balance &quot;Object representing debtor, creditor and amount owed&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Object</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="get_amounts_by_role"><span class="type-signature">(async) </span>get_amounts_by_role<span class="signature">(user_id, role)</span><span class="type-signature"> &rarr; {Array}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Uses dynamoDB QueryCommand and ScanCommand to get a list of amount from debtor or creditor</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>user_id</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;New user's name to be added to the database&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>role</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;role can be either debtor or creditor&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line209">line 209</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;An array of all debt or credit amount relate to user&quot;</p>
+    <ul>
+<li>List of reviews for the user.</li>
+</ul>
 </div>
 
 
@@ -861,7 +632,7 @@
     
 
     
-    <h4 class="name" id="get_transaction_details"><span class="type-signature">(async) </span>get_transaction_details<span class="signature">(room_id)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    <h4 class="name" id="update_review"><span class="type-signature">(async) </span>update_review<span class="signature">(reviewed_by, reviewed, overall, cleanliness, noise_levels, respect, communication, paying_rent, chores)</span><span class="type-signature"></span></h4>
     
 
     
@@ -869,7 +640,7 @@
 
 
 <div class="description">
-    <p>Use dynamoDB QueryCommand to get all the transaction from specific room</p>
+    <p>Updates an existing review in the Reviews table.</p>
 </div>
 
 
@@ -905,7 +676,7 @@
 
         <tr>
             
-                <td class="name"><code>room_id</code></td>
+                <td class="name"><code>reviewed_by</code></td>
             
 
             <td class="type">
@@ -921,7 +692,191 @@
 
             
 
-            <td class="description last"><p>&quot;Room is to be added to the database&quot;</p></td>
+            <td class="description last"><p>The ID of the reviewer.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reviewed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The ID of the person being reviewed.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>overall</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The overall rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>cleanliness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The cleanliness rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>noise_levels</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The noise levels rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>respect</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The respect rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>communication</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The communication rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>paying_rent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The rent payment rating.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>chores</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The chores participation rating.</p></td>
         </tr>
 
     
@@ -962,212 +917,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line285">line 285</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>&quot;Return a list of all transactions in room&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="updateBalance"><span class="type-signature">(async) </span>updateBalance<span class="signature">(debtor, creditor, new_amount)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    <p>Use dyanmodb updatecommand to update the debtors debt with new amount.</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>debtor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Id of the user owing&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>creditor</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;Id of the user owed&quot;</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>new_amount</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">int</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>&quot;The amount to be paid&quot;</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Persistence_TransactionPersistence.js.html">Persistence/TransactionPersistence.js</a>, <a href="Persistence_TransactionPersistence.js.html#line186">line 186</a>
+        <a href="Persistence_ReviewPersistence.js.html">Persistence/ReviewPersistence.js</a>, <a href="Persistence_ReviewPersistence.js.html#line86">line 86</a>
     </li></ul></dd>
     
 

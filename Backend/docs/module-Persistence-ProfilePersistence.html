@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Services</title>
+    <title>JSDoc: Class: ProfilePersistence</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Services</h1>
+    <h1 class="page-title">Class: ProfilePersistence</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2><span class="attribs"><span class="type-signature"></span></span>
-            <span class="ancestors"><a href="module-Services.html">Services</a>~</span>Services<span class="signature">()</span><span class="type-signature"></span></h2>
+            <span class="ancestors"><a href="module-Persistence.html">Persistence</a>~</span>ProfilePersistence<span class="signature">()</span><span class="type-signature"></span></h2>
         
-            <div class="class-description"><p>Services to make sure only one instance of different persistence exist.</p></div>
+            <div class="class-description"><p>Represents the room persistence layer that is linked to the room table in the database.</p></div>
         
     
 </header>
@@ -46,12 +46,16 @@
     
 
     
-    <h4 class="name" id="Services"><span class="type-signature"></span>new Services<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="ProfilePersistence"><span class="type-signature"></span>new ProfilePersistence<span class="signature">()</span><span class="type-signature"></span></h4>
     
 
     
 
 
+
+<div class="description">
+    <p>Create a new RoomPersistence object</p>
+</div>
 
 
 
@@ -94,7 +98,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Utility_Services.js.html">Utility/Services.js</a>, <a href="Utility_Services.js.html#line19">line 19</a>
+        <a href="Persistence_ProfilePersistence.js.html">Persistence/ProfilePersistence.js</a>, <a href="Persistence_ProfilePersistence.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -141,6 +145,259 @@
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="get_profiles_by_location"><span class="type-signature">(async) </span>get_profiles_by_location<span class="signature">(location)</span><span class="type-signature"> &rarr; {Array}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Get all profiles from the database with the specified location</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>location</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The location to filter profiles</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Persistence_ProfilePersistence.js.html">Persistence/ProfilePersistence.js</a>, <a href="Persistence_ProfilePersistence.js.html#line271">line 271</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <ul>
+<li>An array of profiles with the same location</li>
+</ul>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="update_profile_averages"><span class="type-signature">(async) </span>update_profile_averages<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Update averages in the Profile table for a user.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Persistence_ProfilePersistence.js.html">Persistence/ProfilePersistence.js</a>, <a href="Persistence_ProfilePersistence.js.html#line244">line 244</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
     
 
     

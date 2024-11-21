@@ -45,14 +45,15 @@ router.post("/create-expense", (req, res) => {
  * @response {JSON} summary amount own and areOwn amount
  * @example Response:
  * {
- * "owed": 5.333333333333332,
- * "owns": 24.666666666666664,
- * "relationships": [
-    "You owe daohl@myumanitoba.ca CAD 10",
-    "dan@gmail.com owes you CAD 54.67",
-    "daohl@myumanitoba.ca owes you CAD 45.67"
+  "owed": 55.67,
+  "owns": 4.33,
+  "relationships": [
+    "You owe hungludao@gmail.com CAD 45.67",
+    "You owe josephdoan15@outlook.com CAD 10",
+    "dan@gmail.com owes you CAD 1",
+    "hungludao@gmail.com owes you CAD 3.33"
   ]
- * }
+}
  */
 router.get("/get-summary", (req, res) => {
     transaction_handler.get_summary(req, res);
