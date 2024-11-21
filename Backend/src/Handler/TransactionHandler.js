@@ -93,7 +93,6 @@ class TransactionHandler {
             // sync errors
             try {
                 validateString(transaction_nm, "Transaction Name");
-                console.log("Luke okela");
                 validateString(payer, "Payer Name");
                 validatePositiveInteger(transaction_price, "Price");
                 validateDate(date);
