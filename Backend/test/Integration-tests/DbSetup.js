@@ -171,14 +171,12 @@ async function populate_balance() {
             Item: {
                 debtor: "testUser1",
                 creditor: "testUser2",
-                amount: 15
+                amount: 15,
             },
         });
 
-
         await doc_client.send(put_balance);
-
-    }catch (e) {
+    } catch (e) {
         throw new Error("Something went wrong " + error.message);
     }
 }
@@ -186,5 +184,5 @@ async function populate_balance() {
 // async function teardown_db() {}
 module.exports = {
     populate_db,
-    populate_balance
+    populate_balance,
 };
