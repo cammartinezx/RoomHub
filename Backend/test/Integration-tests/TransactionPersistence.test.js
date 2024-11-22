@@ -1,5 +1,5 @@
 require("dotenv").config(); // Load environment variables
-const { populate_balance } = require("./DbSetup");
+const { populate_db, populate_balance } = require("./DbSetup");
 const TransactionPersistence = require("../../src/Persistence/TransactionPersistence");
 
 describe("Transaction Persistence- Test generating a new transaction", () => {
@@ -54,6 +54,7 @@ describe("Transaction Persistence- Test generating a new transaction", () => {
         ).rejects.toThrow();
     });
 });
+
 describe("Transaction Persistence- Test getting balance record between 2 users.", () => {
     let transaction_persistence;
 
@@ -92,5 +93,101 @@ describe("Transaction Persistence- Test updating balance record between 2 users"
 
     it("Should not throw an error-- Signify that a new balance record was created", async () => {
         await expect(transaction_persistence.updateBalance("testUser3", "testUser4", 100)).resolves.not.toThrow();
+    });
+});
+
+describe("Transaction Persistence - Test getting user debt or credit amount", () => {
+    let transaction_persistence;
+
+    beforeAll(async () => {
+        transaction_persistence = new TransactionPersistence();
+        await populate_balance();
+    });
+
+    it("Should not throw an error -- return the correct debt amount", async () => {
+        const amount = await transaction_persistence.get_amounts_by_role("testUser1", "debtor");
+        expect(amount).toEqual([15]);
+    });
+
+    it("Should not throw an error -- return the correct credit amount", async () => {
+        const amount = await transaction_persistence.get_amounts_by_role("testUser1", "creditor");
+        expect(amount).toEqual([25]);
+    });
+
+    it("Should throw an error if the role is not either debtor or creditor", async () => {
+        await expect(transaction_persistence.get_amounts_by_role("testUser1", "chimto")).rejects.toThrow(
+            "Role must be either debtor or creditor",
+        );
+    });
+});
+
+describe("Transaction Persistence - Test getting user relationships", () => {
+    let transaction_persistence;
+
+    beforeAll(async () => {
+        transaction_persistence = new TransactionPersistence();
+        await populate_balance();
+    });
+
+    it("Should not throw an error -- return the correct relationship that you own someone", async () => {
+        const response = await transaction_persistence.get_relationships_by_role("testUser1", "debtor");
+        expect(response).toEqual(["You owe testUser2 CAD 15"]);
+    });
+
+    it("Should not throw an error -- return the correct relationship that someone own you", async () => {
+        const response = await transaction_persistence.get_relationships_by_role("testUser1", "creditor");
+        expect(response).toEqual(["testUser2 owes you CAD 25"]);
+    });
+
+    it("Should throw an error if the role is not either debtor or creditor", async () => {
+        await expect(transaction_persistence.get_relationships_by_role("testUser1", "chimto")).rejects.toThrow(
+            "Role must be either debtor or creditor",
+        );
+    });
+});
+
+describe("Transaction Persistence - Test getting user transactions", () => {
+    let transaction_persistence;
+    let room_id;
+    let transactionTests;
+
+    beforeAll(async () => {
+        room_id = "rm_11";
+        transactionTests = [
+            {
+                creator: "test@gmail.com",
+                owed_to_creator: 25,
+                paid_by_creator: 25,
+                transaction_amount: 50,
+                transaction_date: "2024-10-10",
+                transaction_name: "grocery",
+                type: "expense",
+            },
+            {
+                creator: "test2",
+                owed_to_creator: "",
+                paid_by_creator: "",
+                transaction_amount: 10,
+                transaction_date: "2024-02-14",
+                transaction_name: "test2 paid test1 CAD 10",
+                type: "settle-up",
+            },
+            {
+                creator: "test2@gmail.com",
+                owed_to_creator: 60,
+                paid_by_creator: 30,
+                transaction_amount: 90,
+                transaction_date: "2024-01-14",
+                transaction_name: "wifi bill",
+                type: "expense",
+            },
+        ];
+        transaction_persistence = new TransactionPersistence();
+        await populate_db();
+    });
+
+    it("Should not throw an error -- return the correct list of transaction in specific room", async () => {
+        const transactions = await transaction_persistence.get_transaction_details(room_id);
+        expect(transactions).toEqual(transactionTests);
     });
 });
