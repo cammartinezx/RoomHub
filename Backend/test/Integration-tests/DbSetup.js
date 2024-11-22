@@ -97,7 +97,7 @@ async function populate_db() {
                 to: "test@gmail.com",
                 message: "",
                 room_id: "rm_bad",
-                status: "unread",
+                status: "read",
                 type: "invite",
             },
         });

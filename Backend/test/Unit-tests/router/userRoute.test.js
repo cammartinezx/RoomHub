@@ -43,6 +43,33 @@ jest.mock("../../../src/Handler/UserInfoHandler", () => {
         delete_notification: jest.fn().mockImplementation((req, res) => {
             res.status(200).json({ message: "Notification deleted successfully" });
         }),
+
+        get_unread_notifs: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({
+                Unread_Notification: [
+                    {
+                        msg: "water leak",
+                        "type": "announcement",
+                        "status": "unread"
+                    },
+                    {
+                        msg: "Lost keys",
+                        type: "announcement",
+                        status: "unread"
+                    },
+                    {
+                        msg: "Maintenance required",
+                        type: "announcement",
+                        status: "unread"
+                    },
+                    {
+                        msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+                        type: "announcement",
+                        status: "unread"
+                    },
+                ],
+            });
+        }),
     }));
 });
 
@@ -151,5 +178,62 @@ describe("User router tests", () => {
 
         expect(response.status).toBe(200);
         expect(response.body).toEqual({ message: "Notification deleted successfully" });
+    });
+
+    it("GET /user/:id/get-unread-notification", async () => {
+        const user_id = "test@gmail.com";
+        
+        user_info_handler.get_unread_notifs = jest.fn((req, res) => res.status(200).json({
+            Unread_Notification: [
+                {
+                    msg: "water leak",
+                    "type": "announcement",
+                    "status": "unread"
+                },
+                {
+                    msg: "Lost keys",
+                    type: "announcement",
+                    status: "unread"
+                },
+                {
+                    msg: "Maintenance required",
+                    type: "announcement",
+                    status: "unread"
+                },
+                {
+                    msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+                    type: "announcement",
+                    status: "unread"
+                },
+            ],
+        }));
+
+        const response = await request(app).get(`/user/${user_id}/get-unread-notification`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ 
+            Unread_Notification: [
+                {
+                    msg: "water leak",
+                    type: "announcement",
+                    status: "unread"
+                },
+                {
+                    msg: "Lost keys",
+                    type: "announcement",
+                    status: "unread"
+                },
+                {
+                    msg: "Maintenance required",
+                    type: "announcement",
+                    status: "unread"
+                },
+                {
+                    msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+                    type: "announcement",
+                    status: "unread"
+                },
+            ],
+        });
     });
 });

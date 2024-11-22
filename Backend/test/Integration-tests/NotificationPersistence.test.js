@@ -103,3 +103,36 @@ describe("NotificationPersistence Class-- Delete a notification", () => {
         await expect(notif_persistence.delete_notification(notif_id)).resolves.not.toThrow();
     });
 });
+
+describe("NotificationPersistence Class -- Get unread status notification", () => {
+    let notif_persistence;
+    let notif_id;
+
+    beforeEach(async () => {
+        notif_persistence = new NotificationPersistence();
+        await populate_db();
+    });
+
+    it("Should retrieve a message, type and status", async () => {
+        notif_id = "123";
+        let result = await notif_persistence.get_unread_details(notif_id);
+        expect(result).toEqual({
+            msg: "abc invite bcd",
+            type: "invite",
+            status: "unread",
+        });
+    });
+
+    it("Should throw an error if notification is not existed", async () => {
+        notif_id = "hello baby";
+        await expect(notif_persistence.get_unread_details(notif_id)).rejects.toThrow(
+            "Back end error, fail to get notification",
+        );
+    });
+
+    it("Should return ok if notification status is read", async () => {
+        notif_id = "456";
+        let result = await notif_persistence.get_unread_details(notif_id);
+        expect(result).toEqual("ok");
+    });
+});

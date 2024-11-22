@@ -1,6 +1,10 @@
 const UserInfoHandler = require("../../../src/Handler/UserInfoHandler");
 const userRoutes = require("../../../src/router/User");
 const { mockRequest, mockResponse } = require("mock-req-res");
+const {
+    validateString,
+    validateUserExist,
+} = require("../../../src/Utility/validator");
 
 const express = require("express");
 const request = require("supertest");
@@ -26,11 +30,17 @@ jest.mock("../../../src/Utility/Services", () => ({
         get_msg_type: jest.fn(),
         update_notification_status: jest.fn(),
         delete_notification: jest.fn(),
+        get_unread_details: jest.fn(),
     }),
 
     get_profile_persistence: () => ({}),
 
     get_review_persistence: () => ({}),
+}));
+
+jest.mock("../../../src/Utility/validator", () => ({
+    validateString: jest.fn(),
+    validateUserExist: jest.fn(),
 }));
 
 describe("Unit test for GET /", () => {
@@ -799,5 +809,131 @@ describe("Testing delete a notification", () => {
 
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith(expect.any(Object));
+    });
+});
+
+describe("Testing getting a list of unread notifications", () => {
+    let userInfoHandler;
+    let req, res;
+
+    beforeEach(() => {
+        userInfoHandler = new UserInfoHandler();
+        req = mockRequest();
+        res = mockResponse();
+
+        res.status = jest.fn().mockReturnValue(res);
+        res.json = jest.fn();
+        jest.clearAllMocks();
+    });
+
+    it("Getting the unread notifiations details successfully", async () => {
+        const user_id = "lucifer";
+
+        req = mockRequest({
+            params: { id: user_id },
+        });
+
+        validateString.mockResolvedValue();
+        validateUserExist.mockResolvedValue();
+
+        const mockUnreadNotifs = [
+            {
+                msg: "water leak",
+                type: "announcement",
+                status: "unread",
+            },
+            {
+                msg: "Lost keys",
+                type: "announcement",
+                status: "unread",
+            },
+        ];
+        userInfoHandler.get_user_persistence().get_notification.mockImplementation((user_id) => {
+            return ["111-111", "222-222"];
+        });
+
+        userInfoHandler.get_notification_persistence().get_unread_details.mockImplementation((notif_id) => {
+            if (notif_id === "111-111") {
+                return {
+                    msg: "water leak",
+                    type: "announcement",
+                    status: "unread",
+                };
+            } else if (notif_id === "222-222") {
+                return {
+                    msg: "Lost keys",
+                    type: "announcement",
+                    status: "unread",
+                };
+            }
+        });
+
+        await userInfoHandler.get_unread_notifs(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ Unread_Notification: mockUnreadNotifs });
+    });
+
+    it("should send an error with invalid user ID", async () => {
+        const user_id = "";
+        req = mockRequest({
+            params: { id: user_id },
+        });
+
+        validateString.mockImplementation(() => {
+            throw new Error("Invalid user ID");
+        });
+
+        await userInfoHandler.get_unread_notifs(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(422);
+        expect(res.json).toHaveBeenCalledWith({ message: "Invalid user ID" });
+    });
+
+    it("should send an error with user not exist", async () => {
+        const user_id = "lady killer";
+        req = mockRequest({
+            params: { id: user_id },
+        });
+
+        validateString.mockResolvedValue();
+        validateUserExist.mockImplementation(() => {
+            throw new Error("User does not exist");
+        });
+
+        await userInfoHandler.get_unread_notifs(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(404);
+        expect(res.json).toHaveBeenCalledWith({ message: "User does not exist" });
+    });
+
+    it("should send the server error from back end", async () => {
+        const user_id = "lucifer";
+
+        req = mockRequest({
+            params: { id: user_id },
+        });
+
+        validateString.mockResolvedValue();
+        validateUserExist.mockResolvedValue();
+
+        const mockUnreadNotifs = [
+            {
+                msg: "water leak",
+                type: "announcement",
+                status: "unread",
+            },
+            {
+                msg: "Lost keys",
+                type: "announcement",
+                status: "unread",
+            },
+        ];
+        userInfoHandler.get_user_persistence().get_notification.mockRejectedValue(new Error("Server error"));
+
+        await userInfoHandler.get_unread_notifs(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Server error" });
     });
 });

@@ -195,11 +195,6 @@ class NotificationPersistence {
         try {
             const response = await this.#doc_client.send(get_command);
 
-            // check if the item exists
-            if (!response.Item) {
-                throw new Error("Notification not found");
-            }
-
             // extract the fields
             const message = response.Item.message;
             const type = response.Item.type;
@@ -212,7 +207,7 @@ class NotificationPersistence {
                 return { msg: message, type: type, status: status };
             }
         } catch (error) {
-            throw new Error(`Failed to get notification details: ${error.message}`);
+            throw new Error("Back end error, fail to get notification");
         }
     }
 }
