@@ -158,7 +158,83 @@ async function populate_db() {
         await doc_client.send(put_command_task2);
         await doc_client.send(put_command_task3);
         await doc_client.send(put_command_task4);
+
+        const put_command_transaction = new PutCommand({
+            TableName: "Transaction",
+            Item: {
+                transaction_id: "transaction1",
+                transaction_name: "grocery",
+                transaction_amount: 50,
+                room_id: "rm_11",
+                transaction_date: "2024-10-10",
+                creator: "test@gmail.com",
+                paid_by_creator: 25,
+                owed_to_creator: 25,
+                type: "expense",
+            },
+        });
+
+        const put_command_transaction2 = new PutCommand({
+            TableName: "Transaction",
+            Item: {
+                transaction_id: "transaction2",
+                transaction_name: "wifi bill",
+                transaction_amount: 90,
+                room_id: "rm_11",
+                transaction_date: "2024-01-14",
+                creator: "test2@gmail.com",
+                paid_by_creator: 30,
+                owed_to_creator: 60,
+                type: "expense",
+            },
+        });
+
+        const put_command_transaction3 = new PutCommand({
+            TableName: "Transaction",
+            Item: {
+                transaction_id: "transaction3",
+                transaction_name: "test2 paid test1 CAD 10",
+                transaction_amount: 10,
+                room_id: "rm_11",
+                transaction_date: "2024-02-14",
+                creator: "test2",
+                paid_by_creator: "",
+                owed_to_creator: "",
+                type: "settle-up",
+            },
+        });
+        await doc_client.send(put_command_transaction);
+        await doc_client.send(put_command_transaction2);
+        await doc_client.send(put_command_transaction3);
     } catch (error) {
+        throw new Error("Something went wrong " + error.message);
+    }
+}
+
+async function populate_balance() {
+    try {
+        // adding balance
+        const put_balance = new PutCommand({
+            TableName: "Balance",
+            Item: {
+                debtor: "testUser1",
+                creditor: "testUser2",
+                amount: 15,
+            },
+        });
+
+        const put_balance2 = new PutCommand({
+            TableName: "Balance",
+            Item: {
+                debtor: "testUser2",
+                creditor: "testUser1",
+                amount: 25,
+            },
+        });
+
+        await doc_client.send(put_balance);
+        await doc_client.send(put_balance2);
+    } catch (e) {
         throw new Error("Something went wrong " + error.message);
     }
 }
@@ -166,4 +242,5 @@ async function populate_db() {
 // async function teardown_db() {}
 module.exports = {
     populate_db,
+    populate_balance,
 };

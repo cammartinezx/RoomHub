@@ -83,14 +83,13 @@ class TransactionHandler {
      * @param {Express.request} request "Request received by the router"
      * @param {Express.response} response "Response to be sent back to the service that sent the original request"
      */
-    async create_Expense(request, response) {
+    async create_expense(request, response) {
         try {
             const transaction_nm = request.body.name.trim();
             const transaction_price = request.body.price;
             const payer = request.body.payer.trim();
             const contributors = request.body.contributors;
             const date = request.body.date.trim();
-
             // sync errors
             try {
                 validateString(transaction_nm, "Transaction Name");

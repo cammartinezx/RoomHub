@@ -30,7 +30,7 @@ const transaction_handler = new TransactionHandler();
  */
 
 router.post("/create-expense", (req, res) => {
-    transaction_handler.create_Expense(req, res);
+    transaction_handler.create_expense(req, res);
 });
 
 /**

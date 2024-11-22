@@ -24,5 +24,19 @@ module.exports = {
             AttributeDefinitions: [{ AttributeName: "task_id", AttributeType: "S" }],
             ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
         },
+        {
+            TableName: `Transaction`,
+            KeySchema: [{ AttributeName: "room_id", KeyType: "HASH" },
+                { AttributeName: "transaction_id", KeyType: "RANGE" }],
+            AttributeDefinitions: [{ AttributeName: "room_id", AttributeType: "S" }, { AttributeName: "transaction_id", AttributeType: "S" }],
+            ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
+        },
+        {
+            TableName: `Balance`,
+            KeySchema: [{ AttributeName: "debtor", KeyType: "HASH" },
+                { AttributeName: "creditor", KeyType: "RANGE" }],
+            AttributeDefinitions: [{ AttributeName: "debtor", AttributeType: "S" }, { AttributeName: "creditor", AttributeType: "S" }],
+            ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1 },
+        }
     ],
 };

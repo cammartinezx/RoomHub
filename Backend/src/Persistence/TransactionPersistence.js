@@ -103,51 +103,42 @@ class TransactionPersistence {
         owed_to_creator,
         type,
     ) {
-        try {
-            let put_command;
-            if (type === "expense") {
-                // add the expense transaction
-                put_command = new PutCommand({
-                    TableName: "Transaction",
-                    Item: {
-                        transaction_id: trans_id,
-                        transaction_name: name,
-                        transaction_amount: amount,
-                        room_id: room_id,
-                        transaction_date: date,
-                        creator: creator,
-                        paid_by_creator: paid_by_creator,
-                        owed_to_creator: owed_to_creator,
-                        type: type,
-                    },
-                    ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
-                });
-            } else {
-                // add the settle up transaction
-                put_command = new PutCommand({
-                    TableName: "Transaction",
-                    Item: {
-                        transaction_id: trans_id,
-                        transaction_name: name,
-                        transaction_amount: amount,
-                        room_id: room_id,
-                        transaction_date: date,
-                        creator: creator,
-                        type: type,
-                    },
-                    ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
-                });
-            }
-
-            await this.#doc_client.send(put_command);
-            return "SUCCESS";
-        } catch (error) {
-            if (error.name === "ConditionalCheckFailedException") {
-                return "FAILED";
-            } else {
-                throw error;
-            }
+        let put_command;
+        if (type === "expense") {
+            // add the expense transaction
+            put_command = new PutCommand({
+                TableName: "Transaction",
+                Item: {
+                    transaction_id: trans_id,
+                    transaction_name: name,
+                    transaction_amount: amount,
+                    room_id: room_id,
+                    transaction_date: date,
+                    creator: creator,
+                    paid_by_creator: paid_by_creator,
+                    owed_to_creator: owed_to_creator,
+                    type: type,
+                },
+                ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
+            });
+        } else {
+            // add the settle up transaction
+            put_command = new PutCommand({
+                TableName: "Transaction",
+                Item: {
+                    transaction_id: trans_id,
+                    transaction_name: name,
+                    transaction_amount: amount,
+                    room_id: room_id,
+                    transaction_date: date,
+                    creator: creator,
+                    type: type,
+                },
+                ConditionExpression: "attribute_not_exists(transaction_id) AND attribute_not_exists(room_id)",
+            });
         }
+
+        await this.#doc_client.send(put_command);
     }
 
     /**
@@ -167,7 +158,7 @@ class TransactionPersistence {
 
         const result = await this.#doc_client.send(get_command);
         let balance;
-        if (result.Item != undefined) {
+        if (result.Item !== undefined) {
             balance = result.Item;
         } else {
             balance = null;
