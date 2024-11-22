@@ -5,7 +5,6 @@ const {
     GetCommand,
     UpdateCommand,
     DeleteCommand,
-    ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
@@ -82,7 +81,7 @@ class ProfilePersistence {
         return this.#table_name;
     }
 
-    async create_profile(user_id, location, name, gender, dob, bio, tags, likes, matches, contact, contact_type) {
+    async create_profile(user_id, location, name, gender, dob, bio, contact, contact_type) {
         try {
             // add the new user
             const put_command = new PutCommand({
@@ -94,11 +93,8 @@ class ProfilePersistence {
                     gender: gender,
                     dob: dob,
                     bio: bio,
-                    tags: tags,
                     contact: contact,
                     contact_type: contact_type,
-                    likes: [],
-                    matches: [],
                 },
                 ConditionExpression: "attribute_not_exists(user_id)",
             });
@@ -114,31 +110,43 @@ class ProfilePersistence {
         }
     }
 
-    async update_profile(user_id, location, name, gender, dob, bio, tags, likes, matches, contact, contact_type) {
+    async update_profile(username, location, name, gender, dob, bio, contact, contact_type) {
+        const update_command = new UpdateCommand({
+            TableName: this.#table_name,
+            Key: {
+                user_id: username, // Partition key for the table
+            },
+            UpdateExpression: `
+                set #location = :location, 
+                    #name = :name, 
+                    gender = :gender, 
+                    dob = :dob, 
+                    bio = :bio, 
+                    contact = :contact, 
+                    contact_type = :contact_type
+            `,
+            ExpressionAttributeNames: {
+                "#location": "location", // Alias for the reserved keyword "location"
+                "#name": "name",
+            },
+            ExpressionAttributeValues: {
+                ":location": location,
+                ":name": name,
+                ":gender": gender,
+                ":dob": dob,
+                ":bio": bio,
+                ":contact": contact,
+                ":contact_type": contact_type,
+            },
+            ConditionExpression: "attribute_exists(user_id)", // Ensure the user exists
+        });
+
         try {
-            // add the new user
-            const update_command = new UpdateCommand({
-                TableName: this.#table_name,
-                Item: {
-                    user_id: user_id,
-                    location: location,
-                    name: name,
-                    gender: gender,
-                    DOB: dob,
-                    bio: bio,
-                    tags: tags,
-                    likes: likes,
-                    matches: matches,
-                    contact: contact,
-                    contact_type: contact_type,
-                },
-                ConditionExpression: "attribute_exists(user_id)",
-            });
-            await this.#doc_client.send(update_command);
+            const result = await this.#doc_client.send(update_command);
             return { status: 200, message: "Profile Successfully Updated" };
         } catch (error) {
             if (error.name === "ConditionalCheckFailedException") {
-                return { status: 200, message: "This user doesn't exist" };
+                return { status: 400, message: "This user doesn't exist" };
             } else {
                 throw error;
             }
@@ -161,30 +169,47 @@ class ProfilePersistence {
         }
     }
 
-    async add_like(user_id, liked_id) {
+    async update_tags(user_id, tags) {
         try {
             const update_command = new UpdateCommand({
                 TableName: this.#table_name,
                 Key: { user_id: user_id },
-                UpdateExpression: "SET #likes = list_append(#likes, :new_like)",
+                UpdateExpression: "SET #tags = :newTags",
                 ExpressionAttributeNames: {
-                    "#likes": "likes", // The field you're updating
+                    "#tags": "tags", // Map the field name
                 },
                 ExpressionAttributeValues: {
-                    ":new_like": [liked_id], // The liked_id to add as a single-element list
+                    ":newTags": tags, // Create a DynamoDB set from the array
                 },
-                ConditionExpression: "attribute_exists(user_id)", // Ensure user exists
+                ConditionExpression: "attribute_exists(user_id)", // Ensure the user exists
             });
 
             await this.#doc_client.send(update_command);
-            return { status: 200, message: "Like successfully added" };
+            return { status: 200, message: "Tags successfully updated" };
         } catch (error) {
             if (error.name === "ConditionalCheckFailedException") {
-                return { status: 400, message: "User not found" };
+                return { status: 400, message: "This user doesn't exist" };
             } else {
+                console.error("Update tags failed:", error);
                 throw error;
             }
         }
+    }
+
+    async add_like(user_id, liked_id) {
+        const update_command = new UpdateCommand({
+            TableName: this.#table_name,
+            Key: { user_id: user_id },
+            UpdateExpression: "ADD #likes :new_like",
+            ExpressionAttributeNames: {
+                "#likes": "likes", // The field you're updating
+            },
+            ExpressionAttributeValues: {
+                ":new_like": new Set([liked_id]), // The liked_id to add as a single-element list
+            },
+        });
+        await this.#doc_client.send(update_command);
+        return { status: 200, message: "Like successfully added" };
     }
 
     async add_match(user_id, match_id) {
@@ -192,12 +217,12 @@ class ProfilePersistence {
             const update_command = new UpdateCommand({
                 TableName: this.#table_name,
                 Key: { user_id: user_id },
-                UpdateExpression: "SET #matches = list_append(#matches, :new_match)",
+                UpdateExpression: "ADD #matches :new_match",
                 ExpressionAttributeNames: {
                     "#matches": "matches", // The field you're updating
                 },
                 ExpressionAttributeValues: {
-                    ":new_match": [match_id], // The match_id to add as a single-element list
+                    ":new_match": new Set([match_id]), // The match_id to add as a single-element list
                 },
                 ConditionExpression: "attribute_exists(user_id)", // Ensure user exists
             });
@@ -238,54 +263,28 @@ class ProfilePersistence {
         }
     }
 
-    /**
-     * Update averages in the Profile table for a user.
-     */
-    async update_profile_averages(user_id, averages) {
-        const update_command = new UpdateCommand({
-            TableName: this.#table_name,
-            Key: {
-                user_id: user_id,
-            },
-            UpdateExpression:
-                "SET overall = :overall, cleanliness = :cleanliness, noise_levels = :noise_levels, " +
-                "respect = :respect, communication = :communication, paying_rent = :paying_rent, chores = :chores",
-            ExpressionAttributeValues: {
-                ":overall": averages.overall,
-                ":cleanliness": averages.cleanliness,
-                ":noise_levels": averages.noise_levels,
-                ":respect": averages.respect,
-                ":communication": averages.communication,
-                ":paying_rent": averages.paying_rent,
-                ":chores": averages.chores,
-            },
-        });
-        await this.#doc_client.send(update_command);
-    }
-
-    /**
-     * Get all profiles from the database with the specified location
-     * @param {String} location - The location to filter profiles
-     * @returns {Array} - An array of profiles with the same location
-     */
-    async get_profiles_by_location(location) {
+    async is_user_liked_by(user_id, liked_id) {
         try {
-            const scan_command = new ScanCommand({
+            const get_command = new GetCommand({
                 TableName: this.#table_name,
-                FilterExpression: "#loc = :location",
-                ExpressionAttributeNames: {
-                    "#loc": "location",
-                },
-                ExpressionAttributeValues: {
-                    ":location": location,
-                },
+                Key: { user_id: liked_id }, // Retrieve the liked_id user's data
             });
 
-            const response = await this.#doc_client.send(scan_command);
-            return response.Items || [];
+            const result = await this.#doc_client.send(get_command);
+            console.log(result.Item);
+
+            // If the user exists and the 'likes' field contains the user_id
+            if (result.Item && result.Item.likes && result.Item.likes.has(user_id)) {
+                return { status: 200, message: "true" };
+            } else {
+                return { status: 200, message: "false" };
+            }
         } catch (error) {
-            console.error("Error in get_profiles_by_location:", error);
-            throw error;
+            if (error.name === "ConditionalCheckFailedException") {
+                return { status: 400, message: "User not found" };
+            } else {
+                throw error;
+            }
         }
     }
 }

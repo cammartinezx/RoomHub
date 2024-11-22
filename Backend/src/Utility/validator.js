@@ -67,6 +67,18 @@ async function validateUserExist(user_persistence, userId) {
 }
 
 /**
+ * Throw an error if profile does not exist.
+ * @param {Object} profile_persistence "Profile persistence object"
+ * @param {String} userId "User id to be validated"
+ */
+async function validateProfileExist(profile_persistence, userId) {
+    let profile = await profile_persistence.get_profile(userId);
+    if (profile === null) {
+        throw new Error("profile does not exist");
+    }
+}
+
+/**
  * Throw error if user2 isn't a member of user1's room
  * @param {Object} room_persistence "Room persistence object"
  * @param {String} user2 "String representing the second user"
@@ -133,4 +145,5 @@ module.exports = {
     validateOutstandingBalance,
     validateUsersAreRoommates,
     validateNonEmptyList,
+    validateProfileExist,
 };

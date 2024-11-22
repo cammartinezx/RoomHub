@@ -81,8 +81,7 @@ class NotificationHandler {
      * @returns {Boolean} "Returns true if valid type, return false if invalid"
      */
     #is_valid_type(type) {
-        // for now we just have 2 types of notification (join-request or announcement)
-        if (type === "join-request" || type === "announcement") {
+        if (type === "join-request" || type === "announcement" || type === "match") {
             return true;
         }
         return false;

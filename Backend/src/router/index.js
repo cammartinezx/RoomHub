@@ -5,6 +5,7 @@ const Room = require("./Room");
 const Notification = require("./Notification");
 const Task = require("./Task");
 const Transaction = require("./Transaction");
+const Profile = require("./Profile");
 const cors = require("cors");
 
 require("dotenv").config(); // Load environment variables
@@ -19,6 +20,7 @@ app.use("/room", Room);
 app.use("/notification", Notification);
 app.use("/task", Task);
 app.use("/transaction", Transaction);
+app.use("/profile", Profile);
 
 app.use("/", async (req, res) => {
     res.status(200).json({ message: "Welcome to the api" });

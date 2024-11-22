@@ -232,6 +232,12 @@ class TransactionPersistence {
         return items.map((item) => item.amount);
     }
 
+    /**
+     * Uses dynamoDB QueryCommand and ScanCommand to get a list of relationship from debtor or creditor
+     * @param {String} user_id "New user's name to be added to the database"
+     * @param {String} role "role can be either debtor or creditor"
+     * @returns {Array} "An array of all debt or credit amount relate to user"
+     */
     async get_relationships_by_role(user_id, role) {
         if (role !== "debtor" && role !== "creditor") {
             throw new Error("Role must be either debtor or creditor");
