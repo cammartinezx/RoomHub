@@ -231,6 +231,11 @@ describe("Unit test for validateDate", () => {
         expect(() => validateDate(testDate)).toThrow("Invalid Date");
     });
 
+    it("should throw an error with invalid date number", async () => {
+        const testDate = "2024-20-20";
+        expect(() => validateDate(testDate)).toThrow("Invalid Date");
+    });
+
     it("should throw an error with a date in future", async () => {
         const testDate = "2025-01-14";
         expect(() => validateDate(testDate)).toThrow("Invalid Date");

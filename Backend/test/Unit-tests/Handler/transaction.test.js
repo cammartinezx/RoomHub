@@ -32,11 +32,7 @@ jest.mock("../../../src/Utility/Services", () => ({
         get_room_users: jest.fn(),
     }),
 
-    get_notification_persistence: () => ({
-        get_msg_type: jest.fn(),
-        update_notification_status: jest.fn(),
-        delete_notification: jest.fn(),
-    }),
+    get_notification_persistence: () => ({}),
 }));
 
 jest.mock("../../../src/Utility/validator", () => ({
@@ -352,6 +348,15 @@ describe("testing getting the user transactions", () => {
                 type: "expense",
             },
             {
+                transaction_amount: 10,
+                transaction_name: "chimto",
+                creator: "luba lubu",
+                paid_by_creator: 5,
+                transaction_date: "2024-11-15",
+                owed_to_creator: 5,
+                type: "expense",
+            },
+            {
                 transaction_date: "2024-11-18",
                 transaction_amount: 12,
                 transaction_name: "lucifer paid lukaku CAD 12.00",
@@ -386,6 +391,16 @@ describe("testing getting the user transactions", () => {
                     owed_to_creator: 6,
                     type: "expense",
                     summary: "You paid CAD 6.00 and lent CAD 6.00",
+                },
+                {
+                    transaction_amount: 10,
+                    transaction_name: "chimto",
+                    creator: "luba lubu",
+                    paid_by_creator: 5,
+                    transaction_date: "2024-11-15",
+                    owed_to_creator: 5,
+                    type: "expense",
+                    summary: "luba lubu paid CAD 5.00 and lent CAD 5.00",
                 },
                 {
                     transaction_date: "2024-11-18",
