@@ -12,7 +12,6 @@ const profile_handler = new ProfileHandler(new ProfileHandler());
  * @name Create a user profile
  * @path {POST} /:id/create-profile
  * @params {String} :id is the ID of the user creating the profile.
- * @body {String} id The unique identifier for the user (e.g., email address)
  * @body {String} location The location of the user (e.g., city or region)
  * @body {String} name The full name of the user
  * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
@@ -35,7 +34,6 @@ router.post("/:id/create-profile", (req, res) => {
  * @name Update a user profile
  * @path {PATCH} /:id/update-profile
  * @params {String} :id is the ID of the user updating the profile.
- * @body {String} id The unique identifier for the user (e.g., email address)
  * @body {String} location The location of the user (e.g., city or region)
  * @body {String} name The full name of the user
  * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
