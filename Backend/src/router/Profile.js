@@ -17,7 +17,7 @@ const profile_handler = new ProfileHandler(new ProfileHandler());
  * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
  * @body {String} dob The date of birth of the user (in yyyy-mm-dd format)
  * @body {String} bio A short biography or description about the user
- * @body {String} contactType The type of contact (e.g., 'instagram', 'email', etc.)
+ * @body {String} contact_type The type of contact (e.g., 'instagram', 'email', etc.)
  * @body {String} contact The actual contact information (e.g., Instagram handle, email address)
  * @code {200} Profile created successfully
  * @code {422} Validation error in request data
@@ -39,7 +39,7 @@ router.post("/:id/create-profile", (req, res) => {
  * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
  * @body {String} dob The date of birth of the user (in yyyy-mm-dd format)
  * @body {String} bio A short biography or description about the user
- * @body {String} contactType The type of contact (e.g., 'instagram', 'email', etc.)
+ * @body {String} contact_type The type of contact (e.g., 'instagram', 'email', etc.)
  * @body {String} contact The actual contact information (e.g., Instagram handle, email address)
  * @code {200} Profile updated successfully
  * @code {422} Validation error in request data
