@@ -12,6 +12,14 @@ const profile_handler = new ProfileHandler(new ProfileHandler());
  * @name Create a user profile
  * @path {POST} /:id/create-profile
  * @params {String} :id is the ID of the user creating the profile.
+ * @body {String} id The unique identifier for the user (e.g., email address)
+ * @body {String} location The location of the user (e.g., city or region)
+ * @body {String} name The full name of the user
+ * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
+ * @body {String} dob The date of birth of the user (in yyyy-mm-dd format)
+ * @body {String} bio A short biography or description about the user
+ * @body {String} contactType The type of contact (e.g., 'instagram', 'email', etc.)
+ * @body {String} contact The actual contact information (e.g., Instagram handle, email address)
  * @code {200} Profile created successfully
  * @code {422} Validation error in request data
  * @code {404} User not found
@@ -27,6 +35,14 @@ router.post("/:id/create-profile", (req, res) => {
  * @name Update a user profile
  * @path {PATCH} /:id/update-profile
  * @params {String} :id is the ID of the user updating the profile.
+ * @body {String} id The unique identifier for the user (e.g., email address)
+ * @body {String} location The location of the user (e.g., city or region)
+ * @body {String} name The full name of the user
+ * @body {String} gender The gender of the user (e.g., 'fem', 'male', etc.)
+ * @body {String} dob The date of birth of the user (in yyyy-mm-dd format)
+ * @body {String} bio A short biography or description about the user
+ * @body {String} contactType The type of contact (e.g., 'instagram', 'email', etc.)
+ * @body {String} contact The actual contact information (e.g., Instagram handle, email address)
  * @code {200} Profile updated successfully
  * @code {422} Validation error in request data
  * @code {404} User or profile not found
