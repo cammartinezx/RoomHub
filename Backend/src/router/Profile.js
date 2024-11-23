@@ -1,6 +1,6 @@
 /** Routes
- * @namespace Task
- * @description Routes related to tasks
+ * @namespace Profile
+ * @description Routes related to Profiles
  */
 const express = require("express");
 const router = express.Router();

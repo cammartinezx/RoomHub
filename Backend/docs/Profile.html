@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: Room</title>
+    <title>JSDoc: Namespace: Profile</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: Room</h1>
+    <h1 class="page-title">Namespace: Profile</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>Room</h2>
+        <h2>Profile</h2>
         
     
 </header>
@@ -37,7 +37,7 @@
     <div class="container-overview">
     
         
-            <div class="description"><p>Routes related to rooms</p></div>
+            <div class="description"><p>Routes related to Profiles</p></div>
         
 
         
@@ -72,7 +72,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line1">line 1</a>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -105,7 +105,7 @@
 
         
             
-<h4 class="name" id="Addanewroom"><span class="type-signature">(route) </span>Add a new room<span class="type-signature"></span></h4>
+<h4 class="name" id="Checkmatchforauser"><span class="type-signature">(route) </span>Check match for a user<span class="type-signature"></span></h4>
 
 
 
@@ -116,7 +116,7 @@
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">POST</td>
-                            <td class="name last">room/create-room</td>
+                            <td class="name last">/:id/check-match</td>
                             </tr>
                             </table>
                             
@@ -132,17 +132,30 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">rm</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The name of the new room to be created</td>
-          </tr><tr>
             <td class="name">id</td>
             <td class="type">String</td>
             
             
-            <td class="description last">The new users e-mail to be added to the database</td>
+            <td class="description last">ID of the user being liked.</td>
+          </tr>
+          </table>
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>is the ID of the user checking for a match.</p></td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -158,10 +171,10 @@
             </thead>
             <tr>
             <td class="name">message</td>
-            <td class="type">String</td>
+            <td class="type">Object</td>
             
             
-            <td class="description last">See description of the different status codes</td>
+            <td class="description last">Response message indicating the match or like status</td>
           </tr>
           </table>
                             <h5>Response Code:</h5>
@@ -180,182 +193,13 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Successfully Created the new room</td>
+            <td class="description last">Match or like action completed successfully</td>
           </tr><tr>
             
-            <td class="type">400</td>
+            <td class="type">422</td>
             
             
-            <td class="description last">Bad Request-Invalid Room Name</td>
-          </tr><tr>
-            
-            <td class="type">400</td>
-            
-            
-            <td class="description last">Bad Request-Invalid User</td>
-          </tr><tr>
-            
-            <td class="type">500</td>
-            
-            
-            <td class="description last">Error message from backend</td>
-          </tr>
-          </table>
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line12">line 12</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="Addanewroommatetoaroom"><span class="type-signature">(route) </span>Add a new roommate to a room<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    <h5>Route:</h5>
-                            <table class="params">
-                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
-                            <tr>
-                            <td class="type">POST</td>
-                            <td class="name last">room/add-roommate</td>
-                            </tr>
-                            </table>
-                            
-                            <h5>Body Parameters:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">existing_roommate</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The name of the already existing roommate</td>
-          </tr><tr>
-            <td class="name">new_roommate</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The name of the roommate to be added newly to the room</td>
-          </tr><tr>
-            <td class="name">room_nm</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The name of the new room the new roommate is getting added to</td>
-          </tr><tr>
-            <td class="name">notification_id</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">The notification id linked to the room join request.</td>
-          </tr>
-          </table>
-                            <h5>Response:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            <td class="name">message</td>
-            <td class="type">String</td>
-            
-            
-            <td class="description last">See description of the different status codes</td>
-          </tr>
-          </table>
-                            <h5>Response Code:</h5>
-          <table class="params">
-            <thead>
-              <tr>
-                
-                <th>Type</th>
-                
-                
-                <th class="last">Description</th>
-              </tr>
-            </thead>
-            <tr>
-            
-            <td class="type">200</td>
-            
-            
-            <td class="description last">New Roommate successfully added</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Room not found</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Room not found. Create or Join a room</td>
+            <td class="description last">Validation error in request data</td>
           </tr><tr>
             
             <td class="type">404</td>
@@ -364,22 +208,10 @@
             <td class="description last">User not found</td>
           </tr><tr>
             
-            <td class="type">404</td>
-            
-            
-            <td class="description last">New roommate not found</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Old roommate not found</td>
-          </tr><tr>
-            
             <td class="type">500</td>
             
             
-            <td class="description last">Error message from backend</td>
+            <td class="description last">Backend error from the database</td>
           </tr>
           </table>
 </div>
@@ -419,7 +251,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line28">line 28</a>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -437,7 +269,7 @@
 
         
             
-<h4 class="name" id="GetAllCompletedTasks"><span class="type-signature">(route) </span>Get All Completed Tasks<span class="type-signature"></span></h4>
+<h4 class="name" id="Createauserprofile"><span class="type-signature">(route) </span>Create a user profile<span class="type-signature"></span></h4>
 
 
 
@@ -447,12 +279,12 @@
                             <table class="params">
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
-                            <td class="type">GET</td>
-                            <td class="name last">room/get-completed-tasks?frm</td>
+                            <td class="type">POST</td>
+                            <td class="name last">/:id/create-profile</td>
                             </tr>
                             </table>
                             
-                            <h5>Query Parameters:</h5>
+                            <h5>Route Parameters:</h5>
           <table class="params">
             <thead>
               <tr>
@@ -464,11 +296,11 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">frm</td>
+            <td class="name">:id</td>
             <td class="type">String</td>
             
             
-            <td class="description last">User requesting to get the list</td>
+            <td class="description last"><p>is the ID of the user creating the profile.</p></td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -483,11 +315,11 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">complete_tasks</td>
-            <td class="type">JSON</td>
+            <td class="name">message</td>
+            <td class="type">Object</td>
             
             
-            <td class="description last">List of completed tasks</td>
+            <td class="description last">Response message indicating success or failure</td>
           </tr>
           </table>
                             <h5>Response Code:</h5>
@@ -506,31 +338,25 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Successfully retrieved completed tasks</td>
+            <td class="description last">Profile created successfully</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">422</td>
             
             
-            <td class="description last">Invalid User</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Room not found</td>
+            <td class="description last">Validation error in request data</td>
           </tr><tr>
             
             <td class="type">404</td>
             
             
-            <td class="description last">No completed tasks found</td>
+            <td class="description last">User not found</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Error message from backend</td>
+            <td class="description last">Backend error from the database</td>
           </tr>
           </table>
 </div>
@@ -570,7 +396,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line49">line 49</a>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -585,32 +411,10 @@
 
 
 
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>Response: {
-    "completed_tasks": [
-        {
-            "complete": true,
-            "due_date": "2024-11-11",
-            "task_id": "2e047472",
-            "asignee": "user1@gmail.com",
-            "task_description": "washing dishes"
-        },
-        {
-            "complete": true,
-            "due_date": "2024-11-11",
-            "task_id": "55e10ce7",
-            "asignee": "user2@gmail.com",
-            "task_description": "throw trash"
-        },
-    ]
-}</code></pre>
-
-
 
         
             
-<h4 class="name" id="GetAllPendingTasks"><span class="type-signature">(route) </span>Get All Pending Tasks<span class="type-signature"></span></h4>
+<h4 class="name" id="Getauserprofile"><span class="type-signature">(route) </span>Get a user profile<span class="type-signature"></span></h4>
 
 
 
@@ -621,11 +425,11 @@
                             <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
                             <tr>
                             <td class="type">GET</td>
-                            <td class="name last">room/get-pending-tasks</td>
+                            <td class="name last">/:id/get-profile</td>
                             </tr>
                             </table>
                             
-                            <h5>Query Parameters:</h5>
+                            <h5>Route Parameters:</h5>
           <table class="params">
             <thead>
               <tr>
@@ -637,11 +441,11 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">frm</td>
+            <td class="name">:id</td>
             <td class="type">String</td>
             
             
-            <td class="description last">User requesting to get the list</td>
+            <td class="description last"><p>is the ID of the user whose profile is being retrieved.</p></td>
           </tr>
           </table>
                             <h5>Response:</h5>
@@ -656,11 +460,11 @@
               </tr>
             </thead>
             <tr>
-            <td class="name">pending_tasks</td>
-            <td class="type">JSON</td>
+            <td class="name">profile</td>
+            <td class="type">Object</td>
             
             
-            <td class="description last">List of pending tasks</td>
+            <td class="description last">The user profile object</td>
           </tr>
           </table>
                             <h5>Response Code:</h5>
@@ -679,31 +483,25 @@
             <td class="type">200</td>
             
             
-            <td class="description last">Successfully retrieved pending tasks</td>
+            <td class="description last">Profile retrieved successfully</td>
           </tr><tr>
             
-            <td class="type">403</td>
+            <td class="type">422</td>
             
             
-            <td class="description last">Invalid User</td>
-          </tr><tr>
-            
-            <td class="type">404</td>
-            
-            
-            <td class="description last">Room not found</td>
+            <td class="description last">Validation error in request data</td>
           </tr><tr>
             
             <td class="type">404</td>
             
             
-            <td class="description last">No pending tasks found</td>
+            <td class="description last">User not found</td>
           </tr><tr>
             
             <td class="type">500</td>
             
             
-            <td class="description last">Error message from backend</td>
+            <td class="description last">Backend error from the database</td>
           </tr>
           </table>
 </div>
@@ -743,7 +541,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="router_Room.js.html">router/Room.js</a>, <a href="router_Room.js.html#line82">line 82</a>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
@@ -758,26 +556,313 @@
 
 
 
-    <h5>Example</h5>
+
+        
+            
+<h4 class="name" id="Updateauserprofile"><span class="type-signature">(route) </span>Update a user profile<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">PATCH</td>
+                            <td class="name last">/:id/update-profile</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>is the ID of the user updating the profile.</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">message</td>
+            <td class="type">Object</td>
+            
+            
+            <td class="description last">Response message indicating success or failure</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Profile updated successfully</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Validation error in request data</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User or profile not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Backend error from the database</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
     
-    <pre class="prettyprint"><code>Response: {
-    "pending_tasks": [
-        {
-            "complete": true,
-            "due_date": "2024-11-11",
-            "task_id": "2e047472",
-            "asignee": "user1@gmail.com",
-            "task_description": "washing dishes"
-        },
-        {
-            "complete": true,
-            "due_date": "2024-11-11",
-            "task_id": "55e10ce7",
-            "asignee": "user2@gmail.com",
-            "task_description": "throw trash"
-        },
-    ]
-}</code></pre>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line25">line 25</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="Updateprofiletags"><span class="type-signature">(route) </span>Update profile tags<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <h5>Route:</h5>
+                            <table class="params">
+                            <thead><tr><th>Method</th><th class="last">Path</th></tr></thead>
+                            <tr>
+                            <td class="type">PATCH</td>
+                            <td class="name last">/:id/update-tags</td>
+                            </tr>
+                            </table>
+                            
+                            <h5>Body Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">tags</td>
+            <td class="type">Array</td>
+            
+            
+            <td class="description last">List of tags to update</td>
+          </tr>
+          </table>
+                            <h5>Route Parameters:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">:id</td>
+            <td class="type">String</td>
+            
+            
+            <td class="description last"><p>is the ID of the user updating tags.</p></td>
+          </tr>
+          </table>
+                            <h5>Response:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            <td class="name">message</td>
+            <td class="type">Object</td>
+            
+            
+            <td class="description last">Response message indicating success or failure</td>
+          </tr>
+          </table>
+                            <h5>Response Code:</h5>
+          <table class="params">
+            <thead>
+              <tr>
+                
+                <th>Type</th>
+                
+                
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+            <tr>
+            
+            <td class="type">200</td>
+            
+            
+            <td class="description last">Tags updated successfully</td>
+          </tr><tr>
+            
+            <td class="type">422</td>
+            
+            
+            <td class="description last">Validation error in request data</td>
+          </tr><tr>
+            
+            <td class="type">404</td>
+            
+            
+            <td class="description last">User not found</td>
+          </tr><tr>
+            
+            <td class="type">500</td>
+            
+            
+            <td class="description last">Backend error from the database</td>
+          </tr>
+          </table>
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="router_Profile.js.html">router/Profile.js</a>, <a href="router_Profile.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
 
 
 
