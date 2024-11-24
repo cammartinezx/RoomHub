@@ -288,22 +288,6 @@ class ProfilePersistence {
         }
     }
 
-    async get_profile(user_id) {
-        const get_command = new GetCommand({
-            TableName: this.#table_name,
-            Key: {
-                user_id: user_id,
-            },
-        });
-        const response = await this.#doc_client.send(get_command);
-        let profile = response.Item;
-        if (profile === undefined) {
-            return null;
-        } else {
-            return response.Item;
-        }
-    }
-
     async update_profile_averages(user_id, averages) {
         const update_command = new UpdateCommand({
             TableName: this.#table_name,
