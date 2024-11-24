@@ -5,6 +5,7 @@ const {
     GetCommand,
     UpdateCommand,
     DeleteCommand,
+    ScanCommand,
 } = require("@aws-sdk/lib-dynamodb");
 require("dotenv").config();
 
