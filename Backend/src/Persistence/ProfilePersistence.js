@@ -287,6 +287,70 @@ class ProfilePersistence {
             }
         }
     }
+
+    async get_profile(user_id) {
+        const get_command = new GetCommand({
+            TableName: this.#table_name,
+            Key: {
+                user_id: user_id,
+            },
+        });
+        const response = await this.#doc_client.send(get_command);
+        let profile = response.Item;
+        if (profile === undefined) {
+            return null;
+        } else {
+            return response.Item;
+        }
+    }
+
+    async update_profile_averages(user_id, averages) {
+        const update_command = new UpdateCommand({
+            TableName: this.#table_name,
+            Key: {
+                user_id: user_id,
+            },
+            UpdateExpression:
+                "SET overall = :overall, cleanliness = :cleanliness, noise_levels = :noise_levels, " +
+                "respect = :respect, communication = :communication, paying_rent = :paying_rent, chores = :chores",
+            ExpressionAttributeValues: {
+                ":overall": averages.overall,
+                ":cleanliness": averages.cleanliness,
+                ":noise_levels": averages.noise_levels,
+                ":respect": averages.respect,
+                ":communication": averages.communication,
+                ":paying_rent": averages.paying_rent,
+                ":chores": averages.chores,
+            },
+        });
+        await this.#doc_client.send(update_command);
+    }
+
+    /**
+     * Get all profiles from the database with the specified location
+     * @param {String} location - The location to filter profiles
+     * @returns {Array} - An array of profiles with the same location
+     */
+    async get_profiles_by_location(location) {
+        try {
+            const scan_command = new ScanCommand({
+                TableName: this.#table_name,
+                FilterExpression: "#loc = :location",
+                ExpressionAttributeNames: {
+                    "#loc": "location",
+                },
+                ExpressionAttributeValues: {
+                    ":location": location,
+                },
+            });
+
+            const response = await this.#doc_client.send(scan_command);
+            return response.Items || [];
+        } catch (error) {
+            console.error("Error in get_profiles_by_location:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = ProfilePersistence;
