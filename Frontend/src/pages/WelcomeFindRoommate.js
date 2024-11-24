@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/WelcomeFindRoommate.module.css';
+import axios from 'axios';
 
 const provincesAndCities = {
   "Alberta": ["Calgary", "Edmonton", "Red Deer"],
@@ -49,8 +50,7 @@ const tagsList = [
 const WelcomeFindRoommate = () => {
   const [step, setStep] = useState(0); // Step 0 for the welcome message
   const [profileData, setProfileData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     dob: "",
     gender: "",
     province: "",
@@ -67,7 +67,13 @@ const WelcomeFindRoommate = () => {
   const email = location.state?.email;
 
   const handleChange = (field, value) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }));
+    if (field === "dob") {
+      // Ensure the date is always in yyyy-mm-dd format
+      const formattedDate = new Date(value).toISOString().split("T")[0];
+      setProfileData((prev) => ({ ...prev, [field]: formattedDate }));
+    } else {
+      setProfileData((prev) => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleTagSelection = (tag) => {
@@ -82,11 +88,44 @@ const WelcomeFindRoommate = () => {
     });
   };
 
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if (step === 5) {
-      // Submit profile data
-      console.log("Submitting profile data:", profileData);
-      navigate('/find-roommate', { state: {email, hasRoom} } );
+       // Submit profile data
+       try {
+        // Call the create-profile API
+        const createProfileResponse = await axios.post(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/create-profile`,
+          {
+            location: profileData.city,
+            name: profileData.name,
+            gender: profileData.gender,
+            dob: profileData.dob,
+            bio: profileData.bio,
+            contact_type: profileData.contactType,
+            contact: profileData.contact,
+          }
+        );
+
+        // Log create-profile response
+        console.log("Create profile response:", createProfileResponse.data);
+
+        // Call the update-tags API
+        const updateTagsResponse = await axios.patch(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/update-tags`,
+          {
+            tags: profileData.tags,
+          }
+        );
+
+        // Log update-tags response
+        console.log("Update tags response:", updateTagsResponse.data);
+
+        // Navigate to find-roommate page upon success
+        navigate('/find-roommate', { state: { email, hasRoom } });
+      } catch (error) {
+        console.error("Error submitting profile:", error);
+        alert("An error occurred while creating your profile. Please try again.");
+      }
     } else {
       setStep((prevStep) => prevStep + 1);
     }
@@ -115,20 +154,11 @@ const WelcomeFindRoommate = () => {
         <div className={styles.formStep}>
           <h2>Step 1: Personal Details</h2>
           <label>
-            First Name:
+            Name:
             <input
               type="text"
-              value={profileData.firstName}
-              onChange={(e) => handleChange("firstName", e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Last Name:
-            <input
-              type="text"
-              value={profileData.lastName}
-              onChange={(e) => handleChange("lastName", e.target.value)}
+              value={profileData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
               required
             />
           </label>
@@ -161,7 +191,7 @@ const WelcomeFindRoommate = () => {
             onClick={handleNextStep} 
             className={styles.navButton}
             disabled={
-              !profileData.firstName || !profileData.lastName || !profileData.dob || !profileData.gender
+              !profileData.name || !profileData.dob || !profileData.gender
             }>
               Next
             </button>
@@ -283,8 +313,12 @@ const WelcomeFindRoommate = () => {
             >
               <option value="">Select Contact Type</option>
               <option value="Mobile">Mobile</option>
-              <option value="Social Media">Social Media</option>
               <option value="Email">Email</option>
+              <option value="Instagram">Instagram</option>
+              <option value="Snapchat">Snapchat</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Discord">Discord</option>
+              <option value="Other">Other</option>
             </select>
           </label>
           {profileData.contactType && (
