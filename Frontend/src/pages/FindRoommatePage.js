@@ -94,7 +94,7 @@ const FindRoommatePage = () => {
             ))}
           </div>
           <div className={styles.rating}>
-            Roommate Rating: {currentUser.overall ? currentUser.overall.toFixed(1) : "N/A"}
+            Roommate Rating: {currentUser.overall || "N/A"}
             <div className={styles.ratingTooltip}>
               <p>Cleanliness: {currentUser.cleanliness || "N/A"}</p>
               <p>Noise Levels: {currentUser.noise_levels || "N/A"}</p>
