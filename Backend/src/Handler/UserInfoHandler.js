@@ -590,6 +590,13 @@ class UserInfoHandler {
             // Fetch all profiles with the same location
             const profiles_in_location = await this.#profile_persistence.get_profiles_by_location(user_location);
 
+             // Convert DynamoDB string sets (SS) to arrays
+            profiles_in_location.forEach(profile => {
+                if (profile.tags && typeof profile.tags === "object") {
+                    profile.tags = Object.values(profile.tags); // Convert DynamoDB set to array
+                }
+            });
+
             // Filter out the user's profile, matches, and potential matches
             const filtered_profiles = profiles_in_location.filter((profile) => {
                 return (
