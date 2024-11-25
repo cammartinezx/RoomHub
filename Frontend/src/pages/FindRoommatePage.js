@@ -20,9 +20,14 @@ const FindRoommatePage = () => {
         );
         if (response.status === 200) {
           const fetchedProfiles = response.data.profiles;
+          console.log("FETCHED PROFILES")
+          console.log(fetchedProfiles)
+          console.log("those are the profiles")
 
           // Shuffle profiles to display them in a random order
           const shuffledProfiles = fetchedProfiles.sort(() => Math.random() - 0.5);
+          console.log(shuffledProfiles);
+          console.log("Those are the shuffled profiles");
           setProfiles(shuffledProfiles);
         }
       } catch (error) {
@@ -34,13 +39,31 @@ const FindRoommatePage = () => {
     fetchProfiles();
   }, [email]);
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    const likedUserId = profiles[index]?.user_id;
+  
+    try {
+      const response = await axios.post(
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/${email}/check-match`,
+        { id: likedUserId }
+      );
+  
+      if (response.status === 200) {
+        alert(`You liked ${profiles[index].name}!`);
+      }
+    } catch (error) {
+      console.error('Error checking match:', error);
+      alert('An error occurred while processing your like. Please try again.');
+    }
+  
+    // Navigate to the next profile
     if (index < profiles.length - 1) {
       setIndex((prevIndex) => prevIndex + 1);
     } else {
       setNoMoreUsers(true);
     }
   };
+  
 
   const handleDislike = () => {
     if (index < profiles.length - 1) {
@@ -55,7 +78,6 @@ const FindRoommatePage = () => {
   return (
     <div className={styles.container}>
       <Header email={email} hasRoom={hasRoom} />
-      <h1>Find a Roommate</h1>
       {noMoreUsers || profiles.length === 0 ? (
         <div className={styles.endMessage}>
           <p>No more roommates available based on your current preferences.</p>
@@ -63,7 +85,8 @@ const FindRoommatePage = () => {
         </div>
       ) : (
         <div className={styles.card}>
-          <h2>{currentUser.first_name}, {new Date().getFullYear() - new Date(currentUser.dob).getFullYear()}</h2>
+          <h2>{currentUser.name.toUpperCase()}</h2>
+          <h2>{new Date().getFullYear() - new Date(currentUser.dob).getFullYear()}</h2>
           <p>{currentUser.bio}</p>
           <div className={styles.tags}>
             {currentUser.tags.map((tag, idx) => (
@@ -71,7 +94,7 @@ const FindRoommatePage = () => {
             ))}
           </div>
           <div className={styles.rating}>
-            Rating: {currentUser.overall ? currentUser.overall.toFixed(1) : "N/A"}
+            Roommate Rating: {currentUser.overall ? currentUser.overall.toFixed(1) : "N/A"}
             <div className={styles.ratingTooltip}>
               <p>Cleanliness: {currentUser.cleanliness || "N/A"}</p>
               <p>Noise Levels: {currentUser.noise_levels || "N/A"}</p>
