@@ -592,11 +592,7 @@ class UserInfoHandler {
 
             profiles_in_location.forEach((profile) => {
                 if (profile.tags && typeof profile.tags === "object") {
-                    console.log("its an obj");
-                    console.log(profile.tags); // This should log the Set
                     profile.tags = Array.from(profile.tags); // Convert DynamoDB Set to an array
-                    console.log("AFTER");
-                    console.log(profile.tags); // This should now log an array
                 }
             });
 
