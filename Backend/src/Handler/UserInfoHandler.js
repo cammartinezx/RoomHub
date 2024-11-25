@@ -590,10 +590,13 @@ class UserInfoHandler {
             // Fetch all profiles with the same location
             const profiles_in_location = await this.#profile_persistence.get_profiles_by_location(user_location);
 
-             // Convert DynamoDB string sets (SS) to arrays
-            profiles_in_location.forEach(profile => {
+            profiles_in_location.forEach((profile) => {
                 if (profile.tags && typeof profile.tags === "object") {
-                    profile.tags = Object.values(profile.tags); // Convert DynamoDB set to array
+                    console.log("its an obj");
+                    console.log(profile.tags); // This should log the Set
+                    profile.tags = Array.from(profile.tags); // Convert DynamoDB Set to an array
+                    console.log("AFTER");
+                    console.log(profile.tags); // This should now log an array
                 }
             });
 
