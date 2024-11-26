@@ -225,7 +225,7 @@ class ProfileHandler {
             if (profile.tags && typeof profile.tags === "object") {
                 profile.tags = Array.from(profile.tags); // Convert DynamoDB Set to an array
             }
-            
+
             return response.status(200).json({ profile });
         } catch (error) {
             return response.status(500).json({ message: error.message });
