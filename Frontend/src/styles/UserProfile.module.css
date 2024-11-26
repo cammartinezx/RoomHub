@@ -46,6 +46,11 @@
   gap: 20px;
 }
 
+.userProfileDetails p{
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
 .userProfileDescription {
   font-size: 1.2rem;
   color: #555;

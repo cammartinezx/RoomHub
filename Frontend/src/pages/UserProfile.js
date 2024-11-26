@@ -134,24 +134,21 @@ const UserProfile = () => {
       </header>
 
       <div className={styles.userProfileContent}>
-        <h1 className={styles.userProfileTitle}>User Profile</h1>
+        <h1 className={styles.userProfileTitle}>User Profile for {profileData.name}</h1>
 
         {!isEditing ? (
           <div className={styles.userProfileDetails}>
-            <p><strong>Name:</strong> {profileData.name}</p>
-            <p><strong>Date of Birth:</strong> {profileData.dob}</p>
+            <p><strong>Age:</strong> {new Date().getFullYear() - new Date(profileData.dob).getFullYear()}</p>
             <p><strong>Gender:</strong> {profileData.gender}</p>
-            <p><strong>Province:</strong> {profileData.province}</p>
-            <p><strong>City:</strong> {profileData.city}</p>
+            <p><strong>Location:</strong> {profileData.location}</p>
             <p><strong>Bio:</strong> {profileData.bio}</p>
             <p>
               <strong>Contact:</strong>{' '}
-              {profileData.contactType
-                ? `${profileData.contactType}: ${profileData.contact}`
+              {profileData.contact_type
+                ? `${profileData.contact_type}: ${profileData.contact}`
                 : 'Not provided'}
             </p>
             <div>
-              <strong>Tags:</strong>
               <div className={styles.userProfileTags}>
                 {profileData.tags.map((tag) => (
                   <span key={tag} className={styles.userProfileTag}>
