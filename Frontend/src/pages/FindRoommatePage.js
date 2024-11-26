@@ -20,9 +20,6 @@ const FindRoommatePage = () => {
         );
         if (response.status === 200) {
           const fetchedProfiles = response.data.profiles;
-          console.log("FETCHED PROFILES")
-          console.log(fetchedProfiles)
-          console.log("those are the profiles")
 
           // Shuffle profiles to display them in a random order
           const shuffledProfiles = fetchedProfiles.sort(() => Math.random() - 0.5);
@@ -44,7 +41,7 @@ const FindRoommatePage = () => {
   
     try {
       const response = await axios.post(
-        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/${email}/check-match`,
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/check-match`,
         { id: likedUserId }
       );
   

@@ -1,131 +1,139 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    width: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #f0f4f8;
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .logo img {
-    cursor: pointer;
-    height: 50px;
-  }
-  
-  .profileContent {
-    flex: 1;
-    padding: 40px;
-    max-width: 800px;
-    margin: auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    font-size: 2rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .profileDetails, .editForm {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
+/* Updated styles specific to UserProfile */
+.userProfileContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f9f9fb;
+}
 
-  .editForm label{
-    color: black;
-  }
-  
-  .description {
-    font-size: 1.2rem;
-    color: #666;
-    text-align: center;
-  }
-  
-  .tags {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  
-  .tag {
-    background-color: #e0e0e0;
-    color: #333;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-  }
-  
-  .editButton, .updateButton, .cancelButton, .backButton {
-    padding: 10px 20px;
-    font-size: 1rem;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-top: 10px;
-    transition: background-color 0.3s;
-  }
-  
-  .editButton {
-    background-color: #007bff;
-    color: #fff;
-  }
-  
-  .editButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .updateButton {
-    background-color: #28a745;
-    color: #fff;
-  }
-  
-  .updateButton:hover {
-    background-color: #218838;
-  }
-  
-  .cancelButton {
-    background-color: #dc3545;
-    color: #fff;
-  }
-  
-  .cancelButton:hover {
-    background-color: #c82333;
-  }
-  
-  .backButton {
-    background-color: #6c757d;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .backButton:hover {
-    background-color: #5a6268;
-  }
-  
-  textarea, select, input[type="checkbox"] {
-    font-size: 1rem;
-    padding: 8px;
-    width: 100%;
-    max-width: 100%;
-    margin-top: 5px;
-  }
-  
-  textarea {
-    resize: vertical;
-  }
-  
+.userProfileHeader {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid #e0e0e0;
+}
 
-  
+.userProfileLogo img {
+  cursor: pointer;
+  height: 60px;
+}
+
+.userProfileContent {
+  flex: 1;
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.userProfileTitle {
+  font-size: 2.5rem;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.userProfileDetails,
+.userProfileForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.userProfileDescription {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.userProfileTags {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.userProfileTag {
+  background-color: #f1f1f5;
+  color: #444;
+  padding: 10px 15px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.userProfileButton {
+  padding: 12px 25px;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-top: 15px;
+  transition: all 0.3s ease-in-out;
+}
+
+.userProfileEditButton {
+  background-color: #0066cc;
+  color: #ffffff;
+}
+
+.userProfileEditButton:hover {
+  background-color: #004c99;
+}
+
+.userProfileUpdateButton {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.userProfileUpdateButton:hover {
+  background-color: #1e7e34;
+}
+
+.userProfileCancelButton {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.userProfileCancelButton:hover {
+  background-color: #c82333;
+}
+
+.userProfileBackButton {
+  background-color: #6c757d;
+  color: #ffffff;
+  text-align: center;
+}
+
+.userProfileBackButton:hover {
+  background-color: #5a6268;
+}
+
+.userProfileInput,
+.userProfileTextarea,
+.userProfileSelect {
+  font-size: 1rem;
+  padding: 10px;
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.userProfileTextarea {
+  resize: vertical;
+}
+
+.userProfileLabel {
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
