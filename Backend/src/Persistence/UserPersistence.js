@@ -77,13 +77,14 @@ class UserPersistence {
      * @param {String} user_name "New user's name to be added to the database"
      * @returns {JSON} "Returns a json object with 2 keys; status and message. "
      */
-    async save_new_user(user_name) {
+    async save_new_user(user_name, name) {
         try {
             // add the new user
             const put_command = new PutCommand({
                 TableName: "User",
                 Item: {
                     user_id: user_name,
+                    name: name,
                 },
                 ConditionExpression: "attribute_not_exists(user_id)",
             });
