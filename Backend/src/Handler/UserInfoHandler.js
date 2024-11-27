@@ -584,8 +584,15 @@ class UserInfoHandler {
                 return response.status(400).json({ message: "User's profile is incomplete: missing location" });
             }
 
-            const potential_matches = user_profile.potential_matches || [];
-            const matches = user_profile.matches || [];
+            let likes = user_profile.likes || [];
+            if (user_profile.likes && typeof user_profile.likes === "object") {
+                likes = Array.from(user_profile.likes); // Convert DynamoDB Set to an array
+            }
+
+            let matches = user_profile.matches || [];
+            if (user_profile.matches && typeof user_profile.matches === "object") {
+                matches = Array.from(user_profile.matches); // Convert DynamoDB Set to an array
+            }
 
             // Fetch all profiles with the same location
             const profiles_in_location = await this.#profile_persistence.get_profiles_by_location(user_location);
