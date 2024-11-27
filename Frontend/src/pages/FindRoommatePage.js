@@ -6,9 +6,13 @@ import axios from 'axios';
 
 const FindRoommatePage = () => {
   const [profiles, setProfiles] = useState([]);
+  const [matchedUser, setMatchedUser] =useState(null);
   const [index, setIndex] = useState(0);
   const [noMoreUsers, setNoMoreUsers] = useState(false);
+  const [matchMessage, setMatchMessage] = useState(null);
+  const [isPageBlurred, setIsPageBlurred] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const hasRoom = location.state?.hasRoom;
   const email = location.state?.email;
 
@@ -46,21 +50,44 @@ const FindRoommatePage = () => {
       );
   
       if (response.status === 200) {
-        alert(`You liked ${profiles[index].name}!`);
+        if (response.data.message === "users are a match. Added to each matches list") {
+          setMatchedUser(likedUserId);
+          // Show match message
+          setMatchMessage(`You matched with ${profiles[index].name}!`);
+        } else {
+          alert(`You liked ${profiles[index].name}!`);
+        }
       }
     } catch (error) {
       console.error('Error checking match:', error);
       alert('An error occurred while processing your like. Please try again.');
     }
   
-    // Navigate to the next profile
+     // Navigate to the next profile after a delay (if not a match)
+     if (!matchMessage) {
+      if (index < profiles.length - 1) {
+        setIndex((prevIndex) => prevIndex + 1);
+      } else {
+        setNoMoreUsers(true);
+      }
+    }
+  };
+  
+  const handleViewProfile = () => {
+    // Navigate to the matched user's profile
+    navigate('/user-profile', { state: { email, matchedUser, hasRoom } });
+  };
+
+  
+  const handleCloseModal = () => {
+    setIsPageBlurred(false);
+    setMatchMessage(null);
     if (index < profiles.length - 1) {
       setIndex((prevIndex) => prevIndex + 1);
     } else {
       setNoMoreUsers(true);
     }
   };
-  
 
   const handleDislike = () => {
     if (index < profiles.length - 1) {
@@ -73,8 +100,21 @@ const FindRoommatePage = () => {
   const currentUser = profiles[index];
 
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${isPageBlurred ? styles.blurred : ''}`}>
       <Header email={email} hasRoom={hasRoom} />
+      {matchMessage && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <h2>{matchMessage}</h2>
+            <button onClick={handleViewProfile} className={styles.viewProfileButton}>
+              View Profile
+            </button>
+            <button onClick={handleCloseModal} className={styles.closeButton}>
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       {noMoreUsers || profiles.length === 0 ? (
         <div className={styles.endMessage}>
           <p>No more roommates available based on your current preferences.</p>

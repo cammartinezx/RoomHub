@@ -62,6 +62,7 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const hasRoom = location.state?.hasRoom;
+  const matchedUser = location.state?.matchedUser;
   const email = location.state?.email;
 
   const [profileData, setProfileData] = useState(mockProfileData);
@@ -70,7 +71,8 @@ const UserProfile = () => {
   useEffect(() =>{
     const fetchProfile = async () =>{
       try {
-        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/get-profile`);
+        const userId = matchedUser || email;
+        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${userId}/get-profile`);
         console.log(response.data.profile);
         const fetchedProfile = response.data.profile;
         setProfileData(fetchedProfile);
@@ -158,12 +160,14 @@ const UserProfile = () => {
               </div>
             </div>
 
-            <button
-              className={`${styles.userProfileButton} ${styles.userProfileEditButton}`}
-              onClick={() => setIsEditing(true)}
-            >
-              Edit Profile
-            </button>
+            {!matchedUser && (
+              <button
+                className={`${styles.userProfileButton} ${styles.userProfileEditButton}`}
+                onClick={() => setIsEditing(true)}
+              >
+                Edit Profile
+              </button>
+            )}
           </div>
         ) : (
           <form onSubmit={handleSubmit} className={styles.userProfileForm}>
