@@ -226,6 +226,10 @@ class ProfileHandler {
                 profile.tags = Array.from(profile.tags); // Convert DynamoDB Set to an array
             }
 
+            // Convert DynamoDB sets to arrays
+            profile.matches = profile.matches ? Array.from(profile.matches) : [];
+            profile.potential_matches = profile.potential_matches ? Array.from(profile.potential_matches) : [];
+
             return response.status(200).json({ profile });
         } catch (error) {
             return response.status(500).json({ message: error.message });
