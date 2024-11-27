@@ -98,11 +98,15 @@ class UserInfoHandler {
     async create_user(request, response) {
         try {
             const user_id = request.body.id.trim().toLowerCase();
+            const name = request.body.name.trim().toLowerCase();
             if (!this.#is_valid_id(user_id)) {
                 // give a certain type of response
                 return response.status(400).json({ message: "Error Creating User- User id is invalid" });
             }
-            let result = await this.#user_persistence.save_new_user(user_id);
+            if (!this.#is_valid_id(name)) {
+                return response.status(400).json({ message: "Error Creating User- User name is invalid" });
+            }
+            let result = await this.#user_persistence.save_new_user(user_id, name);
             return response.status(result.status).json({ message: result.message });
         } catch (error) {
             return response.status(500).json({ message: error.message });
@@ -325,9 +329,19 @@ class UserInfoHandler {
             let roommates;
             roommates = await this.#room_persistence.get_room_users(room_id);
             roommates = Array.from(roommates);
-            console.log(roommates);
 
-            return response.status(200).json({ roommates });
+            // Get each roommates names as well.
+            let all_roommates = [];
+            for (let i = 0; i < roommates.length; i++) {
+                // this gets the users roommate name.
+                const user_obj = await this.#user_persistence.get_user(roommates[i]);
+                const roommate_name = user_obj.name;
+                all_roommates.push([roommates[i], roommate_name]);
+            }
+
+            // console.log(roommates);
+
+            return response.status(200).json({ all_roommates });
             // // Filter out the current user from the list
             // const roommates = users.filter((id) => id !== user_id);
             // if (roommates.length === 0) {
