@@ -607,7 +607,7 @@ class UserInfoHandler {
             const filtered_profiles = profiles_in_location.filter((profile) => {
                 return (
                     profile.user_id !== user_id &&
-                    !potential_matches.includes(profile.user_id) &&
+                    !likes.includes(profile.user_id) &&
                     !matches.includes(profile.user_id)
                 );
             });
