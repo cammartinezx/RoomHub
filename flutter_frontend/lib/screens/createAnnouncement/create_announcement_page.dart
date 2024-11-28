@@ -50,11 +50,20 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
    void handleChipSelected(List<int> selectedIndices) {
     // update the index of the active announcement.
     setState(() {
-    for (int i = 0; i < isSelected.length; i++) {
-      isSelected[i] = selectedIndices.contains(i);
+      for (int i = 0; i < isSelected.length; i++) {
+        isSelected[i] = selectedIndices.contains(i);
+      }
+    });
+
+    // main idea to make sure correct index message is sent.
+    if(selectedIndices.isEmpty){
+      activeAnnouncement = 0;
+    }else{
+      // this is mainly because we only select at most one thing.
+      activeAnnouncement = selectedIndices[0];
     }
-  });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,7 +135,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                         child: Text("Select a preset announcement",
                             style: TextStyle(
                               color: theme.darkblue,
-                              fontSize: 20.0,
+                              fontSize: 25.0,
                               fontWeight: FontWeight.bold,)
                         ),
                       ),
@@ -204,6 +213,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
         announcement_msg = announcements[activeAnnouncement];
       }
 
+      print(announcement_msg);
       if(isValidAnnouncement(announcement_msg)){
         //   send announcement
         debugPrint("Sending announcement.......");
@@ -227,7 +237,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   Future<bool> sendAnnouncementRequest(String msg) async{
     bool isSent = false;
     try {
-      String announcementMsg = generateAnnouncement(msg, widget.email);
+      String announcementMsg = generateAnnouncement(msg);
       var reqBody = {
         "from": widget.email, // User's email (sender)
         "message": announcementMsg, // Roommate's email (recipient)
@@ -255,8 +265,8 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   }
 }
 
- String generateAnnouncement(String msg, String from) {
-    return "$msg\n -$from";
+ String generateAnnouncement(String msg) {
+    return msg;
 }
 
 
