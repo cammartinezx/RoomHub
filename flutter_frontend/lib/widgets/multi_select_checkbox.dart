@@ -5,7 +5,7 @@ import 'package:multiselect/multiselect.dart';
 class MultiSelectFormField extends FormField<List<String>> {
   MultiSelectFormField({
     super.key,
-    required List<dynamic> options,
+    required List<dynamic> options,//list of list
     required String? errorState,
     required void Function(List<dynamic>) updateChoices,
     super.onSaved,
@@ -15,6 +15,10 @@ class MultiSelectFormField extends FormField<List<String>> {
   }) : super(
     initialValue: initialValue ?? [],
     builder: (FormFieldState<List<String>> state) {
+
+      // Extract names and ids
+      List<String> names = options.map((e) => e[1] as String).toList();
+      List<String> ids = options.map((e) => e[0].toString()).toList();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -38,11 +42,17 @@ class MultiSelectFormField extends FormField<List<String>> {
                 ),
                 errorText: errorState, // Display error text if validation fails
               ),
-              options: options,
+              options: names, // Display the name (e[1]),
               selectedValues: state.value!,
               onChanged: (List<dynamic> newValue) {
-                updateChoices(newValue);
-                state.didChange(newValue as List<String>);// Update FormField state
+                // Map the selected names to their corresponding ids using the index in the options list
+                List<String> selectedIds = newValue.map((name) {
+                  int index = names.indexOf(name as String);
+                  return ids[index];  // Return the id at that index
+                }).toList();
+
+                updateChoices(selectedIds);
+                // state.didChange(selectedIds);// Update FormField state
               },
             ),
           ),
