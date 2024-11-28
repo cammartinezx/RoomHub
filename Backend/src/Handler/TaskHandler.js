@@ -135,7 +135,9 @@ class TaskOrganizerHandler {
 
             // Generate a unique task ID
             const task_id = uuidv4();
-            await this.#task_persistence.generate_new_task(task_id, task_name, user_to, due_date);
+            // instead of user id we want to pass teh users name-- this user is always valid
+            let user = await this.#user_persistence.get_user(user_to);
+            await this.#task_persistence.generate_new_task(task_id, task_name, user.name, due_date);
 
             // Add the newly created task to the room
             await this.#room_persistence.add_task_to_room(room_id, task_id);
@@ -223,7 +225,10 @@ class TaskOrganizerHandler {
             await this.#task_persistence.get_task_by_id(task_id);
             await this.#task_persistence.get_task_by_id(task_id);
 
-            await this.#task_persistence.update_task(task_id, task_name, user_to, due_date);
+            // editing the task with the users name instead of their id
+            let user = await this.#user_persistence.get_user(user_to);
+
+            await this.#task_persistence.update_task(task_id, task_name, user.name, due_date);
             return response.status(200).json({ message: "Task updated successfully" });
         } catch (error) {
             console.error("Error updating task:", error);
