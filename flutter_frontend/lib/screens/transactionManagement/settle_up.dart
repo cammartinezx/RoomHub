@@ -49,12 +49,18 @@ class _SettleUpState extends State<SettleUp> {
     //API request or some async operation
     List<dynamic> all_roommates = await getRoommates();
 
-    for(String roommate in all_roommates){
-      if(roommate != widget.email){
+    // update done here roommates = [[id, name], []]
+    // for(String roommate in all_roommates){
+    //   if(roommate != widget.email){
+    //     payers.add(roommate);
+    //   }
+    // }
+    // all_roommates = [["dan@gmail.com","daniel"],["dolo@gmail.com","Dolo"],["kola@gmail.com","kola"]];
+    for(dynamic roommate in all_roommates){
+      if(roommate[0] != widget.email){
         payers.add(roommate);
       }
     }
-
 
     // Update the loading state and rebuild the UI
     setState(() {
@@ -231,7 +237,7 @@ class _SettleUpState extends State<SettleUp> {
                               errorText: _assigneeError
                           ),
                           items: payers.map<DropdownMenuItem<String>>((dynamic value) {
-                            return DropdownMenuItem<String>(value: value, child: Text(value));
+                            return DropdownMenuItem<String>(value: value[0], child: Text(value[1]));
                           }).toList(),
                           onChanged: (String? newValue) {
                             setState(() {
@@ -269,7 +275,8 @@ class _SettleUpState extends State<SettleUp> {
                                 ),
                               );
                             }
-                          }),
+                          }
+                        ),
                     ],
                   ),
                 ),
