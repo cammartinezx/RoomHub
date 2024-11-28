@@ -197,7 +197,9 @@ class TransactionHandler {
             }
 
             const transaction_id = uuidv4();
-            const transaction_nm = this.generate_settle_up_summary(creditor, debtor, amount);
+            const creditorObj = await this.#user_persistence.get_user(creditor);
+            const debtorObj = await this.#user_persistence.get_user(debtor);
+            const transaction_nm = this.generate_settle_up_summary(creditorObj.name, debtorObj.name, amount);
             // create expense.
             await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
