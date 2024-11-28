@@ -94,61 +94,63 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
               ),
               height: double.infinity,
               width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // First Instruction
-                    _buildInstruction(1, "Enter your roommate's email"),
-                    const SizedBox(width: 50), // Space between instructions
-
-                    // Second Instruction
-                    _buildInstruction(2, "A notification request will be sent to their profile"),
-                    const SizedBox(width: 50), // Space between instructions
-
-                    // Third Instruction
-                    _buildInstruction(3, "Once they accept, you are in!"),
-                    const SizedBox(height: 30), // Spacer below instructions
-
-                    // TextField for roommate's email input
-                    TextField(
-                      controller: emailController, // Controller for email input
-                      cursorColor: theme.darkblue, // Cursor color
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(
-                          Icons.alternate_email,
-                          color: Colors.grey, // Icon color
-                        ),
-                        label: Text(
-                          "Roommate's email", // Label for the email input
-                          style: TextStyle(color: theme.darkblue), // Label color
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 18.0, right: 18, top: 50),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // First Instruction
+                      _buildInstruction(1, "Enter your roommate's email"),
+                      const SizedBox(width: 50), // Space between instructions
+                
+                      // Second Instruction
+                      _buildInstruction(2, "A notification request will be sent to their profile"),
+                      const SizedBox(width: 50), // Space between instructions
+                
+                      // Third Instruction
+                      _buildInstruction(3, "Once they accept, you are in!"),
+                      const SizedBox(height: 30), // Spacer below instructions
+                
+                      // TextField for roommate's email input
+                      TextField(
+                        controller: emailController, // Controller for email input
+                        cursorColor: theme.darkblue, // Cursor color
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(
+                            Icons.alternate_email,
+                            color: Colors.grey, // Icon color
+                          ),
+                          label: Text(
+                            "Roommate's email", // Label for the email input
+                            style: TextStyle(color: theme.darkblue), // Label color
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 50), // Spacer below text field
-
-                    // Button to send the request
-                    GradientButton(
-                      text: 'Send Request',
-                      onTap: () async {
-                        // When the button is tapped, try to join the room
-                        if (await joinRoomBE()) {
-                          // Show success message
-                          theme.buildToastMessage("Request sent");
-                          // Navigate to the home screen after a short delay
-                          Future.delayed(const Duration(seconds: 1), () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const OurHomeNewUser(),
-                              ),
-                            );
-                          });
-                        }
-                      },
-                    ),
-                    const SizedBox(height: 50), // Spacer below button
-                  ],
+                      const SizedBox(height: 50), // Spacer below text field
+                
+                      // Button to send the request
+                      GradientButton(
+                        text: 'Send Request',
+                        onTap: () async {
+                          // When the button is tapped, try to join the room
+                          if (await joinRoomBE()) {
+                            // Show success message
+                            theme.buildToastMessage("Request sent");
+                            // Navigate to the home screen after a short delay
+                            Future.delayed(const Duration(seconds: 1), () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => const OurHomeNewUser(),
+                                ),
+                              );
+                            });
+                          }
+                        },
+                      ),
+                      const SizedBox(height: 50), // Spacer below button
+                    ],
+                  ),
                 ),
               ),
             ),
