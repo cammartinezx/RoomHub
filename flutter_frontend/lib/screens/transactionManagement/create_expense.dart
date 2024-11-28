@@ -56,8 +56,8 @@ class _ExpenseFormState extends State<ExpenseForm> {
 
   Future<void> getRoommatesCaller() async {
     // Simulate an API request or some async operation
-    // List<dynamic> all_roommates = await getRoommates();
-    List<dynamic> all_roommates = [["dan@gmail.com","daniel"],["dolo@gmail.com","Dolo"],["kola@gmail.com","kola"]];
+    List<dynamic> all_roommates = await getRoommates();
+    // List<dynamic> all_roommates = [["dan@gmail.com","daniel"],["dolo@gmail.com","Dolo"],["kola@gmail.com","kola"]];
     // update this to use a list of lists-- [id,name]
     for(dynamic roommate in all_roommates){
       if(roommate[0] != widget.email){
