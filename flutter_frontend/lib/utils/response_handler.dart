@@ -152,6 +152,51 @@ Future<void> handlePost(http.Response response,
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
+
+    case 'createExpense':
+      switch (response.statusCode) {
+        case 200:
+          // valid case
+          break;
+        case 404:
+          if(response.body.contains("User does not exist")){
+            throw ExpenseException("This user no longer exists");
+          }else{
+            throw ExpenseException("One or more contributors no longer belong to the room");
+          }
+        case 422:
+        // Check for specific error messages in the response body
+            throw UserException("Something went wrong. Request Error");
+        case 500:
+        // Server error during room creation
+          throw UserException("Something went wrong. Try again later");
+      }
+      break;
+
+    case 'createSettleUpTransaction':
+      switch (response.statusCode) {
+        case 200:
+        // valid case
+          break;
+        case 404:
+          if(response.body.contains("User does not exist")){
+            throw ExpenseException("This user no longer exists");
+          }else{
+            throw ExpenseException("The users are not roommates");
+          }
+        case 409:
+          if(response.body.contains("No outstanding balance to be settled")){
+            throw ExpenseException("No outstanding balance to be settled");
+          }
+          throw ExpenseException("Amount must be less than or equal to outstanding balance.");
+        case 422:
+        // Check for specific error messages in the response body
+          throw UserException("Something went wrong. Request Error");
+        case 500:
+        // Server error during room creation
+          throw UserException("Something went wrong. Try again later");
+      }
+      break;
   }
 }
 
@@ -237,6 +282,37 @@ Future<String> getResponse(http.Response response,
           // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
+
+    case 'getTransactions':
+      switch (response.statusCode) {
+        case 404:
+          throw UserException("This user does not exist.");
+        case 422:
+        // Handle invalid username error
+          throw UserException("Something went wrong. Request error");
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+
+    case 'getSummary':
+      switch (response.statusCode) {
+        case 404:
+          throw UserException("This user does not exist.");
+        case 422:
+        // Handle invalid username error
+          throw UserException("Something went wrong. Request error");
+        case 500:
+        // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+        // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+
     case 'getRoommateList':
       switch (response.statusCode) {
         case 400:

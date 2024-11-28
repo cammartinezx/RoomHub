@@ -4,11 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
+import 'package:flutter_frontend/screens/room_page.dart';
+import 'package:flutter_frontend/screens/transactionManagement/all_transactions.dart';
+import 'package:flutter_frontend/screens/transactionManagement/create_expense.dart';
+import 'package:flutter_frontend/screens/transactionManagement/settle_up.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
 // Amplify imports for authentication using AWS Cognito
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter_frontend/widgets/multi_select_checkbox.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
@@ -19,54 +24,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
-import 'package:flutter_frontend/screens/userProfile/edit_user_info.dart';
-import 'package:flutter_frontend/screens/userProfile/user_preferences.dart';
-import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Info Form',
-     theme: OurTheme().buildTheme(),
-      home: UserProfilePage(
-        email: "camila@gmail.com",
-        roomID: "123",
-    firstName: "Camila",
-    lastName:"Martinez",
-    gender:"heoj",
-    ethnicity:"nfekwnf",
-    birthDate:"nbrnhktrk",
-    description: "dnejksnfke",
-    
-  )
-      
-      // TagForm(
-      //   email: 'test@example.com',  // Pass email here
-      //   //roomID: 'room123',  // Pass roomID here
-      // ),  // Directly set UserInfoForm as the home widget
-    );
-  }
-}
-
-// // Widget build(BuildContext context) {
-// //   return MaterialApp(
-// //     debugShowCheckedModeBanner: false,
-// //     theme: OurTheme().buildTheme(),
-// //     // home: const UserRoom(roomID: "UpBoiz", email: "camila.martinez2002@gmail.com"),
-// //     // home: Notification();
-// //     routes: {
-// //       '/loginPage': (context) => const OurLogin(),
-// //       //'/homeNewPage': (context) => const OurHomeNewUser(),
-// //     },
-// //   );
-// // }
-
-/*
 void main() {
   // Entry point of the application, launching the MyApp widget
   runApp(
@@ -94,6 +52,23 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     // Configure Amplify when the app initializes
     _configureAmplify();
   }
+
+//   Widget build(BuildContext context) {
+//   List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
+//   return MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     theme: OurTheme().buildTheme(),
+//     // home: const ExpenseForm(email: "daohl@myumanitoba.ca", roomId: "The bois"),
+//     // home: SettleUp(email: "dan@gmail.com", roomId: "The boys"),
+//     // home: SharedExpensesPage(userId: "dan@gmail.com"),
+//     home: UserRoom(roomID: "The bois", email: "hungludao@gmail.com"),
+//     routes: {
+//       '/loginPage': (context) => const OurLogin(),
+//       //'/homeNewPage': (context) => const OurHomeNewUser(),
+//     },
+//   );
+// }
+
   // / Configures the Amplify libraries and adds the necessary plugins.
   Future<void> _configureAmplify() async {
     try {
@@ -197,4 +172,4 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     userEmail = await authAWSRepo.getUserEmail(ref); // Retrieve email from the provider
     return userEmail;
   }
-}*/
+}
