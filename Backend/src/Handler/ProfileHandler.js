@@ -220,7 +220,6 @@ class ProfileHandler {
                 response.status(404).json({ message: error.message });
                 return;
             }
-
             let profile = await this.#profile_persistence.get_profile(user_id);
             return response.status(200).json({ profile });
         } catch (error) {

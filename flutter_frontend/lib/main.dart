@@ -19,8 +19,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
-import 'package:flutter_frontend/screens/userProfile/edit_user_info.dart';
-import 'package:flutter_frontend/screens/userProfile/user_preferences.dart';
+import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 
 void main() {
@@ -31,25 +31,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'User Info Form',
-     theme: OurTheme().buildTheme(),
-      home: UserProfilePage(
-        email: "camila@gmail.com",
-        roomID: "123",
-    firstName: "Camila",
-    lastName:"Martinez",
-    gender:"heoj",
-    ethnicity:"nfekwnf",
-    birthDate:"nbrnhktrk",
-    description: "dnejksnfke",
-    
-  )
-      
-      // TagForm(
-      //   email: 'test@example.com',  // Pass email here
-      //   //roomID: 'room123',  // Pass roomID here
-      // ),  // Directly set UserInfoForm as the home widget
-    );
+        title: 'User Info Form',
+        theme: OurTheme().buildTheme(),
+        home: UserProfilePage(
+          userId: "camila@gmail.com",
+          roomID: "123",
+          firstName: "Camila",
+          lastName: "Martinez",
+          gender: "heoj",
+          ethnicity: "nfekwnf",
+          birthDate: "nbrnhktrk",
+          description: "dnejksnfke",
+        )
+
+        // TagForm(
+        //   email: 'test@example.com',  // Pass email here
+        //   //roomID: 'room123',  // Pass roomID here
+        // ),  // Directly set UserInfoForm as the home widget
+        );
   }
 }
 

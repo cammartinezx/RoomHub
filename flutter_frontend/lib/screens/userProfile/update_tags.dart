@@ -11,8 +11,8 @@ import 'package:flutter_frontend/config.dart';
 import '../../utils/custom_exceptions.dart';
 
 class TagForm extends StatefulWidget {
-  final String email;
-  const TagForm({super.key, required this.email});
+  final String userId;
+  const TagForm({super.key, required this.userId});
 
   @override
   State<TagForm> createState() => _TagFormState();
@@ -20,7 +20,7 @@ class TagForm extends StatefulWidget {
 
 class _TagFormState extends State<TagForm> {
   final theme = OurTheme();
-  List<String> userPreferences = [
+  List<String> userTags = [
     "Pet-Friendly 🐾",
     "Loves Outdoors 🌲",
     "Women-Only 🚺",
@@ -55,7 +55,7 @@ class _TagFormState extends State<TagForm> {
     "Short-Term Friendly 🗓️",
   ];
 
-  late List<bool> isSelected = List.filled(userPreferences.length, false);
+  late List<bool> isSelected = List.filled(userTags.length, false);
   late int activeAnnouncement = -1;
   bool disableChips = false;
   TextEditingController _textController = TextEditingController();
@@ -75,11 +75,22 @@ class _TagFormState extends State<TagForm> {
   void handleChipSelected(List<int> selectedIndices) {
     // update the index of the active announcement.
     setState(() {
-    for (int i = 0; i < isSelected.length; i++) {
-      isSelected[i] = selectedIndices.contains(i);
-    }
-  });
+      for (int i = 0; i < isSelected.length; i++) {
+        isSelected[i] = selectedIndices.contains(i);
+      }
+    });
   }
+
+  List<String> getSelectedTags() {
+    List<String> selectedTags = [];
+    for (int i = 0; i < isSelected.length; i++) {
+      if (isSelected[i]) {
+        selectedTags.add(userTags[i]);
+      }
+    }
+  return selectedTags;
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -92,8 +103,8 @@ class _TagFormState extends State<TagForm> {
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
-                theme.mintgreen, // Gradient starting color
-                theme.darkblue, // Gradient ending color
+                theme.yellow, // Gradient starting color
+                theme.darkgrey, // Gradient ending color
               ]),
             ),
           ),
@@ -118,7 +129,7 @@ class _TagFormState extends State<TagForm> {
                 ),
                 // Title text indicating the purpose of the screen
                 const Text(
-                  '\nYour Roommate\nWishlist',
+                  '\nDescribe\nYourself',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                       fontSize: 30,
@@ -150,7 +161,7 @@ class _TagFormState extends State<TagForm> {
                       Padding(
                         padding: const EdgeInsets.only(top: 20, bottom: 5.0),
                         child: Text(
-                            "Choose 5 qualities that matter most for your ideal roommate!",
+                            "Select up to 5 qualities that best describe you as a roommate!",
                             style: TextStyle(
                               color: theme.darkblue,
                               fontSize: 17.0,
@@ -166,7 +177,7 @@ class _TagFormState extends State<TagForm> {
                               disableChips: disableChips,
                               onChipSelected: this.handleChipSelected,
                               isSelected: this.isSelected,
-                              announcements: this.userPreferences,
+                              tags: this.userTags,
                               maxSelections: 5)),
 
                       const SizedBox(
@@ -175,10 +186,9 @@ class _TagFormState extends State<TagForm> {
                       GradientButton(
                           text: 'Save',
                           onTap: () async {
-                            bool announcementSent = await sendAnnouncement();
-                            if (announcementSent) {
-                              Navigator.of(context).pop();
-                            }
+                             List<String> selectedTags = getSelectedTags();
+                             print("Selected Tags: $selectedTags"); 
+
                           }),
                       const SizedBox(height: 50), // Spacer below button
                     ],
@@ -192,19 +202,39 @@ class _TagFormState extends State<TagForm> {
     );
   }
 
-  Future<bool> sendAnnouncement() async {
-    bool announcementSent = false;
+Future<bool> updateTags(String userId, List<String> selectedTags) async {
+    try {
+      // Construct the request body
+      var reqBody = {
+        "tags": selectedTags,
+      };
 
-    return announcementSent;
+      print("Request Body: $reqBody");
+
+      // Make the POST request to the API
+      var response = await http.post(
+        Uri.parse("$profile/users/$userId/tags"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(reqBody),
+      );
+      // Handle the response
+      if (response.statusCode == 200) {
+        print("Tags updated successfully: ${response.body}");
+        return true;
+      } else {
+        // Handle potential errors based on status code
+        print("Error: ${response.statusCode} - ${response.body}");
+        throw Exception(jsonDecode(response.body)['message'] ?? "Failed to update tags.");
+      }
+    } catch (e) {
+      print("Failed to update tags: $e");
+      rethrow;
+    }
   }
-
-  bool isValidAnnouncement(String msg) {
-    return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
-  }
-
+ 
   void resetChips() {
     _textController.clear();
-    isSelected = List.filled(userPreferences.length, false);
+    isSelected = List.filled(userTags.length, false);
     activeAnnouncement = -1;
   }
 }

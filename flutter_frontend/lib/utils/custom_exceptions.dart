@@ -17,3 +17,8 @@ class NotificationException implements Exception {
   final String message;
   NotificationException(this.message);
 }
+
+class ProfileException implements Exception {
+  final String message;
+  ProfileException(this.message);
+}

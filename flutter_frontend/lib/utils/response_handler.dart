@@ -152,6 +152,36 @@ Future<void> handlePost(http.Response response,
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
+    case 'updateProfile':
+      switch (response.statusCode) {
+        case 404:
+        // Handle case where the user is not found
+          if (response.body.contains("User not found")) {
+            throw ProfileException('User not found');
+          }
+          break;
+        case 422:
+            throw ProfileException(response.body);
+        case 500:
+        // Server error for join room request
+          throw ProfileException('Something went wrong. Try again later');
+      }
+      break;
+    case 'createProfile':
+      switch (response.statusCode) {
+        case 404:
+        // Handle case where the user is not found
+          if (response.body.contains("User not found")) {
+            throw ProfileException('User not found');
+          }
+          break;
+        case 422:
+            throw ProfileException(response.body);
+        case 500:
+        // Server error for join room request
+          throw ProfileException('Something went wrong. Try again later');
+      }
+      break;
   }
 }
 

@@ -6,7 +6,7 @@ class ChipSelection extends StatefulWidget {
   final Function(List<int>)
       onChipSelected; // Returns a list of selected indices
   final List<bool> isSelected;
-  final List<String> announcements;
+  final List<String> tags;
   final int
       maxSelections; // Set max selections (1 for single, 5 for multi-selection)
 
@@ -15,7 +15,7 @@ class ChipSelection extends StatefulWidget {
     required this.disableChips,
     required this.onChipSelected,
     required this.isSelected,
-    required this.announcements,
+    required this.tags,
     this.maxSelections = 1, // Default to single selection
   });
 
@@ -53,10 +53,10 @@ class _ChipSelectionState extends State<ChipSelection> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      //alignment: WrapAlignment.center, 
+      //alignment: WrapAlignment.center,
       spacing: 10.0,
       runSpacing: 8.0,
-      children: List<Widget>.generate(widget.announcements.length, (int index) {
+      children: List<Widget>.generate(widget.tags.length, (int index) {
         return GestureDetector(
           onTap: widget.disableChips
               ? null
@@ -85,11 +85,12 @@ class _ChipSelectionState extends State<ChipSelection> {
                       color: Colors.grey), // Optional border when not selected
             ),
             child: Text(
-              widget.announcements[index],
+              widget.tags[index],
               style: TextStyle(
                 color: widget.isSelected[index] ? Colors.white : Colors.black,
-                fontWeight: widget.isSelected[index] ? FontWeight.bold : FontWeight.normal,  // Bold when selected
-        
+                fontWeight: widget.isSelected[index]
+                    ? FontWeight.bold
+                    : FontWeight.normal, // Bold when selected
               ),
             ),
           ),

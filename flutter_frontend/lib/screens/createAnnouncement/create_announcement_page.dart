@@ -10,7 +10,6 @@ import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
 
-
 class CreateAnnouncement extends StatefulWidget {
   final String email;
   const CreateAnnouncement({super.key, required this.email});
@@ -34,7 +33,6 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   bool disableChips = false;
   TextEditingController _textController = TextEditingController();
 
-
   @override
   void initState() {
     super.initState();
@@ -47,14 +45,15 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
   }
 
   // handle chip selection
-   void handleChipSelected(List<int> selectedIndices) {
+  void handleChipSelected(List<int> selectedIndices) {
     // update the index of the active announcement.
     setState(() {
-    for (int i = 0; i < isSelected.length; i++) {
-      isSelected[i] = selectedIndices.contains(i);
-    }
-  });
+      for (int i = 0; i < isSelected.length; i++) {
+        isSelected[i] = selectedIndices.contains(i);
+      }
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +66,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
             decoration: BoxDecoration(
               gradient: LinearGradient(colors: [
                 theme.mintgreen, // Gradient starting color
-                theme.darkblue,  // Gradient ending color
+                theme.darkblue, // Gradient ending color
               ]),
             ),
           ),
@@ -127,17 +126,20 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                             style: TextStyle(
                               color: theme.darkblue,
                               fontSize: 20.0,
-                              fontWeight: FontWeight.bold,)
-                        ),
+                              fontWeight: FontWeight.bold,
+                            )),
                       ),
                       const SizedBox(
                         height: 5.0,
                       ),
                       Padding(
                           padding: const EdgeInsets.only(bottom: 10.0),
-                          
-                          child: ChipSelection(disableChips: disableChips, onChipSelected: this.handleChipSelected, isSelected: this.isSelected, announcements: this.announcements, maxSelections: 1)
-                      ),
+                          child: ChipSelection(
+                              disableChips: disableChips,
+                              onChipSelected: this.handleChipSelected,
+                              isSelected: this.isSelected,
+                              tags: this.announcements,
+                              maxSelections: 1)),
                       const SizedBox(height: 20.0),
                       Container(
                         child: Column(
@@ -147,10 +149,9 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                                   style: TextStyle(
                                     color: theme.darkblue,
                                     fontSize: 20.0,
-                                    fontWeight: FontWeight.bold,)
-                              ),
-                            ]
-                        ),
+                                    fontWeight: FontWeight.bold,
+                                  )),
+                            ]),
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -162,22 +163,21 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
                             cursorColor: Theme.of(context).primaryColorDark,
                             decoration: InputDecoration(
                                 label: Text(
-                                  "Your Announcement",
-                                  style: TextStyle(color: theme.darkgrey),
-                                )
-                            )
-                        ),
+                              "Your Announcement",
+                              style: TextStyle(color: theme.darkgrey),
+                            ))),
                       ),
                       const SizedBox(
                         height: 40.0,
                       ),
-                      GradientButton(text: 'Send',
-                          onTap: () async{
-                          bool announcementSent = await sendAnnouncement();
-                          if(announcementSent){
-                            Navigator.of(context).pop();
-                          }
-                      }),
+                      GradientButton(
+                          text: 'Send',
+                          onTap: () async {
+                            bool announcementSent = await sendAnnouncement();
+                            if (announcementSent) {
+                              Navigator.of(context).pop();
+                            }
+                          }),
                       const SizedBox(height: 50), // Spacer below button
                     ],
                   ),
@@ -190,31 +190,28 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     );
   }
 
-
-
-
-  Future<bool> sendAnnouncement() async{
+  Future<bool> sendAnnouncement() async {
     bool announcementSent = false;
-    try{
+    try {
       String announcement_msg;
-      if(disableChips){
+      if (disableChips) {
         //   then text should have been entered
         announcement_msg = _textController.text;
-      }else{
+      } else {
         announcement_msg = announcements[activeAnnouncement];
       }
 
-      if(isValidAnnouncement(announcement_msg)){
+      if (isValidAnnouncement(announcement_msg)) {
         //   send announcement
         debugPrint("Sending announcement.......");
         announcementSent = await sendAnnouncementRequest(announcement_msg);
-      }
-      else{
+      } else {
         //   Toast -- that they should select
         throw Exception("Invalid announcement");
       }
-    }catch(e){
-      theme.buildToastMessage("Select a preset message or make a custom announcement!!");
+    } catch (e) {
+      theme.buildToastMessage(
+          "Select a preset message or make a custom announcement!!");
     }
     return announcementSent;
   }
@@ -223,8 +220,7 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
     return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
   }
 
-
-  Future<bool> sendAnnouncementRequest(String msg) async{
+  Future<bool> sendAnnouncementRequest(String msg) async {
     bool isSent = false;
     try {
       String announcementMsg = generateAnnouncement(msg, widget.email);
@@ -242,21 +238,21 @@ class _CreateAnnouncementState extends State<CreateAnnouncement> {
       isSent = true;
       theme.buildToastMessage("Announcement sent successfully");
       resetChips();
-    } on NotificationException catch(e) {
+    } on NotificationException catch (e) {
       theme.buildToastMessage(e.message);
     }
     return isSent;
   }
 
-  void resetChips(){
+  void resetChips() {
     _textController.clear();
     isSelected = List.filled(announcements.length, false);
     activeAnnouncement = -1;
   }
 }
 
- String generateAnnouncement(String msg, String from) {
-    return "$msg\n -$from";
+String generateAnnouncement(String msg, String from) {
+  return "$msg\n -$from";
 }
 
 
