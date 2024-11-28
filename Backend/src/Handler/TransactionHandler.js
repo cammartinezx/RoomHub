@@ -149,7 +149,7 @@ class TransactionHandler {
     }
 
     generate_settle_up_summary(creditor, debtor, amount) {
-        return `${debtor} paid ${creditor} CAD ${amount.toFixed(2)}`;
+        return `${debtor} paid ${creditor} $${amount.toFixed(2)}`;
     }
 
     /**

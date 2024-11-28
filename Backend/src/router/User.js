@@ -52,7 +52,7 @@ router.get("/:id/get-room", (req, res) => {
  * @code {400} Invalid username
  * @code {500} Backend error from the database
  * @response {JSON} All_Notifications list of Notification See description of the different status codes
- * @example Response: {
+ * @example Note jon-request notifications from is an id, but for announcement from is a name Response: {
     "All_Notifications": [
         {
             "notification_id": "111-333"
