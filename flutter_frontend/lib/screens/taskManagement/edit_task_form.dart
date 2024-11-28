@@ -211,7 +211,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                               errorText: _assigneeError
                           ),
                           items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
-                            return DropdownMenuItem<String>(value: value, child: Text(value));
+                            return DropdownMenuItem<String>(value: value[0], child: Text(value[1]));
                           }).toList(),
                           onChanged: (String? newValue) {
                             setState(() {
