@@ -52,7 +52,7 @@ router.get("/:id/get-room", (req, res) => {
  * @code {400} Invalid username
  * @code {500} Backend error from the database
  * @response {JSON} All_Notifications list of Notification See description of the different status codes
- * @example Response: {
+ * @example Note jon-request notifications from is an id, but for announcement from is a name Response: {
     "All_Notifications": [
         {
             "notification_id": "111-333"
@@ -143,9 +143,21 @@ router.get("/:id/get-roommate", (req, res) => {
  * @code {500} Backend error from the database
  * @response {JSON} roommates A list of roommates associated with the user
  * @example Response: {
-     "roommates": ["user_id_1", "user_id_2", "user_id_3"]
-}
- */
+    "all_roommates": [
+        [
+            "dan@gmail.com",
+            "Danny"
+        ],
+        [
+            "daohl@myumanitoba.ca",
+            "luke"
+        ],
+        [
+            "hungludao@gmail.com",
+            "luker"
+        ]
+    ]
+} */
 router.get("/:id/get-user-roommates", (req, res) => {
     user_info_handler.get_user_roommates(req, res);
 });

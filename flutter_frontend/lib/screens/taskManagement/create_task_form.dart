@@ -48,6 +48,7 @@ class _TaskFormState extends State<TaskForm> {
     // Simulate an API request or some async operation
     roomMates = await getRoommates();
 
+    // roomMates = [["dan@gmail.com","daniel"], ["lola@gmail.com","lola"], ["cheeto@gmail.com","cheeto"]];
     // Update the loading state and rebuild the UI
     setState(() {
       isLoading = false; // Update loading state
@@ -203,7 +204,7 @@ class _TaskFormState extends State<TaskForm> {
                             errorText: _assigneeError
                           ),
                           items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
-                            return DropdownMenuItem<String>(value: value, child: Text(value));
+                            return DropdownMenuItem<String>(value: value[0], child: Text(value[1]));
                           }).toList(),
                           onChanged: (String? newValue) {
                             setState(() {

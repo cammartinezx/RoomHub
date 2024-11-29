@@ -2,6 +2,8 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
+import 'package:flutter_frontend/screens/transactionManagement/all_transactions.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -9,63 +11,74 @@ import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
-import 'all_task.dart';
+import '../../widgets/multi_select_checkbox.dart';
 
 
-class EditTaskForm extends StatefulWidget {
-  final String taskName;
-  final String assignedTo;
-  // not all tasks have due dates.
-  final String dueDate;
-  final String taskId;
-  final String loggedInUser;
+class ExpenseForm extends StatefulWidget {
+  final String email;
   final String roomId;
-  const EditTaskForm({super.key, required this.taskName, required this.assignedTo, required this.taskId, required this.dueDate,required this.loggedInUser , required this.roomId});
+  final Map<String, dynamic> summaryData;
+  const ExpenseForm({super.key, required this.email, required this.roomId, required this.summaryData});
 
   @override
-  State<EditTaskForm> createState() => _EditTaskFormState();
+  State<ExpenseForm> createState() => _ExpenseFormState();
 }
 
-class _EditTaskFormState extends State<EditTaskForm> {
+class _ExpenseFormState extends State<ExpenseForm> {
   final theme = OurTheme();
-  TextEditingController _taskNameController = TextEditingController();
+  TextEditingController _expenseNameController = TextEditingController();
+  // final List<String> roomMates= ["danny@gmail.com","dd@gmail.com", "lola@gmail.com"];
   DateTime? selectedDate;
   TextEditingController _dateController = TextEditingController();
-  String? selectedRoommate;
-  List<dynamic> roomMates  = [];
-  String? _taskNameError; // Error message for name field
-  String? _assigneeError; // Error message for email field
-  String? _dueDateError; //Error message for due date
+  TextEditingController _amountController = TextEditingController();
+
+  String? _taskNameError; // Error message for task name field
+  String? _dateError;       // Error message for date field
+  String? _contributorError; //Error message for the list of contributors.
+  String? _amountError; //Error message for the amount field.
+
+  List<dynamic> contributors = [];
+  List<dynamic> potentialContributors = [];
   bool isLoading = true; // Track loading state
 
 
   @override
   void initState() {
     super.initState();
-    // Add listener to the TextField controller
-    debugPrint(widget.taskId);
-    _taskNameController.text = widget.taskName;
-    _dateController.text = widget.dueDate;
     getRoommatesCaller();
-    }
+  }
+
+  void updateContributors(List<dynamic> newContributors){
+    contributors = newContributors;
+    print(contributors);
+  }
+
 
   Future<void> getRoommatesCaller() async {
     // Simulate an API request or some async operation
-    roomMates = await getRoommates();
+    List<dynamic> all_roommates = await getRoommates();
+    // List<dynamic> all_roommates = [["dan@gmail.com","daniel"],["dolo@gmail.com","Dolo"],["kola@gmail.com","kola"]];
+    // update this to use a list of lists-- [id,name]
+    for(dynamic roommate in all_roommates){
+      if(roommate[0] != widget.email){
+        // add the full list to the list of contributors
+        potentialContributors.add(roommate);
+      }
+    }
+
+
     // Update the loading state and rebuild the UI
     setState(() {
       isLoading = false; // Update loading state
-      // choose selected roommate after roommate has be
-      selectedRoommate = widget.assignedTo;
     });
   }
 
   Future<List<dynamic>> getRoommates() async {
     List<dynamic> result = [];
-    print(widget.loggedInUser);
+    print(widget.email);
     try {
       var response = await http.get(
-        Uri.parse("$user/${widget.loggedInUser}/$getRoommatesList"),
+        Uri.parse("$user/${widget.email}/$getRoommatesList"),
         headers: {"Content-Type": "application/json"},
       );
       print(response.statusCode);
@@ -88,15 +101,25 @@ class _EditTaskFormState extends State<EditTaskForm> {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
+      firstDate: DateTime(2000),
+      lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child){
+        return Theme(data: Theme.of(context).copyWith(
+          colorScheme: ColorScheme.light(
+            primary: OurTheme().darkblue,
+            onPrimary: Colors.white,
+            onSurface: OurTheme().darkblue
+          ),
+          dialogBackgroundColor: Colors.white
+        ), child: child!
+        );
+      }
     );
 
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() {
         selectedDate = pickedDate;
         _dateController.text = "${pickedDate.toLocal()}".split(' ')[0]; // Formatting date
-        debugPrint(_dateController.text);
       });
     }
   }
@@ -122,9 +145,8 @@ class _EditTaskFormState extends State<EditTaskForm> {
             left: 20.0,
             right: 20.0,
             child: Padding(
-              padding: EdgeInsets.only(top: 30),
+              padding: EdgeInsets.only(top: 50),
               child: Stack(
-                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // Back button to return to the previous screen
                   IconButton(
@@ -140,7 +162,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                   // Title text indicating the purpose of the screen
                   const Center(
                     child: Text(
-                      'Task Management',
+                      'Transaction\n Management',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 30,
@@ -176,7 +198,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 30),
-                        child: Text("Edit a Task",
+                        child: Text("Create Expense",
                             style: TextStyle(
                               color: theme.darkblue,
                               fontSize: 30.0,
@@ -187,11 +209,11 @@ class _EditTaskFormState extends State<EditTaskForm> {
                         height: 20.0,
                       ),
                       TextFormField(
-                        controller: _taskNameController,
+                        controller: _expenseNameController,
                         cursorColor: theme.darkblue,
                         decoration: InputDecoration(
                             label: Text(
-                              "Task Name",
+                              "Expense Name",
                               style: TextStyle(color: theme.darkblue),
                             ),
                             errorText: _taskNameError
@@ -200,25 +222,25 @@ class _EditTaskFormState extends State<EditTaskForm> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      DropdownButtonFormField<String>(
-                          value: selectedRoommate,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          decoration: InputDecoration(
-                              label: Text(
-                                "Choose Roommate",
-                                style: TextStyle(color: theme.darkblue),
-                              ),
-                              errorText: _assigneeError
-                          ),
-                          items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
-                            return DropdownMenuItem<String>(value: value[0], child: Text(value[1]));
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedRoommate = newValue;
-                            });
-                          }
+                      TextFormField(
+                        controller: _amountController,
+                        cursorColor: theme.darkblue,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d*')), // Allows digits and a single decimal point
+                        ],
+                        decoration: InputDecoration(
+                            label: Text(
+                              "Expense Amount",
+                              style: TextStyle(color: theme.darkblue),
+                            ),
+                            errorText: _amountError
+                        ),
                       ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      MultiSelectFormField(options: potentialContributors, errorState: _contributorError,updateChoices: updateContributors, hint: 'Contributors',),
                       const SizedBox(
                         height: 20.0,
                       ),
@@ -230,29 +252,26 @@ class _EditTaskFormState extends State<EditTaskForm> {
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.calendar_today),
                           label: Text(
-                            "Due date",
+                            "Date",
                             style: TextStyle(color: theme.darkblue),
                           ),
-                          errorText: _dueDateError
+                          errorText: _dateError,
                         ),
                       ),
                       const SizedBox(
                         height: 40.0,
                       ),
-                      GradientButton(text: 'Save Task',
-                          onTap: () async {
-                              bool taskSaved = await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
-                              if(taskSaved){
-                                String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
-                                sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (context) => AllTasks(email: widget.loggedInUser, roomId: widget.roomId,),
-                                  ),
-                                );
-                              }
+                      GradientButton(text: 'Save',
+                          onTap: () async{
+                            bool isSaved = await saveExpense(context);
+                            if(isSaved){
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => SharedExpensesPage(userId: widget.email, roomId: widget.roomId, summary: widget.summaryData,),
+                                ),
+                              );
                             }
-                          ),
+                          }),
                     ],
                   ),
                 ),
@@ -267,23 +286,16 @@ class _EditTaskFormState extends State<EditTaskForm> {
   bool _validateFields() {
     setState(() {
       // Check if the name field is empty
-      _taskNameError = _taskNameController.text.isEmpty ? 'This field is required' : null;
+      _taskNameError = _expenseNameController.text.isEmpty ? 'This field is required' : null;
       // Check if the email field is empty
-      _assigneeError = selectedRoommate == null ? 'This field is required' : null;
-    //   check that the due date is at least >= today
-      debugPrint(_dateController.text);
-      DateTime parsedDueDate = DateTime.parse(_dateController.text);
-      print(parsedDueDate.isBefore(DateTime.now()));
-      _dueDateError = parsedDueDate.isBefore(DateTime.now()) ? 'Due date cannot be in the past' : null;
+      _dateError = _dateController.text.isEmpty ? 'This field is required' : null;
+      _contributorError = contributors.isEmpty ? 'This field is required. Select at least 1 contributor' : null;
+      _amountError = _amountController.text.isEmpty ? 'This field is required' : null;
     });
 
-    print(_taskNameError);
-    print(_assigneeError);
-    print(_dueDateError);
-    // If three fields are valid, you can proceed with your logic
-    if (_taskNameError == null && _assigneeError == null && _dueDateError == null) {
+    // If all fields are valid, proceed
+    if (_taskNameError == null && _contributorError == null && _dateError == null && _amountError == null) {
       // Proceed with form submission
-      print('Form is valid');
       // You can add your submission logic here
       return true;
     }
@@ -292,85 +304,78 @@ class _EditTaskFormState extends State<EditTaskForm> {
     }
   }
 
-  String generateAnnouncementMsg(String user, String task){
-    return 'The task "$task" has been assigned to $user';
-  }
-
-  void sendAnnouncementRequest(String announcement, String sender) async {
-    try {
-      var reqBody = {
-        "from": sender, // User's email (sender)
-        "message": announcement, // New announcement.
-        "type": 'announcement', // Request type
-      };
-      var response = await http.post(
-        Uri.parse(sendAnnouncementPth),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody), // Encode the request body as JSON
-      );
-      await handlePost(response, responseType: 'sendAnnouncement');
-      theme.buildToastMessage("Announcement sent successfully");
-    } on NotificationException catch(e) {
-      theme.buildToastMessage(e.message);
+  Future<bool> saveExpense(BuildContext context) async{
+    bool isSaved = false;
+    try{
+      if(_validateFields()){
+        debugPrint("Add backend stuff to create a new task");
+        await createNewExpense(widget.email, _expenseNameController.text, contributors, _dateController.text, _amountController.text);
+        isSaved = true;
+      }
+    } catch (e){
+      theme.buildToastMessage("Something went wrong. Please try again later");
+      isSaved = false;
     }
+    return isSaved;
   }
 
-  Future<void> editTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
+  void _showDialog(context, warning){
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Align(
+              alignment: Alignment.center,
+              child: Text("Warning" ,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            content: Text(warning),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    // dismiss the alert dialog
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Close")),
+            ],
+
+          );
+        });
+  }
+  // tn	String	The task name
+  // frm	String	The user creating the task
+  // to	String	The user assigned the task
+  // date	String	The due date for the task
+  Future<void> createNewExpense(String currUserId, String expenseName, List<dynamic> contributors, String dueDate, String amount) async {
     try {
       var reqBody = {
-        "id" : taskId,
-        "frm": currUserId, // The user creating the task
-        "tn": taskName, // The task name
-        "to": assignedTo, // The user assigned the task
+        "name": expenseName, // The user creating the task
+        "price": double.parse(amount), // The task name
+        "payer": currUserId, // The user assigned the task
+        "contributors": contributors,
         "date": dueDate // The due date for the task
       };
       print(reqBody);
       var response = await http.post(
-        Uri.parse(editTaskPth),
+        Uri.parse(createExpensePth),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
       print(response.statusCode);
       print(response.body);
-      await handlePost(response, responseType: 'editTask');
-      theme.buildToastMessage("Task created successfully");
+      await handlePost(response, responseType: 'createExpense');
+      theme.buildToastMessage("Expense created successfully");
       //   kick back to the notification page
     } on UserException catch(e) {
       theme.buildToastMessage(e.message);
       rethrow;
-    } on RoomException catch(e) {
-      theme.buildToastMessage(e.message);
-      rethrow;
-    } on TaskException catch(e) {
-      theme.buildToastMessage(e.message);
+    } on ExpenseException catch(e) {
+      _showDialog(context, e.message);
       rethrow;
     }
-  }
-
-  Future<bool> saveTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
-    bool isSaved = false;
-    try{
-      if(_validateFields()){
-        debugPrint("Add backend stuff to save an existing task");
-        await editTask(currUserId, taskName, assignedTo, dueDate, taskId);
-        isSaved = true;
-      }
-    } catch(e){
-      theme.buildToastMessage("Request could not be completed. Try again later.");
-    }
-    return isSaved;
-  }
-
-  bool isValidAnnouncement(String msg) {
-    return msg.isNotEmpty; // Returns true if msg is not empty, false otherwise
   }
 }
-
-
-// I forgot my keys—can someone let me in?"
-// "I'm having friends over tonight, just a heads-up."
-// "I’ll be late coming home, don’t wait up!"
-// "The Wi-Fi’s down—anyone else having issues?"
-// "Left the stove on—could someone check?"
-// "Package is arriving today, could someone grab it?"
-// "Cleaning day tomorrow—let's remember to tidy up!"

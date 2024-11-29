@@ -104,6 +104,7 @@ class TransactionHandler {
 
             // async errors check.
             let room_id;
+            const creditor = payer;
             try {
                 await validateUserExist(this.#user_persistence, payer);
                 room_id = await this.#user_persistence.get_room_id(payer);
@@ -131,10 +132,11 @@ class TransactionHandler {
             );
 
             // update balance table with all expense relationships.
-            const creditor = payer;
             for (let i = 0; i < contributors.length; i++) {
                 const debtor = contributors[i];
                 if (creditor.toLowerCase().localeCompare(debtor.toLowerCase()) != 0) {
+                    // get the debtors name as well.
+                    let debtorObj = await user_persistence.get_user(userId);
                     await this.#transaction_persistence.updateBalance(
                         debtor,
                         creditor,
@@ -149,7 +151,7 @@ class TransactionHandler {
     }
 
     generate_settle_up_summary(creditor, debtor, amount) {
-        return `${debtor} paid ${creditor} CAD ${amount.toFixed(2)}`;
+        return `${debtor} paid ${creditor} $${amount.toFixed(2)}`;
     }
 
     /**
@@ -197,7 +199,9 @@ class TransactionHandler {
             }
 
             const transaction_id = uuidv4();
-            const transaction_nm = this.generate_settle_up_summary(creditor, debtor, amount);
+            const creditorObj = await this.#user_persistence.get_user(creditor);
+            const debtorObj = await this.#user_persistence.get_user(debtor);
+            const transaction_nm = this.generate_settle_up_summary(creditorObj.name, debtorObj.name, amount);
             // create expense.
             await this.#transaction_persistence.generate_new_transaction(
                 transaction_id,
@@ -244,20 +248,34 @@ class TransactionHandler {
                 return response.status(404).json({ message: error.message });
             }
 
-            // get amount you own
+            // get amount you owe
             let debt_list = await this.#transaction_persistence.get_amounts_by_role(user_id, "debtor");
             const total_debt = this.sum_array(debt_list);
 
-            // get amount you are owned
+            // get amount you are owed
             let borrow_list = await this.#transaction_persistence.get_amounts_by_role(user_id, "creditor");
             const total_borrow = this.sum_array(borrow_list);
 
             const relationships = [];
-            const relationships_debt = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
-            const relationships_borrow = await this.#transaction_persistence.get_relationships_by_role(
-                user_id,
-                "creditor",
-            );
+            // const relationships_debt = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
+            const relationships_debt = [];
+            let all_debts = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
+            all_debts.Items.forEach(async (item) => {
+                const creditor = await this.#user_persistence.get_user(item.creditor);
+                relationships_debt.push(`You owe ${creditor.name} $${item.amount}`);
+            });
+
+            // const relationships_borrow = await this.#transaction_persistence.get_relationships_by_role(
+            //     user_id,
+            //     "creditor",
+            // );
+            const relationships_borrow = [];
+            let all_credits = await this.#transaction_persistence.get_relationships_by_role(user_id, "creditor");
+            all_credits.Items.forEach(async (item) => {
+                const debtor = await this.#user_persistence.get_user(item.debtor);
+                relationships_borrow.push(`${debtor.name} owes you $${item.amount}`);
+            });
+
             relationships.push(...relationships_debt, ...relationships_borrow);
 
             return response.status(200).json({
@@ -308,17 +326,22 @@ class TransactionHandler {
 
             let details = await this.#transaction_persistence.get_transaction_details(room_id);
             // Add summary for transactions of type "expense"
-            details = details.map((transaction) => {
-                if (transaction.type === "expense") {
-                    const creator = transaction.creator;
-                    if (creator === user_id) {
-                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
-                    } else {
-                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+            details = await Promise.all(
+                details.map(async (transaction) => {
+                    if (transaction.type === "expense") {
+                        const creator = transaction.creator;
+
+                        if (creator === user_id) {
+                            transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+                        } else {
+                            const user = await this.#user_persistence.get_user(creator);
+                            const createName = user.name;
+                            transaction.summary = `${createName} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+                        }
                     }
-                }
-                return transaction;
-            });
+                    return transaction;
+                }),
+            );
             return response.status(200).json({ All_Transactions: details });
         } catch (error) {
             return response.status(500).json({ message: error.message });

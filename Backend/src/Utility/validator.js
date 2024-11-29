@@ -63,6 +63,8 @@ async function validateUserExist(user_persistence, userId) {
     let user = await user_persistence.get_user(userId);
     if (user === null) {
         throw new Error("User does not exist");
+    } else {
+        return user;
     }
 }
 

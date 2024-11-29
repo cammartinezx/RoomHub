@@ -17,3 +17,8 @@ class NotificationException implements Exception {
   final String message;
   NotificationException(this.message);
 }
+
+class ExpenseException implements Exception {
+  final String message;
+  ExpenseException(this.message);
+}

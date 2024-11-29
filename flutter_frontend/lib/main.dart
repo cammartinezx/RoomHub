@@ -19,54 +19,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
-import 'package:flutter_frontend/screens/userProfile/edit_user_info.dart';
-import 'package:flutter_frontend/screens/userProfile/user_preferences.dart';
-import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'User Info Form',
-     theme: OurTheme().buildTheme(),
-      home: UserProfilePage(
-        email: "camila@gmail.com",
-        roomID: "123",
-    firstName: "Camila",
-    lastName:"Martinez",
-    gender:"heoj",
-    ethnicity:"nfekwnf",
-    birthDate:"nbrnhktrk",
-    description: "dnejksnfke",
-    
-  )
-      
-      // TagForm(
-      //   email: 'test@example.com',  // Pass email here
-      //   //roomID: 'room123',  // Pass roomID here
-      // ),  // Directly set UserInfoForm as the home widget
-    );
-  }
-}
-
-// // Widget build(BuildContext context) {
-// //   return MaterialApp(
-// //     debugShowCheckedModeBanner: false,
-// //     theme: OurTheme().buildTheme(),
-// //     // home: const UserRoom(roomID: "UpBoiz", email: "camila.martinez2002@gmail.com"),
-// //     // home: Notification();
-// //     routes: {
-// //       '/loginPage': (context) => const OurLogin(),
-// //       //'/homeNewPage': (context) => const OurHomeNewUser(),
-// //     },
-// //   );
-// // }
-
-/*
 void main() {
   // Entry point of the application, launching the MyApp widget
   runApp(
@@ -197,4 +150,4 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     userEmail = await authAWSRepo.getUserEmail(ref); // Retrieve email from the provider
     return userEmail;
   }
-}*/
+}
