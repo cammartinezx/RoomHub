@@ -67,7 +67,7 @@ class _TaskFormState extends State<TaskForm> {
       print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        List<dynamic> roommates = jsonData['roommates'];
+        List<dynamic> roommates = jsonData['all_roommates'];
         result = roommates;
       } else {
         await getResponse(response, responseType: 'getRoommateList');
@@ -236,6 +236,7 @@ class _TaskFormState extends State<TaskForm> {
                           onTap: () async{
                             bool isSaved = await saveTask(context);
                             if(isSaved){
+                              print("Should be changing the page");
                               String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
                               sendAnnouncementRequest(announcementMsg, widget.email);
                               Navigator.of(context).pushReplacement(
@@ -294,10 +295,11 @@ class _TaskFormState extends State<TaskForm> {
 
   String generateAnnouncementMsg(String user, String task){
     // get the correct users name.
+    print(roomMates);
     String username = "";
     for(dynamic roomMember in roomMates){
       if(roomMember[0] == user){
-        username = roomMember as String;
+        username = roomMember[1] as String;
         break;
       }
     }
