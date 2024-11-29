@@ -23,7 +23,13 @@ const SharedExpensesPage = () => {
             try {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
                 if (response.status === 200 && response.data.roommates) {
-                    const filteredRoommates = response.data.roommates.filter((roommate) => roommate !== email);
+                    const filteredRoommates = response.data.roommates
+                        .filter((roommate) => roommate[0] !== email)
+                        .map((roommate) => {
+                            const email = roommate[0];
+                            const name = roommate[1];
+                            return { email: email, name: name };
+                        });
                     setRoomMembers(filteredRoommates);
                 }
             } catch (error) {
@@ -243,11 +249,11 @@ const SharedExpensesPage = () => {
                             <div key={index} className={styles.checkbox}>
                                 <input
                                     type="checkbox"
-                                    id={roommate}
-                                    checked={newExpense.contributors.includes(roommate)}
-                                    onChange={() => handleRoommateSelection(roommate)}
+                                    id={roommate.email}
+                                    checked={newExpense.contributors.includes(roommate.email)}
+                                    onChange={() => handleRoommateSelection(roommate.email)}
                                 />
-                                <label htmlFor={roommate}>{roommate}</label>
+                                <label htmlFor={roommate}>{roommate.name}</label>
                             </div>
                         ))}
                     </div>
@@ -262,8 +268,8 @@ const SharedExpensesPage = () => {
                     >
                         <option value="">Select Roommate</option>
                         {roomMembers.map((member, index) => (
-                            <option key={index} value={member}>
-                                {member}
+                            <option key={index} value={member.email}>
+                                {member.name}
                             </option>
                         ))}
                     </select>

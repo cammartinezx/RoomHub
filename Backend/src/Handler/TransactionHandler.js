@@ -130,13 +130,11 @@ class TransactionHandler {
                 owed_to_creator,
                 "expense",
             );
-
+            
             // update balance table with all expense relationships.
             for (let i = 0; i < contributors.length; i++) {
                 const debtor = contributors[i];
                 if (creditor.toLowerCase().localeCompare(debtor.toLowerCase()) != 0) {
-                    // get the debtors name as well.
-                    let debtorObj = await user_persistence.get_user(userId);
                     await this.#transaction_persistence.updateBalance(
                         debtor,
                         creditor,
@@ -257,25 +255,27 @@ class TransactionHandler {
             const total_borrow = this.sum_array(borrow_list);
 
             const relationships = [];
-            // const relationships_debt = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
+            // Fetch debts
             const relationships_debt = [];
             let all_debts = await this.#transaction_persistence.get_relationships_by_role(user_id, "debtor");
-            all_debts.Items.forEach(async (item) => {
+            const debtPromises = all_debts.Items.map(async (item) => {
                 const creditor = await this.#user_persistence.get_user(item.creditor);
                 relationships_debt.push(`You owe ${creditor.name} $${item.amount}`);
             });
+            // Wait for all debt-related promises to resolve
+            await Promise.all(debtPromises);
 
-            // const relationships_borrow = await this.#transaction_persistence.get_relationships_by_role(
-            //     user_id,
-            //     "creditor",
-            // );
+            // Fetch credits
             const relationships_borrow = [];
             let all_credits = await this.#transaction_persistence.get_relationships_by_role(user_id, "creditor");
-            all_credits.Items.forEach(async (item) => {
+            const borrowPromises = all_credits.Items.map(async (item) => {
                 const debtor = await this.#user_persistence.get_user(item.debtor);
                 relationships_borrow.push(`${debtor.name} owes you $${item.amount}`);
             });
+            // Wait for all borrow-related promises to resolve
+            await Promise.all(borrowPromises);
 
+            // Combine both debts and borrows into the final relationships array
             relationships.push(...relationships_debt, ...relationships_borrow);
 
             return response.status(200).json({

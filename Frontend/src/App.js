@@ -24,12 +24,15 @@ function App() {
   // Function to handle adding the user to the mock database
   const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
+    const name = email.split("@")[0]; // Extract user name from user email
 
     if (email) {
       try{
         // Send a POST request to add the user to the database
-        const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',
-           {id: email,});
+        const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',{
+          id: email,
+          name: name,
+        });
 
            console.log('User added successfully:', response.data);
       } catch (error) {
