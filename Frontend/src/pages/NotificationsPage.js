@@ -97,6 +97,11 @@ const NotificationsPage = () => {
         }
     };
 
+     // Function to navigate to the matched user's profile
+     const handleViewProfile = (matchedUser) => {
+        navigate('/user-profile', { state: { email, matchedUser, hasRoom } });
+    };
+
 
     return (
         <div className={styles.container}>
@@ -110,7 +115,8 @@ const NotificationsPage = () => {
                                 <div className={styles.notificationContent}>
                                     <div className={styles.notificationDetails}>
                                         <p className={styles.notificationType}>
-                                            {notification.type === 'join-request' ? 'Join Request' : 'General Notification'}
+                                            {notification.type === 'join-request' ? 'Join Request' :
+                                            notification.type === 'match' ? 'Match' : 'General Notification'}
                                         </p>
                                         <p className={styles.notificationMessage}>{notification.msg}</p>
                                     </div>
@@ -119,6 +125,11 @@ const NotificationsPage = () => {
                                     {notification.type === 'join-request' && notification.status !== 'accepted' && (
                                         <button onClick={() => handleAccept(notification)} className={styles.acceptButton}>
                                             <FontAwesomeIcon icon={faCheck} /> Accept
+                                        </button>
+                                    )}
+                                    {notification.type === 'match' && (
+                                        <button onClick={() => handleViewProfile(notification.from)} className={styles.viewProfileButton}>
+                                            View Profile
                                         </button>
                                     )}
                                     <button onClick={() => handleDelete(notification)} className={styles.deleteButton}>

@@ -123,3 +123,24 @@ ul {
 .backButton:hover {
   background-color: #0056b3;
 }
+
+
+.viewProfileButton {
+  background-color: #28a745;
+  color: white; 
+  padding: 10px 15px; 
+  border: none; 
+  border-radius: 5px; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  transition: background-color 0.3s ease; 
+}
+
+.viewProfileButton:hover {
+  background-color: #218838; 
+}
+
+.viewProfileButton:active {
+  background-color: #1e7e34; 
+  transform: scale(0.98);
+}
