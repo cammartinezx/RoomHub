@@ -293,7 +293,15 @@ class _TaskFormState extends State<TaskForm> {
   }
 
   String generateAnnouncementMsg(String user, String task){
-    return 'The task "$task" has been assigned to $user';
+    // get the correct users name.
+    String username = "";
+    for(dynamic roomMember in roomMates){
+      if(roomMember[0] == user){
+        username = roomMember as String;
+        break;
+      }
+    }
+    return 'The task "$task" has been assigned to $username';
   }
 
   // tn	String	The task name
