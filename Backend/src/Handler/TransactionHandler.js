@@ -310,17 +310,22 @@ class TransactionHandler {
 
             let details = await this.#transaction_persistence.get_transaction_details(room_id);
             // Add summary for transactions of type "expense"
-            details = details.map((transaction) => {
-                if (transaction.type === "expense") {
-                    const creator = transaction.creator;
-                    if (creator === user_id) {
-                        transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
-                    } else {
-                        transaction.summary = `${transaction.creator} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+            details = await Promise.all(
+                details.map(async (transaction) => {
+                    if (transaction.type === "expense") {
+                        const creator = transaction.creator;
+
+                        if (creator === user_id) {
+                            transaction.summary = `You paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+                        } else {
+                            const user = await this.#user_persistence.get_user(creator);
+                            const createName = user.name;
+                            transaction.summary = `${createName} paid CAD ${transaction.paid_by_creator.toFixed(2)} and lent CAD ${transaction.owed_to_creator.toFixed(2)}`;
+                        }
                     }
-                }
-                return transaction;
-            });
+                    return transaction;
+                }),
+            );
             return response.status(200).json({ All_Transactions: details });
         } catch (error) {
             return response.status(500).json({ message: error.message });
