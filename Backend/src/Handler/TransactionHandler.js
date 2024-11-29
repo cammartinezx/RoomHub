@@ -130,7 +130,6 @@ class TransactionHandler {
                 owed_to_creator,
                 "expense",
             );
-            
             // update balance table with all expense relationships.
             for (let i = 0; i < contributors.length; i++) {
                 const debtor = contributors[i];

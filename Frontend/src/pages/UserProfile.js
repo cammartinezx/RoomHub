@@ -15,7 +15,7 @@ const UserProfile = ({ user, signOut}) => {
         </div>
       </header>
 
-        <h1 className={styles.title}>User Profile for {email}</h1>
+        <h1 className={styles.title}>User Profile for {email.split("@")[0]}</h1>
         <button className={styles.logout} onClick={() => {
           signOut(); // This will log the user out of Cognito
           navigate('/'); // Then redirect to the landing page

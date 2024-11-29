@@ -521,7 +521,7 @@ describe("Testing get_user_roommates", () => {
         await userInfoHandler.get_user_roommates(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({ roommates: ["test@gmail.com", "test1@gmail.com"] });
+        expect(res.json).toHaveBeenCalledWith({ all_roommates: [["test@gmail.com"], ["test1@gmail.com"]] });
     });
 
     it("Should send You have no roommate", async () => {
@@ -544,7 +544,7 @@ describe("Testing get_user_roommates", () => {
         await userInfoHandler.get_user_roommates(req, res);
 
         expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith({ roommates: ["test@gmail.com"] });
+        expect(res.json).toHaveBeenCalledWith({ all_roommates: [["test@gmail.com"]] });
     });
 
     it("Should send error status code with user that doesn't exist", async () => {

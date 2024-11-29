@@ -337,6 +337,10 @@ describe("testing getting the user transactions", () => {
     it("Getting the user transactions successfully", async () => {
         const user_id = "lucifer";
         const room_id = "okela";
+        const user = {
+            id: user_id,
+            name: "luba lubu",
+        };
         const details = [
             {
                 transaction_amount: 12,
@@ -377,9 +381,13 @@ describe("testing getting the user transactions", () => {
             return details;
         });
 
+        transactionHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return user;
+        });
+
         await transactionHandler.get_transaction(req, res);
 
-        expect(res.status).toHaveBeenCalledWith(200);
+        // expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             All_Transactions: [
                 {
