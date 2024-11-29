@@ -23,8 +23,8 @@ const ManageTasksPage = () => {
         const fetchRoommates = async () => {
             try {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
-                if (response.status === 200 && response.data.roommates) {
-                    const filteredRoommates = response.data.roommates
+                if (response.status === 200 && response.data.all_roommates) {
+                    const filteredRoommates = response.data.all_roommates
                         .map((roommate) => {
                             const email = roommate[0];
                             const name = roommate[1];
