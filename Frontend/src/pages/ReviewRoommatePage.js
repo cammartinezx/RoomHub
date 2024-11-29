@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from '../styles/ReviewRoommatePage.module.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const ReviewRoommatePage = ({ email }) => {
+const ReviewRoommatePage = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const email = location.state?.email;
+    const hasRoom = location.state?.hasRoom;
     const [roommates, setRoommates] = useState([]);
     const [selectedRoommate, setSelectedRoommate] = useState('');
     const [cleanliness, setCleanliness] = useState(0);
@@ -18,8 +23,13 @@ const ReviewRoommatePage = ({ email }) => {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
                 console.log(response.data.users)
                 if (response.status === 200 && response.data.roommates) {
-                    console.log(response.data)
-                    setRoommates(response.data.roommates); // Set roommates in the state
+                    const filteredRoommates = response.data.roommates
+                        .map((roommate) => {
+                            const email = roommate[0];
+                            const name = roommate[1];
+                            return [ email, name ];
+                        });
+                    setRoommates(filteredRoommates); // Set roommates in the state
                 }
             } catch (error) {
                 console.error("Error fetching roommates:", error.message);
@@ -62,7 +72,7 @@ const ReviewRoommatePage = ({ email }) => {
                     >
                         <option value="">-- Choose a Roommate --</option>
                         {roommates.map((roommate) => (
-                            <option key={roommate} value={roommate}>{roommate}</option>
+                            <option key={roommate} value={roommate[0]}>{roommate[1]}</option>
                         ))}
                     </select>
                 </div>
