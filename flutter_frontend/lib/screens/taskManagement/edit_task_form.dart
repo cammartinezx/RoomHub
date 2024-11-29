@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -196,9 +197,13 @@ class _EditTaskFormState extends State<EditTaskForm> {
                             ),
                             errorText: _taskNameError
                         ),
+                        maxLength: 30,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(50), // Limits input to 50 characters
+                        ],
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 5.0,
                       ),
                       DropdownButtonFormField<String>(
                           value: selectedRoommate,

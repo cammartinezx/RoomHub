@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:flutter_frontend/screens/taskManagement/all_task.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
@@ -187,11 +188,15 @@ class _TaskFormState extends State<TaskForm> {
                               "Task Name",
                               style: TextStyle(color: theme.darkblue),
                             ),
-                          errorText: _taskNameError
+                          errorText: _taskNameError,
                         ),
+                        maxLength: 30,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(50), // Limits input to 50 characters
+                        ],
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 5.0,
                       ),
                       DropdownButtonFormField<String>(
                           value: selectedRoommate,
