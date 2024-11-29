@@ -17,7 +17,8 @@ import 'package:flutter_frontend/utils/response_handler.dart';
 
 class Verification extends ConsumerStatefulWidget {
   final String email;
-  const Verification({super.key, required this.email});
+  final String name;
+  const Verification({super.key, required this.email, required this.name});
   @override
   _VerificationState createState() => _VerificationState();
 }
@@ -124,6 +125,7 @@ class _VerificationState extends ConsumerState<Verification> {
     try {
     var regBody = {
       "id": widget.email,
+      "name": widget.name,
     };
     var response = await http.post(
       Uri.parse(signup),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/signup/verification.dart';
+import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/providers.dart';
@@ -17,6 +18,7 @@ class SignUpForm extends ConsumerStatefulWidget {
 // State class for SignUpForm, managing state and widget lifecycle
 class _SignUpFormState extends ConsumerState<SignUpForm> {
   // Controllers for form fields
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController password2Controller = TextEditingController();
@@ -52,11 +54,12 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
           const SizedBox(height: 30.0),
           // Full Name input field
           TextFormField(
+            controller: nameController,
             cursorColor: theme.darkblue,
             decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.person_outline),
                 label: Text(
-                  "Full Name",
+                  "First Name",
                   style: TextStyle(color: theme.darkblue),
                 )),
           ),
@@ -114,10 +117,17 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
     }
   }
 
+  void _validateUserName(){
+    if (nameController.text.isEmpty){
+      throw MissingField("Enter a name");
+    }
+  }
+
   /// Handles the sign-up process using AWS Amplify
   void amplifySignUp() async {
     try {
       _validateConfirmPassword(); // Validate password match
+      _validateUserName();//validate that a name was entered
 
       final authAWSRepo = ref.read(authAWSRepositoryProvider);
       // Calls the sign-up method from the repository
@@ -126,11 +136,13 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
       // Navigate to the verification screen after successful sign-up
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => Verification(email: emailController.text),
+          builder: (context) => Verification(email: emailController.text, name:nameController.text),
         ),
       );
     } on AuthException catch (e) {
       // Handle any authentication exceptions and show a message
+      theme.buildToastMessage(e.message);
+    } on MissingField catch (e) {
       theme.buildToastMessage(e.message);
     }
   }
