@@ -30,6 +30,28 @@ const Header = ({ email, hasRoom, roomName }) => {
       fetchNotifications();
     }
   }, [email]);
+
+   // Function to handle user profile navigation
+   const handleUserProfileClick = async () => {
+    try {
+      const response = await axios.get(
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/find-roommate-page`
+      );
+
+      if (response.status === 200) {
+        // User has a profile, navigate to the user profile page
+        navigate('/user-profile', { state: { email, hasRoom } });
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        // User does not have a profile, navigate to the incomplete profile page
+        navigate('/incomplete-profile', { state: { email, hasRoom } });
+      } else {
+        console.error('Error checking user profile:', error);
+      }
+    }
+  };
+
   
 
   return (
@@ -49,7 +71,7 @@ const Header = ({ email, hasRoom, roomName }) => {
         <FontAwesomeIcon 
           icon={faUser}
           className={styles.icon}
-          onClick={() => navigate('/user-profile', { state: { email, hasRoom } })}
+          onClick={handleUserProfileClick}
         />
       </div>
     </header>

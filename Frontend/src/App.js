@@ -22,6 +22,7 @@ import WelcomeFindRoommate from './pages/WelcomeFindRoommate';
 import NoRoommatePage from './pages/NoRoommatePage';
 import SelectRoommatePage from './pages/SelectRoommatePage';
 import ReviewSuccessPage from './pages/ReviewSuccessPage';
+import IncompleteProfile from './pages/IncompleteProfile';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -237,6 +238,17 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <ReviewSuccessPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/incomplete-profile"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <IncompleteProfile user={user} signOut ={signOut} />;
                 }}
               </Authenticator>
             }

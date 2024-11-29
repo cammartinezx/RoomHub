@@ -182,3 +182,20 @@
   max-width: 800px;
   margin: 0 auto;
 }
+
+.clickableContact {
+  color: #0056b3;
+  cursor: pointer;
+  text-decoration: none;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.2rem;
+  transition: color 0.3s ease, font-size 0.3s ease; /* Smooth transition for color and size */
+}
+
+.clickableContact:hover {
+  color: #4614ac;
+  font-size: 2rem;
+}
+
+

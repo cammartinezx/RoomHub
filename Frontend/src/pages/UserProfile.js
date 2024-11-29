@@ -58,6 +58,16 @@ const tagsList = [
   'Clean 🧼',
   'Short-Term Friendly 🗓️',
 ];
+
+
+const contactBaseUrls = {
+  instagram: 'https://www.instagram.com/',
+  snapchat: 'https://www.snapchat.com/add/',
+  facebook: 'https://www.facebook.com/',
+  discord: 'https://discordapp.com/users/',
+};
+
+
 const UserProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -174,6 +184,39 @@ const UserProfile = () => {
       alert('Failed to update profile. Please try again.');
     }
   };
+
+  const handleContactClick = () => {
+    if (!profileData.contact_type || !profileData.contact) return;
+
+    const message = encodeURIComponent('Hey, we matched on RoomHub');
+    let url;
+
+    switch (profileData.contact_type.toLowerCase()) {
+      case 'instagram':
+        url = `${contactBaseUrls.instagram}${profileData.contact}`;
+        break;
+      case 'snapchat':
+        url = `${contactBaseUrls.snapchat}${profileData.contact}`;
+        break;
+      case 'facebook':
+        url = `${contactBaseUrls.facebook}${profileData.contact}`;
+        break;
+      case 'discord':
+        url = `${contactBaseUrls.discord}${profileData.contact}`;
+        break;
+      case 'email':
+        url = `mailto:${profileData.contact}?subject=RoomHub Match&body=${message}`;
+        break;
+      case 'mobile':
+        url = `sms:${profileData.contact}?body=${message}`;
+        break;
+      default:
+        alert('Unsupported contact type.');
+        return;
+    }
+
+    window.open(url, '_blank');
+  };
   
   if (loading) {
     return <div>Loading...</div>;
@@ -201,10 +244,13 @@ const UserProfile = () => {
             <p><strong>Location:</strong> {profileData.location}</p>
             <p><strong>Bio:</strong> {profileData.bio}</p>
             <p>
-              <strong>Contact:</strong>
+              <strong>Contact Info:</strong>
               {profileData.contact_type && (
-                <span>
-                  <FontAwesomeIcon icon={contactIcons[profileData.contact_type]} style={{fontSize: '1.5rem', marginRight: '10px', marginLeft: '10px' }} />
+                <span
+                  onClick={handleContactClick}
+                  className={styles.clickableContact}
+                >
+                  <FontAwesomeIcon icon={contactIcons[profileData.contact_type]} style={{ fontSize: '1.5rem', marginRight: '10px', marginLeft: '10px' }} />
                   {profileData.contact}
                 </span>
               )}
