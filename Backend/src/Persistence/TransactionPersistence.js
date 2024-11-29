@@ -254,9 +254,9 @@ class TransactionPersistence {
                 },
             });
             result = await this.#doc_client.send(queryCommand);
-            result.Items.forEach((item) => {
-                relationships.push(`You owe ${item.creditor} CAD ${item.amount}`);
-            });
+            // result.Items.forEach((item) => {
+            //     relationships.push(`You owe ${item.creditor} CAD ${item.amount}`);
+            // });
         } else if (role === "creditor") {
             // Scan based on creditor (not indexed)
             const scanCommand = new ScanCommand({
@@ -267,11 +267,11 @@ class TransactionPersistence {
                 },
             });
             result = await this.#doc_client.send(scanCommand);
-            result.Items.forEach((item) => {
-                relationships.push(`${item.debtor} owes you CAD ${item.amount}`);
-            });
+            // result.Items.forEach((item) => {
+            //     relationships.push(`${item.debtor} owes you CAD ${item.amount}`);
+            // });
         }
-        return relationships;
+        return result;
     }
 
     /**
