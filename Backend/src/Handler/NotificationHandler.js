@@ -114,7 +114,9 @@ class NotificationHandler {
             }
             const type = request.body.type;
             let room_id = await this.#user_persistence.get_room_id(to);
-            const msg = this.generate_message(from, to, type);
+
+            let senderName = sender.name;
+            const msg = this.generate_message(senderName, type, "");
             if (!this.#is_valid_msg(msg)) {
                 // give a certain type of response
                 return response.status(400).json({ message: "Error Creating Notification - Message is empty" });
@@ -145,34 +147,35 @@ class NotificationHandler {
     /**
      * Create a message based on sender, receiver and type
      * @param {String} from "a sender ID"
-     * @param {String} to "a receiver ID"
      * @param {String} type "a type of notification, for now we just have invite"
      * @returns {String} "notification message"
      */
-    generate_message(from, to, type) {
-        if (type == "join-request") {
+    generate_message(from, type, message) {
+        if (type === "join-request") {
             return this.generate_room_request_message(from);
+        } else if (type === "announcement") {
+            return this.generate_announcement_message(from, message);
         }
         return "";
     }
 
     /**
-     * Create an invite message based on sender, receiver
-     * @param {String} from "a sender ID"
-     * @param {String} to "a receiver ID"
-     * @returns {String} "notification invite message"
-     */
-    generate_invite_message(from, to) {
-        return `${from} invites ${to} to join their room`;
-    }
-
-    /**
-     * Create an invite message based on sender, receiver
-     * @param {String} from "a sender ID"
+     * Create an invite message based on sender
+     * @param {String} from "a sender name"
      * @returns {String} "notification invite message"
      */
     generate_room_request_message(from) {
         return `${from} requests to join your room`;
+    }
+
+    /**
+     * Creat an announcement message based on sender, message
+     * @param {String} from "a sender name"
+     * @param {String} message "an announcement message"
+     * @returns {String} an announcement message
+     */
+    generate_announcement_message(from, message) {
+        return message + `\n -${from}`;
     }
 
     /**
@@ -207,6 +210,9 @@ class NotificationHandler {
                 return response.status(400).json({ message: "Notification type is invalid" });
             }
 
+            const senderName = sender.name;
+            const msg = this.generate_message(senderName, type, message);
+
             let room_id = await this.#user_persistence.get_room_id(from);
             // get the total number of users in the room
             let users = await this.#room_persistence.get_room_users(room_id);
@@ -225,7 +231,7 @@ class NotificationHandler {
                     // create an annoucement for everone in the room except sender
                     let notification_status = await this.#notification_persistence.generate_new_notification(
                         notif_id,
-                        message,
+                        msg,
                         status,
                         from,
                         item,
