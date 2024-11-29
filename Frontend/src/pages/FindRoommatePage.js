@@ -117,8 +117,9 @@ const FindRoommatePage = () => {
       )}
       {noMoreUsers || profiles.length === 0 ? (
         <div className={styles.endMessage}>
-          <p>No more roommates available based on your current preferences.</p>
-          <button onClick={() => window.location.reload()}>Reload Page with New Preferences</button>
+          <p>No more roommates available based on your current location.</p>
+          <button onClick={() => window.location.reload()}>Reload Page</button>
+          <button onClick={() =>navigate('/user-profile', { state: { email, hasRoom } })}>Change Location In User Profile</button>
         </div>
       ) : (
         <div className={styles.card}>

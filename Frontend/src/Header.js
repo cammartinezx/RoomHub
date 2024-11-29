@@ -10,31 +10,27 @@ const Header = ({ email, hasRoom, roomName }) => {
   const navigate = useNavigate();
   
 
-  //Fetch notifications to check if there are unread ones
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
+        // Using the correct endpoint for unread notifications
+        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-unread-notification`);
         
-        const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-notification`);
+        // Assuming the endpoint directly returns unread notifications
+        const unreadNotifications = response.data.Unread_Notification;
         
-        
-        // Check if any notifications have status 'unread'
-        const notifications = response.data.All_Notifications; 
-        const unreadNotifications = notifications.filter(notification => notification.status === 'unread');
-        console.log(notifications)
-        console.log(unreadNotifications)
         // Check if there are any unread notifications
         setHasUnreadNotifications(unreadNotifications.length > 0);
-
       } catch (error) {
-        console.error('Error fetching notifications:', error);
+        console.error('Error fetching unread notifications:', error);
       }
     };
-
+  
     if (email) {
       fetchNotifications();
     }
   }, [email]);
+  
 
   return (
     <header className={styles.header}>

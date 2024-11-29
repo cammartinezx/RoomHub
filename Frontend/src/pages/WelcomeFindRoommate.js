@@ -287,15 +287,15 @@ const WelcomeFindRoommate = () => {
         </div>
         <p className={styles.tagCounter}>{profileData.tags.length}/7 tags selected</p>
         <div className={styles.navigationButtons}>
-          <button onClick={handlePreviousStep} className={styles.navButton}>
-            Back
-          </button>
-          <button
+        <button
             onClick={handleNextStep}
             className={styles.navButton}
             disabled={profileData.tags.length < 3}
           >
             Next
+          </button>
+          <button onClick={handlePreviousStep} className={styles.navButton}>
+            Back
           </button>
         </div>
       </div>

@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/UserProfile.module.css';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faSnapchat, faFacebook, faDiscord } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons';
 
-const mockProfileData = {
-  name: 'John Doe',
-  dob: '1995-08-15',
-  gender: 'Male',
-  province: 'Ontario',
-  city: 'Toronto',
-  bio: 'I am a software engineer who loves coding and hiking.',
-  tags: ['Pet-Friendly 🐾', 'Non-Smoker 🚭', 'Fitness Enthusiast 🏋️'],
-  contactType: 'Email',
-  contact: 'johndoe@example.com',
+const contactIcons = {
+  instagram: faInstagram,
+  snapchat: faSnapchat,
+  facebook: faFacebook,
+  discord: faDiscord,
+  mobile: faPhone,
+  email: faEnvelope,
 };
 
 const provincesAndCities = {
@@ -65,19 +65,23 @@ const UserProfile = () => {
   const matchedUser = location.state?.matchedUser;
   const email = location.state?.email;
 
-  const [profileData, setProfileData] = useState(mockProfileData);
+  const [profileData, setProfileData] = useState();
+  const [originalData, setOriginalData] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() =>{
     const fetchProfile = async () =>{
       try {
         const userId = matchedUser || email;
+        console.log("getting profile");
         const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${userId}/get-profile`);
         console.log(response.data.profile);
         const fetchedProfile = response.data.profile;
         setProfileData(fetchedProfile);
-
+        
         console.log(profileData);
+        setLoading(false);
       }catch(error){
         console.log(error);
         if(error.response){
@@ -116,12 +120,64 @@ const UserProfile = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsEditing(false);
-    alert('Profile updated successfully!');
-    console.log('Updated Profile Data:', profileData);
+  
+    try {
+      const updatedFields = {};
+      for (const key in profileData) {
+        if (profileData[key] !== originalData[key]) {
+          updatedFields[key] = profileData[key];
+        }
+      }
+  
+      if (Object.keys(updatedFields).length === 0) {
+        alert('No changes were made.');
+        return;
+      }
+  
+      if (updatedFields.tags) {
+        // Update tags
+        await axios.patch(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/update-tags`,
+          { tags: updatedFields.tags }
+        );
+        delete updatedFields.tags;
+      }
+  
+      if (Object.keys(updatedFields).length > 0) {
+        // Map `contactType` to `contact_type` for backend compatibility
+        if (updatedFields.contactType) {
+          updatedFields.contact_type = updatedFields.contactType;
+          delete updatedFields.contactType; // Remove the frontend key
+        }
+
+        console.log("Payload being sent to update-profile:", updatedFields);
+        await axios.patch(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/update-profile`,
+          updatedFields
+        );
+      }
+  
+      // Fetch updated profile data
+      const response = await axios.get(
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/profile/${email}/get-profile`
+      );
+      setProfileData(response.data.profile);
+      setOriginalData(response.data.profile);
+      window.location.reload()
+  
+      alert('Profile updated successfully.');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      alert('Failed to update profile. Please try again.');
+    }
   };
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={styles.userProfileContainer}>
@@ -136,7 +192,7 @@ const UserProfile = () => {
       </header>
 
       <div className={styles.userProfileContent}>
-        <h1 className={styles.userProfileTitle}>User Profile for {profileData.name}</h1>
+        <h1 className={styles.userProfileTitle}>{profileData.name.toUpperCase()}</h1>
 
         {!isEditing ? (
           <div className={styles.userProfileDetails}>
@@ -145,10 +201,13 @@ const UserProfile = () => {
             <p><strong>Location:</strong> {profileData.location}</p>
             <p><strong>Bio:</strong> {profileData.bio}</p>
             <p>
-              <strong>Contact:</strong>{' '}
-              {profileData.contact_type
-                ? `${profileData.contact_type}: ${profileData.contact}`
-                : 'Not provided'}
+              <strong>Contact:</strong>
+              {profileData.contact_type && (
+                <span>
+                  <FontAwesomeIcon icon={contactIcons[profileData.contact_type]} style={{fontSize: '1.5rem', marginRight: '10px', marginLeft: '10px' }} />
+                  {profileData.contact}
+                </span>
+              )}
             </p>
             <div>
               <div className={styles.userProfileTags}>
@@ -175,9 +234,8 @@ const UserProfile = () => {
               Name:
               <input
                 type="text"
-                value={profileData.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-                required
+                value={profileData.name || ""}
+                onChange={(e) => handleChange("name", e.target.value)}
               />
             </label>
 
@@ -185,17 +243,16 @@ const UserProfile = () => {
               Date of Birth:
               <input
                 type="date"
-                value={profileData.dob}
-                onChange={(e) => handleChange('dob', e.target.value)}
-                required
+                value={profileData.dob || ""}
+                onChange={(e) => handleChange("dob", e.target.value)}
               />
             </label>
 
             <label>
               Gender:
               <select
-                value={profileData.gender}
-                onChange={(e) => handleChange('gender', e.target.value)}
+                value={profileData.gender || ""}
+                onChange={(e) => handleChange("gender", e.target.value)}
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -207,8 +264,8 @@ const UserProfile = () => {
             <label>
               Province:
               <select
-                value={profileData.province}
-                onChange={(e) => handleChange('province', e.target.value)}
+                value={profileData.province || ""}
+                onChange={(e) => handleChange("province", e.target.value)}
               >
                 <option value="">Select Province</option>
                 {Object.keys(provincesAndCities).map((province) => (
@@ -222,8 +279,8 @@ const UserProfile = () => {
             <label>
               City:
               <select
-                value={profileData.city}
-                onChange={(e) => handleChange('city', e.target.value)}
+                value={profileData.city || ""}
+                onChange={(e) => handleChange("city", e.target.value)}
                 disabled={!profileData.province}
               >
                 <option value="">Select City</option>
@@ -238,8 +295,8 @@ const UserProfile = () => {
             <label>
               Bio:
               <textarea
-                value={profileData.bio}
-                onChange={(e) => handleChange('bio', e.target.value)}
+                value={profileData.bio || ""}
+                onChange={(e) => handleChange("bio", e.target.value)}
                 rows="4"
                 placeholder="Tell us about yourself"
               />
@@ -251,10 +308,10 @@ const UserProfile = () => {
                 {tagsList.map((tag) => (
                   <button
                     key={tag}
-                    className={`${styles.tagButton} ${
-                      profileData.tags.includes(tag) ? styles.selected : ''
-                    }`}
                     type="button"
+                    className={`${styles.tagButton} ${
+                      profileData.tags?.includes(tag) ? styles.selected : ""
+                    }`}
                     onClick={() => handleTagSelection(tag)}
                   >
                     {tag}
@@ -266,8 +323,8 @@ const UserProfile = () => {
             <label>
               Contact Type:
               <select
-                value={profileData.contactType}
-                onChange={(e) => handleChange('contactType', e.target.value)}
+                value={profileData.contactType || ""}
+                onChange={(e) => handleChange("contactType", e.target.value)}
               >
                 <option value="">Select Contact Type</option>
                 <option value="Mobile">Mobile</option>
@@ -285,21 +342,18 @@ const UserProfile = () => {
                 {profileData.contactType}:
                 <input
                   type="text"
-                  value={profileData.contact}
-                  onChange={(e) => handleChange('contact', e.target.value)}
+                  value={profileData.contact || ""}
+                  onChange={(e) => handleChange("contact", e.target.value)}
                 />
               </label>
             )}
 
-            <button
-              type="submit"
-              className={`${styles.userProfileButton} ${styles.userProfileUpdateButton}`}
-            >
+            <button type="submit" className={`${styles.userProfileButton} ${styles.saveButton}`}>
               Save Changes
             </button>
             <button
               type="button"
-              className={`${styles.userProfileButton} ${styles.userProfileCancelButton}`}
+              className={`${styles.userProfileButton} ${styles.cancelButton}`}
               onClick={() => setIsEditing(false)}
             >
               Cancel
