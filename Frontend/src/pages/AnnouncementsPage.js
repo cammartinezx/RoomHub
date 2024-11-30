@@ -84,7 +84,9 @@ const AnnouncementsPage = () => {
             </div>
 
             <button onClick={handleSendAnnouncement} className={styles.sendBtn}>Send</button>
-
+            <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}>
+                Back to Virtual Room
+            </button>
             {feedback && <p>{feedback}</p>}
         </div>
     );

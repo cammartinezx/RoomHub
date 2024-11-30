@@ -7,7 +7,8 @@ import { sendNotification } from '../services/notificationService';
 
 
 const ManageTasksPage = () => {
-    const [roomMembers, setRoomMembers] = useState([]);
+    const [roomMembers, setRoomMembers] = useState([]); // Emails
+    const [roommateUsernames, setRoommateUsernames] = useState([]); // Usernames
     const [pendingTasks, setPendingTasks] = useState([]);
     const [completedTasks, setCompletedTasks] = useState([]);
     const [newTask, setNewTask] = useState({ task: '', assignee: '', dueDate: '' });
@@ -26,8 +27,18 @@ const ManageTasksPage = () => {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
                 console.log(response.data.users)
                 if (response.status === 200 && response.data.all_roommates) {
-                    console.log(response.data)
-                    setRoomMembers(response.data.roommates); // Set roommates in the state
+                    console.log(response.data.all_roommates);
+                     // Extract all emails
+                    const allRoommateEmails = response.data.all_roommates.map((roommate) => roommate[0]);
+
+                    // Extract all usernames
+                    const allRoommateUsernames = response.data.all_roommates.map((roommate) => roommate[1]);
+
+                    setRoomMembers(allRoommateEmails); // Set emails in state
+                    setRoommateUsernames(allRoommateUsernames); // Set usernames in state
+
+                    console.log("Roommate Emails:", allRoommateEmails);
+                    console.log("Roommate Usernames:", allRoommateUsernames);
                 }
             } catch (error) {
                 console.error("Error fetching roommates:", error.message);
@@ -179,7 +190,7 @@ const ManageTasksPage = () => {
                     id: editingTask.task_id,
                     tn: editingTask.task_description,
                     frm: email,
-                    to: editingTask.asignee,
+                    to: editingTask.assignee,
                     date: editingTask.due_date
                 });
                 alert('Task updated successfully!');
@@ -226,12 +237,12 @@ const ManageTasksPage = () => {
                     />
                     <select
                         value={newTask.assignee}
-                        onChange={(e) => setNewTask({ ...newTask, assignee: e.target.value })}
+                        onChange={(e) => setNewTask({ ...newTask, assignee: roomMembers[e.target.selectedIndex - 1] })}
                     >
                         <option value="">Assign to Roommate</option>
-                        {roomMembers.map((member, index) => (
-                            <option key={index} value={member}>
-                                {member}
+                        {roomMembers.map((username, index) => (
+                            <option key={index} value={username}>
+                                {roommateUsernames[index]}
                             </option>
                         ))}
                     </select>
@@ -304,12 +315,12 @@ const ManageTasksPage = () => {
                     />
                     <select
                         value={editingTask.assignee}
-                        onChange={(e) => setEditingTask({ ...editingTask, assignee: e.target.value })}
+                        onChange={(e) => setEditingTask({ ...editingTask, assignee: roomMembers[e.target.selectedIndex - 1] })}
                     >
                         <option value="">Assign to Roommate</option>
-                        {roomMembers.map((member, index) => (
-                            <option key={index} value={member}>
-                                {member}
+                        {roomMembers.map((username, index) => (
+                            <option key={index} value={username}>
+                                {roommateUsernames[index]}
                             </option>
                         ))}
                     </select>

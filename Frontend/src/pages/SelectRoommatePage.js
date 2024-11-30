@@ -60,6 +60,9 @@ const SelectRoommatePage = () => {
       <button onClick={handleSubmit} className={styles.submitButton}>
         Submit
       </button>
+      <button className={styles.backButton} onClick={() => navigate('/virtual-room', { state: { email, hasRoom } })}>
+        Back to Virtual Room
+      </button>
     </div>
   );
 };
