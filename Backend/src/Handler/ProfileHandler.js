@@ -278,12 +278,13 @@ class ProfileHandler {
         try {
             const msg = "You have a new match!";
             const notif_id = uuidv4();
+            const notif_id2 = uuidv4();
             const status = "unread";
             const type = "match";
             const room_id = "not aplicable";
 
             await this.#notification_persistence.generate_new_notification(
-                notif_id,
+                notif_id2,
                 msg,
                 status,
                 user_id,
@@ -291,9 +292,19 @@ class ProfileHandler {
                 type,
                 room_id,
             );
+            await this.#notification_persistence.generate_new_notification(
+                notif_id,
+                msg,
+                status,
+                user_id2,
+                user_id,
+                type,
+                room_id,
+            );
+
             // assign new notification to both sender and receiver
             await this.#user_persistence.update_user_notifications(notif_id, user_id);
-            await this.#user_persistence.update_user_notifications(notif_id, user_id2);
+            await this.#user_persistence.update_user_notifications(notif_id2, user_id2);
         } catch (error) {
             return error.message;
         }

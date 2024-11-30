@@ -88,9 +88,8 @@ class _TagFormState extends State<TagForm> {
         selectedTags.add(userTags[i]);
       }
     }
-  return selectedTags;
-}
-
+    return selectedTags;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +101,8 @@ class _TagFormState extends State<TagForm> {
             height: double.infinity,
             width: double.infinity,
             decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                theme.yellow, // Gradient starting color
-                theme.darkgrey, // Gradient ending color
-              ]),
+              gradient:
+                  LinearGradient(colors: [theme.mintgreen, theme.darkblue]),
             ),
           ),
           // Positioned header with back button and title
@@ -186,9 +183,9 @@ class _TagFormState extends State<TagForm> {
                       GradientButton(
                           text: 'Save',
                           onTap: () async {
-                             List<String> selectedTags = getSelectedTags();
-                             print("Selected Tags: $selectedTags"); 
-
+                            List<String> selectedTags = getSelectedTags();
+                            print("Selected Tags: $selectedTags");
+                            updateTags(widget.userId, selectedTags);
                           }),
                       const SizedBox(height: 50), // Spacer below button
                     ],
@@ -202,7 +199,7 @@ class _TagFormState extends State<TagForm> {
     );
   }
 
-Future<bool> updateTags(String userId, List<String> selectedTags) async {
+  Future<bool> updateTags(String userId, List<String> selectedTags) async {
     try {
       // Construct the request body
       var reqBody = {
@@ -212,8 +209,8 @@ Future<bool> updateTags(String userId, List<String> selectedTags) async {
       print("Request Body: $reqBody");
 
       // Make the POST request to the API
-      var response = await http.post(
-        Uri.parse("$profile/users/$userId/tags"),
+      var response = await http.patch(
+        Uri.parse("$profile/$userId/update-tags"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody),
       );
@@ -224,14 +221,15 @@ Future<bool> updateTags(String userId, List<String> selectedTags) async {
       } else {
         // Handle potential errors based on status code
         print("Error: ${response.statusCode} - ${response.body}");
-        throw Exception(jsonDecode(response.body)['message'] ?? "Failed to update tags.");
+        throw Exception(
+            jsonDecode(response.body)['message'] ?? "Failed to update tags.");
       }
     } catch (e) {
       print("Failed to update tags: $e");
       rethrow;
     }
   }
- 
+
   void resetChips() {
     _textController.clear();
     isSelected = List.filled(userTags.length, false);

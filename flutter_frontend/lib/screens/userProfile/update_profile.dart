@@ -64,12 +64,35 @@ class _UserInfoFormState extends State<UserInfoForm> {
   DateTime? selectedDate;
   String? _nameError, _locationError, _genderError, _ethnicityError, _contactError, _contactTypeError, _bioError, _dateError;
 
+  // @override
+  // Future<void> initState() async {
+  //   super.initState();
+  //    final profileJson = await getProfile(widget.userId);
+  //    profile = Profile.parseProfile(profileJson);
+  //    setState(() {
+  //     _nameController = TextEditingController(text: profile.name);
+  //     _descriptionController = TextEditingController(text: profile.description);
+  //     _dateController = TextEditingController(text: profile.dob);
+  //     _contactController = TextEditingController(text: profile.contact);
+  //     _selectedGender = profile.gender;
+  //     _selectedEthnicity = profile.ethnicity;
+  //     _selectedLocation = profile.location;
+  //     _selectedContactType = profile.contactType;
+  //   });
+
+  // }
   @override
-  Future<void> initState() async {
-    super.initState();
-     final profileJson = await getProfile(widget.userId);
-     profile = Profile.parseProfile(profileJson);
-     setState(() {
+void initState() {
+  super.initState();
+  _initializeProfile();
+}
+
+Future<void> _initializeProfile() async {
+  try {
+    final profileJson = await getProfile(widget.userId);
+    profile = Profile.parseProfile(profileJson);
+
+    setState(() {
       _nameController = TextEditingController(text: profile.name);
       _descriptionController = TextEditingController(text: profile.description);
       _dateController = TextEditingController(text: profile.dob);
@@ -79,8 +102,11 @@ class _UserInfoFormState extends State<UserInfoForm> {
       _selectedLocation = profile.location;
       _selectedContactType = profile.contactType;
     });
-
+  } catch (error) {
+    print("Error initializing profile: $error");
+    // Handle the error gracefully, such as showing a message or fallback behavior
   }
+}
 
 
 
@@ -493,7 +519,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
         "contact": contact
       }};
       print(reqBody);
-      var response = await http.post(
+      var response = await http.patch(
          Uri.parse("$profile/$userId/$updateProfilePth"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON

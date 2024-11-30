@@ -2,6 +2,7 @@ import 'dart:convert';
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -371,9 +372,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
                             if (isSaved) {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => OurHome(
-                                      roomID: widget.roomId,
-                                      email: widget.userId),
+                                  builder: (context) => TagForm(userId:widget.userId),
                                 ),
                               );
                             }

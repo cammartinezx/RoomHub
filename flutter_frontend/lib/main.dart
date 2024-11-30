@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/findRoommate/find_roommate_main.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 
 // Importing screens for navigation within the app
 import 'package:flutter_frontend/screens/home/home.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_frontend/utils/our_theme.dart';
 // Amplify imports for authentication using AWS Cognito
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter_frontend/widgets/profile_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
@@ -33,16 +36,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'User Info Form',
         theme: OurTheme().buildTheme(),
-        home: UserProfilePage(
-          userId: "camila@gmail.com",
-          roomID: "123",
-          firstName: "Camila",
-          lastName: "Martinez",
-          gender: "heoj",
-          ethnicity: "nfekwnf",
-          birthDate: "nbrnhktrk",
-          description: "dnejksnfke",
-        )
+        home: FindRoommateMain(userId:"hungludao@gmail.com")//FindRoommateMain(userId: "camila.martinez2002@gmail.com")
 
         // TagForm(
         //   email: 'test@example.com',  // Pass email here

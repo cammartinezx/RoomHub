@@ -38,4 +38,4 @@ const editTaskPth = "$task/edit-task";
 const getProfilePth = "get-profile";
 const updateProfilePth = "update-profile";
 const createProfilePth = "create-profile";
-
+const getMatchesPth = "get-new-matches";

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'dart:convert';
 
-// This function handles the response for different types of POST requests 
+// This function handles the response for different types of POST requests
 // and throws custom exceptions based on the response status and content.
 Future<void> handlePost(http.Response response,
     {required String responseType}) async {
@@ -27,7 +27,6 @@ Future<void> handlePost(http.Response response,
           throw UserException("Something went wrong. Try again later");
       }
       break;
-
     case 'createRoom':
       switch (response.statusCode) {
         case 400:
@@ -43,7 +42,6 @@ Future<void> handlePost(http.Response response,
           throw RoomException("Something went wrong. Try again later");
       }
       break;
-
     case 'addRoommate':
       switch (response.statusCode) {
         case 404:
@@ -64,7 +62,6 @@ Future<void> handlePost(http.Response response,
           break;
       }
       break;
-
     case 'joinRoom':
       switch (response.statusCode) {
         case 404:
@@ -85,48 +82,47 @@ Future<void> handlePost(http.Response response,
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
-
     case 'createTask':
       switch (response.statusCode) {
         case 200:
           // valid case
           break;
         case 403:
-        // Handle case where the notification message is empty
-          throw UserException(
-                'Something Went Wrong. Please Try again later');
+          // Handle case where the notification message is empty
+          throw UserException('Something Went Wrong. Please Try again later');
         case 500:
-        // Server error for join room request
+          // Server error for join room request
           throw UserException('Something went wrong. Try again later.');
         default:
-        // Fallback error for any other status codes
+          // Fallback error for any other status codes
           print(response.statusCode);
           print(response.body);
           throw UserException("Something went wrong. Try again later");
       }
       break;
-
     case 'editTask':
       switch (response.statusCode) {
         case 200:
-        // valid case
+          // valid case
           break;
         case 403:
-          if(response.body.contains("Invalid users involved")){
+          if (response.body.contains("Invalid users involved")) {
             throw UserException("User task is assigned to doesn't exist");
-          }else if(response.body.contains("Users are not roommates")){
-            throw RoomException("User task is assigned to is no longer a roommate");
+          } else if (response.body.contains("Users are not roommates")) {
+            throw RoomException(
+                "User task is assigned to is no longer a roommate");
           }
-        // Handle case where the notification message is empty
+          // Handle case where the notification message is empty
           throw TaskException(
               'Task could not be created at this moment. Please try again later');
         case 404:
-          throw TaskException("This task no longer exists. Deleted by another roommate");
+          throw TaskException(
+              "This task no longer exists. Deleted by another roommate");
         case 500:
-        // Server error for join room request
+          // Server error for join room request
           throw TaskException('Something went wrong. Try again later.');
         default:
-        // Fallback error for any other status codes
+          // Fallback error for any other status codes
           print(response.statusCode);
           print(response.body);
           throw UserException("Something went wrong. Try again later");
@@ -135,50 +131,50 @@ Future<void> handlePost(http.Response response,
     case 'sendAnnouncement':
       switch (response.statusCode) {
         case 404:
-        // Handle case where the user is not found
+          // Handle case where the user is not found
           if (response.body.contains("User not found")) {
             throw NotificationException('User not found');
           }
           break;
         case 400:
-        // Handle case where the notification message is empty
+          // Handle case where the notification message is empty
           if (response.body.contains("Message is empty")) {
             throw NotificationException(
                 'Error Creating Notification - Message is empty');
           }
           break;
         case 500:
-        // Server error for join room request
+          // Server error for join room request
           throw NotificationException('Something went wrong. Try again later');
       }
       break;
     case 'updateProfile':
       switch (response.statusCode) {
         case 404:
-        // Handle case where the user is not found
+          // Handle case where the user is not found
           if (response.body.contains("User not found")) {
             throw ProfileException('User not found');
           }
           break;
         case 422:
-            throw ProfileException(response.body);
+          throw ProfileException(response.body);
         case 500:
-        // Server error for join room request
+          // Server error for join room request
           throw ProfileException('Something went wrong. Try again later');
       }
       break;
     case 'createProfile':
       switch (response.statusCode) {
         case 404:
-        // Handle case where the user is not found
+          // Handle case where the user is not found
           if (response.body.contains("User not found")) {
             throw ProfileException('User not found');
           }
           break;
         case 422:
-            throw ProfileException(response.body);
+          throw ProfileException(response.body);
         case 500:
-        // Server error for join room request
+          // Server error for join room request
           throw ProfileException('Something went wrong. Try again later');
       }
       break;
@@ -196,19 +192,20 @@ Future<void> patchResponse(http.Response response,
           // good case no expected return
           break;
         case 400:
-        // Handle invalid email scenario
+          // Handle invalid email scenario
           throw UserException("Error- Invalid User");
         case 403:
-        // Handle invalid email scenario
-          if(response.body.contains("Invalid User")){
+          // Handle invalid email scenario
+          if (response.body.contains("Invalid User")) {
             throw UserException("Invalid user");
           }
-          throw TaskException("Error- Task not found, Either deleted or doesn't exist");
+          throw TaskException(
+              "Error- Task not found, Either deleted or doesn't exist");
         case 500:
-        // Generic error for server issues
+          // Generic error for server issues
           throw TaskException("Something went wrong. Try again later");
         default:
-        // Fallback error for any other status codes
+          // Fallback error for any other status codes
           debugPrint(response.statusCode as String?);
           throw TaskException("Something went wrong. Try again later");
       }
@@ -251,7 +248,6 @@ Future<String> getResponse(http.Response response,
           // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
-
     case 'getUserNotification':
       switch (response.statusCode) {
         case 400:
@@ -270,43 +266,41 @@ Future<String> getResponse(http.Response response,
     case 'getRoommateList':
       switch (response.statusCode) {
         case 400:
-        // Handle invalid username error
+          // Handle invalid username error
           if (response.body.contains("Invalid username")) {
             throw UserException('Invalid username');
           }
           throw UserException('User not found');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
-      case 'getTasks':
-        switch (response.statusCode) {
-          case 404:
+    case 'getTasks':
+      switch (response.statusCode) {
+        case 404:
           // Handle invalid username error
-            if (response.body.contains("Invalid User")) {
-              throw UserException('Invalid User');
-            }
-            else if(response.body.contains("Room not found")) {
-              throw RoomException("Room not found");
-            }else{
-              print("Properly reaching 404");
-              return "";
-            }
-          case 500:
-            // Server error
-            throw UserException('Something went wrong. Try again later is it thissss??????${response.body}');
-          default:
+          if (response.body.contains("Invalid User")) {
+            throw UserException('Invalid User');
+          } else if (response.body.contains("Room not found")) {
+            throw RoomException("Room not found");
+          } else {
+            print("Properly reaching 404");
+            return "";
+          }
+        case 500:
+          // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
           // Handle unexpected status codes
-            throw UserException('Unexpected status code: ${response.statusCode}');
+          throw UserException('Unexpected status code: ${response.statusCode}');
       }
-
     case 'getLeaveRoomWarning':
-      switch(response.statusCode){
+      switch (response.statusCode) {
         case 200:
-        // Decode JSON response and return the room name if it exists
+          // Decode JSON response and return the room name if it exists
           var jsonResponse = jsonDecode(response.body);
           if (jsonResponse.containsKey('message')) {
             return jsonResponse['message'];
@@ -314,26 +308,26 @@ Future<String> getResponse(http.Response response,
             throw UserException('Message not found in the response');
           }
         case 400:
-        // Handle invalid username scenario
+          // Handle invalid username scenario
           if (response.body.contains("Invalid username")) {
             throw UserException('This username is invalid');
           }
           throw UserException('Invalid request');
         case 404:
-        // Handle user not found scenario
+          // Handle user not found scenario
           throw UserException('User not found');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
     // should be in a handle put or patch
     case 'leaveRoom':
-      switch(response.statusCode) {
+      switch (response.statusCode) {
         case 200:
-        // Decode JSON response and return the room name if it exists
+          // Decode JSON response and return the room name if it exists
           var jsonResponse = jsonDecode(response.body);
           if (jsonResponse.containsKey('message')) {
             return jsonResponse['message'];
@@ -341,33 +335,33 @@ Future<String> getResponse(http.Response response,
             throw UserException('Message not found in the response');
           }
         case 400:
-        // Handle invalid username scenario
+          // Handle invalid username scenario
           if (response.body.contains("Invalid username")) {
             throw UserException('This username is invalid');
           }
           throw UserException('Invalid request');
         case 404:
-        // Handle user not found scenario
+          // Handle user not found scenario
           throw UserException('User not found');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
-  // should be in a handle put or patch
+    // should be in a handle put or patch
     case 'hasRoommate':
-      switch(response.statusCode) {
+      switch (response.statusCode) {
         case 200:
-        // Decode JSON response and return the room name if it exists
+          // Decode JSON response and return the room name if it exists
           var jsonResponse = jsonDecode(response.body);
           if (jsonResponse.containsKey('message')) {
             String msg = jsonResponse['message'];
             String result;
-            if(msg == "You have no roommate"){
+            if (msg == "You have no roommate") {
               result = "false";
-            }else{
+            } else {
               result = "true";
             }
             return result;
@@ -375,19 +369,37 @@ Future<String> getResponse(http.Response response,
             throw UserException('Message not found in the response');
           }
         case 400:
-        // Handle invalid username scenario
+          // Handle invalid username scenario
           if (response.body.contains("Invalid username")) {
             throw UserException('This username is invalid');
           }
           throw UserException('Invalid request');
         case 404:
-        // Handle user not found scenario
+          // Handle user not found scenario
           throw UserException('User not found');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+    case 'getNewMatches':
+      switch (response.statusCode) {
+        case 400:
+          // Handle invalid username error
+          if (response.body.contains("User does not have a profile")) {
+            throw UserException('Profile not found. Create your profile first');
+          } else if (response.body
+              .contains("User profile incomplete - missing location")) {
+            throw UserException("Profile incomplete - missing location");
+          }
+          throw UserException('Invalid request');
+        case 500:
+          // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
     default:
@@ -410,28 +422,26 @@ Future<String> deleteResponse(http.Response response,
           return "SUCCESS";
         // 200 in this case is a successful decision.
         case 400:
-        // Handle invalid username scenario
+          // Handle invalid username scenario
           if (response.body.contains("This username is invalid")) {
             throw UserException('This username is invalid');
-          }
-          else if(response.body.contains("The notification id is invalid")){
+          } else if (response.body.contains("The notification id is invalid")) {
             throw NotificationException('Notification is invalid');
           }
           throw NotificationException('Invalid request');
         case 404:
-        // Handle user not found scenario or notification not found
+          // Handle user not found scenario or notification not found
           if (response.body.contains("User not found")) {
             throw UserException('User Not found');
-          }
-          else if(response.body.contains("Notification not found")){
+          } else if (response.body.contains("Notification not found")) {
             throw NotificationException('Notification not found');
           }
           throw UserException('User not found');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
 
@@ -439,21 +449,22 @@ Future<String> deleteResponse(http.Response response,
       switch (response.statusCode) {
         case 200:
           return "SUCCESS";
-      // 200 in this case is a successful decision.
+        // 200 in this case is a successful decision.
         case 403:
-        // Handle invalid username scenario
+          // Handle invalid username scenario
           throw UserException('This username is invalid');
         case 404:
-          throw TaskException('Task not found. Either not created or deleted by another roommate');
+          throw TaskException(
+              'Task not found. Either not created or deleted by another roommate');
         case 500:
-        // Server error
+          // Server error
           throw UserException('Something went wrong. Try again later');
         default:
-        // Handle unexpected status codes
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
     default:
-    // Fallback for unknown responseType
+      // Fallback for unknown responseType
       throw Exception('Something went wrong. Try again later');
   }
 }
