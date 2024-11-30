@@ -1,0 +1,79 @@
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #6b73ff, #4CAF50);
+}
+
+.loginBox {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.title {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.inputField {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+    border-color: #73a5ff;
+    box-shadow: 0 0 5px rgba(255, 154, 158, 0.5);
+    outline: none;
+}
+
+.loginButton {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    background: linear-gradient(135deg, #6b73ff, #4CAF50);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.loginButton:hover {
+    background: linear-gradient(135deg, #4CAF50, #6b73ff);
+}
+
+.errorText {
+    color: red;
+    margin-top: 0.5rem;
+}
+
+.signUpText {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.signUpLink {
+    color: #4CAF50;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.signUpLink:hover {
+    text-decoration: underline;
+}
