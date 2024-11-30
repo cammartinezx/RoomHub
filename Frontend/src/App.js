@@ -19,6 +19,9 @@ import AnnouncementsPage from './pages/AnnouncementsPage';
 import ReviewRoommatePage from './pages/ReviewRoommatePage';
 import FindRoommatePage from './pages/FindRoommatePage';
 import SharedExpensesPage from './pages/SharedExpensesPage';
+import CustomLogin from './pages/CustomLogin';
+import CustomSignUp from './pages/CustomSignUp';
+import VerificationCodePage from './pages/ConfirmSignUp';
 
 function App() {
   // Function to handle adding the user to the mock database
@@ -26,19 +29,21 @@ function App() {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
     const name = email.split("@")[0]; // Extract user name from user email
 
-    if (email) {
-      try{
-        // Send a POST request to add the user to the database
-        const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',{
-          id: email,
-          name: name,
-        });
+     // not really sure what this is doing right here- why would we try to add a new user on every request?
+      // prolly if we had a check user exist path or something like that 
+    // if (email) {
+    //   try{
+    //     // Send a POST request to add the user to the database
+    //     const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',{
+    //       id: email,
+    //       name: name,
+    //     });
 
-           console.log('User added successfully:', response.data);
-      } catch (error) {
-          console.error('Error while adding user:', error);
-        }
-      }
+    //        console.log('User added successfully:', response.data);
+    //   } catch (error) {
+    //       console.error('Error while adding user:', error);
+    //     }
+    //   }
     };
 
   // Component to handle login and redirection to /home
@@ -73,7 +78,10 @@ function App() {
           <Route path="/" element={<LandingPage />} />
 
           {/* Login Route */}
-          <Route path="/login" element={<LoginRedirect />} />
+          {/* <Route path="/login" element={<LoginRedirect />} /> */}
+          <Route path="/login" element={<CustomLogin/>}/>
+          <Route path="/sign-up" element={<CustomSignUp/>}/>
+          <Route path="/verify" element={<VerificationCodePage />}/>
 
           {/* Protected Routes */}
           <Route

@@ -12,7 +12,6 @@ const CustomSignUp = () => {
   const handleSignUp = async () => {
     try {
       // Call AWS Amplify's sign-up method to create the user
-
       const { isSignUpComplete, userId, nextStep } = await signUp({
         username,
         password
@@ -23,13 +22,9 @@ const CustomSignUp = () => {
       console.log(nextStep)
 
     //   getting to this point successfully means we are going for validation in the next step.
+    // pass the username=email and the name=a name as that is passed accross required for the add-user path
     navigate('/verify', { state: { username,  name} });
 
-
-    //   console.log('User signed up and additional field saved:', response.data);
-      
-      // Redirect the user to the home page after successful sign-up
-    //   navigate('/home');
     } catch (error) {
       setError(error.message);
       console.error('Error during sign-up:', error);

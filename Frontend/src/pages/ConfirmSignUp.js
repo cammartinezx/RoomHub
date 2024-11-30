@@ -23,6 +23,7 @@ const VerificationCodePage = () => {
 
       console.log(username);
       console.log(confirmationCode);
+    //   confirm signup function
       const { isSignUpComplete, nextStep } = await confirmSignUp({
         username,
         confirmationCode
@@ -31,6 +32,7 @@ const VerificationCodePage = () => {
       console.log(isSignUpComplete);
       console.log(nextStep);
 
+    //   if sign up complete-- backend call to add the user with their username
       if(isSignUpComplete){
         console.log('Verification successful');
         // Send the additional field to your backend
@@ -40,6 +42,7 @@ const VerificationCodePage = () => {
         });
         console.log("Successful sign up");
         console.log(response);
+        // navigate to the home page--- for some reason this requires user to log in.
         navigate('/home');
       }
       
