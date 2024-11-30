@@ -9,7 +9,7 @@ const UserProfile = ({ user, signOut }) => {
   const navigate = useNavigate();
   const hasRoom = location.state?.hasRoom;
 
-  const handeSignout = async () => {
+  const handleSignout = async () => {
     try {
       await signOut();
 
@@ -29,7 +29,7 @@ const UserProfile = ({ user, signOut }) => {
       </header>
 
       <h1 className={styles.title}>User Profile for {email.split("@")[0]}</h1>
-      <button className={styles.logout} onClick={handeSignout}>Log Out</button>
+      <button className={styles.logout} onClick={handleSignout}>Log Out</button>
       <button className={styles.logout} onClick={() => navigate(-1, { state: { email, hasRoom } })}>Back to Previous Page</button>
       <button className={styles.logout} onClick={() => navigate('/home', { state: { email, hasRoom } })}>Back to Home</button>
 
