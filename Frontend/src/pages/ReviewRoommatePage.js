@@ -3,21 +3,32 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/ReviewRoommatePage.module.css';
 import axios from 'axios';
 
+const explanations = {
+  overall: 'Overall living experience with your roommate. 1 for the worst experience, 5 for the best.',
+  cleanliness: 'How tidy is your roommate? 1 for very untidy, 5 for very clean.',
+  noise_levels: 'Does your roommate keep acceptable noise levels? 1 for very loud, 5 for very quiet.',
+  respect: 'Does your roommate respect your personal space and boundaries? 1 for no respect, 5 for full respect.',
+  communication: 'How well does your roommate communicate? 1 for poor communication, 5 for excellent communication.',
+  paying_rent: 'How reliable is your roommate in paying their share of the rent? 1 for never pays, 5 for always on time.',
+  chores: 'How well does your roommate handle household chores? 1 for doesn’t contribute, 5 for fully contributes.',
+};
+
 const ReviewRoommatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const hasRoom = location.state?.hasRoom;
   const email = location.state?.email;
-  const roommate = location.state?.selectedRoommate;
+  const roommate = location.state?.selectedRoommateUsername;
+  const roommateEmail = location.state?.selectedRoommate;
 
   const [review, setReview] = useState({
-    overall: 3,
     cleanliness: 3,
     noise_levels: 3,
     respect: 3,
     communication: 3,
     paying_rent: 3,
     chores: 3,
+    overall: 3,
   });
 
   const [error, setError] = useState('');
@@ -32,7 +43,7 @@ const ReviewRoommatePage = () => {
         `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/send-review`,
         {
           reviewed_by: email,
-          reviewed: roommate,
+          reviewed: roommateEmail,
           ...review,
         }
       );
@@ -45,7 +56,7 @@ const ReviewRoommatePage = () => {
 
   return (
     <div className={styles.reviewRoommateContainer}>
-      <h2 className={styles.reviewRoommateHeader}>Review Roommate</h2>
+      <h2 className={styles.reviewRoommateHeader}>Review Your Roommate</h2>
       {roommate && (
         <p className={styles.reviewRoommateParagraph}>
           You're reviewing: <strong>{roommate}</strong>
@@ -58,6 +69,7 @@ const ReviewRoommatePage = () => {
           <label className={styles.reviewRoommateLabel}>
             {key.replace('_', ' ').toUpperCase()}:
           </label>
+          <p className={styles.fieldExplanation}>{explanations[key]}</p>
           <div className={styles.sliderContainer}>
             <input
               type="range"

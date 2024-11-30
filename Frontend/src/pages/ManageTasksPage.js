@@ -25,7 +25,7 @@ const ManageTasksPage = () => {
             try {
                 const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
                 console.log(response.data.users)
-                if (response.status === 200 && response.data.roommates) {
+                if (response.status === 200 && response.data.all_roommates) {
                     console.log(response.data)
                     setRoomMembers(response.data.roommates); // Set roommates in the state
                 }

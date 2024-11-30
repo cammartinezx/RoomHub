@@ -14,7 +14,21 @@
   }
   
   .findRoommateButton {
-    background-color: #4caf50;
+    background-color: #7c35e0;
+    width: 200px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+
+  .otherButton {
+    width: 200px;
     color: white;
     border: none;
     border-radius: 4px;

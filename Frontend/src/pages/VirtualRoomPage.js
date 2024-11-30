@@ -102,11 +102,22 @@ const VirtualRoomPage = () => {
           `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`
         );
     
-        if (response.status === 200 && response.data.roommates?.length > 1) {
-          const filteredRoommates = response.data.roommates.filter(
-            (roommate) => roommate !== email
-          );
-          navigate('/select-roommate', { state: { hasRoom, roommates: filteredRoommates, email } });
+        if (response.status === 200 && response.data.all_roommates?.length > 1) {
+          console.log(response.data.all_roommates);
+    
+          // Extract and filter only emails, exclude the current user
+          const filteredRoommates = response.data.all_roommates
+            .filter((roommate) => roommate[0] !== email)
+            .map((roommate) => roommate[0]); // Extract only the emails
+    
+          const roommateUsernames = response.data.all_roommates
+            .filter((roommate) => roommate[0] !== email)
+            .map((roommate) => roommate[1]); // Extract only the usernames
+    
+          // Pass filteredRoommates (emails) to the next page
+          navigate('/select-roommate', {
+            state: { hasRoom, roommates: filteredRoommates, roommateUsernames, email },
+          });
         } else {
           navigate('/no-roommate', { state: { hasRoom, email } });
         }
@@ -115,6 +126,7 @@ const VirtualRoomPage = () => {
         navigate('/no-roommate', { state: { hasRoom, email } });
       }
     };
+    
     
 
     if (loading) {

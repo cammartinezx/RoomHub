@@ -29,9 +29,9 @@ const ReviewSuccessPage = () => {
   return (
     <div className={styles.container}>
       <h2>Review Submitted Successfully!</h2>
-      <button onClick={() => navigate('/home', { state: { hasRoom, email } })}>Home</button>
-      <button onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Virtual Room</button>
-      <button onClick={handleFindRoommate}>Find Roommate</button>
+      <button className={styles.otherButton} onClick={() => navigate('/home', { state: { hasRoom, email } })}>Home</button>
+      <button className={styles.otherButton} onClick={() => navigate('/virtual-room', { state: { hasRoom, email } })}>Virtual Room</button>
+      <button className={styles.findRoommateButton} onClick={handleFindRoommate}>Find a New Roommate</button>
     </div>
   );
 };
