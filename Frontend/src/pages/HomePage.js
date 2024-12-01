@@ -4,6 +4,7 @@ import { signOut } from '@aws-amplify/auth';
 import axios from 'axios';
 import styles from '../styles/HomePage.module.css';
 import Header from '../Header';
+import { checkUserProfile } from '../services/profileService';
 
 const HomePage = ({ user }) => {
   const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
@@ -23,9 +24,6 @@ const HomePage = ({ user }) => {
     }
   }
 
-  const handleFindRoommate = () => {
-    navigate('/find-roommate', { state: { hasRoom, email } })
-  };
 
   useEffect(() => {
     if (email) {
@@ -47,6 +45,25 @@ const HomePage = ({ user }) => {
         });
     }
   }, [email]);
+
+  const handleFindRoommate = async () => {
+    try {
+      const isProfileComplete = await checkUserProfile(email);
+
+      if (isProfileComplete) {
+          // If the profile is complete, navigate to the find roommate page
+          navigate('/find-roommate', { state: { hasRoom, email } });
+      } else {
+          // If the profile is incomplete, navigate to the welcome-find-roommate page
+          navigate('/welcome-find-roommate', { state: { hasRoom, email } });
+      }
+    } catch (error) {
+        console.error("Error in handleFindRoommate:", error);
+        alert("An error occurred. Please try again.");
+    }
+  };
+
+
 
 
   if (loading) {

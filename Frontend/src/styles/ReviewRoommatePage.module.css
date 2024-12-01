@@ -1,102 +1,111 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    max-width: 600px;
-    margin: auto;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+.reviewRoommateContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
-    font-size: 1.8rem;
-    color: #333;
-    margin-bottom: 20px;
+.reviewRoommateHeader {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 25px;
 }
 
-.form {
-    width: 100%;
+.reviewRoommateParagraph {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.reviewRoommateRatingGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.reviewRoommateLabel {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.fieldExplanation {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
 }
 
 .sliderContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.sliderContainer label {
-    font-size: 1rem;
-    color: #555;
-    flex-basis: 30%;
+.reviewRoommateSlider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  border-radius: 5px;
+  background: #ddd;
+  outline: none;
+  transition: background 0.3s;
 }
 
-.sliderContainer input[type="range"] {
-    width: 50%;
-    margin: 0 10px;
+.reviewRoommateSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #007bff;
+  cursor: pointer;
+  transition: background 0.3s;
 }
 
-.sliderContainer span {
-    font-size: 1rem;
-    color: #333;
-    flex-basis: 10%;
+.reviewRoommateSlider::-webkit-slider-thumb:hover {
+  background: #0056b3;
 }
 
-.textareaContainer {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
 }
 
-.textareaContainer label {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 5px;
+.reviewRoommateSubmitButton {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.textareaContainer textarea {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    resize: none;
+.reviewRoommateSubmitButton:hover {
+  background-color: #218838;
 }
 
-.submitButton {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-top: 20px;
-    transition: background-color 0.3s ease;
-}
-
-.submitButton:hover {
-    background-color: #45a049;
-}
-
-.selectContainer {
-    margin-bottom: 15px;
-}
-
-.selectContainer label {
-    font-size: 1rem;
-    color: #555;
-    margin-right: 10px;
-}
-
-.selectContainer select {
-    padding: 8px;
-    font-size: 1rem;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    width: 100%;
-    max-width: 300px;
-    margin-top: 5px;
+.reviewRoommateError {
+  font-size: 14px;
+  color: #ff0000;
+  margin-top: 10px;
+  text-align: center;
 }

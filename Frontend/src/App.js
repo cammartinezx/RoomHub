@@ -18,6 +18,11 @@ import ScrollToTop from './ScrollToTop';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import ReviewRoommatePage from './pages/ReviewRoommatePage';
 import FindRoommatePage from './pages/FindRoommatePage';
+import WelcomeFindRoommate from './pages/WelcomeFindRoommate';
+import NoRoommatePage from './pages/NoRoommatePage';
+import SelectRoommatePage from './pages/SelectRoommatePage';
+import ReviewSuccessPage from './pages/ReviewSuccessPage';
+import IncompleteProfile from './pages/IncompleteProfile';
 import SharedExpensesPage from './pages/SharedExpensesPage';
 import CustomLogin from './pages/CustomLogin';
 import CustomSignUp from './pages/CustomSignUp';
@@ -95,7 +100,7 @@ function App() {
               </Authenticator>
             }
           />
-             <Route
+            <Route
             path="/user-profile"
             element={
               <Authenticator>
@@ -201,6 +206,61 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <FindRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/welcome-find-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <WelcomeFindRoommate user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/no-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <NoRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/select-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <SelectRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/review-success"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ReviewSuccessPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/incomplete-profile"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <IncompleteProfile user={user} signOut ={signOut} />;
                 }}
               </Authenticator>
             }

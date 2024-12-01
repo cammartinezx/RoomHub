@@ -136,6 +136,39 @@ const VirtualRoomPage = () => {
         }
     };
 
+    const checkRoommates = async () => {
+      try {
+        const response = await axios.get(
+          `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`
+        );
+    
+        if (response.status === 200 && response.data.all_roommates?.length > 1) {
+          console.log(response.data.all_roommates);
+    
+          // Extract and filter only emails, exclude the current user
+          const filteredRoommates = response.data.all_roommates
+            .filter((roommate) => roommate[0] !== email)
+            .map((roommate) => roommate[0]); // Extract only the emails
+    
+          const roommateUsernames = response.data.all_roommates
+            .filter((roommate) => roommate[0] !== email)
+            .map((roommate) => roommate[1]); // Extract only the usernames
+    
+          // Pass filteredRoommates (emails) to the next page
+          navigate('/select-roommate', {
+            state: { hasRoom, roommates: filteredRoommates, roommateUsernames, email },
+          });
+        } else {
+          navigate('/no-roommate', { state: { hasRoom, email } });
+        }
+      } catch (error) {
+        console.error('Error fetching roommates:', error);
+        navigate('/no-roommate', { state: { hasRoom, email } });
+      }
+    };
+    
+    
+
     if (loading) {
       return <div>Loading...</div>;
     }
@@ -144,13 +177,6 @@ const VirtualRoomPage = () => {
       <div className={styles.container}>
         <Header email={email} hasRoom={hasRoom}/>
         <h2 className={styles.title}>{roomName}</h2>
-
-        <div className={styles.reviewRoommateContainer}>
-          <button className={styles.reviewRoommateButton} onClick={() => navigate('/review-roommate', { state: { email, hasRoom } })}>
-              Review Roommate
-          </button>
-        </div>
-
         <div className={roomStyles.mainContent}>
           {/* Left Side - Tasks */}
           <div className={taskStyle.taskList}>
@@ -223,6 +249,14 @@ const VirtualRoomPage = () => {
             </button>
           </div>
 
+          <div className={styles.card} onClick= {checkRoommates}>
+            <img src="review.png" alt="Review Roommate" className={styles.cardImage} />
+            <h2>Review Roommate</h2>
+            <p>Rate your roommate based on shared living experiences.</p>
+            <button onClick= {checkRoommates}>
+              Review Roommate
+            </button>
+          </div>
 
           <div className={styles.card} onClick={fetchLeaveWarning}>
             <img src="leave.png" alt="Room" className={styles.cardImage}/>
@@ -231,12 +265,6 @@ const VirtualRoomPage = () => {
             <button onClick={fetchLeaveWarning}>Leave Room</button>
           </div>
 
-          <div className={styles.card} onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email } })}>
-            <img src="find_roommate.png" alt="Room" className={styles.cardImage}/>
-            <h2>Add new roomate</h2>
-            <p>Add someone to your room</p>
-            <button onClick={() => navigate('/add-roommate-page', { state: { hasRoom, email }})}>Add Roommate</button>
-          </div>
 
         </div>
 
