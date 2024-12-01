@@ -88,7 +88,7 @@ function App() {
               </Authenticator>
             }
           />
-             <Route
+            <Route
             path="/user-profile"
             element={
               <Authenticator>

@@ -68,7 +68,7 @@ const contactBaseUrls = {
 };
 
 
-const UserProfile = () => {
+const UserProfile = ({signOut}) => {
   const navigate = useNavigate();
   const location = useLocation();
   const hasRoom = location.state?.hasRoom;
@@ -271,6 +271,16 @@ const UserProfile = () => {
                 onClick={() => setIsEditing(true)}
               >
                 Edit Profile
+              </button>
+            )}
+            {!matchedUser && (
+              <button
+                className={`${styles.incompleteProfileButton} ${styles.incompleteProfileLogoutButton}`}
+                onClick={() => {
+                  signOut(); // This will log the user out of Cognito
+                  navigate('/'); // Then redirect to the landing page
+                }}>
+                  Log Out
               </button>
             )}
           </div>

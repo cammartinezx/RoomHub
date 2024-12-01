@@ -9,10 +9,6 @@ const IncompleteProfile = ({signOut}) => {
   const hasRoom = location.state?.hasRoom;
 
 
-  const handleLogout = () => {
-    // Perform any logout logic here, e.g., clearing session storage
-    navigate('/login');
-  };
 
   return (
     <div className={styles.incompleteProfileContainer}>
