@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -55,8 +56,8 @@ class _EditTaskFormState extends State<EditTaskForm> {
     // Update the loading state and rebuild the UI
     setState(() {
       isLoading = false; // Update loading state
-      // choose selected roommate after roommate has be
-      selectedRoommate = widget.assignedTo;
+      // choose selected roommate after roommate has been selected
+      // selectedRoommate = widget.assignedTo;
     });
   }
 
@@ -72,7 +73,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
       print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        List<dynamic> roommates = jsonData['roommates'];
+        List<dynamic> roommates = jsonData['all_roommates'];
         result = roommates;
       } else {
         await getResponse(response, responseType: 'getRoommateList');
@@ -196,9 +197,13 @@ class _EditTaskFormState extends State<EditTaskForm> {
                             ),
                             errorText: _taskNameError
                         ),
+                        maxLength: 30,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(50), // Limits input to 50 characters
+                        ],
                       ),
                       const SizedBox(
-                        height: 20.0,
+                        height: 5.0,
                       ),
                       DropdownButtonFormField<String>(
                           value: selectedRoommate,
@@ -241,7 +246,7 @@ class _EditTaskFormState extends State<EditTaskForm> {
                       ),
                       GradientButton(text: 'Save Task',
                           onTap: () async {
-                              bool taskSaved = await saveTask(widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId );
+                              bool taskSaved = await saveTask();
                               if(taskSaved){
                                 String announcementMsg = generateAnnouncementMsg(selectedRoommate!,_taskNameController.text);
                                 sendAnnouncementRequest(announcementMsg, widget.loggedInUser);
@@ -293,7 +298,15 @@ class _EditTaskFormState extends State<EditTaskForm> {
   }
 
   String generateAnnouncementMsg(String user, String task){
-    return 'The task "$task" has been assigned to $user';
+    String username = "";
+    for(dynamic roomMember in roomMates){
+      if(roomMember[0] == user){
+        username = roomMember[1] as String;
+        break;
+      }
+    }
+    print("send msg");
+    return 'The task "$task" has been assigned to $username';
   }
 
   void sendAnnouncementRequest(String announcement, String sender) async {
@@ -347,12 +360,13 @@ class _EditTaskFormState extends State<EditTaskForm> {
     }
   }
 
-  Future<bool> saveTask(String currUserId, String taskName, String assignedTo, String dueDate, String taskId) async {
+  Future<bool> saveTask() async {
+    // widget.loggedInUser, _taskNameController.text, selectedRoommate!,_dateController.text,widget.taskId
     bool isSaved = false;
     try{
       if(_validateFields()){
         debugPrint("Add backend stuff to save an existing task");
-        await editTask(currUserId, taskName, assignedTo, dueDate, taskId);
+        await editTask(widget.loggedInUser, _taskNameController.text,  selectedRoommate!, _dateController.text, widget.taskId);
         isSaved = true;
       }
     } catch(e){

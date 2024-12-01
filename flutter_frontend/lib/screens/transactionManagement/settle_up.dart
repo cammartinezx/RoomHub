@@ -80,7 +80,7 @@ class _SettleUpState extends State<SettleUp> {
       print(response.body);
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
-        List<dynamic> roommates = jsonData['roommates'];
+        List<dynamic> roommates = jsonData['all_roommates'];
         result = roommates;
       } else {
         await getResponse(response, responseType: 'getRoommateList');

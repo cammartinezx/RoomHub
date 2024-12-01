@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Importing screens for navigation within the app
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 
@@ -87,11 +88,11 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
                         child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     // Handle error state
-                    return const OurHomeNewUser(); // Show an error page
+                    return UserHome(email: userId); // Show an error page
                   } else {
                     // Successfully fetched the room name, return the widget
                     return snapshot.data ??
-                        const OurHomeNewUser(); // Fallback if data is null
+                        UserHome(email: userId); // Fallback if data is null
                   }
                 },
               );
@@ -103,7 +104,8 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
                 child: CircularProgressIndicator());
           },
           error: (e, st) {
-            return const OurHomeNewUser(); // Show an error page in case of an authentication error
+            return OurLogin();
+            // return login(email:userId); // Show an error page in case of an authentication error
           },
         );
       })
@@ -133,7 +135,7 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
       String roomName = await getResponse(response, responseType: 'getUserRoom');
       // Display appropriate page based on the room name
       if (roomName == "NA") {
-        return const OurHomeNewUser(); // If no room, redirect to new user page
+        return UserHome(email: userEmail!); // If no room, redirect to new user page
       } else {
         String nonnullableEmail = userEmail ?? "";
         return OurHome(roomID: roomName, email:nonnullableEmail); // If room exists, redirect to home page

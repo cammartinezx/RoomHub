@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'dart:convert';
 
+import '../home/user_home.dart';
+
 // Stateful widget for joining a room
 class JoinRoomForm extends ConsumerStatefulWidget {
   const JoinRoomForm({super.key});
@@ -141,7 +143,7 @@ class _JoinRoomFormState extends ConsumerState<JoinRoomForm> {
                             Future.delayed(const Duration(seconds: 1), () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => const OurHomeNewUser(),
+                                  builder: (context) =>UserHome(email: userEmail)
                                 ),
                               );
                             });
