@@ -1,60 +1,218 @@
-/* FindRoommatePage.module.css */
-
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
-    height: 100vh;
-    font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.blurred {
+  filter: blur(5px);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: linear-gradient(135deg, #ffffff, #f2f2f2);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 450px;
+}
+
+.modalContent h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.viewProfileButton,
+.closeButton {
+  display: inline-block;
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: white;
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.closeButton {
+  background-color: #888;
+}
+
+.viewProfileButton:hover {
+  background: linear-gradient(135deg, #5a10b3, #1f64d4);
+  transform: scale(1.05);
+}
+
+.closeButton:hover {
+  background-color: #666;
+}
+
+.card {
+  width: 90%;
+  max-width: 450px;
+  padding: 15px;
+  background: linear-gradient(135deg, #ffffff, #f8f9fa);
+  border-radius: 20px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.6s ease-in-out;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+}
+
+.card h2 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 2rem;
+  text-transform: uppercase;
+}
+
+.card p {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.tag {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.tag:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.rating {
+  position: relative;
+  font-size: 1.4rem;
+  color: #ffcc00;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.ratingTooltip {
+  visibility: hidden;
+  opacity: 0; 
+  background-color: #fff;
+  color: #333; 
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 50%; 
+  left: 100%;
+  transform: translateX(-50%);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10; 
+  transition: visibility 0.3s, opacity 0.3s ease-in-out; 
+  white-space: nowrap;
+}
+
+.rating:hover .ratingTooltip {
+  visibility: visible;
+  opacity: 1; /* Make it fade in */
+}
+
+.ratingTooltip p {
+  font-size: 0.9rem;
+  margin: 5px 0;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.actionButton {
+  font-size: 1.3rem;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff5f6d, #ffc371);
+  color: white;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.actionButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.endMessage {
+  text-align: center;
+  font-size: 1.3rem;
+  color: white;
+  margin-top: 120px;
+}
+
+.endMessage button {
+  background: linear-gradient(135deg, #6a11cb, #2575fc);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+.endMessage button:hover {
+  background: linear-gradient(135deg, #5a10b3, #1f64d4);
+  transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .card {
-    width: 400px;
-    height: 700px;
-    padding: 20px;
-    margin-bottom: 20px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .buttons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  button {
-    font-size: 1.2rem;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #ddd;
-  }
-  
-  button:hover {
-    background-color: #ccc;
-  }
-  
-  .endMessage {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #333;
-  }
-  
-  .endMessage button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  
-  .endMessage button:hover {
-    background-color: #45a049;
-  }
-  
+}

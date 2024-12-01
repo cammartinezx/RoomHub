@@ -97,50 +97,75 @@ const NotificationsPage = () => {
         }
     };
 
+     // Function to navigate to the matched user's profile
+     const handleViewProfile = (matchedUser) => {
+        navigate('/user-profile', { state: { email, matchedUser, hasRoom } });
+    };
+
 
     return (
         <div className={styles.container}>
-            <div className={styles.notificationsContainer}>
-                <h1>Notifications</h1>
-
-                {notifications.length > 0 ? (
-                    <ul>
-                        {notifications.map((notification) => (
-                            <li key={notification.notification_id} className={styles.notificationCard}>
-                                <div className={styles.notificationContent}>
-                                    <div className={styles.notificationDetails}>
-                                        <p className={styles.notificationType}>
-                                            {notification.type === 'join-request' ? 'Join Request' : 'General Notification'}
-                                        </p>
-                                        <p className={styles.notificationMessage}>{notification.msg}</p>
-                                    </div>
-                                </div>
-                                <div className={styles.notificationActions}>
-                                    {notification.type === 'join-request' && notification.status !== 'accepted' && (
-                                        <button onClick={() => handleAccept(notification)} className={styles.acceptButton}>
-                                            <FontAwesomeIcon icon={faCheck} /> Accept
-                                        </button>
-                                    )}
-                                    <button onClick={() => handleDelete(notification)} className={styles.deleteButton}>
-                                        <FontAwesomeIcon icon={faTrash} /> Delete
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p className={styles.noNotifications}>No notifications available.</p>
-                )}
-
-                <button
-                    className={styles.backButton}
-                    onClick={() => navigate(-1)}
-                >
-                    Back
-                </button>
-            </div>
+          <div className={styles.notificationsContainer}>
+            <h1>Notifications</h1>
+      
+            {notifications.length > 0 ? (
+              <ul>
+                {notifications.map((notification) => (
+                  <li
+                    key={notification.notification_id}
+                    className={
+                      notification.type === 'match'
+                        ? styles.matchNotificationCard
+                        : styles.notificationCard
+                    }
+                  >
+                    <div className={styles.notificationContent}>
+                      <div className={styles.notificationDetails}>
+                        <p className={styles.notificationType}>
+                          {notification.type === 'join-request'
+                            ? 'Join Request'
+                            : notification.type === 'match'
+                            ? '✨ Match'
+                            : 'General Notification'}
+                        </p>
+                        <p className={styles.notificationMessage}>{notification.msg}</p>
+                      </div>
+                    </div>
+                    <div className={styles.notificationActions}>
+                      {notification.type === 'join-request' && notification.status !== 'accepted' && (
+                        <button onClick={() => handleAccept(notification)} className={styles.acceptButton}>
+                          <FontAwesomeIcon icon={faCheck} /> Accept
+                        </button>
+                      )}
+                      {notification.type === 'match' && (
+                        <button
+                          onClick={() => handleViewProfile(notification.from)}
+                          className={styles.viewProfileButton}
+                        >
+                          View Profile
+                        </button>
+                      )}
+                      <button
+                        onClick={() => handleDelete(notification)}
+                        className={styles.deleteButton}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className={styles.noNotifications}>No notifications available.</p>
+            )}
+      
+            <button className={styles.backButton} onClick={() => navigate(-1)}>
+              Back
+            </button>
+          </div>
         </div>
-    );
+      );
+      
 };
 
 export default NotificationsPage;

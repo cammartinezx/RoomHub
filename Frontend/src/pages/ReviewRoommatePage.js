@@ -1,143 +1,101 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/ReviewRoommatePage.module.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const explanations = {
+  overall: 'Overall living experience with your roommate. 1 for the worst experience, 5 for the best.',
+  cleanliness: 'How tidy is your roommate? 1 for very untidy, 5 for very clean.',
+  noise_levels: 'Does your roommate keep acceptable noise levels? 1 for very loud, 5 for very quiet.',
+  respect: 'Does your roommate respect your personal space and boundaries? 1 for no respect, 5 for full respect.',
+  communication: 'How well does your roommate communicate? 1 for poor communication, 5 for excellent communication.',
+  paying_rent: 'How reliable is your roommate in paying their share of the rent? 1 for never pays, 5 for always on time.',
+  chores: 'How well does your roommate handle household chores? 1 for doesn’t contribute, 5 for fully contributes.',
+};
 
 const ReviewRoommatePage = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const email = location.state?.email;
-    const hasRoom = location.state?.hasRoom;
-    const [roommates, setRoommates] = useState([]);
-    const [selectedRoommate, setSelectedRoommate] = useState('');
-    const [cleanliness, setCleanliness] = useState(0);
-    const [loudness, setLoudness] = useState(0);
-    const [taskCompletion, setTaskCompletion] = useState(0);
-    const [overall, setOverall] = useState(0);
-    const [additionalFeedback, setAdditionalFeedback] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const hasRoom = location.state?.hasRoom;
+  const email = location.state?.email;
+  const roommate = location.state?.selectedRoommateUsername;
+  const roommateEmail = location.state?.selectedRoommate;
 
-    // Fetch the list of roommates on component mount
-    useEffect(() => {
-        const fetchRoommates = async () => {
-            try {
-                const response = await axios.get(`https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/${email}/get-user-roommates`);
-                console.log(response.data.users)
-                if (response.status === 200 && response.data.all_roommates) {
-                    const filteredRoommates = response.data.all_roommates
-                        .map((roommate) => {
-                            const email = roommate[0];
-                            const name = roommate[1];
-                            return [ email, name ];
-                        });
-                    setRoommates(filteredRoommates); // Set roommates in the state
-                }
-            } catch (error) {
-                console.error("Error fetching roommates:", error.message);
-            }
-        };
-        fetchRoommates();
-    }, [email]);
+  const [review, setReview] = useState({
+    cleanliness: 3,
+    noise_levels: 3,
+    respect: 3,
+    communication: 3,
+    paying_rent: 3,
+    chores: 3,
+    overall: 3,
+  });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (!selectedRoommate) {
-            alert('Please select a roommate to rate.');
-            return;
+  const [error, setError] = useState('');
+
+  const handleInputChange = (field, value) => {
+    setReview((prevReview) => ({ ...prevReview, [field]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await axios.post(
+        `https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/send-review`,
+        {
+          reviewed_by: email,
+          reviewed: roommateEmail,
+          ...review,
         }
-        
-        const reviewData = {
-            roommate: selectedRoommate,
-            cleanliness,
-            loudness,
-            taskCompletion,
-            overall,
-            additionalFeedback
-        };
+      );
+      navigate('/review-success', { state: { hasRoom, email } });
+    } catch (error) {
+      setError('Error submitting review. Please try again later.');
+      console.error('Error submitting review:', error);
+    }
+  };
 
-        console.log('Submitted review:', reviewData);
-        // Here you would make a POST request to your API to submit the review data
-    };
+  return (
+    <div className={styles.reviewRoommateContainer}>
+      <h2 className={styles.reviewRoommateHeader}>Review Your Roommate</h2>
+      {roommate && (
+        <p className={styles.reviewRoommateParagraph}>
+          You're reviewing: <strong>{roommate}</strong>
+        </p>
+      )}
 
-    return (
-        <div className={styles.container}>
-            <h2>Rate Your Roommate</h2>
-            <form onSubmit={handleSubmit} className={styles.form}>
-                {/* Roommate Selection Dropdown */}
-                <div className={styles.selectContainer}>
-                    <label htmlFor="roommate">Select Roommate</label>
-                    <select 
-                        id="roommate"
-                        value={selectedRoommate}
-                        onChange={(e) => setSelectedRoommate(e.target.value)}
-                    >
-                        <option value="">-- Choose a Roommate --</option>
-                        {roommates.map((roommate) => (
-                            <option key={roommate} value={roommate[0]}>{roommate[1]}</option>
-                        ))}
-                    </select>
-                </div>
-
-                <div className={styles.sliderContainer}>
-                    <label>Cleanliness</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="5"
-                        value={cleanliness}
-                        onChange={(e) => setCleanliness(e.target.value)}
-                    />
-                    <span>{cleanliness}</span>
-                </div>
-
-                <div className={styles.sliderContainer}>
-                    <label>Loudness</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="5"
-                        value={loudness}
-                        onChange={(e) => setLoudness(e.target.value)}
-                    />
-                    <span>{loudness}</span>
-                </div>
-
-                <div className={styles.sliderContainer}>
-                    <label>Task Completion</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="5"
-                        value={taskCompletion}
-                        onChange={(e) => setTaskCompletion(e.target.value)}
-                    />
-                    <span>{taskCompletion}</span>
-                </div>
-
-                <div className={styles.sliderContainer}>
-                    <label>Overall</label>
-                    <input
-                        type="range"
-                        min="0"
-                        max="5"
-                        value={overall}
-                        onChange={(e) => setOverall(e.target.value)}
-                    />
-                    <span>{overall}</span>
-                </div>
-
-                <div className={styles.textareaContainer}>
-                    <label>Additional Feedback</label>
-                    <textarea
-                        value={additionalFeedback}
-                        onChange={(e) => setAdditionalFeedback(e.target.value)}
-                        placeholder="How would you describe living with this roommate?"
-                    ></textarea>
-                </div>
-
-                <button type="submit" className={styles.submitButton}>Submit Review</button>
-            </form>
+      {/* Render review sliders */}
+      {Object.entries(review).map(([key, value]) => (
+        <div key={key} className={styles.reviewRoommateRatingGroup}>
+          <label className={styles.reviewRoommateLabel}>
+            {key.replace('_', ' ').toUpperCase()}:
+          </label>
+          <p className={styles.fieldExplanation}>{explanations[key]}</p>
+          <div className={styles.sliderContainer}>
+            <input
+              type="range"
+              min="1"
+              max="5"
+              value={value}
+              step="1"
+              onChange={(e) => handleInputChange(key, parseInt(e.target.value, 10))}
+              className={styles.reviewRoommateSlider}
+            />
+            <div className={styles.sliderLabels}>
+              <span>1</span>
+              <span>5</span>
+            </div>
+          </div>
         </div>
-    );
+      ))}
+
+      {/* Display error message if any */}
+      {error && <p className={styles.reviewRoommateError}>{error}</p>}
+
+      <button onClick={handleSubmit} className={styles.reviewRoommateSubmitButton}>
+        Submit Review
+      </button>
+    </div>
+  );
 };
 
 export default ReviewRoommatePage;

@@ -18,27 +18,36 @@ import ScrollToTop from './ScrollToTop';
 import AnnouncementsPage from './pages/AnnouncementsPage';
 import ReviewRoommatePage from './pages/ReviewRoommatePage';
 import FindRoommatePage from './pages/FindRoommatePage';
+import WelcomeFindRoommate from './pages/WelcomeFindRoommate';
+import NoRoommatePage from './pages/NoRoommatePage';
+import SelectRoommatePage from './pages/SelectRoommatePage';
+import ReviewSuccessPage from './pages/ReviewSuccessPage';
+import IncompleteProfile from './pages/IncompleteProfile';
 import SharedExpensesPage from './pages/SharedExpensesPage';
+import CustomLogin from './pages/CustomLogin';
+import CustomSignUp from './pages/CustomSignUp';
+import VerificationCodePage from './pages/ConfirmSignUp';
 
 function App() {
   // Function to handle adding the user to the mock database
   const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
-    const name = email.split("@")[0]; // Extract user name from user email
 
-    if (email) {
-      try{
-        // Send a POST request to add the user to the database
-        const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',{
-          id: email,
-          name: name,
-        });
+     // not really sure what this is doing right here- why would we try to add a new user on every request?
+      // prolly if we had a check user exist path or something like that 
+    // if (email) {
+    //   try{
+    //     // Send a POST request to add the user to the database
+    //     const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user',{
+    //       id: email,
+    //       name: name,
+    //     });
 
-           console.log('User added successfully:', response.data);
-      } catch (error) {
-          console.error('Error while adding user:', error);
-        }
-      }
+    //        console.log('User added successfully:', response.data);
+    //   } catch (error) {
+    //       console.error('Error while adding user:', error);
+    //     }
+    //   }
     };
 
   // Component to handle login and redirection to /home
@@ -73,7 +82,10 @@ function App() {
           <Route path="/" element={<LandingPage />} />
 
           {/* Login Route */}
-          <Route path="/login" element={<LoginRedirect />} />
+          {/* <Route path="/login" element={<LoginRedirect />} /> */}
+          <Route path="/login" element={<CustomLogin/>}/>
+          <Route path="/sign-up" element={<CustomSignUp/>}/>
+          <Route path="/verify" element={<VerificationCodePage />}/>
 
           {/* Protected Routes */}
           <Route
@@ -87,7 +99,7 @@ function App() {
               </Authenticator>
             }
           />
-             <Route
+            <Route
             path="/user-profile"
             element={
               <Authenticator>
@@ -193,6 +205,61 @@ function App() {
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
                   return <FindRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/welcome-find-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <WelcomeFindRoommate user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/no-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <NoRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+               <Route
+            path="/select-roommate"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <SelectRoommatePage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/review-success"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <ReviewSuccessPage user={user} />;
+                }}
+              </Authenticator>
+            }
+          />
+          <Route
+            path="/incomplete-profile"
+            element={
+              <Authenticator>
+                {({ signOut, user }) => {
+                  handleUserSignIn(user);
+                  return <IncompleteProfile user={user} signOut ={signOut} />;
                 }}
               </Authenticator>
             }
