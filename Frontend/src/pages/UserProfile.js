@@ -3,7 +3,7 @@ import styles from '../styles/HomePage.module.css';
 
 import { signOut } from '@aws-amplify/auth';
 
-const UserProfile = ({ user, signOut }) => {
+const UserProfile = ({ user }) => {
   const location = useLocation();
   const email = user?.signInDetails?.loginId;
   const navigate = useNavigate();
@@ -11,8 +11,7 @@ const UserProfile = ({ user, signOut }) => {
 
   const handleSignout = async () => {
     try {
-      await signOut();
-
+      await signOut({ global: true });
       // Redirect to landing page after successful logout
       navigate('/');
     } catch (error) {

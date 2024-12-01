@@ -5,7 +5,7 @@ import axios from 'axios';
 import styles from '../styles/HomePage.module.css';
 import Header from '../Header';
 
-const HomePage = ({ user, signOut }) => {
+const HomePage = ({ user }) => {
   const [hasRoom, setHasRoom] = useState(false); // State to track if user has a room
   const [roomName, setRoomName] = useState('');
   const [loading, setLoading] = useState(true);
