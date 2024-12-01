@@ -39,6 +39,7 @@ const Header = ({ email, hasRoom, roomName }) => {
       );
 
       if (response.status === 200) {
+        console.log('CALLED FIND ROOMMATE PAGE AND RETURNED 200');
         // User has a profile, navigate to the user profile page
         navigate('/user-profile', { state: { email, hasRoom } });
       }

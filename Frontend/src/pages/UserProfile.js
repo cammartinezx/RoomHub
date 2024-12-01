@@ -89,7 +89,8 @@ const UserProfile = ({signOut}) => {
         console.log(response.data.profile);
         const fetchedProfile = response.data.profile;
         setProfileData(fetchedProfile);
-        
+
+        console.log('SET PROFILE DATA');
         console.log(profileData);
         setLoading(false);
       }catch(error){
@@ -112,7 +113,7 @@ const UserProfile = ({signOut}) => {
       };
     }
     fetchProfile();
-  }, [email]);
+  }, []);
 
   const handleChange = (field, value) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
@@ -286,7 +287,7 @@ const UserProfile = ({signOut}) => {
             {!matchedUser && (
               <button
                 className={`${styles.incompleteProfileButton} ${styles.incompleteProfileLogoutButton}`}
-                onClick={handleSignout()}>
+                onClick={handleSignout}>
                   Log Out
               </button>
             )}
