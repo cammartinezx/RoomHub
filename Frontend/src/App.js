@@ -11,6 +11,7 @@ import ManageTasksPage from './pages/ManageTasksPage';
 // Amplify UI components
 import { Authenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import { Auth } from 'aws-amplify';
 
 import axios from 'axios'
 import UserProfile from './pages/UserProfile';
@@ -30,9 +31,9 @@ import VerificationCodePage from './pages/ConfirmSignUp';
 
 function App() {
   // Function to handle adding the user to the mock database
+  
   const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
-    const name = email.split("@")[0]; // Extract user name from user email
 
      // not really sure what this is doing right here- why would we try to add a new user on every request?
       // prolly if we had a check user exist path or something like that 
@@ -50,6 +51,8 @@ function App() {
     //     }
     //   }
     };
+
+  
 
   // Component to handle login and redirection to /home
   const LoginRedirect = () => {
