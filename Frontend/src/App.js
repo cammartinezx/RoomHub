@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
 import CreateRoomPage from './pages/CreateRoomPage';
@@ -29,6 +30,98 @@ import CustomSignUp from './pages/CustomSignUp';
 import VerificationCodePage from './pages/ConfirmSignUp';
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check screen width on load
+    const checkScreenSize = () => {
+      if (window.innerWidth < 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    checkScreenSize(); // Initial check
+    window.addEventListener('resize', checkScreenSize); // Listen for resize events
+
+    // Cleanup the event listener
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // If on a mobile device, show the redirect message
+  if (isMobile) {
+    return (
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #4facfe, #00f2fe)',
+          color: '#ffffff',
+          textAlign: 'center',
+          padding: '20px',
+          fontFamily: '"Poppins", sans-serif',
+        }}
+      >
+        <img
+          src="https://img.icons8.com/ios-filled/100/ffffff/smartphone.png"
+          alt="Mobile Icon"
+          style={{ marginBottom: '20px', animation: 'bounce 2s infinite' }}
+        />
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '10px' }}>
+          Mobile Version Available!
+        </h1>
+        <p style={{ fontSize: '1.2rem', marginBottom: '30px', lineHeight: '1.5' }}>
+          It seems like you're on a mobile device. For the best experience, please visit our mobile-friendly version.
+        </p>
+        <a
+          href="https://roomhubtestdep.vercel.app"
+          style={{
+            textDecoration: 'none',
+          }}
+        >
+          <button
+            style={{
+              padding: '15px 30px',
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: '#4facfe',
+              background: '#ffffff',
+              border: 'none',
+              borderRadius: '30px',
+              cursor: 'pointer',
+              boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseOver={(e) => (e.target.style.background = '#e3e3e3')}
+            onMouseOut={(e) => (e.target.style.background = '#ffffff')}
+          >
+            Go to Mobile Version
+          </button>
+        </a>
+        <style>
+          {`
+            @keyframes bounce {
+              0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+              }
+              40% {
+                transform: translateY(-20px);
+              }
+              60% {
+                transform: translateY(-10px);
+              }
+            }
+          `}
+        </style>
+      </div>
+    );
+  }
+
+
   // Function to handle adding the user to the mock database
   const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
