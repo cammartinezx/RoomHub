@@ -36,109 +36,118 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
         child: Column(
           children: <Widget>[
             const Header(),
-            OurContainer(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text("Create a Room",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 29, 52, 83),
-                                fontSize: 23.0,
-                                fontWeight: FontWeight.bold)),
-                        const Text('If this is your first time in the app',
-                            softWrap: true),
-                        const SizedBox(height: 10),
-                        GradientButton(
-                            text: "Continue",
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const CreateRoom(),
-                              ));
-                            })
-                      ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Create a Room",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text('If this is your first time in the app',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const CreateRoom(),
+                                ));
+                              })
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Image.asset('assets/bed.png'),
-                  )
-                ],
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/bed.png'),
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 10),
 
             // JOIN ROOM
-            OurContainer(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text("Join a Room",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 29, 52, 83),
-                                fontSize: 23.0,
-                                fontWeight: FontWeight.bold)),
-                        const Text(
-                            'If the room has already been created by your roommates',
-                            softWrap: true),
-                        const SizedBox(height: 10),
-                        GradientButton(
-                            text: "Continue",
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const JoinRoom(),
-                              ));
-                            })
-                      ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Join a Room",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                              'If the room has already been created by your roommates',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const JoinRoom(),
+                                ));
+                              })
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Image.asset('assets/find_room.png'),
-                  )
-                ],
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/find_room.png'),
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 10),
 
             // FIND ROOMMATES
-            OurContainer(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 6,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text("Find Roommates",
-                            style: TextStyle(
-                                color: Color.fromARGB(255, 29, 52, 83),
-                                fontSize: 23.0,
-                                fontWeight: FontWeight.bold)),
-                        const Text(
-                            'If you are looking for your perfect match',
-                            softWrap: true),
-                        const SizedBox(height: 10),
-                        GradientButton(
-                            text: "Continue",
-                            onTap: () {
-                             theme.buildToastMessage("coming soon");
-                            })
-                      ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const Text("Find Roommates",
+                              style: TextStyle(
+                                  color: Color.fromARGB(255, 29, 52, 83),
+                                  fontSize: 23.0,
+                                  fontWeight: FontWeight.bold)),
+                          const Text(
+                              'If you are looking for your perfect match',
+                              softWrap: true),
+                          const SizedBox(height: 10),
+                          GradientButton(
+                              text: "Continue",
+                              onTap: () {
+                               theme.buildToastMessage("coming soon");
+                              })
+                        ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Image.asset('assets/find_roommate.png'),
-                  )
-                ],
+                    Expanded(
+                      flex: 4,
+                      child: Image.asset('assets/find_roommate.png'),
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 8),
