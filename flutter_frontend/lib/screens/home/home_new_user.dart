@@ -160,7 +160,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                 style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 7.0),
+                    fontSize: 15.0),
               ),
             ),
           ],
