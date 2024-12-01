@@ -22,3 +22,8 @@ class ExpenseException implements Exception {
   final String message;
   ExpenseException(this.message);
 }
+
+class MissingField implements Exception {
+  final String message;
+  MissingField(this.message);
+}

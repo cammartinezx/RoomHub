@@ -4,11 +4,7 @@ import 'package:flutter_frontend/utils/our_theme.dart';
 
 import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_frontend/utils/custom_exceptions.dart';
-import 'package:flutter_frontend/utils/response_handler.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_frontend/config.dart';
-import 'dart:convert';
+
 
 class Header extends ConsumerStatefulWidget {
   // this is used to detect whether or not the drawer will be displayed.
@@ -33,32 +29,6 @@ class _ActionNotificationState extends ConsumerState<Header> {
     super.initState();
   }
 
-  Future<bool> getNotifications(String email) async {
-    bool success = false;
-    try {
-      var response = await http.get(
-        Uri.parse("${url}user/$email/get-notification"),
-        headers: {"Content-Type": "application/json"},
-      );
-      if (response.statusCode == 200) {
-        final jsonData = jsonDecode(response.body);
-        List<NotificationItem> notifications =
-            NotificationItem.parseNotificationList(jsonData);
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => Notifications(notificationItems: notifications, email: email),
-          ),
-        );
-        success = true;
-      } else {
-        await getResponse(response, responseType: 'getUserNotification');
-      }
-    } on UserException catch (e) {
-      print(e.toString());
-      theme.buildToastMessage(e.message);
-    }
-    return success;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +81,12 @@ class _ActionNotificationState extends ConsumerState<Header> {
                         ),
                         onPressed: () async {
                           print("Notification button pressed");
-                          await getNotifications(userEmail);
+                          // await getNotifications(userEmail);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Notifications(email: userEmail),
+                            ),
+                          );
                         },
                       ),
                     ),

@@ -15,7 +15,8 @@ import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class OurHomeNewUser extends ConsumerStatefulWidget {
-  const OurHomeNewUser({super.key});
+  final Future<void> Function()? onRefresh;
+  const OurHomeNewUser({super.key, required this.onRefresh});
 
   @override
   ConsumerState<OurHomeNewUser> createState() => _OurHomeNewUserState();
@@ -28,18 +29,16 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
   Widget build(BuildContext context) {
   return Scaffold(
     backgroundColor: Colors.grey[300],
-    body: SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          const Header(),
-          ListView(
-            padding: const EdgeInsets.only(
-                top: 10.0, right: 20, left: 20, bottom: 20),
-            physics: const NeverScrollableScrollPhysics(), // Prevent scrolling
-            shrinkWrap: true, // Allow it to take only the needed space
-            children: <Widget>[
-              // CREATE ROOM CONTAINER
-              OurContainer(
+    body: RefreshIndicator(
+      onRefresh: widget.onRefresh!,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Column(
+          children: <Widget>[
+            const Header(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
                 child: Row(
                   children: [
                     Expanded(
@@ -72,10 +71,13 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+            ),
+            const SizedBox(height: 10),
 
-              // JOIN ROOM
-              OurContainer(
+            // JOIN ROOM
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
                 child: Row(
                   children: [
                     Expanded(
@@ -109,10 +111,13 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                   ],
                 ),
               ),
-              const SizedBox(height: 10),
+            ),
+            const SizedBox(height: 10),
 
-              // FIND ROOMMATES
-              OurContainer(
+            // FIND ROOMMATES
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: OurContainer(
                 child: Row(
                   children: [
                     Expanded(
@@ -144,22 +149,22 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                   ],
                 ),
               ),
-              const SizedBox(height: 8),
-              ElevatedButton(
-                onPressed: () async {
-                  logOut();
-                },
-                child: const Text(
-                  "Log Out",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 7.0),
-                ),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: () async {
+                logOut();
+              },
+              child: const Text(
+                "Log Out",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15.0),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     ),
   );

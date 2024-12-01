@@ -1,6 +1,8 @@
 // ignore_for_file: unused_result
 
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/home/home.dart';
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +19,8 @@ import 'package:flutter_frontend/utils/response_handler.dart';
 
 class Verification extends ConsumerStatefulWidget {
   final String email;
-  const Verification({super.key, required this.email});
+  final String name;
+  const Verification({super.key, required this.email, required this.name});
   @override
   _VerificationState createState() => _VerificationState();
 }
@@ -124,6 +127,7 @@ class _VerificationState extends ConsumerState<Verification> {
     try {
     var regBody = {
       "id": widget.email,
+      "name": widget.name,
     };
     var response = await http.post(
       Uri.parse(signup),
@@ -134,7 +138,7 @@ class _VerificationState extends ConsumerState<Verification> {
       ref.read(emailProvider.notifier).state = widget.email;
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => const OurHomeNewUser(),
+          builder: (context) => UserHome(email: widget.email)
         ),
       );
       

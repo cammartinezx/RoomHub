@@ -341,7 +341,7 @@ class UserInfoHandler {
 
             // console.log(roommates);
 
-            return response.status(200).json({ all_roommates });
+            return response.status(200).json({ roommates: all_roommates });
             // // Filter out the current user from the list
             // const roommates = users.filter((id) => id !== user_id);
             // if (roommates.length === 0) {

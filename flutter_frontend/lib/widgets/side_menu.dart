@@ -2,6 +2,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_frontend/screens/createAnnouncement/create_announcement_page.dart";
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -169,7 +170,7 @@ class Navbar extends ConsumerWidget {
     //   go back to the home page for new users.
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const OurHomeNewUser(),
+          builder: (context) => UserHome(email: email),
         ),
       );
     } on UserException catch (e) {

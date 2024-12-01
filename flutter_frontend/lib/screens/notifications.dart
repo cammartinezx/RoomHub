@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/widgets/action_notification.dart';
@@ -12,11 +14,11 @@ import '../utils/custom_exceptions.dart';
 import '../utils/response_handler.dart';
 
 class Notifications extends StatefulWidget {
-  final List<NotificationItem> notificationItems;
+  // final List<NotificationItem> notificationItems;
   final String email;
   const Notifications({
     super.key,
-    required this.notificationItems, // Marking the list as required
+    // required this.notificationItems, // Marking the list as required
     required this.email
   });
 
@@ -26,11 +28,32 @@ class Notifications extends StatefulWidget {
 
 class _NotificationsState extends State<Notifications> {
   final theme = OurTheme();
+  List<NotificationItem>? notificationItems;
+  bool isLoading = true; // Track loading state
+
+  @override
+  void initState() {
+    super.initState();
+
+    getNotificationsCaller();
+  }
+
+  Future<void> getNotificationsCaller() async {
+    // Simulate an API request or some async operation
+    List<NotificationItem>? items = await getNotifications(widget.email);
+    // Update the loading state and rebuild the UI
+    setState(() {
+      // isLoading = false; // Update loading state
+      notificationItems = items;
+      // choose selected roommate after roommate has been selected
+      // selectedRoommate = widget.assignedTo;
+    });
+  }
 
   void removeNotification(String id) {
     debugPrint("Notification fe removed");
     setState(() {
-      widget.notificationItems.removeWhere((item) => item.notificationid == id);
+      notificationItems!.removeWhere((item) => item.notificationid == id);
     });
 
     // Make an API call to remove the notification from the backend
@@ -56,6 +79,16 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
+  // Simulate a data fetch and refresh operation
+  Future<void> _refreshData() async {
+    List<NotificationItem>? items = await getNotifications(widget.email);
+
+    setState(() {
+      // Add new items to simulate data change
+      notificationItems = items;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -63,20 +96,24 @@ class _NotificationsState extends State<Notifications> {
         backgroundColor: Colors.white,
         body: Stack(
           children: [
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 60), // Space for the back button
-                    Text(
-                      "New",
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const SizedBox(height: 10),
-                    widget.notificationItems.isEmpty
-                        ? Center(
+            RefreshIndicator(
+              onRefresh: _refreshData,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 2),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 60), // Space for the back button
+                      Text(
+                        "Notifications",
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const SizedBox(height: 10),
+                      notificationItems == null ? const Center(child: SizedBox( width:40, height:40, child: CircularProgressIndicator()))
+                          :
+                      notificationItems!.isEmpty
+                          ? Center(
                             child: Text(
                               'No notifications',
                               style: Theme.of(context)
@@ -85,29 +122,59 @@ class _NotificationsState extends State<Notifications> {
                                   ?.copyWith(color: theme.darkblue),
                             ),
                           )
-                        : NotificationList(items: widget.notificationItems, onRemoveNotification: removeNotification,),
-
-    
-                    // List of new notifications
-
-                    
-                  ],
+                          : NotificationList(items: notificationItems!, onRemoveNotification: removeNotification,),
+                    ],
+                  ),
                 ),
               ),
             ),
             Positioned(
-              top: 10,
-              left: 10,
-              child: BackButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Go back to the previous screen
-                },
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 10), // Padding to create space for the back button
+
+                // width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(50)
+                ),
+                child: Row(
+                    children: [
+                      BackButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Go back to the previous screen
+                        },
+                      ),]
+                ),
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<List<NotificationItem>?> getNotifications(String email) async {
+    List<NotificationItem>? items;
+    try {
+      var response = await http.get(
+        Uri.parse("${url}user/$email/get-notification"),
+        headers: {"Content-Type": "application/json"},
+      );
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+
+        items = NotificationItem.parseNotificationList(jsonData);
+      } else {
+        await getResponse(response, responseType: 'getUserNotification');
+      }
+    } on UserException catch (e) {
+      print(e.toString());
+      theme.buildToastMessage(e.message);
+    }
+    return items;
   }
 }
 

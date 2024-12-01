@@ -355,12 +355,12 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                       )
                                     : Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                            MainAxisAlignment.start,
                                         children: [
                                           // Date Display (Month and Day)
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                right: 50),
+                                                right: 40),
                                             child: Column(
                                               children: [
                                                 Text(
