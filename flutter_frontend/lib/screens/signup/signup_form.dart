@@ -109,7 +109,7 @@ class _SignUpFormState extends ConsumerState<SignUpForm> {
     );
   }
 
-  /// Validates if the confirm password matches the password
+/// Validates if the confirm password matches the password
   void _validateConfirmPassword() {
     if (password2Controller.text != passwordController.text) {
       throw const InvalidPasswordException(

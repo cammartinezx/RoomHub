@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/findRoommate/find_roommate_main.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 
 // Importing screens for navigation within the app
 import 'package:flutter_frontend/screens/home/home.dart';
@@ -10,6 +12,7 @@ import 'package:flutter_frontend/utils/our_theme.dart';
 // Amplify imports for authentication using AWS Cognito
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:flutter_frontend/widgets/profile_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'amplifyconfiguration.dart';
 import 'package:flutter_frontend/providers.dart';
@@ -20,6 +23,34 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
+import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
+import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
+import 'package:flutter_frontend/utils/response_handler.dart';
+
+
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         title: 'User Info Form',
+//         theme: OurTheme().buildTheme(),
+//         home: OurLogin()//FindRoommateMain(userId: "camila.martinez2002@gmail.com")
+//         );
+//   }
+// }
+
+// // Widget build(BuildContext context) {
+// //   return MaterialApp(
+// //     debugShowCheckedModeBanner: false,
+// //     theme: OurTheme().buildTheme(),
+// //     // home: const UserRoom(roomID: "UpBoiz", email: "camila.martinez2002@gmail.com"),
+// //     // home: Notification();
+// //     routes: {
+// //       '/loginPage': (context) => const OurLogin(),
+// //       //'/homeNewPage': (context) => const OurHomeNewUser(),
+// //     },
+// //   );
+// // }
+
 
 void main() {
   // Entry point of the application, launching the MyApp widget

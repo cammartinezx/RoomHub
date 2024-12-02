@@ -199,7 +199,6 @@ class Navbar extends ConsumerWidget {
     try {
       // Accessing AWS authentication repository using Riverpod provider
       final authAWSRepo = ref.read(authAWSRepositoryProvider);
-      // Attempting to sign in with email and password
       await authAWSRepo.logOut(ref);
       // Refresh the auth user provider after signing in
       ref.refresh(authUserProvider);

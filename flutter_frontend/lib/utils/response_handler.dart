@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'dart:convert';
 
-// This function handles the response for different types of POST requests 
+// This function handles the response for different types of POST requests
 // and throws custom exceptions based on the response status and content.
 Future<void> handlePost(http.Response response,
     {required String responseType}) async {
@@ -150,6 +150,36 @@ Future<void> handlePost(http.Response response,
         case 500:
         // Server error for join room request
           throw NotificationException('Something went wrong. Try again later');
+      }
+      break;
+    case 'updateProfile':
+      switch (response.statusCode) {
+        case 404:
+          // Handle case where the user is not found
+          if (response.body.contains("User not found")) {
+            throw ProfileException('User not found');
+          }
+          break;
+        case 422:
+          throw ProfileException(response.body);
+        case 500:
+          // Server error for join room request
+          throw ProfileException('Something went wrong. Try again later');
+      }
+      break;
+    case 'createProfile' || 'checkMatch':
+      switch (response.statusCode) {
+        case 404:
+          // Handle case where the user is not found
+          if (response.body.contains("User not found")) {
+            throw ProfileException('User not found');
+          }
+          break;
+        case 422:
+          throw ProfileException(response.body);
+        case 500:
+          // Server error for join room request
+          throw ProfileException('Something went wrong. Try again later');
       }
       break;
 
@@ -434,6 +464,24 @@ Future<String> getResponse(http.Response response,
           throw UserException('Something went wrong. Try again later');
         default:
         // Handle unexpected status codes
+          throw UserException('Unexpected status code: ${response.statusCode}');
+      }
+    case 'getNewMatches':
+      switch (response.statusCode) {
+        case 400:
+          // Handle invalid username error
+          if (response.body.contains("User does not have a profile")) {
+            throw UserException('Profile not found. Create your profile first');
+          } else if (response.body
+              .contains("User profile incomplete - missing location")) {
+            throw UserException("Profile incomplete - missing location");
+          }
+          throw UserException('Invalid request');
+        case 500:
+          // Server error
+          throw UserException('Something went wrong. Try again later');
+        default:
+          // Handle unexpected status codes
           throw UserException('Unexpected status code: ${response.statusCode}');
       }
     default:

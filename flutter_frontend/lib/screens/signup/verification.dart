@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/user_home.dart';
+import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -89,8 +90,7 @@ class _VerificationState extends ConsumerState<Verification> {
               height: 25.0,
             ),
 
-            
-            // TextButton for navigating to the sign-up page
+// TextButton for navigating to the sign-up page
             TextButton(
               onPressed: () async {
                 try {
