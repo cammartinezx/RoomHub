@@ -92,18 +92,18 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
             height: 25.0,
           ),
 
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     logOut();
-          //   },
-          //   child: const Text(
-          //     "Log Out",
-          //     style: TextStyle(
-          //         color: Colors.white,
-          //         fontWeight: FontWeight.bold,
-          //         fontSize: 8.0),
-          //   ),
-          // ),
+          ElevatedButton(
+            onPressed: () async {
+              logOut();
+            },
+            child: const Text(
+              "Log Out",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 8.0),
+            ),
+          ),
           const SizedBox(
             height: 10.0,
           ),
@@ -112,6 +112,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
           TextButton(
               onPressed: () {
                 // Navigate to the sign-up page when pressed
+                
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const OurSignUp(),
@@ -165,37 +166,45 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
   }
 
   void redirectHome() async {
-    try {
-      var response = await http.get(
-        Uri.parse("${url}user/${emailController.text}/get-room"),
-        headers: {"Content-Type": "application/json"},
-      );
-      print(response.body);
+  try {
+    var response = await http.get(
+      Uri.parse("${url}user/${emailController.text}/get-room"),
+      headers: {"Content-Type": "application/json"},
+    );
+    print(response.body);
 
-      // Await the response from getResponse
-      String roomName =
-          await getResponse(response, responseType: 'getUserRoom');
-      // After successful response, navigate to the next screen
-      print(roomName);
-      if (roomName == "NA") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const OurHomeNewUser(),
+    // Await the response from getResponse
+    String roomName = await getResponse(response, responseType: 'getUserRoom');
+
+    // After successful response, ensure widget is still mounted
+    if (!mounted) return;
+
+    print(roomName);
+    if (roomName == "NA") {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const OurHomeNewUser(),
+        ),
+      );
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => OurHome(
+            roomID: roomName,
+            email: emailController.text,
           ),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => OurHome(roomID: roomName ,email: emailController.text,),
-          ),
-        );
-      }
-    } on UserException catch (e) {
-      print(e.toString());
-      theme
-          .buildToastMessage(e.message); // Display error if an exception occurs
+        ),
+      );
     }
+  } on UserException catch (e) {
+    print(e.toString());
+
+    // Ensure widget is still mounted before showing toast
+    if (!mounted) return;
+
+    theme.buildToastMessage(e.message); // Display error if an exception occurs
   }
+}
 
   void logOut() async {
     try {

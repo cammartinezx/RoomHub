@@ -163,7 +163,7 @@ Future<void> handlePost(http.Response response,
           throw ProfileException('Something went wrong. Try again later');
       }
       break;
-    case 'createProfile':
+    case 'createProfile' || 'checkMatch':
       switch (response.statusCode) {
         case 404:
           // Handle case where the user is not found

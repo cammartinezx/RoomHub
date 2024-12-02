@@ -11,16 +11,15 @@ import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
 
-class UserInfoForm extends StatefulWidget {
-  final String roomId;
+class CreateProfile extends StatefulWidget {
   final String userId;
-  const UserInfoForm({super.key, required this.userId, required this.roomId});
+  const CreateProfile({super.key, required this.userId});
 
   @override
-  State<UserInfoForm> createState() => _UserInfoFormState();
+  State<CreateProfile> createState() => _CreateProfileState();
 }
 
-class _UserInfoFormState extends State<UserInfoForm> {
+class _CreateProfileState extends State<CreateProfile> {
   final List<String> gender = ["Male", "Female", "Non-binary"];
   final List<String> ethnicity = [
     "Black",
@@ -60,19 +59,30 @@ class _UserInfoFormState extends State<UserInfoForm> {
   final theme = OurTheme();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _descriptionController = TextEditingController();
-  TextEditingController _dateController  = TextEditingController(); 
-  TextEditingController _contactController =  TextEditingController();
-  String? _selectedGender, _selectedEthnicity, _selectedLocation, _selectedContactType;
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _contactController = TextEditingController();
+  String? _selectedGender,
+      _selectedEthnicity,
+      _selectedLocation,
+      _selectedContactType;
   DateTime? selectedDate;
-  String? _nameError, _locationError, _genderError, _ethnicityError, _contactError, _contactTypeError, _bioError, _dateError;
+  String? _nameError,
+      _locationError,
+      _genderError,
+      _ethnicityError,
+      _contactError,
+      _contactTypeError,
+      _bioError,
+      _dateError;
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
   }
-  bool isLoading = true; 
 
-    // date selection
+  bool isLoading = true;
+
+  // date selection
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -104,7 +114,7 @@ class _UserInfoFormState extends State<UserInfoForm> {
   String _formatDate(DateTime date) {
     return "${date.toLocal()}".split(' ')[0];
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -372,7 +382,8 @@ class _UserInfoFormState extends State<UserInfoForm> {
                             if (isSaved) {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => TagForm(userId:widget.userId),
+                                  builder: (context) =>
+                                      TagForm(userId: widget.userId),
                                 ),
                               );
                             }
@@ -388,13 +399,14 @@ class _UserInfoFormState extends State<UserInfoForm> {
     );
   }
 
-    bool _validateFields() {
+  bool _validateFields() {
     setState(() {
       // Check if any field is empty
       _nameError =
           _nameController.text.isEmpty ? 'This field is required' : null;
       _genderError = _selectedGender == null ? 'This field is required' : null;
-      _contactError = _contactController.text.isEmpty ? 'This field is required' : null;
+      _contactError =
+          _contactController.text.isEmpty ? 'This field is required' : null;
       _contactTypeError =
           _selectedContactType == null ? 'This field is required' : null;
       _locationError =
@@ -403,8 +415,9 @@ class _UserInfoFormState extends State<UserInfoForm> {
           _selectedEthnicity == null ? 'This field is required' : null;
       _dateError =
           _dateController.text.isEmpty ? 'This field is required' : null;
-          _bioError = _descriptionController.text.isEmpty ? 'This field is required' : null;
-    }); 
+      _bioError =
+          _descriptionController.text.isEmpty ? 'This field is required' : null;
+    });
 
     // If fields are valid, you can proceed with your logic
     if (_nameError == null &&
@@ -426,32 +439,51 @@ class _UserInfoFormState extends State<UserInfoForm> {
     bool isSaved = false;
     try {
       if (_validateFields()) {
-          await createProfile(widget.userId, _selectedLocation, _nameController, _selectedGender, _dateController, _selectedEthnicity, _descriptionController, _selectedContactType, _contactController);
-         isSaved = true;
+        await createProfile(
+            widget.userId,
+            _selectedLocation,
+            _nameController,
+            _selectedGender,
+            _dateController,
+            _selectedEthnicity,
+            _descriptionController,
+            _selectedContactType,
+            _contactController);
+        isSaved = true;
       }
-    }catch (e) {
+    } catch (e) {
       theme.buildToastMessage("Something went wrong. Please try again later");
       isSaved = false;
     }
     return isSaved;
   }
 
-  Future<void> createProfile(String userId, String? location, TextEditingController name,
-      String? gender, TextEditingController dob, String? ethnicity, TextEditingController bio, String? contactType, TextEditingController contact) async {
+  Future<void> createProfile(
+      String userId,
+      String? location,
+      TextEditingController name,
+      String? gender,
+      TextEditingController dob,
+      String? ethnicity,
+      TextEditingController bio,
+      String? contactType,
+      TextEditingController contact) async {
     try {
-      var reqBody = {{
-        "location": location, 
-        "name" :name, 
-        "gender": gender, 
-        "ethnicity": ethnicity,
-        "dob": dob, 
-        "bio": bio,
-        "contact_type": contactType, 
-        "contact": contact
-      }};
+      var reqBody = {
+        {
+          "location": location,
+          "name": name,
+          "gender": gender,
+          "ethnicity": ethnicity,
+          "dob": dob,
+          "bio": bio,
+          "contact_type": contactType,
+          "contact": contact
+        }
+      };
       print(reqBody);
       var response = await http.post(
-         Uri.parse("$profile/$userId/$createProfilePth"),
+        Uri.parse("$profile/$userId/$createProfilePth"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
@@ -462,5 +494,4 @@ class _UserInfoFormState extends State<UserInfoForm> {
       rethrow;
     }
   }
-
 }

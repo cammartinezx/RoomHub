@@ -26,25 +26,14 @@ import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
 import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'User Info Form',
-        theme: OurTheme().buildTheme(),
-        home: FindRoommateMain(userId:"hungludao@gmail.com")//FindRoommateMain(userId: "camila.martinez2002@gmail.com")
-
-        // TagForm(
-        //   email: 'test@example.com',  // Pass email here
-        //   //roomID: 'room123',  // Pass roomID here
-        // ),  // Directly set UserInfoForm as the home widget
-        );
-  }
-}
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//         title: 'User Info Form',
+//         theme: OurTheme().buildTheme(),
+//         home: OurLogin()//FindRoommateMain(userId: "camila.martinez2002@gmail.com")
+//         );
+//   }
+// }
 
 // // Widget build(BuildContext context) {
 // //   return MaterialApp(
@@ -59,7 +48,7 @@ class MyApp extends StatelessWidget {
 // //   );
 // // }
 
-/*
+
 void main() {
   // Entry point of the application, launching the MyApp widget
   runApp(
@@ -190,4 +179,4 @@ class _MyAppState extends ConsumerState<MyApp> with TickerProviderStateMixin {
     userEmail = await authAWSRepo.getUserEmail(ref); // Retrieve email from the provider
     return userEmail;
   }
-}*/
+}

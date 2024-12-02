@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/widgets/action_notification.dart';
-
+import 'package:flutter_frontend/widgets/notification_item.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/noaction_notification.dart';
 import 'package:http/http.dart' as http;

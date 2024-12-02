@@ -3,6 +3,7 @@ import 'dart:convert';
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
+import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -12,16 +13,15 @@ import 'package:flutter_frontend/config.dart';
 
 import '../../utils/custom_exceptions.dart';
 
-class UserInfoForm extends StatefulWidget {
-  final String roomId;
+class EditProfile extends StatefulWidget {
   final String userId;
-  const UserInfoForm({super.key, required this.userId, required this.roomId});
+  const EditProfile({super.key, required this.userId});
 
   @override
-  State<UserInfoForm> createState() => _UserInfoFormState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _UserInfoFormState extends State<UserInfoForm> {
+class _EditProfileState extends State<EditProfile> {
   final List<String> gender = ["Male", "Female", "Non-binary"];
   final List<String> ethnicity = [
     "Black",
@@ -415,9 +415,7 @@ Future<void> _initializeProfile() async {
                             if (isSaved) {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => OurHome(
-                                      roomID: widget.roomId,
-                                      email: widget.userId),
+                                  builder: (context) => TagForm(userId:widget.userId),
                                 ),
                               );
                             }

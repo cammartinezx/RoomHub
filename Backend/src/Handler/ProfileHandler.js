@@ -301,8 +301,6 @@ class ProfileHandler {
                 type,
                 room_id,
             );
-
-            // assign new notification to both sender and receiver
             await this.#user_persistence.update_user_notifications(notif_id, user_id);
             await this.#user_persistence.update_user_notifications(notif_id2, user_id2);
         } catch (error) {

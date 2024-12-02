@@ -39,3 +39,5 @@ const getProfilePth = "get-profile";
 const updateProfilePth = "update-profile";
 const createProfilePth = "create-profile";
 const getMatchesPth = "get-new-matches";
+const checkMatchPth = "check-match";
+const findRoomMatePage = "find-roommate-page";

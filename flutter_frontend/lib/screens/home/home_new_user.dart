@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/createRoom/create_room.dart';
+import 'package:flutter_frontend/screens/findRoommate/find_roommate_main.dart';
 import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
+import 'package:flutter_frontend/widgets/header_profile.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 //import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 
 class OurHomeNewUser extends ConsumerStatefulWidget {
+ 
   const OurHomeNewUser({super.key});
 
   @override
@@ -31,7 +34,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
     body: SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          const Header(),
+          const HeaderProfile(),
           ListView(
             padding: const EdgeInsets.only(
                 top: 10.0, right: 20, left: 20, bottom: 20),
@@ -132,7 +135,11 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                           GradientButton(
                               text: "Continue",
                               onTap: () {
-                               theme.buildToastMessage("coming soon");
+                              // Navigator.of(context).push(
+                              //       MaterialPageRoute(
+                              //       builder: (context) => FindRoommateMain(userId: widget.email),
+                              //     ),
+                              //   );
                               })
                         ],
                       ),
