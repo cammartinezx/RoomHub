@@ -47,7 +47,7 @@ class _ProfileCardState extends State<ProfileCard> {
                               profile.tags),
                           const SizedBox(height: 20),
                           NumbersWidget(
-                              overallRating: age.toString(),
+                              overallRating: profile.overall,
                               age: age.toString(),
                               gender: profile.gender),
                           const SizedBox(height: 20),
