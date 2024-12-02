@@ -1,8 +1,8 @@
-import 'dart:convert';
+/*import 'dart:convert';
 
 import "package:flutter/material.dart";
 import 'package:flutter_frontend/screens/home/home.dart';
-import 'package:flutter_frontend/screens/userProfile/edit_user_info.dart';
+import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
@@ -12,36 +12,23 @@ import 'package:flutter_frontend/config.dart';
 import '../../utils/custom_exceptions.dart';
 
 class UserProfilePage extends StatefulWidget {
-  final String firstName;
-  final String lastName;
-  final String gender;
-  final String ethnicity;
-  final String birthDate;
-  final String description;
-  final String email;
-  final String roomID;
+  final String userId;
 
   UserProfilePage({
-    required this.email, 
-    required this.roomID,
-    required this.firstName,
-    required this.lastName,
-    required this.gender,
-    required this.ethnicity,
-    required this.birthDate,
-    required this.description,
+    required this.userId,
   });
-  
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
 }
 
 class _UserProfilePageState extends State<UserProfilePage> {
+ 
   final theme = OurTheme();
 
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       body: Stack(
         children: [
@@ -90,65 +77,65 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 ],
               ),
             ),
-          ), 
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 230.0),
-            child:
-                Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  ),
-                  color: Colors.white, // Background color for the input area
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
                 ),
-                height: double.infinity,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 90.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildProfileInfo('First Name', widget.firstName),
-              
-                        _buildProfileInfo('Last Name', widget.lastName),
-              
-                        _buildProfileInfo('Gender', widget.gender),
-              
-                        _buildProfileInfo('Ethnicity', widget.ethnicity),
-              
-                        _buildProfileInfo('Birth Date', widget.birthDate),
-              
-                        _buildProfileInfo('Description', widget.description),
-                        const SizedBox(height: 20.0),
+                color: Colors.white, // Background color for the input area
+              ),
+              height: double.infinity,
+              width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 50.0, vertical: 90.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildProfileInfo('First Name', widget.firstName),
+
+                      _buildProfileInfo('Last Name', widget.lastName),
+
+                      _buildProfileInfo('Gender', widget.gender),
+
+                      _buildProfileInfo('Ethnicity', widget.ethnicity),
+
+                      _buildProfileInfo('Birth Date', widget.birthDate),
+
+                      _buildProfileInfo('Description', widget.description),
+                      const SizedBox(height: 20.0),
                       //S A V E    B U T T O N
                       GradientButton(
                           text: 'Continue',
                           onTap: () async {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (context) => UserInfoForm(email: widget.email, roomID: widget.roomID)
-                                ),
-                              );
-                            
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => UserInfoForm(
+                                      userId: widget.userId,
+                                      roomID: widget.roomID)),
+                            );
                           }),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               ),
-          ),
-        const Align(
-          alignment: Alignment.topCenter, // Centers the widget horizontally
-          child: Padding(
-            padding: EdgeInsets.only(top: 160.0), // Adjust vertical position
-            child: CircleAvatar(
-              radius: 70, // Adjust size as needed
-              backgroundImage: AssetImage("assets/user_profile.png"),
             ),
           ),
-        ),    
+          const Align(
+            alignment: Alignment.topCenter, // Centers the widget horizontally
+            child: Padding(
+              padding: EdgeInsets.only(top: 160.0), // Adjust vertical position
+              child: CircleAvatar(
+                radius: 70, // Adjust size as needed
+                backgroundImage: AssetImage("assets/user_profile.png"),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -188,4 +175,4 @@ class _UserProfilePageState extends State<UserProfilePage> {
       ),
     );
   }
-}
+}*/

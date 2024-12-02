@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/screens/findRoommate/find_roommate_main.dart';
 import 'package:flutter_frontend/screens/room_page.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/widgets/button.dart';
+import 'package:flutter_frontend/widgets/header_profile.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 //import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -30,7 +32,7 @@ class _OurHomeState extends ConsumerState<OurHome> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Header(),
+            const HeaderProfile(),
             ListView(
               padding: const EdgeInsets.only(left: 20, right: 20),
               physics:
@@ -127,7 +129,11 @@ class _OurHomeState extends ConsumerState<OurHome> {
                               MyButton(
                                   text: "Continue",
                                   onTap: () {
-                                    theme.buildToastMessage("coming soon");
+                                    Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                    builder: (context) => FindRoommateMain(),
+                                  ),
+                                );
                                   })
                             ]),
                       ),
