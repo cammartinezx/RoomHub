@@ -68,6 +68,7 @@ class Navbar extends ConsumerWidget {
               fit: BoxFit.contain,  // Make the image cover the full container
             ),
           ),
+
           ListTile(
             // room name
             title: Align(
@@ -81,6 +82,24 @@ class Navbar extends ConsumerWidget {
             )
           ),
         ),
+          ListTile(
+            // leave room action
+              leading: const Icon(Icons.exit_to_app),
+              title: Text("Home",
+                  style: TextStyle(
+                    color: theme.darkblue,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () async {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => UserHome(email: email),
+                  ),
+                );
+              }
+          ),
           ListTile(
             leading: const Icon(Icons.campaign),
             title: Text("Send Announcement",
@@ -102,6 +121,24 @@ class Navbar extends ConsumerWidget {
               }
           },
         ),
+          ListTile(
+            // leave room action
+              leading: const Icon(Icons.exit_to_app),
+              title: Text("Review Roommates",
+                  style: TextStyle(
+                    color: theme.darkblue,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  )
+              ),
+              onTap: () async {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => UserHome(email: email),
+                  ),
+                );
+              }
+          ),
           ListTile(
             // leave room action
             leading: const Icon(Icons.exit_to_app),
