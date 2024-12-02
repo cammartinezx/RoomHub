@@ -27,3 +27,7 @@ class MissingField implements Exception {
   final String message;
   MissingField(this.message);
 }
+class ProfileException implements Exception {
+  final String message;
+  ProfileException(this.message);
+}

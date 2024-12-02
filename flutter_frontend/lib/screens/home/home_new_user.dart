@@ -1,10 +1,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/createRoom/create_room.dart';
+import 'package:flutter_frontend/screens/findRoommate/find_roommate_main.dart';
 import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/screens/joinRoom/join_room.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/gradient_button.dart';
+import 'package:flutter_frontend/widgets/header_profile.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 //import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
@@ -35,7 +37,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
         physics: AlwaysScrollableScrollPhysics(),
         child: Column(
           children: <Widget>[
-            const Header(),
+            const HeaderProfile(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: OurContainer(
@@ -162,7 +164,7 @@ class _OurHomeNewUserState extends ConsumerState<OurHomeNewUser> {
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0),
               ),
-            ),
+            )
           ],
         ),
       ),

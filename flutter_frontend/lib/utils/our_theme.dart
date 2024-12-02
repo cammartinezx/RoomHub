@@ -4,12 +4,16 @@ import 'package:fluttertoast/fluttertoast.dart';
 // Class to define and build the app's theme and toasts
 class OurTheme {
   // Custom colors used throughout the app
-  final Color yellow = const Color.fromARGB(255, 253, 193, 87);
+  //final Color yellow = const Color.fromARGB(255, 253, 193, 87);
+  final Color yellow = const Color.fromARGB(255, 226, 205, 9);
   final Color mintgreen = const Color.fromARGB(255, 139, 191, 187);
   final Color darkblue = const Color.fromARGB(255, 29, 52, 83);
   final Color lightgrey = const Color.fromRGBO(189, 189, 189, 1);
   final Color darkgrey = const Color.fromARGB(255, 89, 89, 94);
   final Color red = const Color.fromARGB(255, 207, 21, 21);
+
+  
+
 
   // Method to build and return the app's theme
   ThemeData buildTheme() {
