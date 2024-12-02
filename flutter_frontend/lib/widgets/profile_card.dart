@@ -163,6 +163,7 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   Widget review(List<Color> gradients, String? avg, String type) {
+    print(avg);
     final percent = calculatePercentage(avg);
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -227,7 +228,7 @@ class _ProfileCardState extends State<ProfileCard> {
     double? avg = double.tryParse(average ?? '');
 
     // If parsing fails or avg is null, default to a safe value (e.g., 1.0)
-    avg ??= 1.0;
+    avg ??= 5.0;
 
     // Ensure the value is between 1.0 and 5.0
     avg = avg.clamp(1.0, 5.0);

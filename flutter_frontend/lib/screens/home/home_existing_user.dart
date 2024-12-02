@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/room_page.dart';
 import 'package:flutter_frontend/screens/login/login.dart';
 import 'package:flutter_frontend/widgets/button.dart';
+import 'package:flutter_frontend/widgets/header_profile.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 //import 'package:flutter_frontend/utils/comingsoon.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
@@ -11,6 +12,11 @@ import 'package:flutter_frontend/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/aws_auth.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+
+import '../../utils/custom_exceptions.dart';
+import '../findRoommate/find_roommate_main.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_frontend/config.dart';
 
 class OurHomeExisting extends ConsumerStatefulWidget {
   final String roomID;
@@ -34,7 +40,7 @@ class _OurHomeExistingState extends ConsumerState<OurHomeExisting> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: <Widget>[
-              const Header(),
+              const HeaderProfile(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
@@ -128,8 +134,19 @@ class _OurHomeExistingState extends ConsumerState<OurHomeExisting> {
                               const SizedBox(height: 10),
                               MyButton(
                                   text: "Continue",
-                                  onTap: () {
-                                    theme.buildToastMessage("coming soon");
+                                  onTap: () async {
+                                    bool hasProf = await hasProfile(widget.email);
+                                    print(hasProf);
+                                    if (hasProf) {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => FindRoommateMain(),
+                                        ),
+                                      );
+                                    } else {
+                                      theme.buildToastMessage(
+                                          "Create your profile by clicking the user icon at the top left");
+                                    }
                                   })
                             ]),
                       ),
@@ -163,6 +180,26 @@ class _OurHomeExistingState extends ConsumerState<OurHomeExisting> {
         ),
       ),
     );
+  }
+
+
+  Future<bool> hasProfile(String userId) async {
+    bool hasProfile = false;
+    try {
+      var response = await http.get(
+        Uri.parse("$user/$userId/$findRoomMatePage"),
+        headers: {"Content-Type": "application/json"},
+      );
+      print(response.statusCode);
+      print(response.body);
+      if (response.statusCode == 200) {
+        hasProfile = true;
+      }
+    } on ProfileException catch (e) {
+      print(e.toString());
+      return false;
+    }
+    return hasProfile;
   }
 
   void logOut() async {
