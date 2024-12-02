@@ -93,87 +93,141 @@ class _ReviewFormState extends State<ReviewForm> {
  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Rate Your Roommate'),
-        backgroundColor: theme.darkblue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            DropdownButtonFormField<String>(
-                          value: selectedRoommate,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          decoration: InputDecoration(
-                            label: Text(
-                              "Choose Roommate",
-                              style: TextStyle(color: theme.darkblue),
-                            ),
-                            errorText: _assigneeError
-                          ),
-                          items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
-                            return DropdownMenuItem<String>(value: value[0], child: Text(value[1]));
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedRoommate = newValue;
-                            });
-                          }
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-            Expanded(
-              child: ListView(
-                children: ratings.entries.map((entry) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        entry.key.replaceAll('_', ' ').toUpperCase(),
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: theme.darkblue,
-                        ),
-                      ),
-                      Slider(
-                        value: ratings[entry.key]!.toDouble(),
-                        min: 1,
-                        max: 5,
-                        divisions: 4,
-                        activeColor: theme.darkblue,
-                        inactiveColor: theme.lightgrey,
-                        label: ratings[entry.key].toString(),
-                        onChanged: (value) {
-                          setState(() {
-                            ratings[entry.key] = value.toInt();
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 16), // Space between sliders
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                saveReview(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.darkblue,
-                padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
-              ),
-              child: const Text(
-                "Submit Ratings",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-            ),
-          ],
+  body: Stack(
+    children: [
+      // Background gradient container
+      Container(
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            theme.mintgreen, // Gradient starting color
+            theme.darkblue,  // Gradient ending color
+          ]),
         ),
       ),
-    );
+      // Positioned custom header with back button and title
+      Positioned(
+        top: 0.0, // Set to 0 so it stays at the top of the screen
+        left: 0.0,
+        right: 0.0,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50), // Add padding for spacing
+          child: Stack(
+            children: [
+              // Back button to return to the previous screen
+              IconButton(
+                icon: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Pop the current screen
+                },
+              ),
+              // Title text indicating the purpose of the screen
+              const Center(
+                child: Text(
+                  '\nRate \nYour Roommate',
+                  textAlign: TextAlign.center,
+                  style: TextStyle( 
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w900),
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+      // Main content container for review form
+      Padding(
+        padding: const EdgeInsets.only(top: 195.0), // Add top padding to avoid overlap
+        child: Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40),
+              topRight: Radius.circular(40),
+            ),
+            color: Colors.white, // Background color for the input area
+          ),
+          height: double.infinity,
+          width: double.infinity,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 18.0, right: 18),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Add form elements or sliders here (example)
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  // Example dropdown for selecting roommate
+                  DropdownButtonFormField<String>(
+                    value: selectedRoommate,
+                    icon: const Icon(Icons.arrow_drop_down),
+                    decoration: InputDecoration(
+                      label: Text(
+                        "Choose Roommate",
+                        style: TextStyle(color: theme.darkblue),
+                      ),
+                      errorText: _assigneeError,
+                    ),
+                    items: roomMates.map<DropdownMenuItem<String>>((dynamic value) {
+                      return DropdownMenuItem<String>(
+                          value: value[0], child: Text(value[1]));
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        selectedRoommate = newValue;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  // Add other form widgets (like sliders) below
+                  // Example of a slider
+                  // Sliders for each rating category
+                  buildRatingSlider('Overall', 'overall'),
+                  buildRatingSlider('Cleanliness', 'cleanliness'),
+                  buildRatingSlider('Noise Levels', 'noise_levels'),
+                  buildRatingSlider('Respect', 'respect'),
+                  buildRatingSlider('Communication', 'communication'),
+                  buildRatingSlider('Paying Rent', 'paying_rent'),
+                  buildRatingSlider('Chores', 'chores'),
+                  // Example save button
+                  GradientButton(
+                    text: 'Save Review',
+                    onTap: () async {
+                      bool isSaved = await saveReview(context);
+                      if (isSaved) {
+                        print("Should be changing the page");
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => UserRoom(
+                              roomID: widget.roomId,
+                              email: widget.email,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  SizedBox(height: 60)
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
+  ),
+);
+
   }
 
  
@@ -225,7 +279,7 @@ Future<void> sendReview({
 
     // HTTP POST request
     var response = await http.post(
-      Uri.parse("user/send-review"),
+      Uri.parse("$user/send-review"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(reqBody),
     );
@@ -244,6 +298,35 @@ Future<void> sendReview({
     print("Unexpected error: $e");
     theme.buildToastMessage("An unexpected error occurred.");
   }
+}
+
+Widget buildRatingSlider(String label, String key) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        label,
+        style: TextStyle(color: theme.darkblue, fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+      Slider(
+        value: ratings[key]!.toDouble(),
+        min: 1,
+        max: 5,
+        divisions: 4,
+        activeColor: theme.darkblue,
+        inactiveColor: theme.lightgrey,
+        label: ratings[key].toString(),
+        onChanged: (value) {
+          setState(() {
+            ratings[key] = value.toInt();
+          });
+        },
+      ),
+      const SizedBox(
+        height: 20.0,
+      ),
+    ],
+  );
 }
 
 }
