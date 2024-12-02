@@ -116,8 +116,19 @@ const UserProfile = ({signOut}) => {
   }, []);
 
   const handleChange = (field, value) => {
-    setProfileData((prev) => ({ ...prev, [field]: value }));
+    setProfileData((prev) => {
+      if (field === "province") {
+        // Reset city and update province
+        return { ...prev, province: value, city: "", location: "" };
+      } else if (field === "city") {
+        // Update city and set location to the new city
+        return { ...prev, city: value, location: value };
+      } else {
+        return { ...prev, [field]: value };
+      }
+    });
   };
+
 
   const handleTagSelection = (tag) => {
     setProfileData((prev) => {
