@@ -43,7 +43,7 @@ class _ActionNotificationState extends ConsumerState<HeaderProfile> {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) =>
-                Notifications(notificationItems: notifications, email: email),
+                Notifications(email: email),
           ),
         );
         success = true;

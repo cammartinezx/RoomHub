@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/screens/home/home_new_user.dart';
-import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/screens/signup/signup.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
@@ -9,11 +7,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_frontend/aws_auth.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-
-import 'package:http/http.dart' as http;
-import 'package:flutter_frontend/config.dart';
-import 'package:flutter_frontend/utils/custom_exceptions.dart';
-import 'package:flutter_frontend/utils/response_handler.dart';
 
 // ConsumerStatefulWidget is a widget that maintains state and works with Riverpod's providers
 class OurLoginForm extends ConsumerStatefulWidget {
@@ -78,7 +71,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
           ElevatedButton(
             onPressed: () async {
               if (await amplifyLogin()) {
-                redirectHome();
+                // redirectHome();
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => UserHome(email: emailController.text),
@@ -214,8 +207,7 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
     //         MaterialPageRoute(
     //           builder: (context) => const OurHomeNewUser(),
     //         ),
-  }
-  // void redirectHome() async {
+ // void redirectHome() async {
   //   try {
   //     var response = await http.get(
   //       Uri.parse("${url}user/${emailController.text}/get-room"),
@@ -248,16 +240,16 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
   //   }
   // }
 
-  void logOut() async {
-    try {
-      // Accessing AWS authentication repository using Riverpod provider
-      final authAWSRepo = ref.read(authAWSRepositoryProvider);
-      // Attempting to sign in with email and password
-      await authAWSRepo.logOut(ref);
-      // Refresh the auth user provider after signing in
-      ref.refresh(authUserProvider);
-    } on AuthException catch (e) {
-      theme.buildToastMessage(e.message);
+    void logOut() async {
+      try {
+        // Accessing AWS authentication repository using Riverpod provider
+        final authAWSRepo = ref.read(authAWSRepositoryProvider);
+        // Attempting to sign in with email and password
+        await authAWSRepo.logOut(ref);
+        // Refresh the auth user provider after signing in
+        ref.refresh(authUserProvider);
+      } on AuthException catch (e) {
+        theme.buildToastMessage(e.message);
+      }
     }
-  }
 }

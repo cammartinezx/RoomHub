@@ -99,6 +99,7 @@ class _NotificationsState extends State<Notifications> {
             RefreshIndicator(
               onRefresh: _refreshData,
               child: SingleChildScrollView(
+                physics: AlwaysScrollableScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10, top: 2),
                   child: Column(
