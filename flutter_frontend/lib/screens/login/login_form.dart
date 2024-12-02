@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/home/home_new_user.dart';
 import 'package:flutter_frontend/screens/home/home.dart';
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/screens/signup/signup.dart';
 import 'package:flutter_frontend/widgets/our_container.dart';
 import 'package:flutter_frontend/providers.dart';
@@ -78,6 +79,11 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
             onPressed: () async {
               if (await amplifyLogin()) {
                 redirectHome();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => UserHome(email: emailController.text),
+                  ),
+                );
               }
             },
             child: const Text(
@@ -163,39 +169,45 @@ class _LoginFormState extends ConsumerState<OurLoginForm> {
     }
     return loginSuccess;
   }
-
+  
   void redirectHome() async {
-    try {
-      var response = await http.get(
-        Uri.parse("${url}user/${emailController.text}/get-room"),
-        headers: {"Content-Type": "application/json"},
-      );
-      print(response.body);
-
-      // Await the response from getResponse
-      String roomName =
-          await getResponse(response, responseType: 'getUserRoom');
-      // After successful response, navigate to the next screen
-      print(roomName);
-      if (roomName == "NA") {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const OurHomeNewUser(),
-          ),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => OurHome(roomID: roomName ,email: emailController.text,),
-          ),
-        );
-      }
-    } on UserException catch (e) {
-      print(e.toString());
-      theme
-          .buildToastMessage(e.message); // Display error if an exception occurs
-    }
+    //       Navigator.of(context).push(
+    //         MaterialPageRoute(
+    //           builder: (context) => const OurHomeNewUser(),
+    //         ),
   }
+  // void redirectHome() async {
+  //   try {
+  //     var response = await http.get(
+  //       Uri.parse("${url}user/${emailController.text}/get-room"),
+  //       headers: {"Content-Type": "application/json"},
+  //     );
+  //     print(response.body);
+  //
+  //     // Await the response from getResponse
+  //     String roomName =
+  //         await getResponse(response, responseType: 'getUserRoom');
+  //     // After successful response, navigate to the next screen
+  //     print(roomName);
+  //     if (roomName == "NA") {
+  //       Navigator.of(context).push(
+  //         MaterialPageRoute(
+  //           builder: (context) => const OurHomeNewUser(),
+  //         ),
+  //       );
+  //     } else {
+  //       Navigator.of(context).push(
+  //         MaterialPageRoute(
+  //           builder: (context) => OurHome(roomID: roomName ,email: emailController.text,),
+  //         ),
+  //       );
+  //     }
+  //   } on UserException catch (e) {
+  //     print(e.toString());
+  //     theme
+  //         .buildToastMessage(e.message); // Display error if an exception occurs
+  //   }
+  // }
 
   void logOut() async {
     try {

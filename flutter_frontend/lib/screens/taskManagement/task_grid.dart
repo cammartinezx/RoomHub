@@ -239,7 +239,7 @@ class _TaskGridState extends State<TaskGrid> {
   }
 
   String generateAnnouncementMsg(String user, String task) {
-    return '$user completed task: $task';
+    return '$task has been completed';
   }
 
   void sendAnnouncementRequest(String announcement, String sender) async {
