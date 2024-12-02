@@ -168,10 +168,12 @@ class _NotificationsState extends State<Notifications> {
   Future<List<NotificationItem>?> getNotifications(String email) async {
     List<NotificationItem>? items;
     try {
+      print("${url}user/$email/get-notification");
       var response = await http.get(
         Uri.parse("${url}user/$email/get-notification"),
         headers: {"Content-Type": "application/json"},
       );
+      print("${url}user/$email/get-notification");
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
 
@@ -216,6 +218,7 @@ class NotificationList extends StatelessWidget {
               onRemove: onRemoveNotification,
             );
           } else if (items[index].type == "match") {
+            print(items[index].from);
             return MatchNotification(
                 message: items[index].msg,
                 id: items[index].notificationid,

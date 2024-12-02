@@ -16,16 +16,14 @@ class MatchNotification extends ConsumerStatefulWidget {
   final String message;
   final String id;
   final String liked_id;
-  final Function(String id)  onRemove;
- 
+  final Function(String id) onRemove;
 
   const MatchNotification(
       {super.key,
       required this.message,
       required this.id,
       required this.liked_id,
-      required this.onRemove
-      });
+      required this.onRemove});
 
   @override
   ConsumerState<MatchNotification> createState() => _ActionNotificationState();
@@ -35,9 +33,8 @@ class _ActionNotificationState extends ConsumerState<MatchNotification> {
   final theme = OurTheme();
   late String userEmail;
   Profile? liked_profile;
-  
 
-    @override
+  @override
   void initState() {
     super.initState();
     _fetchLikedProfile();
@@ -45,13 +42,16 @@ class _ActionNotificationState extends ConsumerState<MatchNotification> {
 
   Future<void> _fetchLikedProfile() async {
     try {
-      liked_profile = await getProfile(widget.liked_id);
-      setState(() {}); // Update the state to reflect the fetched profile
+      Profile? temp = await getProfile(widget.liked_id);
+
+      setState(() {
+        liked_profile = temp;
+        print(liked_profile);
+      }); // Update the state to reflect the fetched profile
     } catch (e) {
       print("Error fetching liked profile: $e");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -84,62 +84,67 @@ class _ActionNotificationState extends ConsumerState<MatchNotification> {
                             child: ActionButton(
                                 text: "View Profile",
                                 onTap: () async {
-  if (liked_profile != null) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.all(10),
-          backgroundColor: Colors.transparent,
-          child: Stack(
-            children: [
-              Positioned(
-                top: 20,
-                right: 20,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Icon(
-                    Icons.close,
-                    size: 30,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              Center(
-                child: ProfileCard(
-                  profile: liked_profile!,
-                  gradient: [theme.mintgreen, theme.darkblue],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  } else {
-    // Handle case where profile is not loaded
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Profile is not yet loaded. Please try again."),
-      ),
-    );
-  }
-},
-
+                                  if (liked_profile != null) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          insetPadding:
+                                              const EdgeInsets.all(10),
+                                          backgroundColor: Colors.transparent,
+                                          child: Stack(
+                                            children: [
+                                              Positioned(
+                                                top: 20,
+                                                right: 20,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    size: 30,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                              Center(
+                                                child: ProfileCard(
+                                                  profile: liked_profile!,
+                                                  gradient: [
+                                                    theme.mintgreen,
+                                                    theme.darkblue
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  } else {
+                                    // Handle case where profile is not loaded
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                            "Profile is not yet loaded. Please try again."),
+                                      ),
+                                    );
+                                  }
+                                },
                                 color: theme.mintgreen)),
                         const Padding(
                           padding: EdgeInsets.only(right: 10),
                         ),
                         Expanded(
                             child: ActionButton(
-                                text: "Get Contacts",
-                                color: theme.darkgrey,
-                                onTap: () {
-                                  _showContacts(liked_profile?.contactType, liked_profile?.contact);
-                                },
-                            )),
+                          text: "Get Contacts",
+                          color: theme.darkgrey,
+                          onTap: () {
+                            _showContacts(liked_profile?.contactType,
+                                liked_profile?.contact);
+                          },
+                        )),
                       ],
                     ),
                     Divider(
@@ -154,50 +159,50 @@ class _ActionNotificationState extends ConsumerState<MatchNotification> {
         ));
   }
 
-void _showContacts(String? contactType, String? contact) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Reach out to your potential new roommate'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min, // Ensures the dialog is only as big as the content
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Contact Type: $contactType',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.indigo.shade900,
+  void _showContacts(String? contactType, String? contact) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Reach out to your potential new roommate'),
+          content: Column(
+            mainAxisSize: MainAxisSize
+                .min, // Ensures the dialog is only as big as the content
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Contact Type: $contactType',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.indigo.shade900,
+                ),
               ),
-            ),
-            const SizedBox(height: 8), // Add spacing between the lines
-            Text(
-              'Contact: $contact',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.indigo.shade700,
+              const SizedBox(height: 8), // Add spacing between the lines
+              Text(
+                'Contact: $contact',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.indigo.shade700,
+                ),
               ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text('OK'),
             ),
           ],
-        ),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: const Text('OK'),
-          ),
-        ],
-      );
-    },
-  );
-}
+        );
+      },
+    );
+  }
 
-
-Future<Profile> getProfile(String userId) async {
+  Future<Profile> getProfile(String userId) async {
     late Profile thisProfile;
     try {
       var response = await http.get(
@@ -222,4 +227,4 @@ Future<Profile> getProfile(String userId) async {
     }
     return thisProfile;
   }
-  }
+}
