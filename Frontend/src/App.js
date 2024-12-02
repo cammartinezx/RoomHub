@@ -78,7 +78,7 @@ function App() {
           It seems like you're on a mobile device. For the best experience, please visit our mobile-friendly version.
         </p>
         <a
-          href="https://roomhubtestdep.vercel.app"
+          href="https://roomhubflutter.vercel.app/"
           style={{
             textDecoration: 'none',
           }}
