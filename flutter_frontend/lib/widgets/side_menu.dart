@@ -84,7 +84,7 @@ class Navbar extends ConsumerWidget {
         ),
           ListTile(
             // leave room action
-              leading: const Icon(Icons.exit_to_app),
+              leading: const Icon(Icons.home),
               title: Text("Home",
                   style: TextStyle(
                     color: theme.darkblue,
