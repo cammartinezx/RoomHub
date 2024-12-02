@@ -42,8 +42,7 @@ class _ActionNotificationState extends ConsumerState<HeaderProfile> {
             NotificationItem.parseNotificationList(jsonData);
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>
-                Notifications(email: email),
+            builder: (context) => Notifications(email: email),
           ),
         );
         success = true;

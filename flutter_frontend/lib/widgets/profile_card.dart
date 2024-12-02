@@ -43,8 +43,8 @@ class _ProfileCardState extends State<ProfileCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 14),
-                          buildAbout(profile.description,
-                              profile.ethnicity,profile.tags),
+                          buildAbout(profile.description, profile.ethnicity,
+                              profile.tags),
                           const SizedBox(height: 20),
                           NumbersWidget(
                               overallRating: age.toString(),
@@ -53,10 +53,14 @@ class _ProfileCardState extends State<ProfileCard> {
                           const SizedBox(height: 20),
                           review(widget.gradient, profile.payingRent,
                               "Paying Rent/Utilities on Time"),
-                          review(widget.gradient, profile.noiseLevels, "Noise levels"),
-                          review(widget.gradient, profile.cleanliness, "Cleanliness"),
-                          review(widget.gradient, profile.chores, "Chores Participation"),
-                          review(widget.gradient, profile.communication, "Communication"),
+                          review(widget.gradient, profile.noiseLevels,
+                              "Noise levels"),
+                          review(widget.gradient, profile.cleanliness,
+                              "Cleanliness"),
+                          review(widget.gradient, profile.chores,
+                              "Chores Participation"),
+                          review(widget.gradient, profile.communication,
+                              "Communication"),
                           review(widget.gradient, profile.respect,
                               "Respect for Privacy and Boundaries"),
                         ],
@@ -219,20 +223,19 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   double calculatePercentage(String? average) {
-  // Attempt to parse the average as a double
-  double? avg = double.tryParse(average ?? '');
+    // Attempt to parse the average as a double
+    double? avg = double.tryParse(average ?? '');
 
-  // If parsing fails or avg is null, default to a safe value (e.g., 1.0)
-  avg ??= 1.0;
+    // If parsing fails or avg is null, default to a safe value (e.g., 1.0)
+    avg ??= 1.0;
 
-  // Ensure the value is between 1.0 and 5.0
-  avg = avg.clamp(1.0, 5.0);
+    // Ensure the value is between 1.0 and 5.0
+    avg = avg.clamp(1.0, 5.0);
 
-  // Calculate percentage
-  double percent = avg / 5.0;
+    // Calculate percentage
+    double percent = avg / 5.0;
 
-  // Round to a maximum of 2 decimal places
-  return double.parse(percent.toStringAsFixed(2));
-}
-
+    // Round to a maximum of 2 decimal places
+    return double.parse(percent.toStringAsFixed(2));
+  }
 }

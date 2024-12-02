@@ -155,7 +155,7 @@ class _CreateProfileState extends State<CreateProfile> {
                   const Center(
                     heightFactor: 2.0,
                     child: Text(
-                      'Edit my profile',
+                      'Create my profile',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 30,
@@ -181,7 +181,7 @@ class _CreateProfileState extends State<CreateProfile> {
               height: double.infinity,
               width: double.infinity,
               child: Padding(
-                padding: const EdgeInsets.only(left: 18.0, right: 18),
+                padding: const EdgeInsets.only(left: 23.0, right: 23.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -206,7 +206,8 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                       //L O C A T I O N
                       DropdownButtonFormField<String>(
-                          value: _selectedLocation,
+                        menuMaxHeight: 450,
+                        value: _selectedLocation,
                           icon: const Icon(Icons.arrow_drop_down),
                           decoration: InputDecoration(
                               label: Text(
@@ -229,6 +230,7 @@ class _CreateProfileState extends State<CreateProfile> {
                               _selectedLocation = newValue;
                             });
                           }),
+                      
                       const SizedBox(
                         height: 20.0,
                       ),
@@ -281,6 +283,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       ),
                       // E T H N I C I T Y
                       DropdownButtonFormField<String>(
+                        menuMaxHeight: 300,
                           value: _selectedEthnicity,
                           icon: const Icon(Icons.arrow_drop_down),
                           decoration: InputDecoration(
@@ -320,7 +323,7 @@ class _CreateProfileState extends State<CreateProfile> {
                           dropdownColor: Colors
                               .white, // Background color of dropdown items
                           style: TextStyle(color: theme.darkblue),
-                          items: gender
+                          items: contactType
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -388,6 +391,9 @@ class _CreateProfileState extends State<CreateProfile> {
                               );
                             }
                           }),
+                          const SizedBox(
+                        height: 50.0,
+                      ),
                     ],
                   ),
                 ),
@@ -470,17 +476,15 @@ class _CreateProfileState extends State<CreateProfile> {
       TextEditingController contact) async {
     try {
       var reqBody = {
-        {
-          "location": location,
-          "name": name,
-          "gender": gender,
-          "ethnicity": ethnicity,
-          "dob": dob,
-          "bio": bio,
-          "contact_type": contactType,
-          "contact": contact
-        }
-      };
+      "location": location,
+      "name": name.text,
+      "gender": gender,
+      "ethnicity": ethnicity,
+      "dob": dob.text,
+      "bio": bio.text,
+      "contact_type": contactType,
+      "contact": contact.text,
+    };
       print(reqBody);
       var response = await http.post(
         Uri.parse("$profile/$userId/$createProfilePth"),

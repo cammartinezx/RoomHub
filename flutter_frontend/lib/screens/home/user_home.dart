@@ -77,7 +77,7 @@ class _UserHomeState extends ConsumerState<UserHome> {
         ),
       );
     } else if (roomId == "NA") {
-      return OurHomeNewUser(onRefresh: _refreshData); // Assume it doesn't scroll internally
+      return OurHomeNewUser(email: widget.email, onRefresh: _refreshData); // Assume it doesn't scroll internally
     }else{
       return OurHomeExisting(roomID: roomId!, email: widget.email, onRefresh: _refreshData);
     }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import "package:flutter/material.dart";
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import "package:flutter_frontend/utils/chip_selection.dart";
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
@@ -186,6 +187,13 @@ class _TagFormState extends State<TagForm> {
                             List<String> selectedTags = getSelectedTags();
                             print("Selected Tags: $selectedTags");
                             updateTags(widget.userId, selectedTags);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    UserHome(email: widget.userId)
+                              ),
+                            );
+                            
                           }),
                       const SizedBox(height: 50), // Spacer below button
                     ],
