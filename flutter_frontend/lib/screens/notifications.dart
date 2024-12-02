@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/widgets/header.dart';
 import 'package:flutter_frontend/widgets/action_notification.dart';
+import 'package:flutter_frontend/widgets/match_notification.dart';
 import 'package:flutter_frontend/widgets/notification_item.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/noaction_notification.dart';
@@ -16,11 +17,10 @@ import '../utils/response_handler.dart';
 class Notifications extends StatefulWidget {
   // final List<NotificationItem> notificationItems;
   final String email;
-  const Notifications({
-    super.key,
-    // required this.notificationItems, // Marking the list as required
-    required this.email
-  });
+  const Notifications(
+      {super.key,
+      // required this.notificationItems, // Marking the list as required
+      required this.email});
 
   @override
   State<Notifications> createState() => _NotificationsState();
@@ -60,21 +60,21 @@ class _NotificationsState extends State<Notifications> {
     removeNotificationFromBackend(id);
   }
 
-  Future<void> removeNotificationFromBackend(id)async {
+  Future<void> removeNotificationFromBackend(id) async {
     debugPrint("rmv notif backend");
 
     String userEmail = widget.email;
     debugPrint(userEmail);
     try {
       var response = await http.delete(
-        Uri.parse("$user/$userEmail/notification/"+id),
+        Uri.parse("$user/$userEmail/notification/" + id),
         headers: {"Content-Type": "application/json"},
       );
       await deleteResponse(response, responseType: "deleteNotification");
       theme.buildToastMessage("Notification deleted successfully");
-    } on NotificationException catch(e) {
+    } on NotificationException catch (e) {
       theme.buildToastMessage(e.message);
-    } on UserException catch(e) {
+    } on UserException catch (e) {
       theme.buildToastMessage(e.message);
     }
   }
@@ -111,19 +111,26 @@ class _NotificationsState extends State<Notifications> {
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       const SizedBox(height: 10),
-                      notificationItems == null ? const Center(child: SizedBox( width:40, height:40, child: CircularProgressIndicator()))
-                          :
-                      notificationItems!.isEmpty
-                          ? Center(
-                            child: Text(
-                              'No notifications',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(color: theme.darkblue),
-                            ),
-                          )
-                          : NotificationList(items: notificationItems!, onRemoveNotification: removeNotification,),
+                      notificationItems == null
+                          ? const Center(
+                              child: SizedBox(
+                                  width: 40,
+                                  height: 40,
+                                  child: CircularProgressIndicator()))
+                          : notificationItems!.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    'No notifications',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(color: theme.darkblue),
+                                  ),
+                                )
+                              : NotificationList(
+                                  items: notificationItems!,
+                                  onRemoveNotification: removeNotification,
+                                ),
                     ],
                   ),
                 ),
@@ -134,21 +141,22 @@ class _NotificationsState extends State<Notifications> {
               left: 0,
               right: 0,
               child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 10), // Padding to create space for the back button
+                padding: const EdgeInsets.symmetric(
+                    vertical:
+                        10), // Padding to create space for the back button
 
                 // width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(50)
-                ),
-                child: Row(
-                    children: [
-                      BackButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Go back to the previous screen
-                        },
-                      ),]
-                ),
+                    borderRadius: BorderRadius.circular(50)),
+                child: Row(children: [
+                  BackButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop(); // Go back to the previous screen
+                    },
+                  ),
+                ]),
               ),
             ),
           ],
@@ -183,7 +191,8 @@ class NotificationList extends StatelessWidget {
   final List<NotificationItem> items;
   final Function(String id) onRemoveNotification;
 
-  const NotificationList({super.key, required this.items, required this.onRemoveNotification});
+  const NotificationList(
+      {super.key, required this.items, required this.onRemoveNotification});
 
   @override
   Widget build(BuildContext context) {
@@ -193,17 +202,27 @@ class NotificationList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: items.length,
         itemBuilder: (context, index) {
-          if(items[index].type == "announcement"){
-            return NoActionNotification(message: items[index].msg, id: items[index].notificationid, onRemove: onRemoveNotification,);
-          }
-          else if(items[index].type == "join-request"){
+          if (items[index].type == "announcement") {
+            return NoActionNotification(
+              message: items[index].msg,
+              id: items[index].notificationid,
+              onRemove: onRemoveNotification,
+            );
+          } else if (items[index].type == "join-request") {
             return ActionNotification(
               message: items[index].msg,
               id: items[index].notificationid,
               new_roommate: items[index].from,
               onRemove: onRemoveNotification,
             );
+          } else if (items[index].type == "match") {
+            return MatchNotification(
+                message: items[index].msg,
+                id: items[index].notificationid,
+                liked_id: items[index].from,
+                onRemove: onRemoveNotification);
           }
+
           return null;
         },
       ),
