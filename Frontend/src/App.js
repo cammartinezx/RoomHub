@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate, Navigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import LandingPage from './pages/LandingPage';
 import HomePage from './pages/HomePage';
@@ -126,8 +126,8 @@ function App() {
   const handleUserSignIn = async (user) => {
     const email = user?.signInDetails?.loginId; // Extract user email from the Amplify user object
 
-     // not really sure what this is doing right here- why would we try to add a new user on every request?
-      // prolly if we had a check user exist path or something like that 
+    // not really sure what this is doing right here- why would we try to add a new user on every request?
+    // prolly if we had a check user exist path or something like that 
     // if (email) {
     //   try{
     //     // Send a POST request to add the user to the database
@@ -141,7 +141,7 @@ function App() {
     //       console.error('Error while adding user:', error);
     //     }
     //   }
-    };
+  };
 
   // Component to handle login and redirection to /home
   const LoginRedirect = () => {
@@ -153,7 +153,7 @@ function App() {
           {({ signOut, user }) => {
             console.log("User object from Authenticator:", user);
             handleUserSignIn(user);
-            
+
             // Redirect to /home after login
             if (user) {
               navigate('/home');
@@ -168,7 +168,7 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop/>
+      <ScrollToTop />
       <div className="App">
         <Routes>
           {/* Public Route - Landing Page */}
@@ -176,9 +176,9 @@ function App() {
 
           {/* Login Route */}
           {/* <Route path="/login" element={<LoginRedirect />} /> */}
-          <Route path="/login" element={<CustomLogin/>}/>
-          <Route path="/sign-up" element={<CustomSignUp/>}/>
-          <Route path="/verify" element={<VerificationCodePage />}/>
+          <Route path="/login" element={<CustomLogin />} />
+          <Route path="/sign-up" element={<CustomSignUp />} />
+          <Route path="/verify" element={<VerificationCodePage />} />
 
           {/* Protected Routes */}
           <Route
@@ -186,13 +186,17 @@ function App() {
             element={
               <Authenticator>
                 {({ signOut, user }) => {
-                  handleUserSignIn(user); 
-                  return <HomePage user={user} signOut ={signOut} />;
+                  if (user) {
+                    return <HomePage user={user} signOut={signOut} />;
+                  }
+                  // If not authenticated, redirect to login
+                  return <Navigate to="/login" />;
                 }}
               </Authenticator>
             }
           />
-            <Route
+
+          <Route
             path="/user-profile"
             element={
               <Authenticator>
@@ -313,7 +317,7 @@ function App() {
               </Authenticator>
             }
           />
-               <Route
+          <Route
             path="/no-roommate"
             element={
               <Authenticator>
@@ -324,7 +328,7 @@ function App() {
               </Authenticator>
             }
           />
-               <Route
+          <Route
             path="/select-roommate"
             element={
               <Authenticator>
@@ -352,7 +356,7 @@ function App() {
               <Authenticator>
                 {({ signOut, user }) => {
                   handleUserSignIn(user);
-                  return <IncompleteProfile user={user} signOut ={signOut} />;
+                  return <IncompleteProfile user={user} signOut={signOut} />;
                 }}
               </Authenticator>
             }

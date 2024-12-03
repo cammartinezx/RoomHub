@@ -1,57 +1,59 @@
 import React, { useState } from 'react';
 import styles from '../styles/ConfirmSignUp.module.css';
-import { confirmSignUp } from 'aws-amplify/auth';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios'
-
+import { confirmSignUp, resendSignUpCode } from 'aws-amplify/auth';
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 
 const VerificationCodePage = () => {
   const [confirmationCode, setConfirmationCode] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { username, name } = location.state || {}; // Safely access state
-
-
 
   const handleVerify = async () => {
     setLoading(true);
     setErrorMessage('');
     try {
       // Confirm the verification code with AWS Cognito
-
-      console.log(username);
-      console.log(confirmationCode);
-      //   confirm signup function
       const { isSignUpComplete, nextStep } = await confirmSignUp({
         username,
-        confirmationCode
+        confirmationCode,
       });
 
-      console.log(isSignUpComplete);
-      console.log(nextStep);
-
-      //   if sign up complete-- backend call to add the user with their username
       if (isSignUpComplete) {
         console.log('Verification successful');
         // Send the additional field to your backend
         const response = await axios.post('https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/add-user', {
           id: username,
-          name: name, // The additional field you want to store
+          name, // The additional field you want to store
         });
-        console.log("Successful sign up");
-        console.log(response);
-        // navigate to the home page--- for some reason this requires user to log in.
+        console.log("Successful sign-up:", response);
         navigate('/home');
       }
-
     } catch (error) {
       console.error('Verification error:', error);
       setErrorMessage(error.message || 'Failed to verify code');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleResendCode = async () => {
+    setResendLoading(true);
+    setResendMessage('');
+    setErrorMessage('');
+    try {
+      await resendSignUpCode(username); // Corrected function
+      setResendMessage('Verification code resent successfully!');
+    } catch (error) {
+      console.error('Error resending verification code:', error);
+      setErrorMessage(error.message || 'Failed to resend code');
+    } finally {
+      setResendLoading(false);
     }
   };
 
@@ -70,12 +72,20 @@ const VerificationCodePage = () => {
           className={styles.input}
         />
         {errorMessage && <p className={styles.error}>{errorMessage}</p>}
+        {resendMessage && <p className={styles.success}>{resendMessage}</p>}
         <button
           onClick={handleVerify}
           className={styles.button}
           disabled={loading || !confirmationCode.trim()}
         >
           {loading ? 'Verifying...' : 'Verify'}
+        </button>
+        <button
+          onClick={handleResendCode}
+          className={styles.secondaryButton}
+          disabled={resendLoading}
+        >
+          {resendLoading ? 'Resending...' : 'Resend Code'}
         </button>
       </div>
     </div>

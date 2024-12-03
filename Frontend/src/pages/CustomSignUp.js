@@ -4,28 +4,45 @@ import { signUp } from 'aws-amplify/auth';
 import { useNavigate } from 'react-router-dom';
 
 const CustomSignUp = () => {
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSignUp = async () => {
+    if (!name.trim()) {
+      setError('Name is required.');
+      return;
+    }
+
+    if (!username.trim()) {
+      setError('Email is required.');
+      return;
+    }
+
+    if (!password.trim() || !confirmPassword.trim()) {
+      setError('Password and confirm password are required.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
     try {
       // Call AWS Amplify's sign-up method to create the user
       const { isSignUpComplete, userId, nextStep } = await signUp({
         username,
-        password
-      })
+        password,
+      });
 
-      console.log(isSignUpComplete)
-      console.log(userId)
-      console.log(nextStep)
+      console.log(isSignUpComplete, userId, nextStep);
 
-      //   getting to this point successfully means we are going for validation in the next step.
-      // pass the username=email and the name=a name as that is passed accross required for the add-user path
+      // Navigate to the verification page with username and name
       navigate('/verify', { state: { username, name } });
-
     } catch (error) {
       setError(error.message);
       console.error('Error during sign-up:', error);
@@ -36,6 +53,13 @@ const CustomSignUp = () => {
     <div className={styles.signUpContainer}>
       <div className={styles.signUpBox}>
         <h2 className={styles.title}>Create an Account</h2>
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className={styles.inputField}
+        />
         <input
           type="email"
           placeholder="Email"
@@ -51,10 +75,10 @@ const CustomSignUp = () => {
           className={styles.inputField}
         />
         <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          type="password"
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           className={styles.inputField}
         />
         <button onClick={handleSignUp} className={styles.signUpButton}>
