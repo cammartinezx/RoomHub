@@ -174,6 +174,7 @@ class UserInfoHandler {
                         let notif_item = await this.#notification_persistence.get_msg_type(item);
                         result.push(notif_item);
                     }
+                    result.reverse();
                     response.status(200).json({ All_Notifications: result });
                 }
             }
