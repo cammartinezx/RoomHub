@@ -131,12 +131,14 @@ describe("Transaction Persistence - Test getting user relationships", () => {
 
     it("Should not throw an error -- return the correct relationship that you own someone", async () => {
         const response = await transaction_persistence.get_relationships_by_role("testUser1", "debtor");
-        expect(response).toEqual(["You owe testUser2 CAD 15"]);
+        const message = `You owe ${response.Items[0].creditor} CAD ${response.Items[0].amount}`;
+        expect(message).toEqual("You owe testUser2 CAD 15");
     });
 
     it("Should not throw an error -- return the correct relationship that someone own you", async () => {
         const response = await transaction_persistence.get_relationships_by_role("testUser1", "creditor");
-        expect(response).toEqual(["testUser2 owes you CAD 25"]);
+        const message = `${response.Items[0].debtor} owes you CAD ${response.Items[0].amount}`;
+        expect(message).toEqual("testUser2 owes you CAD 25");
     });
 
     it("Should throw an error if the role is not either debtor or creditor", async () => {

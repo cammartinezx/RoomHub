@@ -75,7 +75,7 @@ describe("Unit test for creating user", () => {
 
     it("Send a success response verifying that the user was correctly created", async () => {
         // Setup valid request body
-        req.body = { id: "abc@gmail.com" };
+        req.body = { id: "abc@gmail.com", name: "hello world" };
 
         // Mock save_new_user to return a success response object with status and message
         user_info_handler.get_user_persistence().save_new_user.mockImplementation(() => ({
@@ -93,7 +93,7 @@ describe("Unit test for creating user", () => {
 
     it("should return 400 when user_id is invalid", async () => {
         // Setup invalid request body
-        req.body = { id: "" };
+        req.body = { id: "", name: "Hello World" };
 
         // Call create_user
         await user_info_handler.create_user(req, res);
@@ -249,11 +249,11 @@ describe("Testing getting a user notification", () => {
         expect(res.json).toHaveBeenCalledWith({
             All_Notifications: [
                 {
-                    msg: "dan invite luke to join their room",
+                    msg: "daniel invite lu to join their room",
                     type: "invite",
                 },
                 {
-                    msg: "daniel invite lu to join their room",
+                    msg: "dan invite luke to join their room",
                     type: "invite",
                 },
             ],

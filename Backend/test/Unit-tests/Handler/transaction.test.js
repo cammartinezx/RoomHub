@@ -137,12 +137,20 @@ describe("Unit test for Settle_debt function", () => {
     it("Send a success response verifying that transaction was correctly created and balance with roommates updated", async () => {
         // all validators by default don't do any internal logic here.
         // all persistence functions by default don't do any internal logic and just return once they;re called
+        const user_id = "lucifer";
+        const user = {
+            id: user_id,
+            name: "luba lubu",
+        };
 
+        transactionHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return user;
+        });
         // expense body-- validators mocked such that they always pass.
 
         await transactionHandler.settle_debt(req, res);
 
-        // expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({ message: "Transaction created successfully" });
     });
 
@@ -198,7 +206,15 @@ describe("Unit test for Settle_debt function", () => {
     it("Send a response signifying that there's a db error", async () => {
         // all other validators by default don't do any internal logic here.
         // all persistence functions by default don't do any internal logic and just return once they;re called
+        const user_id = "lucifer";
+        const user = {
+            id: user_id,
+            name: "luba lubu",
+        };
 
+        transactionHandler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return user;
+        });
         // mock Validate user exist function to throw error
         transactionHandler.get_transaction_persistence().generate_new_transaction.mockImplementation(() => {
             throw new Error("You don't have access to this service.");
@@ -232,43 +248,52 @@ describe("testing getting the user summary and relationship", () => {
     it("Getting the user summary and relationships successfully", async () => {
         const user_id = "lucifer";
         req.query.id = user_id;
-
+    
         validateString.mockResolvedValue();
         validateUserExist.mockResolvedValue();
-
-        const mockDebts = [10, 20, 30];
-        const mockCredits = [50, 60];
-        const mockDebtRelationships = ["You own ladykiller CAD 20", "You own babygirl CAD 40"];
-        const mockCreditRelationships = ["LadyGaga own you CAD 50", "Superman own you CAD 60"];
-
-        // Mock persistence methods
+    
+        const mockDebts = { Items: [{ creditor: "ladykiller", amount: 20 }, { creditor: "babygirl", amount: 40 }] };
+        const mockCredits = { Items: [{ debtor: "LadyGaga", amount: 50 }, { debtor: "Superman", amount: 60 }] };
+    
+        // Mock persistence methods to return arrays of amounts
         transactionHandler.get_transaction_persistence().get_amounts_by_role = jest
             .fn()
-            .mockImplementationOnce(() => mockDebts) // Debts
-            .mockImplementationOnce(() => mockCredits); // Credits
-
+            .mockImplementationOnce(() => mockDebts.Items.map((item) => item.amount)) // Extract amounts for debts
+            .mockImplementationOnce(() => mockCredits.Items.map((item) => item.amount)); // Extract amounts for credits
+    
+        const mockDebtRelationships = { Items: [{ creditor: "ladykiller", amount: 20 }, { creditor: "babygirl", amount: 40 }] };
+        const mockCreditRelationships = { Items: [{ debtor: "LadyGaga", amount: 50 }, { debtor: "Superman", amount: 60 }] };
+    
         transactionHandler.get_transaction_persistence().get_relationships_by_role = jest
             .fn()
             .mockImplementationOnce(() => mockDebtRelationships) // Debtor relationships
             .mockImplementationOnce(() => mockCreditRelationships); // Creditor relationships
-
-        // Mock sum_array method
-        transactionHandler.sum_array = jest.fn((array) => array.reduce((a, b) => a + b, 0));
-
+    
+        transactionHandler.get_user_persistence().get_user = jest.fn(async (userId) => {
+            const users = {
+                ladykiller: { name: "Ladykiller" },
+                babygirl: { name: "Babygirl" },
+                LadyGaga: { name: "LadyGaga" },
+                Superman: { name: "Superman" },
+            };
+            return users[userId];
+        });
+    
         await transactionHandler.get_summary(req, res);
-
+    
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             owed: 60,
             owns: 110,
             relationships: [
-                "You own ladykiller CAD 20",
-                "You own babygirl CAD 40",
-                "LadyGaga own you CAD 50",
-                "Superman own you CAD 60",
+                "You owe Ladykiller $20",
+                "You owe Babygirl $40",
+                "LadyGaga owes you $50",
+                "Superman owes you $60",
             ],
         });
     });
+    
 
     it("should send an error with invalid user ID", async () => {
         const user_id = "";

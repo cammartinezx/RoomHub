@@ -97,6 +97,17 @@ describe("Unit test for creating a task", () => {
         };
         user_info_handler.is_valid_user.mockImplementation(() => true);
         user_info_handler.areRoommates.mockImplementation(() => true);
+
+        const user_id = req.body.frm;
+        const user = {
+            id: user_id,
+            name: "userok",
+        }
+
+        task_handler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return user;
+        });
+        
         await task_handler.create_task(req, res);
         // Verify the response
         expect(res.status).toHaveBeenCalledWith(200);
@@ -236,6 +247,16 @@ describe("Unit test for editing a task", () => {
         };
         user_info_handler.is_valid_user.mockImplementation(() => true);
         user_info_handler.areRoommates.mockImplementation(() => true);
+
+        const user_id = req.body.frm;
+        const user = {
+            id: user_id,
+            name: "userok",
+        }
+
+        task_handler.get_user_persistence().get_user.mockImplementation((user_id) => {
+            return user;
+        });
 
         await task_handler.edit_task(req, res);
         // Verify the response

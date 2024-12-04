@@ -19,6 +19,7 @@ describe("NotificationPersistence Class-- Getting message and type", () => {
         result = await notif_persistence.get_msg_type(notif_id);
         expect(result).toStrictEqual({
             from: "test@gmail.com",
+            to: "test2@gmail.com",
             msg: "abc invite bcd",
             type: "invite",
             notification_id: "123",
