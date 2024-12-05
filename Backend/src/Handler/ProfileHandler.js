@@ -76,6 +76,7 @@ class ProfileHandler {
             let user_id = request.params.id.trim().toLowerCase();
             let location = request.body.location.trim().toLowerCase();
             let name = request.body.name.trim().toLowerCase();
+            let ethnicity = request.body.ethnicity.trim().toLowerCase();
             let gender = request.body.gender.trim().toLowerCase();
             let dob = request.body.dob.trim().toLowerCase();
             let bio = request.body.bio.trim().toLowerCase();
@@ -112,6 +113,7 @@ class ProfileHandler {
                 user_id,
                 location,
                 name,
+                ethnicity,
                 gender,
                 dob,
                 bio,
@@ -130,6 +132,7 @@ class ProfileHandler {
             let location = request.body.location.trim().toLowerCase();
             let name = request.body.name.trim().toLowerCase();
             let gender = request.body.gender.trim().toLowerCase();
+            let ethnicity = request.body.ethnicity.trim().toLowerCase();
             let dob = request.body.dob.trim().toLowerCase();
             let bio = request.body.bio.trim().toLowerCase();
             let contact_type = request.body.contact_type.trim().toLowerCase();
@@ -162,6 +165,7 @@ class ProfileHandler {
                 user_id,
                 location,
                 name,
+                ethnicity,
                 gender,
                 dob,
                 bio,

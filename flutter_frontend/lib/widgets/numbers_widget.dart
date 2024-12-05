@@ -14,11 +14,11 @@ class NumbersWidget extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildButton(context, '4.8', 'Overall'),
+          buildButton(context, overallRating, 'Overall'),
           buildDivider(),
-          buildButton(context, '35', 'Age'),
+          buildButton(context, age, 'Age'),
           buildDivider(),
-          buildButton(context, 'Male', 'Gender'),
+          buildButton(context, gender, 'Gender'),
         ],
       );
   Widget buildDivider() => Container(

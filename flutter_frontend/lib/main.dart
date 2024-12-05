@@ -29,27 +29,6 @@ import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 
 
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//         title: 'User Info Form',
-//         theme: OurTheme().buildTheme(),
-//         home: OurLogin()//FindRoommateMain(userId: "camila.martinez2002@gmail.com")
-//         );
-//   }
-// }
-
-// // Widget build(BuildContext context) {
-// //   return MaterialApp(
-// //     debugShowCheckedModeBanner: false,
-// //     theme: OurTheme().buildTheme(),
-// //     // home: const UserRoom(roomID: "UpBoiz", email: "camila.martinez2002@gmail.com"),
-// //     // home: Notification();
-// //     routes: {
-// //       '/loginPage': (context) => const OurLogin(),
-// //       //'/homeNewPage': (context) => const OurHomeNewUser(),
-// //     },
-// //   );
-// // }
 
 
 void main() {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
-import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/numbers_widget.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ProfileCard extends StatefulWidget {
   final Profile profile;
@@ -44,19 +42,23 @@ class _ProfileCardState extends State<ProfileCard> {
                         children: [
                           const SizedBox(height: 14),
                           buildAbout(profile.description,
-                              profile.ethnicity,profile.tags),
+                              profile.tags),
                           const SizedBox(height: 20),
                           NumbersWidget(
-                              overallRating: age.toString(),
+                              overallRating: profile.overall,
                               age: age.toString(),
                               gender: profile.gender),
                           const SizedBox(height: 20),
                           review(widget.gradient, profile.payingRent,
                               "Paying Rent/Utilities on Time"),
-                          review(widget.gradient, profile.noiseLevels, "Noise levels"),
-                          review(widget.gradient, profile.cleanliness, "Cleanliness"),
-                          review(widget.gradient, profile.chores, "Chores Participation"),
-                          review(widget.gradient, profile.communication, "Communication"),
+                          review(widget.gradient, profile.noiseLevels,
+                              "Noise levels"),
+                          review(widget.gradient, profile.cleanliness,
+                              "Cleanliness"),
+                          review(widget.gradient, profile.chores,
+                              "Chores Participation"),
+                          review(widget.gradient, profile.communication,
+                              "Communication"),
                           review(widget.gradient, profile.respect,
                               "Respect for Privacy and Boundaries"),
                         ],
@@ -98,7 +100,7 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
 
-  Widget buildAbout(String bio, String ethnicity, List<String>? tags) {
+  Widget buildAbout(String bio, List<String>? tags) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -115,21 +117,6 @@ class _ProfileCardState extends State<ProfileCard> {
             ),
           ),
           const SizedBox(height: 8), // Add spacing between ethnicity and bio
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 14, color: Colors.black),
-              children: [
-                const TextSpan(
-                  text: 'Ethnicity: ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: ethnicity,
-                  style: const TextStyle(fontWeight: FontWeight.normal),
-                ),
-              ],
-            ),
-          ),
           const SizedBox(height: 10),
           // Conditionally render tags only if they are non-null and non-empty
           if (tags != null && tags.isNotEmpty)
@@ -159,6 +146,7 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   Widget review(List<Color> gradients, String? avg, String type) {
+    print(avg);
     final percent = calculatePercentage(avg);
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -219,20 +207,19 @@ class _ProfileCardState extends State<ProfileCard> {
   }
 
   double calculatePercentage(String? average) {
-  // Attempt to parse the average as a double
-  double? avg = double.tryParse(average ?? '');
+    // Attempt to parse the average as a double
+    double? avg = double.tryParse(average ?? '');
 
-  // If parsing fails or avg is null, default to a safe value (e.g., 1.0)
-  avg ??= 1.0;
+    // If parsing fails or avg is null, default to a safe value (e.g., 1.0)
+    avg ??= 5.0;
 
-  // Ensure the value is between 1.0 and 5.0
-  avg = avg.clamp(1.0, 5.0);
+    // Ensure the value is between 1.0 and 5.0
+    avg = avg.clamp(1.0, 5.0);
 
-  // Calculate percentage
-  double percent = avg / 5.0;
+    // Calculate percentage
+    double percent = avg / 5.0;
 
-  // Round to a maximum of 2 decimal places
-  return double.parse(percent.toStringAsFixed(2));
-}
-
+    // Round to a maximum of 2 decimal places
+    return double.parse(percent.toStringAsFixed(2));
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/providers.dart';
+import 'package:flutter_frontend/screens/home/user_home.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/widgets/profile_card.dart';
@@ -12,16 +13,14 @@ import 'package:flutter_frontend/utils/our_theme.dart';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FindRoommateMain extends ConsumerStatefulWidget  {
-  
+class FindRoommateMain extends ConsumerStatefulWidget {
   const FindRoommateMain({super.key});
 
   @override
-  _FindRoommateMainState  createState() => _FindRoommateMainState();
+  _FindRoommateMainState createState() => _FindRoommateMainState();
 }
 
 class _FindRoommateMainState extends ConsumerState<FindRoommateMain> {
-  final CardSwiperController controller = CardSwiperController();
   final List<List<Color>> gradients = [
     [const Color(0xFFFFD700), const Color(0xFFFFB6C1)], // Yellow to Pink
     [const Color(0xFF0D47A1), const Color(0xFF80CBC4)], // Lavender to Sky Blue
@@ -85,18 +84,17 @@ class _FindRoommateMainState extends ConsumerState<FindRoommateMain> {
   ];
   List<Profile>? profiles;
   List<ProfileCard> cards = [];
-  late String userId; 
+  late String userId;
+    final theme = OurTheme();
   @override
   void initState() {
     super.initState();
     _loadNewMatches();
   }
 
-
-
   Future<void> _loadNewMatches() async {
     userId = ref.read(emailProvider);
-   
+
     profiles = await getNewMatches(userId);
 
     // Pre-assign a random gradient to each profile
@@ -112,77 +110,113 @@ class _FindRoommateMainState extends ConsumerState<FindRoommateMain> {
     });
   }
 
- @override
-@override
-Widget build(BuildContext context) {
-   
-  return Scaffold(
-    backgroundColor: Colors.grey.shade300, 
-    body: Stack(
-      children: [
-        // Main content below the back button
-        profiles == null
-            ? const Center(
-                child: CircularProgressIndicator(), // Show a loader
-              )
-            : profiles!.isEmpty
-                ? const Center(
-                    child: Text(
-                      'No profiles for this location',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 45),
-                      Expanded(
-                        child: CardSwiper(
-                          cardsCount: cards.length,
-                          numberOfCardsDisplayed:
-                              cards.length < 2 ? cards.length : 2,
-                          allowedSwipeDirection: AllowedSwipeDirection.only(
-                              left: true, right: true),
-                          onSwipe: (previousIndex, currentIndex, direction) async {
-                            if (direction == CardSwiperDirection.right) {
-                              bool success = await chechMatch(
-                                  userId, profiles![currentIndex!].userId);
-                              if (success) {
-                                setState(() {
-                                  cards.removeAt(currentIndex);
-                                });
-                              }
-                            }
-                            return true;
-                          },
-                          
-                      
-                          cardBuilder: (context, index, percentThresholdX,
-                                  percentThresholdY) =>
-                              cards[index],
-                        ),
+  @override
+  Widget build(BuildContext context) {
+  
+    return Scaffold(
+      backgroundColor: Colors.grey.shade300,
+      body: Stack(
+        children: [
+          // Main content below the back button
+          profiles == null
+              ? const Center(
+                  child: CircularProgressIndicator(), // Show a loader
+                )
+              : profiles!.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No profiles for this location',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                    ],
-                  ),
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 45),
+                        Expanded(
+                          child: CardSwiper(
+                            onEnd:_showEnd ,
+                            isLoop: false,
+                            cardsCount: cards.length,
+                            numberOfCardsDisplayed:
+                                cards.length < 2 ? cards.length : 2,
+                            allowedSwipeDirection: AllowedSwipeDirection.only(
+                                left: true, right: true),
+                            onSwipe:
+                                (previousIndex, currentIndex, direction) async {
+                              // Ensure that currentIndex is valid before using it
+                                  print(currentIndex);
+                              if (currentIndex != null &&
+                                  currentIndex >= 0 &&
+                                  currentIndex < cards.length) {
+                                if (direction == CardSwiperDirection.right) {
+                                  await checkMatch(
+                                      userId, profiles![currentIndex-1].userId);
+                            
+                                }
+                              }
+                              return true;
+                            },
+                            cardBuilder: (context, index, percentThresholdX,
+                                percentThresholdY) {
+                              return cards[index]; // Ensure index is valid
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
 
-        // Back button at the top-left corner
-        Positioned(
-          top: 50.0,
-          left: 10.0,
-          child: IconButton(
-            iconSize: 30.0,
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
+          // Back button at the top-left corner
+          Positioned(
+            top: 50.0,
+            left: 10.0,
+            child: IconButton(
+              iconSize: 30.0,
+              icon: const Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back to the previous screen
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+ 
+void _showEnd() {
+  // Show a message when no more profiles are available
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Text(
+          'No more profiles for this location.',
+          style: TextStyle(
+            fontSize: 18, 
+            fontWeight: FontWeight.bold, 
+            color: Colors.indigo.shade900,
           ),
         ),
-      ],
-    ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                   UserHome(email: userId)
+                              ),
+                            );
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
   );
 }
-
-Future<List<Profile>> getNewMatches(String userId) async {
+  
+  Future<List<Profile>> getNewMatches(String userId) async {
     List<Profile> result = [];
     try {
       var response = await http.get(
@@ -191,6 +225,8 @@ Future<List<Profile>> getNewMatches(String userId) async {
       );
       if (response.statusCode == 200) {
         final jsonData = jsonDecode(response.body);
+        print("$user/$userId/$getMatchesPth");
+        print(jsonData);
 
         List<Profile> profiles = Profile.parseProfileList(jsonData);
         for (var profile in profiles) {
@@ -209,18 +245,20 @@ Future<List<Profile>> getNewMatches(String userId) async {
     return result;
   }
 
-
-  Future<bool> chechMatch(String userId, String likedId) async {
+  Future<bool> checkMatch(String userId, String likedId) async {
+    print(userId);
+    print(likedId);
     bool usersMatch = false;
     try {
-       var reqBody = {
-        "id": likedId, 
+      var reqBody = {
+        "id": likedId,
       };
       var response = await http.post(
-        Uri.parse("$profile/$userId/$checkMatchPth"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(reqBody)
-      );
+          Uri.parse("$profile/$userId/$checkMatchPth"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody));
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200) {
         usersMatch = true;
       } else {
@@ -228,7 +266,7 @@ Future<List<Profile>> getNewMatches(String userId) async {
       }
     } on UserException catch (e) {
       print(e.toString());
-    } 
+    }
     return usersMatch;
   }
 }

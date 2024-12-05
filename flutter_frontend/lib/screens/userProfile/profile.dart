@@ -1,5 +1,5 @@
 class Profile {
-  final String userId;
+ final String userId;
   final String name;
   final String dob;
   final String gender;
@@ -8,17 +8,19 @@ class Profile {
   final String contactType;
   final String ethnicity;
   final String description;
-  final List<String>? tags;
-  final String? overall; // Optional tags field
-  final String? bio;
-  final String? noiseLevels;
-  final String? cleanliness;
-  final String? respect;
-  final String? communication;
-  final String? chores;
-  final String? payingRent;
+  final List<String> tags;
+  final String overall;
+  final String noiseLevels;
+  final String cleanliness;
+  final String respect;
+  final String communication;
+  final String chores;
+  final String payingRent;
+  final List<String> matches;
+  final List<String> potentialMatches;
 
-  Profile({
+
+   Profile({
     required this.userId,
     required this.name,
     required this.dob,
@@ -28,43 +30,50 @@ class Profile {
     required this.contactType,
     required this.ethnicity,
     required this.description,
-    this.tags,
-    this.overall,
-    this.bio,
-    this.noiseLevels,
-    this.cleanliness,
-    this.respect,
-    this.communication,
-    this.chores,
-    this.payingRent,
+    required this.tags,
+    required this.overall,
+    required this.noiseLevels,
+    required this.cleanliness,
+    required this.respect,
+    required this.communication,
+    required this.chores,
+    required this.payingRent,
+    required this.matches,
+    required this.potentialMatches,
   });
 
   // Factory constructor to create a Profile from JSON
-  factory Profile.fromJson(Map<String, dynamic> json) {
-    return Profile(
-      userId: json['user_id'],
-      name: json['name'],
-      dob: json['dob'],
-      gender: json['gender'],
-      location: json['location'],
-      contact: json['contact'],
-      contactType: json['contact_type'],
-      ethnicity: json['ethnicity'] ?? '', // Make sure this is handled
-      description: json['bio'] ?? '', // Ensure bio is handled as optional
-      tags: json['tags'] != null
-          ? List<String>.from(json['tags'])
-          : null, // Parse if present
-      overall: json['overall'] ?? '-',
-      noiseLevels: json['noise_levels'], // Handle as string, you can cast later
-      cleanliness: json['cleanliness'],
-      respect: json['respect'],
-      communication: json['communication'],
-      chores: json['chores'],
-      payingRent: json['paying_rent'],
-    );
-  }
+ factory Profile.fromJson(Map<String, dynamic> json) {
+  return Profile(
+    userId: json['user_id'] ?? '', // Fallback to an empty string
+    name: json['name'] ?? '',
+    dob: json['dob'] ?? '',
+    gender: json['gender'] ?? '',
+    location: json['location'] ?? '',
+    contact: json['contact'] ?? '',
+    contactType: json['contact_type'] ?? '',
+    ethnicity: json['ethnicity'] ?? '', // Optional field
+    description: json['bio'] ?? '', // Ensure bio is handled as optional
+    tags: json['tags'] != null
+        ? List<String>.from(json['tags'])
+        : [], // Fallback to an empty list
+    overall: json['overall'] ?? '-',
+    noiseLevels: json['noise_levels'] ?? '-', // Fallback to a placeholder
+    cleanliness: json['cleanliness'] ?? '-', // Fallback to a placeholder
+    respect: json['respect'] ?? '-', // Fallback to a placeholder
+    communication: json['communication'] ?? '-', // Fallback to a placeholder
+    chores: json['chores'] ?? '-', // Fallback to a placeholder
+    payingRent: json['paying_rent'] ?? '-', // Fallback to a placeholder
+    matches: json['matches'] != null && json['matches'] is Map
+        ? List<String>.from(json['matches'].keys) // Get keys as a list of strings
+        : [], // Fallback to an empty list
+    potentialMatches: json['potential_matches'] != null && json['potential_matches'] is Map
+        ? List<String>.from(json['potential_matches'].keys) // Get keys as a list of strings
+        : [], // Fallback to an empty list
+  );
+}
 
-  static Profile parseProfile(Map<String, dynamic> json) {
+ static Profile parseProfile(Map<String, dynamic> json) {
     return Profile.fromJson(json);
   }
 
