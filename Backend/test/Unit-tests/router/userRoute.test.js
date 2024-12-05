@@ -260,7 +260,7 @@ describe("User router tests", () => {
     });
     it("GET /user/:id/review-page/:roommate_id should return user public profile exists", async () => {
         const user_id = "test@gmail.com";
-        const roommate_id = "roommate123";
+        const roommate_id = "test2@gmail.com";
 
         const response = await request(app).get(`/user/${user_id}/review-page/${roommate_id}`);
         expect(response.status).toBe(200);
