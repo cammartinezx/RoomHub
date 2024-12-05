@@ -203,6 +203,7 @@ async function populate_db() {
                 type: "settle-up",
             },
         });
+
         await doc_client.send(put_command_transaction);
         await doc_client.send(put_command_transaction2);
         await doc_client.send(put_command_transaction3);
