@@ -1,12 +1,10 @@
 import 'dart:convert';
 import "package:flutter/material.dart";
-import 'package:flutter_frontend/screens/home/home.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
 import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
 import 'package:http/http.dart' as http;
-import 'package:flutter_frontend/lib/screens/userProfile/profile.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/config.dart';
 
@@ -61,7 +59,6 @@ class _EditProfileState extends State<EditProfile> {
       _dateController,
       _contactController;
   String? _selectedGender,
-      _selectedEthnicity,
       _selectedLocation,
       _selectedContactType;
   DateTime? selectedDate;
@@ -92,7 +89,6 @@ class _EditProfileState extends State<EditProfile> {
         _dateController = TextEditingController(text: currProfile?.dob);
         _contactController = TextEditingController(text: currProfile?.contact);
         _selectedGender = currProfile?.gender;
-        _selectedEthnicity = currProfile?.ethnicity;
         _selectedLocation = _selectedLocation = currProfile?.location;
 
         _selectedContactType = currProfile?.contactType;
@@ -154,7 +150,6 @@ class _EditProfileState extends State<EditProfile> {
     );
   }
 
-  @override
   Widget _buildProfileForm() {
     return Stack(
       children: [
@@ -317,34 +312,6 @@ class _EditProfileState extends State<EditProfile> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    // E T H N I C I T Y
-                    DropdownButtonFormField<String>(
-                        value: _selectedEthnicity,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        decoration: InputDecoration(
-                            label: Text(
-                              "Ethnicity",
-                              style: TextStyle(color: theme.darkblue),
-                            ),
-                            errorText: _ethnicityError),
-                        dropdownColor:
-                            Colors.white, // Background color of dropdown items
-                        style: TextStyle(color: theme.darkblue),
-                        items: ethnicity
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedEthnicity = newValue;
-                          });
-                        }),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
                     // C O N T A C T
                     DropdownButtonFormField<String>(
                         value: _selectedContactType,
@@ -450,8 +417,6 @@ class _EditProfileState extends State<EditProfile> {
           _selectedContactType == null ? 'This field is required' : null;
       _locationError =
           _selectedLocation == null ? 'This field is required' : null;
-      _ethnicityError =
-          _selectedEthnicity == null ? 'This field is required' : null;
       _dateError = (_dateController?.text.isEmpty ?? true)
           ? 'This field is required'
           : null;
@@ -486,7 +451,6 @@ class _EditProfileState extends State<EditProfile> {
             _nameController,
             _selectedGender,
             _dateController,
-            _selectedEthnicity,
             _descriptionController,
             _selectedContactType,
             _contactController);
@@ -533,7 +497,6 @@ class _EditProfileState extends State<EditProfile> {
       TextEditingController? name,
       String? gender,
       TextEditingController? dob,
-      String? ethnicity,
       TextEditingController? bio,
       String? contactType,
       TextEditingController? contact) async {

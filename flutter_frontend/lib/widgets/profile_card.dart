@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/screens/userProfile/profile.dart';
-import 'package:flutter_frontend/utils/our_theme.dart';
 import 'package:flutter_frontend/widgets/numbers_widget.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class ProfileCard extends StatefulWidget {
   final Profile profile;
@@ -43,7 +41,7 @@ class _ProfileCardState extends State<ProfileCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 14),
-                          buildAbout(profile.description, profile.ethnicity,
+                          buildAbout(profile.description,
                               profile.tags),
                           const SizedBox(height: 20),
                           NumbersWidget(
@@ -102,7 +100,7 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
 
-  Widget buildAbout(String bio, String ethnicity, List<String>? tags) {
+  Widget buildAbout(String bio, List<String>? tags) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
@@ -119,21 +117,6 @@ class _ProfileCardState extends State<ProfileCard> {
             ),
           ),
           const SizedBox(height: 8), // Add spacing between ethnicity and bio
-          RichText(
-            text: TextSpan(
-              style: const TextStyle(fontSize: 14, color: Colors.black),
-              children: [
-                const TextSpan(
-                  text: 'Ethnicity: ',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: ethnicity,
-                  style: const TextStyle(fontWeight: FontWeight.normal),
-                ),
-              ],
-            ),
-          ),
           const SizedBox(height: 10),
           // Conditionally render tags only if they are non-null and non-empty
           if (tags != null && tags.isNotEmpty)

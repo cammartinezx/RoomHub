@@ -1,7 +1,5 @@
 import 'dart:convert';
 import "package:flutter/material.dart";
-import 'package:flutter_frontend/screens/home/home.dart';
-import 'package:flutter_frontend/screens/userProfile/profile.dart';
 import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
 import "package:flutter_frontend/widgets/gradient_button.dart";
@@ -62,14 +60,12 @@ class _CreateProfileState extends State<CreateProfile> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _contactController = TextEditingController();
   String? _selectedGender,
-      _selectedEthnicity,
       _selectedLocation,
       _selectedContactType;
   DateTime? selectedDate;
   String? _nameError,
       _locationError,
       _genderError,
-      _ethnicityError,
       _contactError,
       _contactTypeError,
       _bioError,
@@ -106,7 +102,7 @@ class _CreateProfileState extends State<CreateProfile> {
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() {
         selectedDate = pickedDate;
-        _dateController?.text = _formatDate(pickedDate);
+        _dateController.text = _formatDate(pickedDate);
       });
     }
   }
@@ -281,35 +277,6 @@ class _CreateProfileState extends State<CreateProfile> {
                       const SizedBox(
                         height: 20.0,
                       ),
-                      // E T H N I C I T Y
-                      DropdownButtonFormField<String>(
-                        menuMaxHeight: 300,
-                          value: _selectedEthnicity,
-                          icon: const Icon(Icons.arrow_drop_down),
-                          decoration: InputDecoration(
-                              label: Text(
-                                "Ethnicity",
-                                style: TextStyle(color: theme.darkblue),
-                              ),
-                              errorText: _ethnicityError),
-                          dropdownColor: Colors
-                              .white, // Background color of dropdown items
-                          style: TextStyle(color: theme.darkblue),
-                          items: ethnicity
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _selectedEthnicity = newValue;
-                            });
-                          }),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
                       // C O N T A C T
                       DropdownButtonFormField<String>(
                           value: _selectedContactType,
@@ -417,8 +384,6 @@ class _CreateProfileState extends State<CreateProfile> {
           _selectedContactType == null ? 'This field is required' : null;
       _locationError =
           _selectedLocation == null ? 'This field is required' : null;
-      _ethnicityError =
-          _selectedEthnicity == null ? 'This field is required' : null;
       _dateError =
           _dateController.text.isEmpty ? 'This field is required' : null;
       _bioError =
@@ -431,7 +396,6 @@ class _CreateProfileState extends State<CreateProfile> {
         _locationError == null &&
         _contactError == null &&
         _contactTypeError == null &&
-        _ethnicityError == null &&
         _dateError == null &&
         _bioError == null) {
       print('Form is valid');
@@ -451,7 +415,6 @@ class _CreateProfileState extends State<CreateProfile> {
             _nameController,
             _selectedGender,
             _dateController,
-            _selectedEthnicity,
             _descriptionController,
             _selectedContactType,
             _contactController);
@@ -470,7 +433,6 @@ class _CreateProfileState extends State<CreateProfile> {
       TextEditingController name,
       String? gender,
       TextEditingController dob,
-      String? ethnicity,
       TextEditingController bio,
       String? contactType,
       TextEditingController contact) async {
@@ -479,7 +441,6 @@ class _CreateProfileState extends State<CreateProfile> {
       "location": location,
       "name": name.text,
       "gender": gender,
-      "ethnicity": ethnicity,
       "dob": dob.text,
       "bio": bio.text,
       "contact_type": contactType,
