@@ -146,12 +146,13 @@ class _FindRoommateMainState extends ConsumerState<FindRoommateMain> {
                             onSwipe:
                                 (previousIndex, currentIndex, direction) async {
                               // Ensure that currentIndex is valid before using it
+                                  print(currentIndex);
                               if (currentIndex != null &&
                                   currentIndex >= 0 &&
                                   currentIndex < cards.length) {
                                 if (direction == CardSwiperDirection.right) {
-                                  await chechMatch(
-                                      userId, profiles![currentIndex].userId);
+                                  await checkMatch(
+                                      userId, profiles![currentIndex-1].userId);
                             
                                 }
                               }
@@ -244,7 +245,9 @@ void _showEnd() {
     return result;
   }
 
-  Future<bool> chechMatch(String userId, String likedId) async {
+  Future<bool> checkMatch(String userId, String likedId) async {
+    print(userId);
+    print(likedId);
     bool usersMatch = false;
     try {
       var reqBody = {
@@ -254,6 +257,8 @@ void _showEnd() {
           Uri.parse("$profile/$userId/$checkMatchPth"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(reqBody));
+      print(response.statusCode);
+      print(response.body);
       if (response.statusCode == 200) {
         usersMatch = true;
       } else {
