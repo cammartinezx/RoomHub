@@ -51,8 +51,8 @@ The architectural change showcased both strengths and limitations:
  * Strengths:
    * Improved modularity and scalability.
    * Faster response times under moderate loads.
-   * Average Speed For Successful requests with Microservices architecture: 1027.126316
-   * Average Speed For Successful requests with Microservices architecture: 1517.259
+   * Average Speed For Successful requests with Microservices architecture: 1027.126316ms
+   * Average Speed For Successful requests without Microservices architecture(Monolithic Backend): 1517.259ms
 
  * Limitations:
    * Unforeseen bottlenecks in DynamoDB due to increased concurrency.
