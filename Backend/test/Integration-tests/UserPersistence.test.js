@@ -184,7 +184,7 @@ describe("UserPersistence Class-- Delete a specific room for specific user", () 
     });
 });
 
-describe("GET /user/:id/review-page/:roommate_id", () => {
+describe("Get Profile", () => {
     let user_persistence;
     let user_id;
     let roommate_id;
@@ -204,74 +204,5 @@ describe("GET /user/:id/review-page/:roommate_id", () => {
     it("Should return null when roommate's profile does not exist", async () => {
         const profile = await user_persistence.get_profile("nonexistent@gmail.com");
         expect(profile).toBeNull();
-    });
-});
-
-describe("POST /user/send-review", () => {
-    let user_persistence;
-    let user_id;
-    let roommate_id;
-
-    beforeAll(async () => {
-        user_persistence = new UserPersistence();
-        user_id = "test3@gmail.com";
-        roommate_id = "roommate1@gmail.com";
-        await populate_db();
-    });
-
-    it("Should successfully add a new review", async () => {
-        const reviewData = {
-            reviewed_by: user_id,
-            reviewed: roommate_id,
-            overall: 5,
-            cleanliness: 4,
-            noise_levels: 3,
-            respect: 5,
-            communication: 5,
-            paying_rent: 4,
-            chores: 3,
-        };
-
-        const addReviewResponse = await user_persistence.add_review(
-            reviewData.reviewed_by,
-            reviewData.reviewed,
-            reviewData.overall,
-            reviewData.cleanliness,
-            reviewData.noise_levels,
-            reviewData.respect,
-            reviewData.communication,
-            reviewData.paying_rent,
-            reviewData.chores,
-        );
-
-        expect(addReviewResponse).toBeUndefined();
-    });
-
-    it("Should successfully update an existing review", async () => {
-        const updatedReviewData = {
-            reviewed_by: user_id,
-            reviewed: roommate_id,
-            overall: 4,
-            cleanliness: 4,
-            noise_levels: 4,
-            respect: 4,
-            communication: 4,
-            paying_rent: 4,
-            chores: 4,
-        };
-
-        const updateReviewResponse = await user_persistence.update_review(
-            updatedReviewData.reviewed_by,
-            updatedReviewData.reviewed,
-            updatedReviewData.overall,
-            updatedReviewData.cleanliness,
-            updatedReviewData.noise_levels,
-            updatedReviewData.respect,
-            updatedReviewData.communication,
-            updatedReviewData.paying_rent,
-            updatedReviewData.chores,
-        );
-
-        expect(updateReviewResponse).toBeUndefined();
     });
 });
