@@ -320,8 +320,78 @@ async function populate_balance() {
     }
 }
 
+async function populate_profile() {
+    try {
+        // adding profile
+        const put_profile = new PutCommand({
+            TableName: "Profiles",
+            Item: {
+                user_id: "test",
+                bio: "hello",
+                chores: "4.00",
+                cleanliness: "2.00",
+                communication: "4.00",
+                contact: "202020202",
+                contact_type: "mobile",
+                dob: "2001-01-01",
+                gender: "male",
+                likes: new Set(["test1", "test2"]),
+                location: "winnipeg",
+                matches: new Set(["test456"]),
+                name: "baby",
+                noise_levels: "4.00",
+                overall: "4.00",
+                paying_rent: "4.00",
+                respect: "2.00",
+                tags: new Set([
+                    "Eco-Conscious ♻️",
+                    "Likes Cooking 🍲",
+                    "Short-Term Friendly 🗓️",
+                    "Vegetarian/Vegan 🌱",
+                ]),
+            },
+        });
+
+        const put_profile2 = new PutCommand({
+            TableName: "Profiles",
+            Item: {
+                user_id: "test123",
+                bio: "chim to",
+                chores: "3.00",
+                cleanliness: "1.00",
+                communication: "5.00",
+                contact: "2020242302",
+                contact_type: "mobile",
+                dob: "2000-03-04",
+                gender: "male",
+                likes: new Set(["test1", "test2"]),
+                location: "winnipeg",
+                matches: new Set(["test456"]),
+                name: "lady",
+                noise_levels: "3.00",
+                overall: "2.00",
+                paying_rent: "1.00",
+                respect: "3.00",
+                tags: new Set([
+                    "Creative-Friendly 🎨",
+                    "Eco-Conscious ♻️",
+                    "Fitness Enthusiast 🏋️",
+                    "LGBTQ+ Friendly 🏳️‍🌈",
+                    "Night Owl 🌙",
+                ]),
+            },
+        });
+
+        await doc_client.send(put_profile);
+        await doc_client.send(put_profile2);
+    } catch (e) {
+        throw new Error("Something went wrong " + e.message);
+    }
+}
+
 // async function teardown_db() {}
 module.exports = {
     populate_db,
     populate_balance,
+    populate_profile,
 };
