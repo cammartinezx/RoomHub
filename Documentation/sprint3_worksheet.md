@@ -253,7 +253,8 @@ Running the Tool:
 
 
 ## Throughts
+Given what we know now, we would have made significant changes to the design of our project, particularly in how we structured the integration with AWS Lambda. While AWS Lambda provided a scalable and efficient solution for handling backend logic, we underestimated the complexity of managing multiple functions for distinct tasks, which sometimes led to confusion and redundancy. Moving forward, we would have designed a more centralized architecture with better modularization of the Lambda functions, ensuring each function handles a specific purpose without overlap. Additionally, implementing robust monitoring and logging systems earlier in the process would have allowed us to identify and address bottlenecks or errors more effectively. These changes would not only streamline the development process but also enhance the overall performance and maintainability of our project.
 
 
 ## Other thoughts
-
+Regarding the project setup, adding clearer and more specific requirements early on would have streamlined our development process. There were moments when ambiguity in requirements led to wasted time on unnecessary revisions. Also, periodic check-ins were valuable but could be reduced in frequency. While they kept the project on track, fewer but more comprehensive check-ins might have allowed for deeper focus on development between meetings. Lastly, while rotating roles each sprint provided valuable learning oppoopportunities for every group member, it also slowed down the production and quality of our development process due to learning curves. Each member having a struct role would allow them to focus completely on that throughout leading to faster and more quality output.
