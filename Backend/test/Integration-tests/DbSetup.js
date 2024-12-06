@@ -256,7 +256,7 @@ async function populate_profile() {
                 gender: "male",
                 likes: new Set(["test1", "test2"]),
                 location: "winnipeg",
-                matches: new Set(["test123", "test456"]),
+                matches: new Set(["test456"]),
                 name: "baby",
                 noise_levels: "4.00",
                 overall: "4.00",
@@ -285,7 +285,7 @@ async function populate_profile() {
                 gender: "male",
                 likes: new Set(["test1", "test2"]),
                 location: "winnipeg",
-                matches: new Set(["test", "test456"]),
+                matches: new Set(["test456"]),
                 name: "lady",
                 noise_levels: "3.00",
                 overall: "2.00",
@@ -304,7 +304,7 @@ async function populate_profile() {
         await doc_client.send(put_profile);
         await doc_client.send(put_profile2);
     } catch (e) {
-        throw new Error("Something went wrong " + error.message);
+        throw new Error("Something went wrong " + e.message);
     }
 }
 

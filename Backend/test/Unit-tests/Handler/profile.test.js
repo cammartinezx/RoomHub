@@ -2,7 +2,6 @@ const ProfileHandler = require("../../../src/Handler/ProfileHandler");
 const { mockRequest, mockResponse } = require("mock-req-res");
 const {
     validateString,
-    validateDate,
     validateUserExist,
     validateNonEmptyList,
     validateProfileExist,
@@ -306,18 +305,18 @@ describe("Unit test for get_profile function", () => {
             contact: "2020020202",
             dob: "2001-01-14",
             matches: [
-            "daohl@myumanitoba.ca",
-            "ngoa4@myumanitoba.ca",
-            "victornnah689@gmail.com"
+                "daohl@myumanitoba.ca",
+                "ngoa4@myumanitoba.ca",
+                "victornnah689@gmail.com"
             ],
             name: "lukerq",
             gender: "male",
             tags: [
-            "Health-Conscious 🥗",
-            "LGBTQ+ Friendly 🏳️‍🌈",
-            "Non-Smoker 🚭",
-            "Open to Guests 👥",
-            "Women-Only 🚺"
+                "Health-Conscious 🥗",
+                "LGBTQ+ Friendly 🏳️‍🌈",
+                "Non-Smoker 🚭",
+                "Open to Guests 👥",
+                "Women-Only 🚺"
             ],
             potential_matches: [],
         }
