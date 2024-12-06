@@ -296,7 +296,6 @@ class ProfilePersistence {
         }
     }
 
-
     async update_profile_averages(user_id, averages) {
         const update_command = new UpdateCommand({
             TableName: this.#table_name,

@@ -19,7 +19,7 @@ describe("Profile Persistence-- Test create a new profile", () => {
             "2000-10-10",
             "chim to",
             "20202020202",
-            "mobile"
+            "mobile",
         );
 
         expect(result).toEqual({
@@ -37,7 +37,7 @@ describe("Profile Persistence-- Test create a new profile", () => {
             "2000-10-10",
             "chim to",
             "20202020202",
-            "mobile"
+            "mobile",
         );
 
         expect(result).toEqual({
@@ -47,14 +47,9 @@ describe("Profile Persistence-- Test create a new profile", () => {
     });
 
     it("Should throw an error-- Signifying that a profile was not created", async () => {
-        await expect(
-            profile_persistence.create_profile(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.create_profile(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test update a profile", () => {
     let profile_persistence;
@@ -73,7 +68,7 @@ describe("Profile Persistence-- Test update a profile", () => {
             "2001-10-10",
             "chim to",
             "20202020202",
-            "mobile"
+            "mobile",
         );
 
         expect(result).toEqual({
@@ -91,7 +86,7 @@ describe("Profile Persistence-- Test update a profile", () => {
             "2000-10-10",
             "chim to",
             "20202020202",
-            "mobile"
+            "mobile",
         );
 
         expect(result).toEqual({
@@ -101,14 +96,9 @@ describe("Profile Persistence-- Test update a profile", () => {
     });
 
     it("Should throw an error-- Signifying that a profile was not updated", async () => {
-        await expect(
-            profile_persistence.update_profile(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.update_profile(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test get a profile", () => {
     let profile_persistence;
@@ -138,13 +128,8 @@ describe("Profile Persistence-- Test get a profile", () => {
             overall: "4.00",
             paying_rent: "4.00",
             respect: "2.00",
-            tags: new Set([
-                "Eco-Conscious ♻️",
-                "Likes Cooking 🍲",
-                "Short-Term Friendly 🗓️",
-                "Vegetarian/Vegan 🌱",
-            ]),
-        }
+            tags: new Set(["Eco-Conscious ♻️", "Likes Cooking 🍲", "Short-Term Friendly 🗓️", "Vegetarian/Vegan 🌱"]),
+        };
         const result = await profile_persistence.get_profile(user_id);
 
         expect(result).toEqual(expected_result);
@@ -157,7 +142,6 @@ describe("Profile Persistence-- Test get a profile", () => {
         expect(result).toEqual(null);
     });
 });
-
 
 describe("Profile Persistence-- Test update tags", () => {
     let profile_persistence;
@@ -204,14 +188,9 @@ describe("Profile Persistence-- Test update tags", () => {
     });
 
     it("Should throw an error-- Signifying that tags were not updated", async () => {
-        await expect(
-            profile_persistence.update_tags(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.update_tags(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test add a like", () => {
     let profile_persistence;
@@ -230,7 +209,6 @@ describe("Profile Persistence-- Test add a like", () => {
         });
     });
 });
-
 
 describe("Profile Persistence-- Test add a match", () => {
     let profile_persistence;
@@ -259,14 +237,9 @@ describe("Profile Persistence-- Test add a match", () => {
     });
 
     it("Should throw an error-- Signifying that match not add", async () => {
-        await expect(
-            profile_persistence.add_match(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.add_match(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test delete a like", () => {
     let profile_persistence;
@@ -295,14 +268,9 @@ describe("Profile Persistence-- Test delete a like", () => {
     });
 
     it("Should throw an error-- Signifying that like is not delete", async () => {
-        await expect(
-            profile_persistence.delete_like(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.delete_like(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test is user liked by", () => {
     let profile_persistence;
@@ -340,14 +308,9 @@ describe("Profile Persistence-- Test is user liked by", () => {
     });
 
     it("Should throw an error-- Signifying that function throw an error", async () => {
-        await expect(
-            profile_persistence.is_user_liked_by(
-                15,
-            ),
-        ).rejects.toThrow();
+        await expect(profile_persistence.is_user_liked_by(15)).rejects.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test update profile averages", () => {
     let profile_persistence;
@@ -366,14 +329,11 @@ describe("Profile Persistence-- Test update profile averages", () => {
             communication: "4.00",
             paying_rent: "5.00",
             chores: "1.00",
-        }
+        };
 
-        await expect(
-            profile_persistence.update_profile_averages("test", averages),
-        ).resolves.not.toThrow();
+        await expect(profile_persistence.update_profile_averages("test", averages)).resolves.not.toThrow();
     });
 });
-
 
 describe("Profile Persistence-- Test getting profiles by locations", () => {
     let profile_persistence;
@@ -451,7 +411,6 @@ describe("Profile Persistence-- Test getting profiles by locations", () => {
         expect(result).toEqual(expected_result);
     });
 
-
     it("Should not throw any error-- Signifying that there is no profiles based on location", async () => {
         const result = await profile_persistence.get_profiles_by_location("toronto");
 
@@ -459,10 +418,6 @@ describe("Profile Persistence-- Test getting profiles by locations", () => {
     });
 
     it("Should throw an error-- Signifying that there is an db error happen", async () => {
-
-        await expect(
-            profile_persistence.get_profiles_by_location(undefined),
-        ).rejects.toThrow();
+        await expect(profile_persistence.get_profiles_by_location(undefined)).rejects.toThrow();
     });
 });
-
