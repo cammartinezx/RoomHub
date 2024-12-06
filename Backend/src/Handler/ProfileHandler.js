@@ -76,7 +76,6 @@ class ProfileHandler {
             let user_id = request.params.id.trim().toLowerCase();
             let location = request.body.location.trim().toLowerCase();
             let name = request.body.name.trim().toLowerCase();
-            let ethnicity = request.body.ethnicity.trim().toLowerCase();
             let gender = request.body.gender.trim().toLowerCase();
             let dob = request.body.dob.trim().toLowerCase();
             let bio = request.body.bio.trim().toLowerCase();
@@ -113,14 +112,13 @@ class ProfileHandler {
                 user_id,
                 location,
                 name,
-                ethnicity,
                 gender,
                 dob,
                 bio,
                 contact,
                 contact_type,
             );
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Profile created successfully" });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
@@ -132,7 +130,6 @@ class ProfileHandler {
             let location = request.body.location.trim().toLowerCase();
             let name = request.body.name.trim().toLowerCase();
             let gender = request.body.gender.trim().toLowerCase();
-            let ethnicity = request.body.ethnicity.trim().toLowerCase();
             let dob = request.body.dob.trim().toLowerCase();
             let bio = request.body.bio.trim().toLowerCase();
             let contact_type = request.body.contact_type.trim().toLowerCase();
@@ -165,14 +162,13 @@ class ProfileHandler {
                 user_id,
                 location,
                 name,
-                ethnicity,
                 gender,
                 dob,
                 bio,
                 contact,
                 contact_type,
             );
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Profile updated successfully." });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
@@ -201,7 +197,7 @@ class ProfileHandler {
 
             const tagSet = new Set(tags);
             let result = await this.#profile_persistence.update_tags(user_id, tagSet);
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Tags updated successfully." });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }

@@ -1,6 +1,87 @@
 # Sprint 3 worksheet
 
 ## Load testing
+#### Environment for Load Testing
+#### Tool Used:
+We used Apache JMeter, an open-source performance testing tool, to simulate load and generate reports. JMeter allowed us to define and execute multiple threads to simulate concurrent user behavior.
+
+##### Load Test Test plan stored in : 
+RoomHubTestplan.jmx
+
+##### Load Test results in : 
+RoomHub160vs60,RoomHub400vs60,RoomHub3200vs300
+
+#### Load Test Cases:
+##### User Flow Simulation:
+Actions focused on the three main features:
+a. Task management (create, retrieve tasks).
+b. Shared expenses (create and fetch transactions).
+c. Announcements and reminders (send announcements, fetch notifications).
+Login/logout was excluded as they directly interact with AWS Amplify.
+API Paths Tested:
+* CreateTransaction: Create shared expenses.
+* CreateTask: Add a new task.
+* SendAnnouncement: Send group announcements.
+* GetSummary, GetCompletedTasks, GetPendingTasks: Retrieve task lists.
+* GetNotifications: Retrieve reminders.
+* GetTransactions: Retrieve all transactions.
+
+#### Test Scenarios:
+160vs60: 80 concurrent users, 8 requests per user.
+400vs60: 50 concurrent users simulating a sudden spike, 8 requests per user.
+3200vs300: 400 concurrent users with gradual buildup, 8 requests per user.
+
+#### Load Testing Report
+| Test Scenario   | Concurrent Users | Successful Requests | Remarks                                   |
+|-----------------|------------------|---------------------|-------------------------------------------|
+| 160vs60         | 160              | 158                 | Performed well under regular load.       |
+| 400vs60         | 400              | 292                 | Performance degraded under spike load.   |
+| 3200vs300       | 3200             | 882                 | Significant failure rate under sustained heavy load. |
+
+
+#### Metrics Observed:
+Response Time:
+For 160vs60, response times stayed under the 500ms goal for 90% of requests.
+For 400vs60, response times exceeded 500ms for around 40% of requests.
+For 3200vs300, response times consistently exceeded the 500ms target, with many timeouts.
+
+#### CPU and Memory Usage:
+AWS Lambda showed increased latency under higher loads due to cold start effects and lack of scaling efficiency.
+
+#### Bottleneck Found
+One significant bottleneck was the lack of effective scaling for high concurrent user spikes. The Lambda function cold starts and DynamoDB read/write capacity limits were prominent factors. For the 3200vs300 test, the number of simultaneous requests overwhelmed the system, leading to timeouts and errors.
+
+#### Non-Functional Requirement Assessment
+
+##### Original Goal:
+Implement in-memory caching to reduce database query load by at least 50% for frequently accessed data.
+Maintain response times under 500ms for 90% of requests with 100 concurrent users.
+
+##### Results:
+Achieved for regular loads (160vs60): Despite not implementing in-memory caching, the system still managed to meet response time goals under regular load. This indicates that the backend architecture and database indexing were optimized enough to handle moderate loads efficiently.
+Partially achieved for spikes (400vs60): Response times degraded during spikes but stayed under 500ms for about 60% of requests. The lack of in-memory caching likely contributed to increased query times.
+Failed for heavy sustained loads (3200vs300): The system struggled significantly, with high error rates and timeouts, confirming that caching could have played a critical role in handling such scenarios.
+
+##### Why Did We Meet Some Goals Without Caching?
+Efficient Database Queries:
+Well-optimized queries in DynamoDB reduced response times even without caching.
+AWS Lambda Scalability (Regular Loads):
+AWS Lambda's ability to handle regular loads ensured the backend performed well under non-peak conditions.
+Minimal Cold Starts:
+During the 160vs60 test, cold starts were negligible due to steady, predictable traffic.
+
+##### Could Goals Be Fully Met with Money?
+Yes, additional investment could help achieve full compliance with non-functional requirements:
+Introduce Caching:
+Implementing AWS Elasticache (e.g., Redis) would reduce database dependency and drastically improve response times for frequently accessed data.
+Provisioned Lambda Concurrency:
+Reducing cold start times during spikes would improve performance in high-load scenarios.
+Increase DynamoDB Throughput:
+Setting auto-scaling read/write capacity would help handle peak loads.
+
+#### Conclusion
+Despite not implementing in-memory caching, the application met its goals for regular loads and partially met them during spikes. This demonstrates that efficient backend design can achieve strong performance even without caching, but sustained heavy loads exposed the system's limitations. With caching and infrastructure upgrades, the app could meet all non-functional goals effectively.
+
 
 
 ## Security analysis

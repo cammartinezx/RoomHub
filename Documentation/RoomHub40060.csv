@@ -1,0 +1,401 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1732599281001,4103,CreateTransaction,200,OK,Thread Group 1-1,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,4091,0,627
+1732599282066,3292,CreateTransaction,200,OK,Thread Group 1-2,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,3291,0,131
+1732599285107,614,CreateTask,200,OK,Thread Group 1-1,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,614,0,0
+1732599285359,615,CreateTask,200,OK,Thread Group 1-2,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,615,0,0
+1732599285723,457,SendAnnouncement,200,OK,Thread Group 1-1,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,457,0,0
+1732599283262,2975,CreateTransaction,200,OK,Thread Group 1-3,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,2975,0,128
+1732599285663,593,CreateTransaction,200,OK,Thread Group 1-5,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,593,0,263
+1732599286183,330,GetSummary,200,OK,Thread Group 1-1,text,true,,736,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,330,0,0
+1732599286258,394,CreateTask,200,OK,Thread Group 1-5,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,394,0,0
+1732599286239,570,CreateTask,200,OK,Thread Group 1-3,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,570,0,0
+1732599286514,444,CompletedTasks,200,OK,Thread Group 1-1,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,444,0,0
+1732599286653,386,SendAnnouncement,200,OK,Thread Group 1-5,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,386,0,0
+1732599286810,426,SendAnnouncement,200,OK,Thread Group 1-3,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,426,0,0
+1732599286864,408,CreateTransaction,200,OK,Thread Group 1-6,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,408,0,174
+1732599286959,464,PendingTask,200,OK,Thread Group 1-1,text,true,,1541,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,464,0,0
+1732599287237,278,GetSummary,200,OK,Thread Group 1-3,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,277,0,0
+1732599287274,259,CreateTask,200,OK,Thread Group 1-6,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,259,0,0
+1732599287534,282,SendAnnouncement,200,OK,Thread Group 1-6,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,281,0,0
+1732599287424,535,GetNotifications,200,OK,Thread Group 1-1,text,true,,1413,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,534,0,0
+1732599284461,3574,CreateTransaction,200,OK,Thread Group 1-4,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,3574,0,186
+1732599287818,248,GetSummary,200,OK,Thread Group 1-6,text,true,,740,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,248,0,0
+1732599287516,553,CompletedTasks,200,OK,Thread Group 1-3,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,553,0,0
+1732599287960,143,GetTransaction,200,OK,Thread Group 1-1,text,true,,6894,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,143,0,0
+1732599288036,377,CreateTask,200,OK,Thread Group 1-4,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,377,0,0
+1732599288066,506,CompletedTasks,200,OK,Thread Group 1-6,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,506,0,0
+1732599288070,543,PendingTask,200,OK,Thread Group 1-3,text,true,,1700,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,543,0,0
+1732599288068,607,CreateTransaction,200,OK,Thread Group 1-7,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,607,0,196
+1732599288413,280,SendAnnouncement,200,OK,Thread Group 1-4,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,280,0,0
+1732599285976,2788,SendAnnouncement,200,OK,Thread Group 1-2,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,2788,0,0
+1732599288765,237,GetSummary,200,OK,Thread Group 1-2,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,237,0,0
+1732599288694,400,GetSummary,200,OK,Thread Group 1-4,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,400,0,0
+1732599288573,549,PendingTask,200,OK,Thread Group 1-6,text,true,,1857,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,549,0,0
+1732599288676,576,CreateTask,200,OK,Thread Group 1-7,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,576,0,0
+1732599288614,745,GetNotifications,200,OK,Thread Group 1-3,text,true,,1817,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,745,0,0
+1732599289003,526,CompletedTasks,200,OK,Thread Group 1-2,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,526,0,0
+1732599289360,176,GetTransaction,200,OK,Thread Group 1-3,text,true,,7131,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,176,0,0
+1732599289253,428,SendAnnouncement,200,OK,Thread Group 1-7,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,428,0,0
+1732599289263,443,CreateTransaction,200,OK,Thread Group 1-8,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,443,0,217
+1732599287040,2693,GetSummary,200,OK,Thread Group 1-5,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,2693,0,0
+1732599289095,705,CompletedTasks,200,OK,Thread Group 1-4,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,705,0,0
+1732599289530,541,PendingTask,200,OK,Thread Group 1-2,text,true,,2014,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,541,0,0
+1732599289683,391,GetSummary,200,OK,Thread Group 1-7,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,391,0,0
+1732599289123,966,GetNotifications,200,OK,Thread Group 1-6,text,true,,1817,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,966,0,0
+1732599289707,406,CreateTask,200,OK,Thread Group 1-8,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,406,0,0
+1732599290089,168,GetTransaction,200,OK,Thread Group 1-6,text,true,,7368,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,168,0,0
+1732599289800,581,PendingTask,200,OK,Thread Group 1-4,text,true,,2014,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,581,0,0
+1732599289733,723,CompletedTasks,200,OK,Thread Group 1-5,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,723,0,0
+1732599290114,473,SendAnnouncement,200,OK,Thread Group 1-8,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,473,0,0
+1732599290467,374,CreateTransaction,200,OK,Thread Group 1-9,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,374,0,157
+1732599290588,266,GetSummary,200,OK,Thread Group 1-8,text,true,,740,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,266,0,0
+1732599290071,853,GetNotifications,200,OK,Thread Group 1-2,text,true,,1951,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,853,0,0
+1732599290075,1042,CompletedTasks,200,OK,Thread Group 1-7,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1042,0,0
+1732599290925,264,GetTransaction,200,OK,Thread Group 1-2,text,true,,7605,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,264,0,0
+1732599290842,398,CreateTask,200,OK,Thread Group 1-9,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,398,0,0
+1732599290456,824,PendingTask,200,OK,Thread Group 1-5,text,true,,2171,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,824,0,0
+1732599290382,898,GetNotifications,200,OK,Thread Group 1-4,text,true,,2085,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,898,0,0
+1732599291280,263,GetTransaction,200,OK,Thread Group 1-4,text,true,,7605,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,263,0,0
+1732599291240,318,SendAnnouncement,200,OK,Thread Group 1-9,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,318,0,0
+1732599290854,862,CompletedTasks,200,OK,Thread Group 1-8,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,861,0,0
+1732599291116,655,PendingTask,200,OK,Thread Group 1-7,text,true,,2328,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,655,0,0
+1732599291559,389,GetSummary,200,OK,Thread Group 1-9,text,true,,742,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,389,0,0
+1732599291662,325,CreateTransaction,200,OK,Thread Group 1-10,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,325,0,124
+1732599291989,294,CreateTask,200,OK,Thread Group 1-10,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,294,0,0
+1732599291280,1149,GetNotifications,200,OK,Thread Group 1-5,text,true,,2085,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1149,0,0
+1732599292283,348,SendAnnouncement,200,OK,Thread Group 1-10,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,348,0,0
+1732599291716,915,PendingTask,200,OK,Thread Group 1-8,text,true,,2328,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,915,0,0
+1732599291950,681,CompletedTasks,200,OK,Thread Group 1-9,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,681,0,0
+1732599292430,203,GetTransaction,200,OK,Thread Group 1-5,text,true,,7842,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,203,0,0
+1732599291771,1025,GetNotifications,200,OK,Thread Group 1-7,text,true,,2219,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1025,0,0
+1732599292797,178,GetTransaction,200,OK,Thread Group 1-7,text,true,,7842,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,177,0,0
+1732599292632,344,GetSummary,200,OK,Thread Group 1-10,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,344,0,0
+1732599292632,714,GetNotifications,500,Internal Server Error,Thread Group 1-8,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,714,0,0
+1732599292632,884,PendingTask,200,OK,Thread Group 1-9,text,true,,2485,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,884,0,0
+1732599293347,260,GetTransaction,200,OK,Thread Group 1-8,text,true,,7842,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,260,0,0
+1732599292977,729,CompletedTasks,200,OK,Thread Group 1-10,text,true,,905,231,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,728,0,0
+1732599292860,913,CreateTransaction,200,OK,Thread Group 1-11,text,true,,619,393,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,913,0,395
+1732599293773,422,CreateTask,200,OK,Thread Group 1-11,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,422,0,0
+1732599293706,739,PendingTask,200,OK,Thread Group 1-10,text,true,,2485,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,738,0,0
+1732599294195,387,SendAnnouncement,200,OK,Thread Group 1-11,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,387,0,0
+1732599294062,641,CreateTransaction,200,OK,Thread Group 1-12,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,641,0,226
+1732599293517,1197,GetNotifications,200,OK,Thread Group 1-9,text,true,,2353,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1196,0,0
+1732599294583,269,GetSummary,200,OK,Thread Group 1-11,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,269,0,0
+1732599294704,287,CreateTask,200,OK,Thread Group 1-12,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,287,0,0
+1732599294714,308,GetTransaction,200,OK,Thread Group 1-9,text,true,,8316,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,308,0,0
+1732599294991,368,SendAnnouncement,200,OK,Thread Group 1-12,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,368,0,0
+1732599294445,1172,GetNotifications,200,OK,Thread Group 1-10,text,true,,2487,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1172,0,0
+1732599294853,896,CompletedTasks,200,OK,Thread Group 1-11,text,true,,905,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,896,0,0
+1732599295359,397,GetSummary,200,OK,Thread Group 1-12,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,397,0,0
+1732599295267,508,CreateTransaction,200,OK,Thread Group 1-13,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,508,0,260
+1732599295617,330,GetTransaction,200,OK,Thread Group 1-10,text,true,,8553,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,330,0,0
+1732599295776,374,CreateTask,200,OK,Thread Group 1-13,text,true,,616,323,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,374,0,0
+1732599296151,378,SendAnnouncement,200,OK,Thread Group 1-13,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,378,0,0
+1732599295757,985,CompletedTasks,200,OK,Thread Group 1-12,text,true,,905,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,985,0,0
+1732599295750,1092,PendingTask,200,OK,Thread Group 1-11,text,true,,2799,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1092,0,0
+1732599296529,645,GetSummary,200,OK,Thread Group 1-13,text,true,,742,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,645,0,0
+1732599296462,984,CreateTransaction,200,OK,Thread Group 1-14,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,984,0,187
+1732599296743,1005,PendingTask,200,OK,Thread Group 1-12,text,true,,2956,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1005,0,0
+1732599297447,372,CreateTask,200,OK,Thread Group 1-14,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,372,0,0
+1732599297175,804,CompletedTasks,200,OK,Thread Group 1-13,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,804,0,0
+1732599296843,1325,GetNotifications,200,OK,Thread Group 1-11,text,true,,2755,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1325,0,0
+1732599297663,534,CreateTransaction,200,OK,Thread Group 1-15,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,534,0,231
+1732599297820,397,SendAnnouncement,200,OK,Thread Group 1-14,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,397,0,0
+1732599298168,316,GetTransaction,200,OK,Thread Group 1-11,text,true,,9027,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,316,0,0
+1732599298198,340,CreateTask,200,OK,Thread Group 1-15,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,340,0,0
+1732599298218,341,GetSummary,200,OK,Thread Group 1-14,text,true,,742,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,341,0,0
+1732599297979,871,PendingTask,200,OK,Thread Group 1-13,text,true,,3113,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,871,0,0
+1732599297748,1305,GetNotifications,200,OK,Thread Group 1-12,text,true,,2755,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1305,0,0
+1732599298538,663,SendAnnouncement,200,OK,Thread Group 1-15,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,663,0,0
+1732599299053,290,GetTransaction,200,OK,Thread Group 1-12,text,true,,9264,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,290,0,0
+1732599298857,499,CreateTransaction,200,OK,Thread Group 1-16,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,499,0,216
+1732599299201,217,GetSummary,200,OK,Thread Group 1-15,text,true,,740,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,217,0,0
+1732599298559,908,CompletedTasks,200,OK,Thread Group 1-14,text,true,,905,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,908,0,0
+1732599299356,560,CreateTask,200,OK,Thread Group 1-16,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,560,0,0
+1732599299916,353,SendAnnouncement,200,OK,Thread Group 1-16,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,353,0,0
+1732599299467,874,PendingTask,200,OK,Thread Group 1-14,text,true,,3270,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,874,0,0
+1732599299418,962,CompletedTasks,200,OK,Thread Group 1-15,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,961,0,0
+1732599300273,444,GetSummary,200,OK,Thread Group 1-16,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,444,0,0
+1732599298851,2380,GetNotifications,500,Internal Server Error,Thread Group 1-13,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,2380,0,0
+1732599301232,282,GetTransaction,200,OK,Thread Group 1-13,text,true,,9264,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,282,0,0
+1732599300071,1521,CreateTransaction,200,OK,Thread Group 1-17,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1521,0,1304
+1732599301266,509,CreateTransaction,200,OK,Thread Group 1-18,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,509,0,211
+1732599300718,1223,CompletedTasks,200,OK,Thread Group 1-16,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1223,0,0
+1732599300380,1643,PendingTask,200,OK,Thread Group 1-15,text,true,,3427,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1643,0,0
+1732599301593,481,CreateTask,200,OK,Thread Group 1-17,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,481,0,0
+1732599300342,1757,GetNotifications,200,OK,Thread Group 1-14,text,true,,3157,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1757,0,0
+1732599301776,338,CreateTask,200,OK,Thread Group 1-18,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,338,0,0
+1732599302101,262,GetTransaction,200,OK,Thread Group 1-14,text,true,,9738,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,262,0,0
+1732599302075,358,SendAnnouncement,200,OK,Thread Group 1-17,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,358,0,0
+1732599302114,369,SendAnnouncement,200,OK,Thread Group 1-18,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,369,0,0
+1732599302433,483,GetSummary,200,OK,Thread Group 1-17,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,483,0,0
+1732599302484,511,GetSummary,200,OK,Thread Group 1-18,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,511,0,0
+1732599302471,619,CreateTransaction,200,OK,Thread Group 1-19,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,619,0,336
+1732599301942,1418,PendingTask,200,OK,Thread Group 1-16,text,true,,3741,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1418,0,0
+1732599303090,271,CreateTask,200,OK,Thread Group 1-19,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,271,0,0
+1732599303362,363,SendAnnouncement,200,OK,Thread Group 1-19,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,363,0,0
+1732599302916,1010,CompletedTasks,200,OK,Thread Group 1-17,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1010,0,0
+1732599303726,234,GetSummary,200,OK,Thread Group 1-19,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,234,0,0
+1732599303662,468,CreateTransaction,200,OK,Thread Group 1-20,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,468,0,204
+1732599302995,1287,CompletedTasks,200,OK,Thread Group 1-18,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1287,0,0
+1732599304130,359,CreateTask,200,OK,Thread Group 1-20,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,359,0,0
+1732599302025,2514,GetNotifications,500,Internal Server Error,Thread Group 1-15,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,2514,0,0
+1732599304539,195,GetTransaction,200,OK,Thread Group 1-15,text,true,,10212,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,195,0,0
+1732599304490,282,SendAnnouncement,200,OK,Thread Group 1-20,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,282,0,0
+1732599303961,1016,CompletedTasks,200,OK,Thread Group 1-19,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1016,0,0
+1732599304773,277,GetSummary,200,OK,Thread Group 1-20,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,277,0,0
+1732599303361,1767,GetNotifications,500,Internal Server Error,Thread Group 1-16,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1767,0,0
+1732599304283,1070,PendingTask,200,OK,Thread Group 1-18,text,true,,4055,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1070,0,0
+1732599305129,277,GetTransaction,200,OK,Thread Group 1-16,text,true,,10212,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,276,0,0
+1732599303926,1495,PendingTask,200,OK,Thread Group 1-17,text,true,,3898,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1495,0,0
+1732599304874,999,CreateTransaction,200,OK,Thread Group 1-21,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,999,0,652
+1732599304978,1019,PendingTask,200,OK,Thread Group 1-19,text,true,,4055,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1019,0,0
+1732599305874,246,CreateTask,200,OK,Thread Group 1-21,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,246,0,0
+1732599305050,1294,CompletedTasks,200,OK,Thread Group 1-20,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1293,0,0
+1732599306121,358,SendAnnouncement,200,OK,Thread Group 1-21,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,358,0,0
+1732599306068,485,CreateTransaction,200,OK,Thread Group 1-22,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,485,0,181
+1732599306480,262,GetSummary,200,OK,Thread Group 1-21,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,262,0,0
+1732599306554,271,CreateTask,200,OK,Thread Group 1-22,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,271,0,0
+1732599306825,331,SendAnnouncement,200,OK,Thread Group 1-22,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,331,0,0
+1732599307156,219,GetSummary,200,OK,Thread Group 1-22,text,true,,738,229,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,219,0,0
+1732599306344,1312,PendingTask,200,OK,Thread Group 1-20,text,true,,4212,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1311,0,0
+1732599306742,1140,CompletedTasks,200,OK,Thread Group 1-21,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1140,0,0
+1732599305422,2978,GetNotifications,500,Internal Server Error,Thread Group 1-17,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,2978,0,0
+1732599307376,1254,CompletedTasks,200,OK,Thread Group 1-22,text,true,,905,231,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1254,0,0
+1732599308400,410,GetTransaction,200,OK,Thread Group 1-17,text,true,,10688,233,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,410,0,0
+1732599305998,2817,GetNotifications,500,Internal Server Error,Thread Group 1-19,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,2817,0,0
+1732599308815,196,GetTransaction,200,OK,Thread Group 1-19,text,true,,10688,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,196,0,0
+1732599305354,3789,GetNotifications,500,Internal Server Error,Thread Group 1-18,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,3788,0,0
+1732599307883,1270,PendingTask,200,OK,Thread Group 1-21,text,true,,4369,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1270,0,0
+1732599308465,1014,CreateTransaction,200,OK,Thread Group 1-24,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1014,0,735
+1732599309143,593,GetTransaction,200,OK,Thread Group 1-18,text,true,,10688,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,593,0,0
+1732599309480,367,CreateTask,200,OK,Thread Group 1-24,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,367,0,0
+1732599307269,2591,CreateTransaction,200,OK,Thread Group 1-23,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,2591,0,117
+1732599308631,1251,PendingTask,500,Internal Server Error,Thread Group 1-22,text,false,,658,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1251,0,0
+1732599309861,270,CreateTask,200,OK,Thread Group 1-23,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,270,0,0
+1732599307656,2522,GetNotifications,500,Internal Server Error,Thread Group 1-20,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,2522,0,0
+1732599309153,1025,GetNotifications,500,Internal Server Error,Thread Group 1-21,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1025,0,0
+1732599309848,512,SendAnnouncement,200,OK,Thread Group 1-24,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,512,0,0
+1732599310179,376,GetTransaction,200,OK,Thread Group 1-21,text,true,,11162,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,376,0,0
+1732599310178,440,GetTransaction,200,OK,Thread Group 1-20,text,true,,11162,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,439,0,0
+1732599310361,361,GetSummary,200,OK,Thread Group 1-24,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,361,0,0
+1732599310132,691,SendAnnouncement,200,OK,Thread Group 1-23,text,true,,621,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,691,0,0
+1732599310823,276,GetSummary,200,OK,Thread Group 1-23,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,276,0,0
+1732599309660,1474,CreateTransaction,200,OK,Thread Group 1-25,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1474,0,1229
+1732599310869,522,CreateTransaction,200,OK,Thread Group 1-26,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,522,0,126
+1732599311134,384,CreateTask,200,OK,Thread Group 1-25,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,384,0,0
+1732599311390,265,CreateTask,200,OK,Thread Group 1-26,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,265,0,0
+1732599310722,1017,CompletedTasks,200,OK,Thread Group 1-24,text,true,,905,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1017,0,0
+1732599311519,298,SendAnnouncement,200,OK,Thread Group 1-25,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,298,0,0
+1732599311817,215,GetSummary,200,OK,Thread Group 1-25,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,215,0,0
+1732599311655,416,SendAnnouncement,200,OK,Thread Group 1-26,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,416,0,0
+1732599312073,243,GetSummary,200,OK,Thread Group 1-26,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,243,0,0
+1732599311099,1396,CompletedTasks,200,OK,Thread Group 1-23,text,true,,905,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1396,0,0
+1732599311738,1063,PendingTask,500,Internal Server Error,Thread Group 1-24,text,false,,658,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1063,0,0
+1732599312495,1076,PendingTask,500,Internal Server Error,Thread Group 1-23,text,false,,658,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1075,0,0
+1732599312069,1649,CreateTransaction,200,OK,Thread Group 1-27,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1649,0,1405
+1732599313259,531,CreateTransaction,200,OK,Thread Group 1-28,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,531,0,217
+1732599312802,1005,GetNotifications,500,Internal Server Error,Thread Group 1-24,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1005,0,0
+1732599313719,321,CreateTask,200,OK,Thread Group 1-27,text,true,,616,323,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,321,0,0
+1732599313791,364,CreateTask,200,OK,Thread Group 1-28,text,true,,616,323,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,364,0,0
+1732599313808,444,GetTransaction,200,OK,Thread Group 1-24,text,true,,12110,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,444,0,0
+1732599314040,297,SendAnnouncement,200,OK,Thread Group 1-27,text,true,,621,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,297,0,0
+1732599312316,2202,CompletedTasks,200,OK,Thread Group 1-26,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,2202,0,0
+1732599314156,403,SendAnnouncement,200,OK,Thread Group 1-28,text,true,,621,328,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,402,0,0
+1732599314337,261,GetSummary,200,OK,Thread Group 1-27,text,true,,738,229,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,261,0,0
+1732599312033,2732,CompletedTasks,200,OK,Thread Group 1-25,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,2732,0,0
+1732599314559,280,GetSummary,200,OK,Thread Group 1-28,text,true,,738,229,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,280,0,0
+1732599314469,621,CreateTransaction,200,OK,Thread Group 1-29,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,621,0,177
+1732599313571,1635,GetNotifications,500,Internal Server Error,Thread Group 1-23,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1635,0,0
+1732599315207,172,GetTransaction,200,OK,Thread Group 1-23,text,true,,12347,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,172,0,0
+1732599315090,490,CreateTask,200,OK,Thread Group 1-29,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,490,0,0
+1732599309882,6104,GetNotifications,500,Internal Server Error,Thread Group 1-22,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,6104,0,0
+1732599315664,498,CreateTransaction,200,OK,Thread Group 1-30,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,498,0,212
+1732599315581,724,SendAnnouncement,500,Internal Server Error,Thread Group 1-29,text,false,,756,328,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,724,0,0
+1732599315985,408,GetTransaction,200,OK,Thread Group 1-22,text,true,,12584,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,408,0,0
+1732599316162,238,CreateTask,200,OK,Thread Group 1-30,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,238,0,0
+1732599316306,231,GetSummary,200,OK,Thread Group 1-29,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,231,0,0
+1732599314519,2472,PendingTask,200,OK,Thread Group 1-26,text,true,,5312,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2472,0,0
+1732599314765,2442,PendingTask,200,OK,Thread Group 1-25,text,true,,5312,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2442,0,0
+1732599314599,2638,CompletedTasks,200,OK,Thread Group 1-27,text,true,,905,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,2638,0,0
+1732599316864,612,CreateTransaction,200,OK,Thread Group 1-31,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,612,0,216
+1732599316400,1161,SendAnnouncement,500,Internal Server Error,Thread Group 1-30,text,false,,756,328,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1161,0,0
+1732599317476,255,CreateTask,200,OK,Thread Group 1-31,text,true,,616,323,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,255,0,0
+1732599317561,258,GetSummary,200,OK,Thread Group 1-30,text,true,,742,229,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,258,0,0
+1732599316992,1143,GetNotifications,500,Internal Server Error,Thread Group 1-26,text,false,,756,230,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1143,0,0
+1732599316537,1780,CompletedTasks,500,Internal Server Error,Thread Group 1-29,text,false,,658,231,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1780,0,0
+1732599318062,294,CreateTransaction,200,OK,Thread Group 1-32,text,true,,619,393,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,294,0,109
+1732599318135,287,GetTransaction,200,OK,Thread Group 1-26,text,true,,13058,233,8,8,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,287,0,0
+1732599317207,1337,GetNotifications,500,Internal Server Error,Thread Group 1-25,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1337,0,0
+1732599318544,174,GetTransaction,200,OK,Thread Group 1-25,text,true,,13058,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,173,0,0
+1732599318357,642,CreateTask,200,OK,Thread Group 1-32,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,642,0,0
+1732599317732,1267,SendAnnouncement,500,Internal Server Error,Thread Group 1-31,text,false,,756,328,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1267,0,0
+1732599318999,234,GetSummary,200,OK,Thread Group 1-31,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,234,0,0
+1732599317820,1456,CompletedTasks,500,Internal Server Error,Thread Group 1-30,text,false,,658,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1456,0,0
+1732599314840,4507,CompletedTasks,500,Internal Server Error,Thread Group 1-28,text,false,,658,231,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,4506,0,0
+1732599319261,348,CreateTransaction,200,OK,Thread Group 1-33,text,true,,619,393,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,348,0,121
+1732599319277,352,PendingTask,500,Internal Server Error,Thread Group 1-30,text,false,,658,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,351,0,0
+1732599319347,419,PendingTask,500,Internal Server Error,Thread Group 1-28,text,false,,658,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,419,0,0
+1732599318318,1459,PendingTask,500,Internal Server Error,Thread Group 1-29,text,false,,658,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1459,0,0
+1732599317238,2562,PendingTask,500,Internal Server Error,Thread Group 1-27,text,false,,658,235,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2562,0,0
+1732599318999,856,SendAnnouncement,500,Internal Server Error,Thread Group 1-32,text,false,,756,328,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,856,0,0
+1732599319611,324,CreateTask,200,OK,Thread Group 1-33,text,true,,616,323,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,324,0,0
+1732599319630,392,GetNotifications,500,Internal Server Error,Thread Group 1-30,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,392,0,0
+1732599319802,239,GetNotifications,500,Internal Server Error,Thread Group 1-27,text,false,,756,230,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,239,0,0
+1732599319857,357,GetSummary,200,OK,Thread Group 1-32,text,true,,742,229,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,357,0,0
+1732599320023,202,GetTransaction,200,OK,Thread Group 1-30,text,true,,13295,233,7,7,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,202,0,0
+1732599320042,258,GetTransaction,200,OK,Thread Group 1-27,text,true,,13295,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,258,0,0
+1732599319768,745,GetNotifications,500,Internal Server Error,Thread Group 1-28,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,745,0,0
+1732599320513,190,GetTransaction,200,OK,Thread Group 1-28,text,true,,13295,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,190,0,0
+1732599320462,307,CreateTransaction,200,OK,Thread Group 1-34,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,307,0,115
+1732599319936,927,SendAnnouncement,500,Internal Server Error,Thread Group 1-33,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,927,0,0
+1732599320864,220,GetSummary,200,OK,Thread Group 1-33,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,220,0,0
+1732599319778,1486,GetNotifications,500,Internal Server Error,Thread Group 1-29,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1486,0,0
+1732599320769,501,CreateTask,200,OK,Thread Group 1-34,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,501,0,0
+1732599320215,1206,CompletedTasks,500,Internal Server Error,Thread Group 1-32,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1206,0,0
+1732599321084,392,CompletedTasks,500,Internal Server Error,Thread Group 1-33,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,391,0,0
+1732599321265,372,GetTransaction,200,OK,Thread Group 1-29,text,true,,13532,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,372,0,0
+1732599321664,405,CreateTransaction,200,OK,Thread Group 1-35,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,405,0,125
+1732599321422,652,PendingTask,500,Internal Server Error,Thread Group 1-32,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,651,0,0
+1732599322069,242,CreateTask,200,OK,Thread Group 1-35,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,242,0,0
+1732599319234,3217,CompletedTasks,500,Internal Server Error,Thread Group 1-31,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,3217,0,0
+1732599321476,1135,PendingTask,500,Internal Server Error,Thread Group 1-33,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1135,0,0
+1732599322312,378,SendAnnouncement,200,OK,Thread Group 1-35,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,378,0,0
+1732599321271,1435,SendAnnouncement,200,OK,Thread Group 1-34,text,true,,621,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1435,0,0
+1732599322707,201,GetSummary,200,OK,Thread Group 1-34,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,201,0,0
+1732599322691,315,GetSummary,200,OK,Thread Group 1-35,text,true,,742,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,315,0,0
+1732599322867,411,CreateTransaction,200,OK,Thread Group 1-36,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,411,0,216
+1732599322074,1219,GetNotifications,500,Internal Server Error,Thread Group 1-32,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1219,0,0
+1732599323294,159,GetTransaction,200,OK,Thread Group 1-32,text,true,,14006,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,159,0,0
+1732599322452,1026,PendingTask,500,Internal Server Error,Thread Group 1-31,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1026,0,0
+1732599322612,1048,GetNotifications,500,Internal Server Error,Thread Group 1-33,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1048,0,0
+1732599323479,341,GetNotifications,500,Internal Server Error,Thread Group 1-31,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,341,0,0
+1732599323660,198,GetTransaction,200,OK,Thread Group 1-33,text,true,,14006,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,198,0,0
+1732599323820,198,GetTransaction,200,OK,Thread Group 1-31,text,true,,14006,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,198,0,0
+1732599322909,1121,CompletedTasks,500,Internal Server Error,Thread Group 1-34,text,false,,658,231,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1121,0,0
+1732599323278,777,CreateTask,200,OK,Thread Group 1-36,text,true,,616,323,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,777,0,0
+1732599323007,1078,CompletedTasks,500,Internal Server Error,Thread Group 1-35,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1078,0,0
+1732599324061,591,CreateTransaction,200,OK,Thread Group 1-37,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,591,0,135
+1732599324085,608,PendingTask,500,Internal Server Error,Thread Group 1-35,text,false,,658,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,608,0,0
+1732599324654,255,CreateTask,200,OK,Thread Group 1-37,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,255,0,0
+1732599324056,998,SendAnnouncement,500,Internal Server Error,Thread Group 1-36,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,998,0,0
+1732599325055,240,GetSummary,200,OK,Thread Group 1-36,text,true,,742,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,240,0,0
+1732599324030,1406,PendingTask,500,Internal Server Error,Thread Group 1-34,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1406,0,0
+1732599324693,921,GetNotifications,500,Internal Server Error,Thread Group 1-35,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,921,0,0
+1732599325614,187,GetTransaction,200,OK,Thread Group 1-35,text,true,,14480,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,187,0,0
+1732599325265,668,CreateTransaction,200,OK,Thread Group 1-38,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,668,0,114
+1732599325437,649,GetNotifications,500,Internal Server Error,Thread Group 1-34,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,649,0,0
+1732599324910,1330,SendAnnouncement,500,Internal Server Error,Thread Group 1-37,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1330,0,0
+1732599325934,316,CreateTask,200,OK,Thread Group 1-38,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,316,0,0
+1732599326086,237,GetTransaction,200,OK,Thread Group 1-34,text,true,,14480,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,237,0,0
+1732599326241,229,GetSummary,200,OK,Thread Group 1-37,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,229,0,0
+1732599325295,1201,CompletedTasks,500,Internal Server Error,Thread Group 1-36,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1201,0,0
+1732599326469,527,CreateTransaction,200,OK,Thread Group 1-39,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,527,0,149
+1732599326996,199,CreateTask,200,OK,Thread Group 1-39,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,199,0,0
+1732599326251,961,SendAnnouncement,500,Internal Server Error,Thread Group 1-38,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,961,0,0
+1732599327214,180,GetSummary,200,OK,Thread Group 1-38,text,true,,742,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,180,0,0
+1732599326497,1107,PendingTask,500,Internal Server Error,Thread Group 1-36,text,false,,658,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1107,0,0
+1732599326471,1188,CompletedTasks,500,Internal Server Error,Thread Group 1-37,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1188,0,0
+1732599327196,685,SendAnnouncement,500,Internal Server Error,Thread Group 1-39,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,685,0,0
+1732599327671,320,CreateTransaction,200,OK,Thread Group 1-40,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,320,0,131
+1732599327882,187,GetSummary,200,OK,Thread Group 1-39,text,true,,740,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,187,0,0
+1732599327992,219,CreateTask,200,OK,Thread Group 1-40,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,219,0,0
+1732599327395,993,CompletedTasks,500,Internal Server Error,Thread Group 1-38,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,992,0,0
+1732599328388,207,PendingTask,500,Internal Server Error,Thread Group 1-38,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,207,0,0
+1732599327604,1184,GetNotifications,500,Internal Server Error,Thread Group 1-36,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1184,0,0
+1732599328070,761,CompletedTasks,500,Internal Server Error,Thread Group 1-39,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,761,0,0
+1732599328595,306,GetNotifications,500,Internal Server Error,Thread Group 1-38,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,306,0,0
+1732599328788,271,GetTransaction,200,OK,Thread Group 1-36,text,true,,14954,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,271,0,0
+1732599328901,293,GetTransaction,200,OK,Thread Group 1-38,text,true,,14954,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,293,0,0
+1732599328212,1008,SendAnnouncement,500,Internal Server Error,Thread Group 1-40,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1008,0,0
+1732599329221,237,GetSummary,200,OK,Thread Group 1-40,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,237,0,0
+1732599328868,616,CreateTransaction,200,OK,Thread Group 1-41,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,616,0,140
+1732599329484,313,CreateTask,200,OK,Thread Group 1-41,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,313,0,0
+1732599327660,2682,PendingTask,500,Internal Server Error,Thread Group 1-37,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2682,0,0
+1732599330065,354,CreateTransaction,200,OK,Thread Group 1-42,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,354,0,145
+1732599330419,314,CreateTask,200,OK,Thread Group 1-42,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,314,0,0
+1732599329458,1347,CompletedTasks,500,Internal Server Error,Thread Group 1-40,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1347,0,0
+1732599328831,2017,PendingTask,500,Internal Server Error,Thread Group 1-39,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2017,0,0
+1732599329799,1068,SendAnnouncement,500,Internal Server Error,Thread Group 1-41,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1068,0,0
+1732599330733,355,SendAnnouncement,500,Internal Server Error,Thread Group 1-42,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,355,0,0
+1732599330867,237,GetSummary,200,OK,Thread Group 1-41,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,237,0,0
+1732599331088,256,GetSummary,200,OK,Thread Group 1-42,text,true,,738,229,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,256,0,0
+1732599330805,701,PendingTask,500,Internal Server Error,Thread Group 1-40,text,false,,658,235,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,701,0,0
+1732599331267,304,CreateTransaction,200,OK,Thread Group 1-43,text,true,,619,393,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,304,0,118
+1732599331572,434,CreateTask,200,OK,Thread Group 1-43,text,true,,616,323,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,434,0,0
+1732599330344,1681,GetNotifications,500,Internal Server Error,Thread Group 1-37,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1681,0,0
+1732599330849,1202,GetNotifications,500,Internal Server Error,Thread Group 1-39,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1202,0,0
+1732599331344,707,CompletedTasks,500,Internal Server Error,Thread Group 1-42,text,false,,658,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,707,0,0
+1732599332051,274,GetTransaction,200,OK,Thread Group 1-39,text,true,,15665,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,274,0,0
+1732599331506,824,GetNotifications,500,Internal Server Error,Thread Group 1-40,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,824,0,0
+1732599332026,350,GetTransaction,200,OK,Thread Group 1-37,text,true,,15665,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,349,0,0
+1732599331105,1373,CompletedTasks,500,Internal Server Error,Thread Group 1-41,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1373,0,0
+1732599332330,381,GetTransaction,200,OK,Thread Group 1-40,text,true,,15665,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,381,0,0
+1732599332007,837,SendAnnouncement,500,Internal Server Error,Thread Group 1-43,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,837,0,0
+1732599332051,859,PendingTask,500,Internal Server Error,Thread Group 1-42,text,false,,658,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,859,0,0
+1732599332844,176,GetSummary,200,OK,Thread Group 1-43,text,true,,742,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,176,0,0
+1732599332479,555,PendingTask,500,Internal Server Error,Thread Group 1-41,text,false,,658,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,555,0,0
+1732599332470,796,CreateTransaction,200,OK,Thread Group 1-44,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,796,0,195
+1732599332910,459,GetNotifications,500,Internal Server Error,Thread Group 1-42,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,458,0,0
+1732599333267,262,CreateTask,200,OK,Thread Group 1-44,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,262,0,0
+1732599333369,346,GetTransaction,200,OK,Thread Group 1-42,text,true,,15902,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,346,0,0
+1732599333021,801,CompletedTasks,500,Internal Server Error,Thread Group 1-43,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,801,0,0
+1732599333662,293,CreateTransaction,200,OK,Thread Group 1-45,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,293,0,135
+1732599333034,947,GetNotifications,500,Internal Server Error,Thread Group 1-41,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,947,0,0
+1732599333955,222,CreateTask,200,OK,Thread Group 1-45,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,222,0,0
+1732599333982,196,GetTransaction,200,OK,Thread Group 1-41,text,true,,16139,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,196,0,0
+1732599333822,451,PendingTask,500,Internal Server Error,Thread Group 1-43,text,false,,658,235,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,451,0,0
+1732599334274,650,GetNotifications,500,Internal Server Error,Thread Group 1-43,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,650,0,0
+1732599333529,1441,SendAnnouncement,500,Internal Server Error,Thread Group 1-44,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1441,0,0
+1732599334924,220,GetTransaction,200,OK,Thread Group 1-43,text,true,,16139,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,220,0,0
+1732599334970,204,GetSummary,200,OK,Thread Group 1-44,text,true,,742,229,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,204,0,0
+1732599334861,314,CreateTransaction,200,OK,Thread Group 1-46,text,true,,619,393,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,314,0,121
+1732599335176,199,CreateTask,200,OK,Thread Group 1-46,text,true,,616,323,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,199,0,0
+1732599334177,1286,SendAnnouncement,500,Internal Server Error,Thread Group 1-45,text,false,,756,328,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1286,0,0
+1732599335464,171,GetSummary,200,OK,Thread Group 1-45,text,true,,738,229,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,171,0,0
+1732599335175,942,CompletedTasks,500,Internal Server Error,Thread Group 1-44,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,942,0,0
+1732599336062,526,CreateTransaction,200,OK,Thread Group 1-47,text,true,,619,393,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,526,0,143
+1732599335376,1316,SendAnnouncement,500,Internal Server Error,Thread Group 1-46,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1315,0,0
+1732599336589,220,CreateTask,200,OK,Thread Group 1-47,text,true,,616,323,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,219,0,0
+1732599336692,206,GetSummary,200,OK,Thread Group 1-46,text,true,,742,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,206,0,0
+1732599335636,1319,CompletedTasks,500,Internal Server Error,Thread Group 1-45,text,false,,658,231,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1319,0,0
+1732599336117,1220,PendingTask,500,Internal Server Error,Thread Group 1-44,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1219,0,0
+1732599336898,599,CompletedTasks,500,Internal Server Error,Thread Group 1-46,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,599,0,0
+1732599337267,437,CreateTransaction,200,OK,Thread Group 1-48,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,437,0,135
+1732599337704,302,CreateTask,200,OK,Thread Group 1-48,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,302,0,0
+1732599336809,1303,SendAnnouncement,500,Internal Server Error,Thread Group 1-47,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1303,0,0
+1732599337337,813,GetNotifications,500,Internal Server Error,Thread Group 1-44,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,813,0,0
+1732599338112,202,GetSummary,200,OK,Thread Group 1-47,text,true,,738,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,202,0,0
+1732599338150,211,GetTransaction,200,OK,Thread Group 1-44,text,true,,16850,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,210,0,0
+1732599336954,1750,PendingTask,500,Internal Server Error,Thread Group 1-45,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1750,0,0
+1732599338007,727,SendAnnouncement,500,Internal Server Error,Thread Group 1-48,text,false,,756,328,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,727,0,0
+1732599338472,300,CreateTransaction,200,OK,Thread Group 1-49,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,300,0,125
+1732599338735,199,GetSummary,200,OK,Thread Group 1-48,text,true,,742,229,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,199,0,0
+1732599338772,471,CreateTask,200,OK,Thread Group 1-49,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,471,0,0
+1732599337498,2066,PendingTask,500,Internal Server Error,Thread Group 1-46,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,2066,0,0
+1732599338315,1256,CompletedTasks,500,Internal Server Error,Thread Group 1-47,text,false,,658,231,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1256,0,0
+1732599338935,743,CompletedTasks,500,Internal Server Error,Thread Group 1-48,text,false,,658,231,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,743,0,0
+1732599338704,983,GetNotifications,500,Internal Server Error,Thread Group 1-45,text,false,,756,230,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,983,0,0
+1732599339687,163,GetTransaction,200,OK,Thread Group 1-45,text,true,,17087,233,6,6,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,163,0,0
+1732599339661,411,CreateTransaction,200,OK,Thread Group 1-50,text,true,,619,393,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,411,0,138
+1732599340073,356,CreateTask,200,OK,Thread Group 1-50,text,true,,616,323,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,356,0,0
+1732599339678,910,PendingTask,500,Internal Server Error,Thread Group 1-48,text,false,,658,235,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,910,0,0
+1732599339564,1113,GetNotifications,500,Internal Server Error,Thread Group 1-46,text,false,,756,230,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1113,0,0
+1732599340677,199,GetTransaction,200,OK,Thread Group 1-46,text,true,,17324,233,5,5,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,199,0,0
+1732599339571,1334,PendingTask,500,Internal Server Error,Thread Group 1-47,text,false,,658,235,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,1334,0,0
+1732599339244,1774,SendAnnouncement,500,Internal Server Error,Thread Group 1-49,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,1774,0,0
+1732599340430,673,SendAnnouncement,500,Internal Server Error,Thread Group 1-50,text,false,,756,328,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,673,0,0
+1732599341019,224,GetSummary,200,OK,Thread Group 1-49,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,224,0,0
+1732599341104,189,GetSummary,200,OK,Thread Group 1-50,text,true,,738,229,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=dan@gmail.com,189,0,0
+1732599340589,751,GetNotifications,500,Internal Server Error,Thread Group 1-48,text,false,,756,230,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,751,0,0
+1732599341341,240,GetTransaction,200,OK,Thread Group 1-48,text,true,,17324,233,4,4,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,240,0,0
+1732599340906,1109,GetNotifications,500,Internal Server Error,Thread Group 1-47,text,false,,756,230,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1109,0,0
+1732599342016,213,GetTransaction,200,OK,Thread Group 1-47,text,true,,17324,233,3,3,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,213,0,0
+1732599341294,1448,CompletedTasks,500,Internal Server Error,Thread Group 1-50,text,false,,658,231,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1448,0,0
+1732599341245,1520,CompletedTasks,500,Internal Server Error,Thread Group 1-49,text,false,,658,231,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=dan@gmail.com,1520,0,0
+1732599342766,595,PendingTask,500,Internal Server Error,Thread Group 1-49,text,false,,658,235,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,595,0,0
+1732599342742,867,PendingTask,500,Internal Server Error,Thread Group 1-50,text,false,,658,235,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=hungludao@gmail.com,867,0,0
+1732599343610,888,GetNotifications,500,Internal Server Error,Thread Group 1-50,text,false,,756,230,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,888,0,0
+1732599343362,1245,GetNotifications,500,Internal Server Error,Thread Group 1-49,text,false,,756,230,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/user/hungludao@gmail.com/get-notification,1245,0,0
+1732599344498,320,GetTransaction,200,OK,Thread Group 1-50,text,true,,17324,233,2,2,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,320,0,0
+1732599344608,415,GetTransaction,200,OK,Thread Group 1-49,text,true,,17324,233,1,1,https://7hm4udd9s2.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=dan@gmail.com,415,0,0

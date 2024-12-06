@@ -15,6 +15,9 @@ class ReviewPersistence {
     #table_name;
 
     constructor() {
+        // check if test is running
+        const isTest = process.env.JEST_WORKER_ID;
+
         const remote_client = {
             region: process.env.REGION,
             credentials: {
@@ -23,7 +26,29 @@ class ReviewPersistence {
             },
         };
 
-        this.#doc_client = DynamoDBDocumentClient.from(new DynamoDBClient(remote_client));
+        const local_test_client = {
+            region: "local-env",
+            endpoint: "http://localhost:8000",
+            sslEnabled: false,
+            convertEmptyValues: true,
+            credentials: {
+                accessKeyId: "fakeMyKeyId", // Dummy key
+                secretAccessKey: "fakeSecretAccessKey", // Dummy secret
+            },
+        };
+
+        let working_client;
+        if (isTest) {
+            working_client = new DynamoDBClient(local_test_client);
+        } else {
+            working_client = new DynamoDBClient(remote_client);
+        }
+
+        // working_client = new DynamoDBClient(local_test_client);
+
+        this.#doc_client = DynamoDBDocumentClient.from(working_client, {
+            marshallOptions: { convertEmptyValues: true },
+        });
         this.#table_name = "Review";
     }
 

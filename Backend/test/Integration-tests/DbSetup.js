@@ -203,9 +203,90 @@ async function populate_db() {
                 type: "settle-up",
             },
         });
+
         await doc_client.send(put_command_transaction);
         await doc_client.send(put_command_transaction2);
         await doc_client.send(put_command_transaction3);
+
+        const initialReview = {
+            review_id: "review456",
+            reviewed_by: "user123",
+            reviewed: "user456",
+            overall: 3,
+            cleanliness: 3,
+            noise_levels: 2,
+            respect: 3,
+            communication: 3,
+            paying_rent: 3,
+            chores: 3,
+        };
+        const put_command_review = new PutCommand({
+            TableName: "Review",
+            Item: initialReview,
+        });
+        await doc_client.send(put_command_review);
+
+        const reviews = [
+            {
+                review_id: "reviewsmall2",
+                reviewed_by: "user123",
+                reviewed: "user999",
+                overall: 5,
+                cleanliness: 4,
+                noise_levels: 3,
+                respect: 4,
+                communication: 5,
+                paying_rent: 4,
+                chores: 3,
+            },
+            {
+                review_id: "reviewsmall",
+                reviewed_by: "user789",
+                reviewed: "user999",
+                overall: 4,
+                cleanliness: 3,
+                noise_levels: 5,
+                respect: 4,
+                communication: 4,
+                paying_rent: 5,
+                chores: 4,
+            },
+        ];
+
+        const put_command_review2 = new PutCommand({
+            TableName: "Review",
+            Item: reviews[0],
+        });
+        await doc_client.send(put_command_review2);
+
+        const put_command_review3 = new PutCommand({
+            TableName: "Review",
+            Item: reviews[1],
+        });
+        await doc_client.send(put_command_review3);
+
+        // Add the reviews to the table
+        // for (const review of reviews) {
+        //     await doc_client.send(new PutCommand({ TableName: "Review", Item: review }));
+        // }
+
+        const reviews2 = Array.from({ length: 100 }, (_, i) => ({
+            review_id: `review${i}`,
+            reviewed_by: `user${i}`,
+            reviewed: "user_large_test",
+            overall: 5,
+            cleanliness: 4,
+            noise_levels: 3,
+            respect: 4,
+            communication: 5,
+            paying_rent: 4,
+            chores: 3,
+        }));
+
+        // Add the reviews to the table
+        for (const review of reviews2) {
+            await doc_client.send(new PutCommand({ TableName: "Review", Item: review }));
+        }
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
@@ -239,8 +320,78 @@ async function populate_balance() {
     }
 }
 
+async function populate_profile() {
+    try {
+        // adding profile
+        const put_profile = new PutCommand({
+            TableName: "Profiles",
+            Item: {
+                user_id: "test",
+                bio: "hello",
+                chores: "4.00",
+                cleanliness: "2.00",
+                communication: "4.00",
+                contact: "202020202",
+                contact_type: "mobile",
+                dob: "2001-01-01",
+                gender: "male",
+                likes: new Set(["test1", "test2"]),
+                location: "winnipeg",
+                matches: new Set(["test456"]),
+                name: "baby",
+                noise_levels: "4.00",
+                overall: "4.00",
+                paying_rent: "4.00",
+                respect: "2.00",
+                tags: new Set([
+                    "Eco-Conscious ♻️",
+                    "Likes Cooking 🍲",
+                    "Short-Term Friendly 🗓️",
+                    "Vegetarian/Vegan 🌱",
+                ]),
+            },
+        });
+
+        const put_profile2 = new PutCommand({
+            TableName: "Profiles",
+            Item: {
+                user_id: "test123",
+                bio: "chim to",
+                chores: "3.00",
+                cleanliness: "1.00",
+                communication: "5.00",
+                contact: "2020242302",
+                contact_type: "mobile",
+                dob: "2000-03-04",
+                gender: "male",
+                likes: new Set(["test1", "test2"]),
+                location: "winnipeg",
+                matches: new Set(["test456"]),
+                name: "lady",
+                noise_levels: "3.00",
+                overall: "2.00",
+                paying_rent: "1.00",
+                respect: "3.00",
+                tags: new Set([
+                    "Creative-Friendly 🎨",
+                    "Eco-Conscious ♻️",
+                    "Fitness Enthusiast 🏋️",
+                    "LGBTQ+ Friendly 🏳️‍🌈",
+                    "Night Owl 🌙",
+                ]),
+            },
+        });
+
+        await doc_client.send(put_profile);
+        await doc_client.send(put_profile2);
+    } catch (e) {
+        throw new Error("Something went wrong " + e.message);
+    }
+}
+
 // async function teardown_db() {}
 module.exports = {
     populate_db,
     populate_balance,
+    populate_profile,
 };

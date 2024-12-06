@@ -248,27 +248,27 @@ describe("testing getting the user summary and relationship", () => {
     it("Getting the user summary and relationships successfully", async () => {
         const user_id = "lucifer";
         req.query.id = user_id;
-    
+
         validateString.mockResolvedValue();
         validateUserExist.mockResolvedValue();
-    
+
         const mockDebts = { Items: [{ creditor: "ladykiller", amount: 20 }, { creditor: "babygirl", amount: 40 }] };
         const mockCredits = { Items: [{ debtor: "LadyGaga", amount: 50 }, { debtor: "Superman", amount: 60 }] };
-    
+
         // Mock persistence methods to return arrays of amounts
         transactionHandler.get_transaction_persistence().get_amounts_by_role = jest
             .fn()
             .mockImplementationOnce(() => mockDebts.Items.map((item) => item.amount)) // Extract amounts for debts
             .mockImplementationOnce(() => mockCredits.Items.map((item) => item.amount)); // Extract amounts for credits
-    
+
         const mockDebtRelationships = { Items: [{ creditor: "ladykiller", amount: 20 }, { creditor: "babygirl", amount: 40 }] };
         const mockCreditRelationships = { Items: [{ debtor: "LadyGaga", amount: 50 }, { debtor: "Superman", amount: 60 }] };
-    
+
         transactionHandler.get_transaction_persistence().get_relationships_by_role = jest
             .fn()
             .mockImplementationOnce(() => mockDebtRelationships) // Debtor relationships
             .mockImplementationOnce(() => mockCreditRelationships); // Creditor relationships
-    
+
         transactionHandler.get_user_persistence().get_user = jest.fn(async (userId) => {
             const users = {
                 ladykiller: { name: "Ladykiller" },
@@ -278,9 +278,9 @@ describe("testing getting the user summary and relationship", () => {
             };
             return users[userId];
         });
-    
+
         await transactionHandler.get_summary(req, res);
-    
+
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             owed: 60,
@@ -293,7 +293,7 @@ describe("testing getting the user summary and relationship", () => {
             ],
         });
     });
-    
+
 
     it("should send an error with invalid user ID", async () => {
         const user_id = "";
