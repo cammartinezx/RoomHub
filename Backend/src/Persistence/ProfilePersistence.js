@@ -274,8 +274,15 @@ class ProfilePersistence {
             const result = await this.#doc_client.send(get_command);
             console.log(result.Item);
 
+            // If the item doesn't exist, throw a user-defined error
+            if (!result.Item) {
+                const error = new Error("User not found");
+                error.name = "ConditionalCheckFailedException"; // Simulate the specific error
+                throw error;
+            }
+
             // If the user exists and the 'likes' field contains the user_id
-            if (result.Item && result.Item.likes && result.Item.likes.has(user_id)) {
+            if (result.Item.likes && result.Item.likes.has(user_id)) {
                 return { status: 200, message: "true" };
             } else {
                 return { status: 200, message: "false" };
