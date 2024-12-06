@@ -185,7 +185,7 @@ describe("ReviewPersistence Class -- Get Reviews for User", () => {
             {
                 review_id: "review5",
                 reviewed_by: "user123",
-                reviewed: "user456",
+                reviewed: "user999",
                 overall: 5,
                 cleanliness: 4,
                 noise_levels: 3,
@@ -197,7 +197,7 @@ describe("ReviewPersistence Class -- Get Reviews for User", () => {
             {
                 review_id: "review6",
                 reviewed_by: "user789",
-                reviewed: "user456",
+                reviewed: "user999",
                 overall: 4,
                 cleanliness: 3,
                 noise_levels: 5,
@@ -209,21 +209,21 @@ describe("ReviewPersistence Class -- Get Reviews for User", () => {
         ];
 
         // Get reviews for user "user456"
-        const result = await review_persistence.get_reviews_for_user("user456");
+        const result = await review_persistence.get_reviews_for_user("user999");
 
         // Verify all reviews for "user456" are returned
-        expect(result).toHaveLength(3);
+        expect(result).toHaveLength(2);
         expect(result).toEqual(
             expect.arrayContaining([
-                expect.objectContaining({ review_id: "reviewsmall", reviewed: "user456" }),
-                expect.objectContaining({ review_id: "reviewsmall2", reviewed: "user456" }),
+                expect.objectContaining({ review_id: "reviewsmall", reviewed: "user999" }),
+                expect.objectContaining({ review_id: "reviewsmall2", reviewed: "user999" }),
             ]),
         );
     });
 
     it("Should return an empty array when there are no reviews for the user", async () => {
         // Get reviews for a user with no reviews
-        const result = await review_persistence.get_reviews_for_user("user999");
+        const result = await review_persistence.get_reviews_for_user("usernotexists");
         expect(result).toEqual([]);
     });
 

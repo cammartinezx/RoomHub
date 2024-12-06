@@ -230,7 +230,7 @@ async function populate_db() {
             {
                 review_id: "reviewsmall2",
                 reviewed_by: "user123",
-                reviewed: "user456",
+                reviewed: "user999",
                 overall: 5,
                 cleanliness: 4,
                 noise_levels: 3,
@@ -242,7 +242,7 @@ async function populate_db() {
             {
                 review_id: "reviewsmall",
                 reviewed_by: "user789",
-                reviewed: "user456",
+                reviewed: "user999",
                 overall: 4,
                 cleanliness: 3,
                 noise_levels: 5,
