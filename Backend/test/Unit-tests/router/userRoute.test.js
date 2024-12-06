@@ -49,24 +49,44 @@ jest.mock("../../../src/Handler/UserInfoHandler", () => {
                 Unread_Notification: [
                     {
                         msg: "water leak",
-                        "type": "announcement",
-                        "status": "unread"
+                        type: "announcement",
+                        status: "unread",
                     },
                     {
                         msg: "Lost keys",
                         type: "announcement",
-                        status: "unread"
+                        status: "unread",
                     },
                     {
                         msg: "Maintenance required",
                         type: "announcement",
-                        status: "unread"
+                        status: "unread",
                     },
                     {
-                        msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+                        msg: 'A new expense "paper" has been created and split with: dan@gmail.com.',
                         type: "announcement",
-                        status: "unread"
+                        status: "unread",
                     },
+                ],
+            });
+        }),
+        get_review_page: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({ message: "User public profile exists" });
+        }),
+
+        send_review: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({ message: "Review successfully submitted" });
+        }),
+
+        find_roommate_page: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({ message: "User has a profile" });
+        }),
+
+        get_new_matches: jest.fn().mockImplementation((req, res) => {
+            res.status(200).json({
+                profiles: [
+                    { user_id: "roommate1", location: "Winnipeg", tags: ["clean"] },
+                    { user_id: "roommate2", location: "Winnipeg", tags: ["friendly"] },
                 ],
             });
         }),
@@ -182,57 +202,106 @@ describe("User router tests", () => {
 
     it("GET /user/:id/get-unread-notification", async () => {
         const user_id = "test@gmail.com";
-        
-        user_info_handler.get_unread_notifs = jest.fn((req, res) => res.status(200).json({
-            Unread_Notification: [
-                {
-                    msg: "water leak",
-                    "type": "announcement",
-                    "status": "unread"
-                },
-                {
-                    msg: "Lost keys",
-                    type: "announcement",
-                    status: "unread"
-                },
-                {
-                    msg: "Maintenance required",
-                    type: "announcement",
-                    status: "unread"
-                },
-                {
-                    msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
-                    type: "announcement",
-                    status: "unread"
-                },
-            ],
-        }));
+
+        user_info_handler.get_unread_notifs = jest.fn((req, res) =>
+            res.status(200).json({
+                Unread_Notification: [
+                    {
+                        msg: "water leak",
+                        type: "announcement",
+                        status: "unread",
+                    },
+                    {
+                        msg: "Lost keys",
+                        type: "announcement",
+                        status: "unread",
+                    },
+                    {
+                        msg: "Maintenance required",
+                        type: "announcement",
+                        status: "unread",
+                    },
+                    {
+                        msg: 'A new expense "paper" has been created and split with: dan@gmail.com.',
+                        type: "announcement",
+                        status: "unread",
+                    },
+                ],
+            }),
+        );
 
         const response = await request(app).get(`/user/${user_id}/get-unread-notification`);
 
         expect(response.status).toBe(200);
-        expect(response.body).toEqual({ 
+        expect(response.body).toEqual({
             Unread_Notification: [
                 {
                     msg: "water leak",
                     type: "announcement",
-                    status: "unread"
+                    status: "unread",
                 },
                 {
                     msg: "Lost keys",
                     type: "announcement",
-                    status: "unread"
+                    status: "unread",
                 },
                 {
                     msg: "Maintenance required",
                     type: "announcement",
-                    status: "unread"
+                    status: "unread",
                 },
                 {
-                    msg: "A new expense \"paper\" has been created and split with: dan@gmail.com.",
+                    msg: 'A new expense "paper" has been created and split with: dan@gmail.com.',
                     type: "announcement",
-                    status: "unread"
+                    status: "unread",
                 },
+            ],
+        });
+    });
+    it("GET /user/:id/review-page/:roommate_id should return user public profile exists", async () => {
+        const user_id = "test@gmail.com";
+        const roommate_id = "test2@gmail.com";
+
+        const response = await request(app).get(`/user/${user_id}/review-page/${roommate_id}`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ message: "User public profile exists" });
+    });
+
+    it("POST /user/send-review should successfully submit a review", async () => {
+        const reviewData = {
+            reviewed_by: "user123",
+            reviewed: "roommate123",
+            overall: 5,
+            cleanliness: 4,
+            noise_levels: 5,
+            respect: 4,
+            communication: 5,
+            paying_rent: 5,
+            chores: 4,
+        };
+
+        const response = await request(app).post("/user/send-review").send(reviewData);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ message: "Review successfully submitted" });
+    });
+
+    it("GET /user/:id/find-roommate-page should confirm user has a profile", async () => {
+        const user_id = "test@gmail.com";
+
+        const response = await request(app).get(`/user/${user_id}/find-roommate-page`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({ message: "User has a profile" });
+    });
+
+    it("GET /user/:id/get-new-matches should return matching profiles", async () => {
+        const user_id = "test@gmail.com";
+
+        const response = await request(app).get(`/user/${user_id}/get-new-matches`);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+            profiles: [
+                { user_id: "roommate1", location: "Winnipeg", tags: ["clean"] },
+                { user_id: "roommate2", location: "Winnipeg", tags: ["friendly"] },
             ],
         });
     });

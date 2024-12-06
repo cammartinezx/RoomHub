@@ -1,10 +1,7 @@
 const UserInfoHandler = require("../../../src/Handler/UserInfoHandler");
 const userRoutes = require("../../../src/router/User");
 const { mockRequest, mockResponse } = require("mock-req-res");
-const {
-    validateString,
-    validateUserExist,
-} = require("../../../src/Utility/validator");
+const { validateString, validateUserExist } = require("../../../src/Utility/validator");
 
 const express = require("express");
 const request = require("supertest");
@@ -33,9 +30,17 @@ jest.mock("../../../src/Utility/Services", () => ({
         get_unread_details: jest.fn(),
     }),
 
-    get_profile_persistence: () => ({}),
+    get_profile_persistence: () => ({
+        get_profile: jest.fn(),
+        get_profiles_by_location: jest.fn(),
+        update_profile_averages: jest.fn(),
+    }),
 
-    get_review_persistence: () => ({}),
+    get_review_persistence: () => ({
+        get_reviews_for_user: jest.fn(),
+        add_review: jest.fn(),
+        update_review: jest.fn(),
+    }),
 }));
 
 jest.mock("../../../src/Utility/validator", () => ({
@@ -935,5 +940,208 @@ describe("Testing getting a list of unread notifications", () => {
 
         expect(res.status).toHaveBeenCalledWith(500);
         expect(res.json).toHaveBeenCalledWith({ message: "Server error" });
+    });
+});
+
+describe("Testing get_review_page", () => {
+    let userInfoHandler;
+    beforeEach(() => {
+        userInfoHandler = new UserInfoHandler();
+        req = mockRequest();
+        res = mockResponse();
+
+        res.status = jest.fn().mockReturnValue(res);
+        res.json = jest.fn();
+        jest.clearAllMocks();
+    });
+
+    it("Should return 200 when the profile exists", async () => {
+        req.params = { roommate_id: "valid_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue({ id: "valid_id" });
+
+        await userInfoHandler.get_review_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ message: "User public profile exists" });
+    });
+
+    it("Should return 400 when the profile does not exist", async () => {
+        req.params = { roommate_id: "invalid_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue(null);
+
+        await userInfoHandler.get_review_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ message: "User public profile does not exist" });
+    });
+
+    it("Should return 500 when an error occurs", async () => {
+        req.params = { roommate_id: "valid_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockRejectedValue(new Error("Database error"));
+
+        await userInfoHandler.get_review_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Database error" });
+    });
+});
+
+describe("Testing send_review", () => {
+    let userInfoHandler;
+    beforeEach(() => {
+        userInfoHandler = new UserInfoHandler();
+        req = mockRequest();
+        res = mockResponse();
+
+        res.status = jest.fn().mockReturnValue(res);
+        res.json = jest.fn();
+        jest.clearAllMocks();
+    });
+
+    it("Should return 200 when a review is successfully submitted", async () => {
+        req.body = {
+            reviewed_by: "user1",
+            reviewed: "user2",
+            overall: 5,
+            cleanliness: 4,
+            noise_levels: 3,
+            respect: 5,
+            communication: 4,
+            paying_rent: 5,
+            chores: 4,
+        };
+
+        userInfoHandler.get_review_persistence().get_reviews_for_user.mockResolvedValue([]);
+        userInfoHandler.get_review_persistence().add_review.mockResolvedValue();
+
+        await userInfoHandler.send_review(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "Review successfully submitted",
+            averages: expect.any(Object),
+        });
+    });
+
+    it("Should return 500 when an error occurs", async () => {
+        req.body = {
+            reviewed_by: "user1",
+            reviewed: "user2",
+            overall: 5,
+        };
+
+        userInfoHandler.get_review_persistence().get_reviews_for_user.mockRejectedValue(new Error("Database error"));
+
+        await userInfoHandler.send_review(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Database error" });
+    });
+});
+
+describe("Testing find_roommate_page", () => {
+    let userInfoHandler;
+    beforeEach(() => {
+        userInfoHandler = new UserInfoHandler();
+        req = mockRequest();
+        res = mockResponse();
+
+        res.status = jest.fn().mockReturnValue(res);
+        res.json = jest.fn();
+        jest.clearAllMocks();
+    });
+
+    it("Should return 200 when the user profile exists", async () => {
+        req.params = { id: "valid_user_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue({ id: "valid_user_id" });
+
+        await userInfoHandler.find_roommate_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ message: "User has a profile" });
+    });
+
+    it("Should return 400 when the user profile does not exist", async () => {
+        req.params = { id: "invalid_user_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue(null);
+
+        await userInfoHandler.find_roommate_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({ message: "User does not have a profile" });
+    });
+
+    it("Should return 500 when an error occurs", async () => {
+        req.params = { id: "valid_user_id" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockRejectedValue(new Error("Database error"));
+
+        await userInfoHandler.find_roommate_page(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Database error" });
+    });
+});
+
+describe("Testing get_new_matches", () => {
+    let userInfoHandler;
+    beforeEach(() => {
+        userInfoHandler = new UserInfoHandler();
+        req = mockRequest();
+        res = mockResponse();
+
+        res.status = jest.fn().mockReturnValue(res);
+        res.json = jest.fn();
+        jest.clearAllMocks();
+    });
+
+    it("Should return 200 with matching profiles", async () => {
+        req.params = { id: "user1" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue({
+            location: "city1",
+            likes: [],
+            matches: [],
+        });
+        userInfoHandler.get_profile_persistence().get_profiles_by_location.mockResolvedValue([
+            { user_id: "user2", location: "city1" },
+            { user_id: "user3", location: "city1" },
+        ]);
+
+        await userInfoHandler.get_new_matches(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalledWith({ profiles: expect.any(Array) });
+    });
+
+    it("Should return 400 when user profile is incomplete", async () => {
+        req.params = { id: "user1" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockResolvedValue({
+            location: null,
+        });
+
+        await userInfoHandler.get_new_matches(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(400);
+        expect(res.json).toHaveBeenCalledWith({
+            message: "User's profile is incomplete: missing location",
+        });
+    });
+
+    it("Should return 500 when an error occurs", async () => {
+        req.params = { id: "user1" };
+
+        userInfoHandler.get_profile_persistence().get_profile.mockRejectedValue(new Error("Database error"));
+
+        await userInfoHandler.get_new_matches(req, res);
+
+        expect(res.status).toHaveBeenCalledWith(500);
+        expect(res.json).toHaveBeenCalledWith({ message: "Database error" });
     });
 });
