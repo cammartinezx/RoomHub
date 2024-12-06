@@ -1,0 +1,163 @@
+timeStamp,elapsed,label,responseCode,responseMessage,threadName,dataType,success,failureMessage,bytes,sentBytes,grpThreads,allThreads,URL,Latency,IdleTime,Connect
+1.73352E+12,1591,CreateTransaction,200,OK,Thread Group 1-1,text,TRUE,,619,398,1,1,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1584,0,379
+1.73352E+12,871,CreateTask,200,OK,Thread Group 1-1,text,TRUE,,616,330,1,1,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,871,0,0
+1.73352E+12,415,CreateTransaction,200,OK,Thread Group 1-2,text,TRUE,,619,398,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,415,0,104
+1.73352E+12,915,SendAnnouncement,200,OK,Thread Group 1-1,text,TRUE,,621,334,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,914,0,0
+1.73352E+12,228,GetSummary,200,OK,Thread Group 1-1,text,TRUE,,640,235,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,228,0,0
+1.73352E+12,725,CreateTask,200,OK,Thread Group 1-2,text,TRUE,,616,330,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,725,0,0
+1.73352E+12,659,SendAnnouncement,200,OK,Thread Group 1-2,text,TRUE,,621,334,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,659,0,0
+1.73352E+12,230,GetSummary,200,OK,Thread Group 1-2,text,TRUE,,640,235,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,229,0,0
+1.73352E+12,1712,CompletedTasks,200,OK,Thread Group 1-1,text,TRUE,,868,237,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,1712,0,0
+1.73352E+12,311,CreateTransaction,200,OK,Thread Group 1-3,text,TRUE,,619,398,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,311,0,95
+1.73352E+12,286,CreateTask,200,OK,Thread Group 1-3,text,TRUE,,616,330,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,285,0,0
+1.73352E+12,298,SendAnnouncement,200,OK,Thread Group 1-3,text,TRUE,,621,334,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,298,0,0
+1.73352E+12,230,GetSummary,200,OK,Thread Group 1-3,text,TRUE,,644,235,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,229,0,0
+1.73352E+12,1802,PendingTask,200,OK,Thread Group 1-1,text,TRUE,,6629,235,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,1802,0,0
+1.73352E+12,2915,CompletedTasks,200,OK,Thread Group 1-2,text,TRUE,,868,237,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,2915,0,0
+1.73352E+12,310,CreateTransaction,200,OK,Thread Group 1-4,text,TRUE,,619,398,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,310,0,106
+1.73352E+12,225,CreateTask,200,OK,Thread Group 1-4,text,TRUE,,616,330,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,225,0,0
+1.73352E+12,2597,CompletedTasks,200,OK,Thread Group 1-3,text,TRUE,,868,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,2597,0,0
+1.73352E+12,194,SendAnnouncement,200,OK,Thread Group 1-4,text,TRUE,,621,334,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,194,0,0
+1.73352E+12,254,GetSummary,200,OK,Thread Group 1-4,text,TRUE,,640,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,254,0,0
+1.73352E+12,2095,PendingTask,500,Internal Server Error,Thread Group 1-2,text,FALSE,,658,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,2095,0,0
+1.73352E+12,3067,GetNotifications,502,Bad Gateway,Thread Group 1-1,text,FALSE,,315,230,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,3067,0,0
+1.73352E+12,1374,CompletedTasks,200,OK,Thread Group 1-4,text,TRUE,,868,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,1374,0,0
+1.73352E+12,1918,PendingTask,500,Internal Server Error,Thread Group 1-3,text,FALSE,,658,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,1918,0,0
+1.73352E+12,2469,GetTransaction,200,OK,Thread Group 1-1,text,TRUE,,11065,239,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,2469,0,0
+1.73352E+12,3059,GetNotifications,502,Bad Gateway,Thread Group 1-2,text,FALSE,,315,230,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,3059,0,0
+1.73352E+12,1958,PendingTask,500,Internal Server Error,Thread Group 1-4,text,FALSE,,658,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,1958,0,0
+1.73352E+12,1506,CreateTransaction,200,OK,Thread Group 1-5,text,TRUE,,619,398,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1506,0,99
+1.73352E+12,319,CreateTask,200,OK,Thread Group 1-5,text,TRUE,,616,330,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,319,0,0
+1.73352E+12,194,SendAnnouncement,200,OK,Thread Group 1-5,text,TRUE,,621,334,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,194,0,0
+1.73352E+12,1201,GetTransaction,200,OK,Thread Group 1-2,text,TRUE,,11314,239,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,1201,0,0
+1.73352E+12,367,GetSummary,200,OK,Thread Group 1-5,text,TRUE,,644,235,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,367,0,0
+1.73352E+12,327,CreateTransaction,200,OK,Thread Group 1-6,text,TRUE,,619,398,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,326,0,97
+1.73352E+12,193,CreateTask,200,OK,Thread Group 1-6,text,TRUE,,616,330,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,193,0,0
+1.73352E+12,180,SendAnnouncement,200,OK,Thread Group 1-6,text,TRUE,,621,334,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,179,0,0
+1.73352E+12,226,GetSummary,200,OK,Thread Group 1-6,text,TRUE,,640,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,225,0,0
+1.73352E+12,2535,CompletedTasks,500,Internal Server Error,Thread Group 1-5,text,FALSE,,658,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,2534,0,0
+1.73352E+12,1886,CompletedTasks,200,OK,Thread Group 1-6,text,TRUE,,868,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,1886,0,0
+1.73352E+12,1278,PendingTask,500,Internal Server Error,Thread Group 1-5,text,FALSE,,658,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,1278,0,0
+1.73352E+12,277,CreateTransaction,200,OK,Thread Group 1-7,text,TRUE,,619,398,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,277,0,99
+1.73352E+12,311,CreateTask,200,OK,Thread Group 1-7,text,TRUE,,616,330,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,311,0,0
+1.73352E+12,238,SendAnnouncement,200,OK,Thread Group 1-7,text,TRUE,,621,334,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,238,0,0
+1.73352E+12,203,GetSummary,200,OK,Thread Group 1-7,text,TRUE,,644,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,203,0,0
+1.73352E+12,3059,PendingTask,502,Bad Gateway,Thread Group 1-6,text,FALSE,,315,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,3059,0,0
+1.73352E+12,3062,GetNotifications,502,Bad Gateway,Thread Group 1-5,text,FALSE,,315,230,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,3062,0,0
+1.73352E+12,306,CreateTransaction,200,OK,Thread Group 1-8,text,TRUE,,619,398,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,306,0,107
+1.73352E+12,213,CreateTask,200,OK,Thread Group 1-8,text,TRUE,,616,330,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,213,0,0
+1.73352E+12,179,SendAnnouncement,200,OK,Thread Group 1-8,text,TRUE,,621,334,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,179,0,0
+1.73352E+12,10095,GetNotifications,502,Bad Gateway,Thread Group 1-3,text,FALSE,,315,230,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10095,0,0
+1.73352E+12,2839,CompletedTasks,200,OK,Thread Group 1-7,text,TRUE,,868,237,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,2839,0,0
+1.73352E+12,243,GetSummary,200,OK,Thread Group 1-8,text,TRUE,,640,235,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,243,0,0
+1.73352E+12,1428,GetTransaction,200,OK,Thread Group 1-5,text,TRUE,,12061,239,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,1428,0,0
+1.73352E+12,3062,GetNotifications,502,Bad Gateway,Thread Group 1-6,text,FALSE,,315,230,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,3062,0,0
+1.73352E+12,10626,GetNotifications,502,Bad Gateway,Thread Group 1-4,text,FALSE,,315,230,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10626,0,0
+1.73352E+12,2659,PendingTask,200,OK,Thread Group 1-7,text,TRUE,,7511,235,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,2659,0,0
+1.73352E+12,756,GetTransaction,200,OK,Thread Group 1-6,text,TRUE,,12061,239,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,756,0,0
+1.73352E+12,3059,GetTransaction,502,Bad Gateway,Thread Group 1-3,text,FALSE,,315,239,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3059,0,0
+1.73352E+12,1262,CreateTransaction,200,OK,Thread Group 1-9,text,TRUE,,619,398,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1261,0,100
+1.73352E+12,182,CreateTask,200,OK,Thread Group 1-9,text,TRUE,,616,330,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,182,0,0
+1.73352E+12,296,SendAnnouncement,200,OK,Thread Group 1-9,text,TRUE,,621,334,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,296,0,0
+1.73352E+12,739,GetSummary,200,OK,Thread Group 1-9,text,TRUE,,644,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,739,0,0
+1.73352E+12,3008,GetTransaction,200,OK,Thread Group 1-4,text,TRUE,,12061,239,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3008,0,0
+1.73352E+12,321,CreateTransaction,200,OK,Thread Group 1-10,text,TRUE,,619,398,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,321,0,92
+1.73352E+12,280,CreateTask,200,OK,Thread Group 1-10,text,TRUE,,616,330,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,280,0,0
+1.73352E+12,298,SendAnnouncement,200,OK,Thread Group 1-10,text,TRUE,,621,334,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,298,0,0
+1.73352E+12,238,GetSummary,200,OK,Thread Group 1-10,text,TRUE,,640,235,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,237,0,0
+1.73352E+12,3019,CompletedTasks,200,OK,Thread Group 1-9,text,TRUE,,868,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,3018,0,0
+1.73352E+12,1651,CompletedTasks,500,Internal Server Error,Thread Group 1-10,text,FALSE,,658,237,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,1651,0,0
+1.73352E+12,321,CreateTransaction,200,OK,Thread Group 1-11,text,TRUE,,619,398,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,321,0,108
+1.73352E+12,299,CreateTask,200,OK,Thread Group 1-11,text,TRUE,,616,330,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,298,0,0
+1.73352E+12,1164,PendingTask,500,Internal Server Error,Thread Group 1-9,text,FALSE,,658,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,1164,0,0
+1.73352E+12,939,PendingTask,500,Internal Server Error,Thread Group 1-10,text,FALSE,,658,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,939,0,0
+1.73352E+12,236,SendAnnouncement,200,OK,Thread Group 1-11,text,TRUE,,621,334,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,236,0,0
+1.73352E+12,200,GetSummary,200,OK,Thread Group 1-11,text,TRUE,,644,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,200,0,0
+1.73352E+12,10944,CompletedTasks,502,Bad Gateway,Thread Group 1-8,text,FALSE,,315,237,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10944,0,0
+1.73352E+12,299,CreateTransaction,200,OK,Thread Group 1-12,text,TRUE,,619,398,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,299,0,95
+1.73352E+12,299,CreateTask,200,OK,Thread Group 1-12,text,TRUE,,616,330,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,299,0,0
+1.73352E+12,158,SendAnnouncement,200,OK,Thread Group 1-12,text,TRUE,,621,334,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,158,0,0
+1.73352E+12,2742,CompletedTasks,500,Internal Server Error,Thread Group 1-11,text,FALSE,,658,237,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,2742,0,0
+1.73352E+12,240,GetSummary,200,OK,Thread Group 1-12,text,TRUE,,640,235,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,240,0,0
+1.73352E+12,10425,GetNotifications,502,Bad Gateway,Thread Group 1-7,text,FALSE,,315,230,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10424,0,0
+1.73352E+12,3054,PendingTask,502,Bad Gateway,Thread Group 1-8,text,FALSE,,315,235,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,3054,0,0
+1.73352E+12,3053,PendingTask,502,Bad Gateway,Thread Group 1-11,text,FALSE,,315,235,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,3052,0,0
+1.73352E+12,3050,GetTransaction,502,Bad Gateway,Thread Group 1-7,text,FALSE,,315,239,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3050,0,0
+1.73352E+12,9938,GetNotifications,502,Bad Gateway,Thread Group 1-10,text,FALSE,,315,230,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,9937,0,0
+1.73352E+12,10775,GetNotifications,502,Bad Gateway,Thread Group 1-9,text,FALSE,,315,230,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10775,0,0
+1.73352E+12,1346,GetTransaction,200,OK,Thread Group 1-9,text,TRUE,,13057,239,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,1346,0,0
+1.73352E+12,1143,CreateTransaction,200,OK,Thread Group 1-15,text,TRUE,,619,398,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,1143,0,95
+1.73352E+12,292,CreateTask,200,OK,Thread Group 1-15,text,TRUE,,616,330,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,291,0,0
+1.73352E+12,157,SendAnnouncement,200,OK,Thread Group 1-15,text,TRUE,,621,334,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,157,0,0
+1.73352E+12,648,GetSummary,200,OK,Thread Group 1-15,text,TRUE,,644,235,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,647,0,0
+1.73352E+12,10953,CompletedTasks,502,Bad Gateway,Thread Group 1-12,text,FALSE,,315,237,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10953,0,0
+1.73352E+12,312,CreateTransaction,200,OK,Thread Group 1-16,text,TRUE,,619,398,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,312,0,83
+1.73352E+12,393,CreateTask,200,OK,Thread Group 1-16,text,TRUE,,616,330,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,392,0,0
+1.73352E+12,9728,CreateTransaction,200,OK,Thread Group 1-13,text,TRUE,,619,398,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,9728,0,101
+1.73352E+12,157,SendAnnouncement,200,OK,Thread Group 1-16,text,TRUE,,621,334,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,156,0,0
+1.73352E+12,354,CreateTask,200,OK,Thread Group 1-13,text,TRUE,,616,330,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,354,0,0
+1.73352E+12,389,GetSummary,200,OK,Thread Group 1-16,text,TRUE,,644,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,389,0,0
+1.73352E+12,237,SendAnnouncement,200,OK,Thread Group 1-13,text,TRUE,,621,334,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,237,0,0
+1.73352E+12,10585,GetNotifications,502,Bad Gateway,Thread Group 1-8,text,FALSE,,315,230,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10585,0,0
+1.73352E+12,265,GetSummary,200,OK,Thread Group 1-13,text,TRUE,,644,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,265,0,0
+1.73352E+12,10050,GetNotifications,500,Internal Server Error,Thread Group 1-11,text,FALSE,,756,230,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10050,0,0
+1.73352E+12,335,CreateTransaction,200,OK,Thread Group 1-17,text,TRUE,,619,398,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,335,0,98
+1.73352E+12,226,CreateTask,200,OK,Thread Group 1-17,text,TRUE,,616,330,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,226,0,0
+1.73352E+12,217,SendAnnouncement,200,OK,Thread Group 1-17,text,TRUE,,621,334,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,217,0,0
+1.73352E+12,9782,CreateTransaction,200,OK,Thread Group 1-14,text,TRUE,,619,398,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,9782,0,88
+1.73352E+12,363,CreateTask,200,OK,Thread Group 1-14,text,TRUE,,616,330,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,363,0,0
+1.73352E+12,379,GetSummary,200,OK,Thread Group 1-17,text,TRUE,,644,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,379,0,0
+1.73352E+12,174,SendAnnouncement,200,OK,Thread Group 1-14,text,TRUE,,621,334,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,174,0,0
+1.73352E+12,277,GetSummary,200,OK,Thread Group 1-14,text,TRUE,,644,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,276,0,0
+1.73352E+12,3068,GetTransaction,502,Bad Gateway,Thread Group 1-8,text,FALSE,,315,239,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3068,0,0
+1.73352E+12,3055,CompletedTasks,502,Bad Gateway,Thread Group 1-13,text,FALSE,,315,237,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,3055,0,0
+1.73352E+12,3051,GetTransaction,502,Bad Gateway,Thread Group 1-11,text,FALSE,,315,239,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3051,0,0
+1.73352E+12,10629,GetTransaction,502,Bad Gateway,Thread Group 1-10,text,FALSE,,315,239,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10629,0,0
+1.73352E+12,3053,CompletedTasks,502,Bad Gateway,Thread Group 1-17,text,FALSE,,315,237,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,3053,0,0
+1.73352E+12,3054,CompletedTasks,502,Bad Gateway,Thread Group 1-14,text,FALSE,,315,237,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,3053,0,0
+1.73352E+12,10325,CompletedTasks,502,Bad Gateway,Thread Group 1-15,text,FALSE,,315,237,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10325,0,0
+1.73352E+12,10593,PendingTask,502,Bad Gateway,Thread Group 1-12,text,FALSE,,315,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,10593,0,0
+1.73352E+12,1236,GetNotifications,500,Internal Server Error,Thread Group 1-12,text,FALSE,,756,230,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,1236,0,0
+1.73352E+12,10844,CompletedTasks,502,Bad Gateway,Thread Group 1-16,text,FALSE,,315,237,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10844,0,0
+1.73352E+12,321,CreateTransaction,200,OK,Thread Group 1-20,text,TRUE,,619,398,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,321,0,95
+1.73352E+12,242,CreateTask,200,OK,Thread Group 1-20,text,TRUE,,616,330,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,241,0,0
+1.73352E+12,3056,PendingTask,502,Bad Gateway,Thread Group 1-15,text,FALSE,,315,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,3056,0,0
+1.73352E+12,173,SendAnnouncement,200,OK,Thread Group 1-20,text,TRUE,,621,334,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,173,0,0
+1.73352E+12,221,GetSummary,200,OK,Thread Group 1-20,text,TRUE,,640,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,221,0,0
+1.73352E+12,1579,GetNotifications,500,Internal Server Error,Thread Group 1-15,text,FALSE,,756,230,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,1579,0,0
+1.73352E+12,10613,PendingTask,502,Bad Gateway,Thread Group 1-13,text,FALSE,,315,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,10612,0,0
+1.73352E+12,9668,CreateTransaction,200,OK,Thread Group 1-18,text,TRUE,,619,398,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,9668,0,90
+1.73352E+12,213,CreateTask,200,OK,Thread Group 1-18,text,TRUE,,616,330,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,213,0,0
+1.73352E+12,214,SendAnnouncement,200,OK,Thread Group 1-18,text,TRUE,,621,334,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,214,0,0
+1.73352E+12,368,GetSummary,200,OK,Thread Group 1-18,text,TRUE,,644,235,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,368,0,0
+1.73352E+12,3051,GetTransaction,502,Bad Gateway,Thread Group 1-15,text,FALSE,,315,239,9,9,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3051,0,0
+1.73352E+12,10605,PendingTask,502,Bad Gateway,Thread Group 1-17,text,FALSE,,315,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,10605,0,0
+1.73352E+12,3054,GetNotifications,502,Bad Gateway,Thread Group 1-13,text,FALSE,,315,230,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,3054,0,0
+1.73352E+12,10736,PendingTask,502,Bad Gateway,Thread Group 1-14,text,FALSE,,315,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,10736,0,0
+1.73352E+12,9887,CreateTransaction,200,OK,Thread Group 1-19,text,TRUE,,619,398,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/create-expense,9887,0,95
+1.73352E+12,199,CreateTask,200,OK,Thread Group 1-19,text,TRUE,,616,330,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/task/create-task,199,0,0
+1.73352E+12,177,SendAnnouncement,200,OK,Thread Group 1-19,text,TRUE,,621,334,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/notification/send-announcement,176,0,0
+1.73352E+12,363,GetSummary,200,OK,Thread Group 1-19,text,TRUE,,640,235,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-summary?id=loadtest1@gmail.com,363,0,0
+1.73352E+12,10396,GetTransaction,502,Bad Gateway,Thread Group 1-12,text,FALSE,,315,239,8,8,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10396,0,0
+1.73352E+12,10220,PendingTask,500,Internal Server Error,Thread Group 1-16,text,FALSE,,658,235,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,10220,0,0
+1.73352E+12,10638,CompletedTasks,502,Bad Gateway,Thread Group 1-20,text,FALSE,,315,237,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10638,0,0
+1.73352E+12,802,PendingTask,500,Internal Server Error,Thread Group 1-20,text,FALSE,,658,235,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,802,0,0
+1.73352E+12,9767,CompletedTasks,500,Internal Server Error,Thread Group 1-18,text,FALSE,,658,237,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,9767,0,0
+1.73352E+12,618,PendingTask,500,Internal Server Error,Thread Group 1-18,text,FALSE,,658,235,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,618,0,0
+1.73352E+12,10518,GetNotifications,502,Bad Gateway,Thread Group 1-17,text,FALSE,,315,230,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10518,0,0
+1.73352E+12,10045,GetNotifications,502,Bad Gateway,Thread Group 1-14,text,FALSE,,315,230,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10044,0,0
+1.73352E+12,10504,GetTransaction,502,Bad Gateway,Thread Group 1-13,text,FALSE,,315,239,7,7,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10504,0,0
+1.73352E+12,10307,CompletedTasks,500,Internal Server Error,Thread Group 1-19,text,FALSE,,658,237,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-completed-tasks?frm=loadtest1@gmail.com,10307,0,0
+1.73352E+12,3056,GetTransaction,502,Bad Gateway,Thread Group 1-14,text,FALSE,,315,239,6,6,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3056,0,0
+1.73352E+12,2360,PendingTask,500,Internal Server Error,Thread Group 1-19,text,FALSE,,658,235,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/room/get-pending-tasks?frm=loadtest2@gmail.com,2360,0,0
+1.73352E+12,8689,GetNotifications,500,Internal Server Error,Thread Group 1-20,text,FALSE,,756,230,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,8688,0,0
+1.73352E+12,10849,GetNotifications,502,Bad Gateway,Thread Group 1-16,text,FALSE,,315,230,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10849,0,0
+1.73352E+12,10120,GetNotifications,500,Internal Server Error,Thread Group 1-18,text,FALSE,,756,230,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10120,0,0
+1.73352E+12,10464,GetTransaction,502,Bad Gateway,Thread Group 1-17,text,FALSE,,315,239,5,5,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10464,0,0
+1.73352E+12,3069,GetTransaction,502,Bad Gateway,Thread Group 1-18,text,FALSE,,315,239,4,4,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,3069,0,0
+1.73352E+12,10001,GetNotifications,502,Bad Gateway,Thread Group 1-19,text,FALSE,,315,230,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/user/loadtest2@gmail.com/get-notification,10001,0,0
+1.73352E+12,10453,GetTransaction,502,Bad Gateway,Thread Group 1-16,text,FALSE,,315,239,3,3,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10453,0,0
+1.73352E+12,10589,GetTransaction,502,Bad Gateway,Thread Group 1-20,text,FALSE,,315,239,2,2,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10589,0,0
+1.73352E+12,10510,GetTransaction,502,Bad Gateway,Thread Group 1-19,text,FALSE,,315,239,1,1,https://b6vi3gq605.execute-api.ca-central-1.amazonaws.com/dev/transaction/get-transaction?id=loadtest2@gmail.com,10510,0,0
+,,,,,,,,,,,,,,,,
+Avg Response Time,1027.126316,,,,,,,,,,,,,,,
