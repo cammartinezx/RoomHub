@@ -118,7 +118,7 @@ class ProfileHandler {
                 contact,
                 contact_type,
             );
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Profile created successfully" });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
@@ -168,7 +168,7 @@ class ProfileHandler {
                 contact,
                 contact_type,
             );
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Profile updated successfully." });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
@@ -197,7 +197,7 @@ class ProfileHandler {
 
             const tagSet = new Set(tags);
             let result = await this.#profile_persistence.update_tags(user_id, tagSet);
-            return response.status(result.status).json({ message: result.message });
+            return response.status(200).json({ message: "Tags updated successfully." });
         } catch (error) {
             return response.status(500).json({ message: error.message });
         }
