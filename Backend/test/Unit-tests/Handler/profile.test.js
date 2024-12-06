@@ -60,7 +60,6 @@ describe("Unit test for create_profile function", () => {
         req.body = {
             name: "test",
             location: "winnipeg",
-            ethnicity: "asian",
             gender: "male",
             contact_type: "mobile",
             dob: "2001-01-14",
@@ -133,7 +132,6 @@ describe("Unit test for update_profile function", () => {
             name: "test123",
             location: "toronto",
             gender: "female",
-            ethnicity: "black",
             contact_type: "mobile",
             dob: "2000-02-15",
             bio: "hello baby",
