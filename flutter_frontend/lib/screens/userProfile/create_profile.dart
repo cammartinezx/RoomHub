@@ -452,6 +452,8 @@ class _CreateProfileState extends State<CreateProfile> {
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(reqBody), // Encode the request body as JSON
       );
+      print(response.statusCode);
+      print(response.body);
       await handlePost(response, responseType: 'createProfile');
       theme.buildToastMessage("Profile created successfully");
     } on ProfileException catch (e) {
