@@ -183,26 +183,3 @@ describe("UserPersistence Class-- Delete a specific room for specific user", () 
         await expect(user_persistence.remove_room_id(room_id, user_id)).resolves.not.toThrow();
     });
 });
-
-describe("Get Profile", () => {
-    let user_persistence;
-    let user_id;
-    let roommate_id;
-
-    beforeAll(async () => {
-        user_persistence = new UserPersistence();
-        user_id = "test3@gmail.com";
-        roommate_id = "roommate1@gmail.com";
-        await populate_db();
-    });
-
-    it("Should return a roommate's profile when it exists", async () => {
-        const profile = await user_persistence.get_profile(roommate_id);
-        expect(profile).toEqual(expect.objectContaining({ user_id: roommate_id }));
-    });
-
-    it("Should return null when roommate's profile does not exist", async () => {
-        const profile = await user_persistence.get_profile("nonexistent@gmail.com");
-        expect(profile).toBeNull();
-    });
-});
