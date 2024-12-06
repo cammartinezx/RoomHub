@@ -207,6 +207,24 @@ async function populate_db() {
         await doc_client.send(put_command_transaction);
         await doc_client.send(put_command_transaction2);
         await doc_client.send(put_command_transaction3);
+
+        const initialReview = {
+            review_id: "review456",
+            reviewed_by: "user123",
+            reviewed: "user456",
+            overall: 3,
+            cleanliness: 3,
+            noise_levels: 2,
+            respect: 3,
+            communication: 3,
+            paying_rent: 3,
+            chores: 3,
+        };
+        const put_command_review = new PutCommand({
+            TableName: "Review",
+            Item: initialReview,
+        });
+        await doc_client.send(put_command_review);
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
