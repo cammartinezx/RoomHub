@@ -287,7 +287,6 @@ async function populate_db() {
         for (const review of reviews2) {
             await doc_client.send(new PutCommand({ TableName: "Review", Item: review }));
         }
-
     } catch (error) {
         throw new Error("Something went wrong " + error.message);
     }
