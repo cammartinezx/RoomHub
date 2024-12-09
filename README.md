@@ -36,7 +36,7 @@ Users can rate and provide detailed feedback about their roommates, offering val
   A robust library for building interactive and dynamic web interfaces, ensuring a responsive and engaging user experience. React.js will be utilized for the web version of the Roomies app.
 
   * **Flutter:**
-  A cross-platform framework for creating high-performance applications for mobile, web, and desktop from a single codebase, ensuring a consistent look and feel across different devices. Flutter will be used for the mobile and desktop applications.
+  A cross-platform framework for creating high-performance mobile, web, and desktop applications from a single codebase, ensuring a consistent look and feel across different devices. Flutter will be used for the mobile and desktop applications.
 
 * #### Back End:
 
@@ -45,7 +45,7 @@ Users can rate and provide detailed feedback about their roommates, offering val
 
   * **Database:**
     **DynamoDb:**
-    A managed nosql database service service that has direct javascript compatibility, offering automated backups, scaling, and high availability. This will serve as the primary database for the app, ensuring robust data management and reliability.
+    A managed NoSQL database service that has direct javascript compatibility, offering automated backups, scaling, and high availability. This will serve as the primary database for the app, ensuring robust data management and reliability.
 
 ### How to Run the Project
 To get started with the RoomHub application, follow the instructions in the respective README files for the [Front End](link-to-frontend-readme) and [Back End](link-to-backend-readme). These files provide detailed steps on setting up the development environment, running the project locally, and executing tests.
@@ -60,6 +60,7 @@ To get started with the RoomHub application, follow the instructions in the resp
 
 ### Back End:
 - Steps for setting up the Express backend and performing tests are documented in the [Back End README](https://github.com/WilliamOdumah/RoomHub/tree/main/Backend/README.md).
+- Access our API Documentation here! [API Documentation](https://htmlpreview.github.io/?https://raw.githubusercontent.com/WilliamOdumah/RoomHub/dev/Backend/docs/Notification.html)
 
 ### Meeting Minutes:
 - [Meeting Minutes](https://docs.google.com/document/d/1gmPyqcMPgaCIxmgW3wgfEdduZb-75aF9UhfTTLr__OI/edit?usp=sharing)
@@ -69,18 +70,18 @@ To get started with the RoomHub application, follow the instructions in the resp
 
 ### How to run the Docker:
 If docker doesn't work:
-1. Make sure `docker`, `docker-compose` and `Docker Desktop Application` are installed. To check:
+1. Ensure `docker`, `docker-compose`, and `Docker Desktop Application` are installed. To check:
     ```
     $ docker -v
     $ docker-compose --version
     ```
     - Go to [https://docs.docker.com/desktop/](https://docs.docker.com/desktop/) to download the Docker Desktop Application based on your Operating System ('Mac', 'Windows' or 'Linux').
-    - Open `EXTENSIONS` in Visual Studio Code and search for `Docker` and install this extension:
+    - Open `EXTENSIONS` in Visual Studio Code search for `Docker` and install this extension:
     ![Docker extension](./Documentation/images/Docker_extension.png)
     You should download the correct extension as shown above.
-    - Open `Terminal` in Visual Studio Code and enter this command: `sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`. You may need to replace `v2.21.0` with your current docker version by running command `docker -v` above. Then run this command: `sudo chmod +x /usr/local/bin/docker-compose` (make sure you are in RoomHub directory).
+    - Open `Terminal` in Visual Studio Code and enter this command: `sudo curl -L "https://github.com/docker/compose/releases/download/v2.21.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose`. You may need to replace `v2.21.0` with your current docker version by running the command `docker -v` above. Then run this command: `sudo chmod +x /usr/local/bin/docker-compose` (make sure you are in the RoomHub directory).
     
-2. Build docker: make sure you are opening Docker Desktop Application in your machine.
+2. Build docker: Ensure you are opening the Docker Desktop Application on your machine.
     ```
     $ docker-compose up --build
     ```
