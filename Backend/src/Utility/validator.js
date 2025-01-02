@@ -132,6 +132,8 @@ async function validateOutstandingBalance(transaction_persistence, creditor, deb
         const currOutstanding = result.amount;
         if (currOutstanding < settle_up_amnt) {
             throw new Error("Settle up amount must be less than or equal to outstanding balance");
+        } else {
+            return currOutstanding;
         }
     } else {
         throw new Error("No outstanding balance to be settled");

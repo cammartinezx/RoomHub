@@ -181,10 +181,9 @@ class TransactionPersistence {
                 debtor: debtor,
                 creditor: creditor,
             },
-            UpdateExpression: "SET amount = if_not_exists(amount, :start) + :newAmount",
+            UpdateExpression: "SET amount = :newAmount",
             ExpressionAttributeValues: {
                 ":newAmount": new_amount,
-                ":start": 0, // Initial value if amount does not exist
             },
         });
 

@@ -130,15 +130,43 @@ class TransactionHandler {
                 owed_to_creator,
                 "expense",
             );
-            // update balance table with all expense relationships.
             for (let i = 0; i < contributors.length; i++) {
                 const debtor = contributors[i];
-                if (creditor.toLowerCase().localeCompare(debtor.toLowerCase()) != 0) {
-                    await this.#transaction_persistence.updateBalance(
+                if (creditor.toLowerCase() !== debtor.toLowerCase()) {
+                    const new_amount = Math.round(amount_split * 100) / 100;
+
+                    // Fetch balance records
+                    // amount creditor owes debtor
+                    const direct_balance_record = await this.#transaction_persistence.getBalanceRecord(
+                        creditor,
+                        debtor,
+                    );
+                    // amount debtor owes creditor
+                    const reverse_balance_record = await this.#transaction_persistence.getBalanceRecord(
                         debtor,
                         creditor,
-                        Math.round(amount_split * 100) / 100,
                     );
+
+                    const direct_balance = direct_balance_record ? direct_balance_record.amount : 0;
+                    const reverse_balance = reverse_balance_record ? reverse_balance_record.amount : 0;
+
+                    // Calculate net balance
+                    const net_balance = reverse_balance + new_amount - direct_balance;
+
+                    // Update balance table
+                    if (net_balance > 0) {
+                        // Debtor owes creditor
+                        await this.#transaction_persistence.updateBalance(debtor, creditor, net_balance);
+                        await this.#transaction_persistence.updateBalance(creditor, debtor, 0);
+                    } else if (net_balance < 0) {
+                        // Creditor owes debtor
+                        await this.#transaction_persistence.updateBalance(debtor, creditor, 0);
+                        await this.#transaction_persistence.updateBalance(creditor, debtor, Math.abs(net_balance));
+                    } else {
+                        // Debts cancel each other out
+                        await this.#transaction_persistence.updateBalance(debtor, creditor, 0);
+                        await this.#transaction_persistence.updateBalance(creditor, debtor, 0);
+                    }
                 }
             }
             response.status(200).json({ message: "Expense created successfully" });
@@ -188,8 +216,14 @@ class TransactionHandler {
             }
 
             // async error check
+            let currOutstanding;
             try {
-                await validateOutstandingBalance(this.#transaction_persistence, creditor, debtor, amount);
+                currOutstanding = await validateOutstandingBalance(
+                    this.#transaction_persistence,
+                    creditor,
+                    debtor,
+                    amount,
+                );
             } catch (error) {
                 response.status(409).json({ message: error.message });
                 return;
@@ -213,7 +247,7 @@ class TransactionHandler {
             );
 
             // update balance table with expense relationship
-            await this.#transaction_persistence.updateBalance(debtor, creditor, -amount);
+            await this.#transaction_persistence.updateBalance(debtor, creditor, currOutstanding - amount);
             response.status(200).json({ message: "Transaction created successfully" });
         } catch (error) {
             return response.status(500).json({ message: error.message });
