@@ -145,19 +145,6 @@ class _OurHomeState extends ConsumerState<OurHome> {
                     ],
                   ),
                 ),
-
-                ElevatedButton(
-                  onPressed: () async {
-                    logOut();
-                  },
-                  child: const Text(
-                    "Log Out",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 8.0),
-                  ),
-                ),
               ],
             )
           ],
