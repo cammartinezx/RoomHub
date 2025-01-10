@@ -14,12 +14,12 @@ import '../../utils/response_handler.dart';
 class SharedExpensesPage extends StatefulWidget {
   final String userId;
   final String roomId;
-  final Map<String, dynamic> summary;
+
   const SharedExpensesPage(
       {super.key,
       required this.userId,
       required this.roomId,
-      required this.summary});
+      });
 
   @override
   _SharedExpensesPageState createState() => _SharedExpensesPageState();
@@ -35,6 +35,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
   }
 
   List<Transaction>? allTransactions;
+   Map<String, dynamic>? summaryData;
   // Sample transaction data
 
   double? owe;
@@ -67,7 +68,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
           // Back button to return to the previous screen
           Padding(
             padding: const EdgeInsets.only(
-                left: 16.0, right: 0.0, top: 70, bottom: 0.0),
+                left: 16.0, right: 0.0, top: 20.0, bottom: 0.0),
             child: Stack(children: [
               IconButton(
                 icon: Icon(
@@ -86,12 +87,17 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                 },
               ),
               Center(
-                child: Text(
-                  widget.roomId,
-                  style: TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      color: theme.darkblue),
+                child: 
+                Padding(
+                  padding: const EdgeInsets.only(
+                left: 0, right: 0.0, top: 20.0, bottom: 0.0),
+                  child: Text(
+                    widget.roomId,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                        color: theme.darkblue),
+                  ),
                 ),
               )
             ]),
@@ -125,7 +131,6 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                       // crossAxisAligment: CrossAxisAlignment.
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-
                         Column(
                           children: [
                             Text(
@@ -191,7 +196,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                   builder: (context) => SettleUp(
                                     email: widget.userId,
                                     roomId: widget.roomId,
-                                    summaryData: widget.summary,
+                                    summaryData: summaryData!,
                                   ),
                                 ),
                               );
@@ -219,7 +224,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
                                     builder: (context) => ExpenseForm(
                                           email: widget.userId,
                                           roomId: widget.roomId,
-                                          summaryData: widget.summary,
+                                          summaryData: summaryData!,
                                         )),
                               );
                             },
@@ -469,6 +474,7 @@ class _SharedExpensesPageState extends State<SharedExpensesPage> {
           owe = double.parse(amountUserOwes.toStringAsFixed(2));
           owed = double.parse(amountUserIsOwed.toStringAsFixed(2));
           summaryMessages = jsonData['relationships'];
+          summaryData = jsonData;
           // allTransactions = transactions;
         });
         // result = transactions;

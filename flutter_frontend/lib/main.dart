@@ -25,7 +25,6 @@ import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
 import 'package:flutter_frontend/screens/userProfile/update_tags.dart';
-import 'package:flutter_frontend/screens/userProfile/see_user_info.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 
 
