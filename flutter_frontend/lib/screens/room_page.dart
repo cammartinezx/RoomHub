@@ -5,19 +5,16 @@ import 'package:flutter_frontend/screens/createAnnouncement/create_announcement_
 import 'package:flutter_frontend/screens/reviewRoommate/review_roommate.dart';
 import 'package:flutter_frontend/screens/taskManagement/all_task.dart';
 import 'package:flutter_frontend/screens/transactionManagement/all_transactions.dart';
-import 'package:flutter_frontend/screens/userProfile/create_profile.dart';
-import 'package:flutter_frontend/screens/userProfile/update_profile.dart';
+
 import 'package:flutter_frontend/widgets/button.dart';
-import 'package:flutter_frontend/widgets/gradient_button.dart';
 import 'package:flutter_frontend/utils/our_theme.dart';
-import 'package:flutter_frontend/screens/home/home_new_user.dart';
-import 'package:flutter_frontend/providers.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:flutter_frontend/utils/custom_exceptions.dart';
 import 'package:flutter_frontend/utils/response_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_frontend/config.dart';
 import 'package:flutter_frontend/widgets/header.dart';
+import 'package:flutter_frontend/widgets/side_menu.dart';
 import 'dart:convert';
 
 class UserRoom extends StatefulWidget {
@@ -69,6 +66,7 @@ class _UserRoomState extends State<UserRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[300],
+      drawer: Navbar(roomId: widget.roomID, email: widget.email),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         child: Column(
